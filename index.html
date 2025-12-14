@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="title-key" content="hero.title">
+  <meta name="description"
+    content="Kids Digital Hub - Discover amazing digital products designed for children of all ages. Interactive coloring books, educational games, stories and more!">
+  <meta name="keywords"
+    content="kids digital products, children educational games, interactive coloring books, digital learning">
+  <title>Kids Digital Hub - Digital Products for Children</title>
+
+  <!-- Favicon -->
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">🎨</span>
+          <span>Kids Digital Hub</span>
+        </a>
+
+        <nav class="nav">
+          <ul class="nav-links" id="navLinks">
+            <li><a href="index.html" class="nav-link active" data-i18n="nav.home">Home</a></li>
+            <li><a href="products.html" class="nav-link" data-i18n="nav.products">Products</a></li>
+            <li><a href="#age-groups" class="nav-link" data-i18n="nav.ageGroups">Age Groups</a></li>
+            <li><a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a></li>
+          </ul>
+
+          <div class="language-selector" id="languageSelector">
+            <button class="lang-current">
+              🇬🇧 English
+            </button>
+            <div class="lang-dropdown" id="langDropdown">
+              <!-- Populated by JavaScript -->
+            </div>
+          </div>
+
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+            ☰
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-background"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text animate-fade-in">
+          <h1 data-i18n="hero.title">Welcome to Kids Digital Hub</h1>
+          <p class="hero-subtitle" data-i18n="hero.subtitle">
+            Discover amazing digital products designed for children of all ages
+          </p>
+          <div class="hero-buttons">
+            <a href="products.html" class="btn btn-primary btn-lg" data-i18n="hero.cta">
+              Explore Products
+            </a>
+            <a href="#featured" class="btn btn-secondary btn-lg" data-i18n="hero.ctaDemo">
+              Try Free Demos
+            </a>
+          </div>
+        </div>
+        <div class="hero-image animate-slide-right">
+          <div class="hero-illustration">
+            <!-- Animated illustration will be added here -->
+            <div class="floating-emoji">🎮</div>
+            <div class="floating-emoji">📚</div>
+            <div class="floating-emoji">🖍️</div>
+            <div class="floating-emoji">🧩</div>
+            <div class="floating-emoji">✨</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Age Groups Section -->
+  <section class="age-groups-section py-xl" id="age-groups">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2 data-i18n="ageGroups.title">Browse by Age Group</h2>
+        <p>Find the perfect products for your child's developmental stage</p>
+      </div>
+
+      <div class="age-groups-grid" id="ageGroupsGrid">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories-section py-xl">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2 data-i18n="categories.title">Product Categories</h2>
+        <p>Explore our diverse collection of digital products</p>
+      </div>
+
+      <div class="categories-grid" id="categoriesGrid">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="featured-section py-xl" id="featured">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2 data-i18n="featured.title">Featured Products</h2>
+        <p data-i18n="featured.subtitle">Our most popular digital products for kids</p>
+      </div>
+
+      <div class="products-grid" id="featuredProducts">
+        <!-- Populated by JavaScript -->
+      </div>
+
+      <div class="text-center mt-lg">
+        <a href="products.html" class="btn btn-primary btn-lg" data-i18n="buttons.viewAll">
+          View All Products
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works-section py-xl">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2 data-i18n="howItWorks.title">How It Works</h2>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-icon">🔍</div>
+          <div class="step-number">1</div>
+          <h3 data-i18n="howItWorks.step1Title">Choose a Product</h3>
+          <p data-i18n="howItWorks.step1Desc">Browse our collection by age or category</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-icon">🎮</div>
+          <div class="step-number">2</div>
+          <h3 data-i18n="howItWorks.step2Title">Try the Demo</h3>
+          <p data-i18n="howItWorks.step2Desc">Test it for free before downloading</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-icon">⬇️</div>
+          <div class="step-number">3</div>
+          <h3 data-i18n="howItWorks.step3Title">Download & Enjoy</h3>
+          <p data-i18n="howItWorks.step3Desc">Get instant access to your digital product</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Request Section -->
+  <section class="request-section py-xl" id="request-product">
+    <div class="container container-narrow">
+      <div class="section-header text-center">
+        <h2>✨ Request a Custom Product</h2>
+        <p>Have an idea for a digital product? Share it with us!</p>
+      </div>
+
+      <div class="request-form-card">
+        <form id="productRequestForm" class="product-request-form">
+          <div class="form-group">
+            <label for="requestName">Your Name *</label>
+            <input type="text" id="requestName" name="name" required placeholder="Enter your name" class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label for="requestEmail">Email Address *</label>
+            <input type="email" id="requestEmail" name="email" required placeholder="your.email@example.com"
+              class="form-input">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="requestCategory">Product Category *</label>
+              <select id="requestCategory" name="category" required class="form-select">
+                <option value="">Select a category</option>
+                <option value="coloring">🖍️ Coloring Books</option>
+                <option value="games">🧩 Educational Games</option>
+                <option value="stories">📖 Interactive Stories</option>
+                <option value="printables">📝 Printable Activities</option>
+                <option value="creative">🎭 Creative Tools</option>
+                <option value="other">💡 Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="requestAge">Target Age Group *</label>
+              <select id="requestAge" name="ageGroup" required class="form-select">
+                <option value="">Select age group</option>
+                <option value="toddlers">🧸 Toddlers (2-4)</option>
+                <option value="preschool">🎨 Preschool (4-6)</option>
+                <option value="early-elementary">📚 Early Elementary (6-8)</option>
+                <option value="elementary">🎮 Elementary (8-10)</option>
+                <option value="preteens">🚀 Preteens (10-12)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="requestDescription">Product Description *</label>
+            <textarea id="requestDescription" name="description" required rows="5"
+              placeholder="Describe your product idea in detail... What would it do? What would children learn from it?"
+              class="form-textarea" maxlength="1000"></textarea>
+            <div class="char-counter">
+              <span id="charCount">0</span> / 1000 characters
+            </div>
+          </div>
+
+          <div class="form-notice">
+            <p>
+              ⚠️ <strong>Important:</strong> Requests containing inappropriate content
+              (violence, bullying, adult content, etc.) will be automatically rejected
+              and comply with our community guidelines.
+            </p>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-lg">
+              ✉️ Submit Request
+            </button>
+          </div>
+        </form>
+
+        <div id="requestSuccess" class="request-success" style="display: none;">
+          <div class="success-icon">✅</div>
+          <h3>Thank You!</h3>
+          <p>Your product request has been submitted successfully. We'll review it and get back to you soon!</p>
+          <button class="btn btn-secondary" onclick="resetRequestForm()">
+            Submit Another Request
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Kids Digital Hub</h4>
+          <p data-i18n="footer.about">
+            Kids Digital Hub provides high-quality digital products designed to educate,
+            entertain, and inspire children.
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <h4 data-i18n="footer.quickLinks">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+            <li><a href="products.html" data-i18n="nav.products">Products</a></li>
+            <li><a href="#age-groups" data-i18n="nav.ageGroups">Age Groups</a></li>
+            <li><a href="#request-product">Request Product</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4 data-i18n="footer.categories">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="products.html?category=coloring" data-i18n="categories.coloring">Coloring Books</a></li>
+            <li><a href="products.html?category=games" data-i18n="categories.games">Educational Games</a></li>
+            <li><a href="products.html?category=stories" data-i18n="categories.stories">Interactive Stories</a></li>
+            <li><a href="products.html?category=printables" data-i18n="categories.printables">Printable Activities</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4 data-i18n="footer.support">Support</h4>
+          <ul class="footer-links">
+            <li><a href="#" data-i18n="footer.faq">FAQ</a></li>
+            <li><a href="#" data-i18n="footer.privacy">Privacy Policy</a></li>
+            <li><a href="#" data-i18n="footer.terms">Terms of Service</a></li>
+            <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p data-i18n="footer.copyright">© 2024 Kids Digital Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/christmas-banner.js"></script>
+  <script src="js/currency.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/home.js"></script>
+</body>
+
+</html>

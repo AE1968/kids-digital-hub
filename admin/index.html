@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Kids Digital Hub</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body class="admin-body">
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="admin-header-content">
+            <div class="admin-logo">
+                <span class="logo-icon">🎨</span>
+                <span>Kids Digital Hub</span>
+                <span class="admin-badge">ADMIN</span>
+            </div>
+            <div class="admin-user">
+                <span>👤 Administrator</span>
+                <button class="btn btn-secondary btn-sm" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <nav class="admin-nav">
+                <a href="#dashboard" class="admin-nav-link active" onclick="showSection('dashboard')">
+                    📊 Dashboard
+                </a>
+                <a href="#products" class="admin-nav-link" onclick="showSection('products')">
+                    🎨 Products
+                </a>
+                <a href="#trending" class="admin-nav-link" onclick="showSection('trending')">
+                    🔥 Trending Content
+                </a>
+                <a href="#analytics" class="admin-nav-link" onclick="showSection('analytics')">
+                    📈 Analytics
+                </a>
+                <a href="#requests" class="admin-nav-link" onclick="showSection('requests')">
+                    💬 User Requests
+                </a>
+                <a href="#marketing" class="admin-nav-link" onclick="showSection('marketing')">
+                    📣 Marketing
+                </a>
+                <a href="#settings" class="admin-nav-link" onclick="showSection('settings')">
+                    ⚙️ Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="admin-section active">
+                <h1>📊 Dashboard Overview</h1>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👁️</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Total Views (Month)</div>
+                            <div class="stat-value" id="totalViews">5,234</div>
+                            <div class="stat-change positive">+23% vs last month</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Revenue (Month)</div>
+                            <div class="stat-value" id="totalRevenue">$1,245</div>
+                            <div class="stat-change positive">+45% vs last month</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🛒</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Sales (Month)</div>
+                            <div class="stat-value" id="totalSales">156</div>
+                            <div class="stat-change positive">+18% vs last month</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Active Users</div>
+                            <div class="stat-value" id="activeUsers">1,023</div>
+                            <div class="stat-change positive">+67% vs last month</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>📈 Views & Sales Trend (2025)</h3>
+                        <div class="chart-placeholder">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>🎯 Top Products</h3>
+                        <div class="top-products-list" id="topProductsList">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>⚡ Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="showSection('products')">
+                            ➕ Add New Product
+                        </button>
+                        <button class="btn btn-secondary" onclick="showSection('trending')">
+                            🔥 Update Trending
+                        </button>
+                        <button class="btn btn-outline" onclick="showSection('requests')">
+                            💬 View Requests
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products-section" class="admin-section">
+                <div class="section-header-admin">
+                    <h1>🎨 Products Management</h1>
+                    <button class="btn btn-primary" onclick="openAddProductModal()">
+                        ➕ Add New Product
+                    </button>
+                </div>
+
+                <div class="products-table-container">
+                    <table class="admin-table" id="productsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Age Group</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Views</th>
+                                <th>Sales</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Trending Content Section -->
+            <section id="trending-section" class="admin-section">
+                <div class="section-header-admin">
+                    <h1>🔥 Trending Content Management</h1>
+                    <button class="btn btn-primary" onclick="openAddTrendingModal()">
+                        ➕ Add Trending Theme
+                    </button>
+                </div>
+
+                <div class="trending-calendar">
+                    <h3>📅 Content Calendar 2025-2026</h3>
+                    <div class="calendar-grid" id="trendingCalendar">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="trending-themes">
+                    <h3>🎭 Popular Themes & Characters</h3>
+                    <div class="themes-grid" id="themesGrid">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics-section" class="admin-section">
+                <h1>📈 Analytics & Reports</h1>
+
+                <div class="analytics-filters">
+                    <select class="form-select" id="analyticsTimeRange">
+                        <option value="7d">Last 7 Days</option>
+                        <option value="30d" selected>Last 30 Days</option>
+                        <option value="90d">Last 90 Days</option>
+                        <option value="1y">Last Year</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="exportReport()">
+                        📥 Export Report
+                    </button>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>🌍 Geographic Distribution</h3>
+                        <div id="geoChart" class="chart-placeholder"></div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>👶 Age Group Distribution</h3>
+                        <div id="ageChart" class="chart-placeholder"></div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>📱 Device Types</h3>
+                        <div id="deviceChart" class="chart-placeholder"></div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>⏱️ Peak Hours</h3>
+                        <div id="hoursChart" class="chart-placeholder"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Requests Section -->
+            <section id="requests-section" class="admin-section">
+                <div class="section-header-admin">
+                    <h1>💬 User Product Requests</h1>
+                    <div class="filter-buttons">
+                        <button class="btn btn-sm btn-outline active" onclick="filterRequests('all')">All</button>
+                        <button class="btn btn-sm btn-outline" onclick="filterRequests('pending')">Pending</button>
+                        <button class="btn btn-sm btn-outline" onclick="filterRequests('approved')">Approved</button>
+                        <button class="btn btn-sm btn-outline" onclick="filterRequests('rejected')">Rejected</button>
+                    </div>
+                </div>
+
+                <div class="requests-list" id="requestsList">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Marketing Section -->
+            <section id="marketing-section" class="admin-section">
+                <h1>📣 Marketing & Campaigns</h1>
+
+                <div class="marketing-grid">
+                    <div class="marketing-card">
+                        <h3>📧 Email Campaigns</h3>
+                        <div class="campaign-stats">
+                            <div class="campaign-stat">
+                                <span>Sent:</span>
+                                <strong>2,345</strong>
+                            </div>
+                            <div class="campaign-stat">
+                                <span>Open Rate:</span>
+                                <strong>34.5%</strong>
+                            </div>
+                            <div class="campaign-stat">
+                                <span>Click Rate:</span>
+                                <strong>12.3%</strong>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-sm">Create Campaign</button>
+                    </div>
+
+                    <div class="marketing-card">
+                        <h3>📱 Social Media</h3>
+                        <div class="social-stats">
+                            <div class="social-stat">
+                                <span>Instagram:</span>
+                                <strong>5.2K followers</strong>
+                            </div>
+                            <div class="social-stat">
+                                <span>TikTok:</span>
+                                <strong>12.8K followers</strong>
+                            </div>
+                            <div class="social-stat">
+                                <span>Engagement:</span>
+                                <strong>8.7%</strong>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-sm">Schedule Post</button>
+                    </div>
+
+                    <div class="marketing-card">
+                        <h3>🎁 Discount Codes</h3>
+                        <button class="btn btn-primary btn-sm">Create Code</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings-section" class="admin-section">
+                <h1>⚙️ Settings</h1>
+
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label>Site Name</label>
+                        <input type="text" class="form-input" value="Kids Digital Hub">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Email</label>
+                        <input type="email" class="form-input" value="contact@kidsdigitalhub.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select class="form-select">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="RON">RON (lei)</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary">Save Settings</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎅 Christmas Magic - Free Gifts from Santa! | Kids Digital Hub</title>
+    <meta name="description"
+        content="Special Christmas promotion! Choose 2 FREE digital products from Santa Claus! Available December 24-25.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/christmas-special.css">
+    <script src="js/i18n.js"></script>
+    <script src="js/christmas-special.js" defer></script>
+</head>
+
+<body class="christmas-special-page">
+
+    <!-- Christmas Magic Background -->
+    <div class="christmas-magic-bg">
+        <div class="snowflakes"></div>
+        <div class="christmas-lights"></div>
+    </div>
+
+    <!-- Santa's Workshop -->
+    <div class="santa-workshop">
+        <img src="assets/images/winter-santa-lapland.png" alt="Santa Claus" class="santa-image">
+    </div>
+
+    <!-- Main Content -->
+    <div class="christmas-container">
+
+        <!-- Header -->
+        <header class="christmas-header">
+            <h1 class="christmas-title">
+                🎅 <span data-i18n="christmas.title">Santa's Christmas Magic</span> 🎄
+            </h1>
+            <p class="christmas-subtitle" data-i18n="christmas.subtitle">
+                Choose 2 FREE Digital Products - Santa's Gift to You!
+            </p>
+
+            <!-- Countdown Timer -->
+            <div class="countdown-timer" id="countdownTimer">
+                <div class="countdown-label" data-i18n="christmas.endsIn">Promotion ends in:</div>
+                <div class="countdown-display">
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="hoursLeft">00</span>
+                        <span class="countdown-text" data-i18n="christmas.hours">Hours</span>
+                    </div>
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="minutesLeft">00</span>
+                        <span class="countdown-text" data-i18n="christmas.minutes">Minutes</span>
+                    </div>
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="secondsLeft">00</span>
+                        <span class="countdown-text" data-i18n="christmas.seconds">Seconds</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selection Counter -->
+            <div class="selection-counter">
+                <span data-i18n="christmas.selected">Selected:</span>
+                <span class="selected-count" id="selectedCount">0</span> / 2
+            </div>
+        </header>
+
+        <!-- Products Grid -->
+        <div class="christmas-products-grid" id="productsGrid">
+            <!-- Products will be loaded here by JavaScript -->
+        </div>
+
+        <!-- Download Button -->
+        <div class="download-section" id="downloadSection" style="display: none;">
+            <button class="btn-download-gifts" id="downloadBtn">
+                🎁 <span data-i18n="christmas.downloadGifts">Download My Christmas Gifts</span>
+            </button>
+        </div>
+
+        <!-- Thank You Message -->
+        <div class="thank-you-message" id="thankYouMessage" style="display: none;">
+            <div class="thank-you-content">
+                <h2>🎉 <span data-i18n="christmas.thankYou">Thank You!</span></h2>
+                <p data-i18n="christmas.enjoyGifts">Enjoy your Christmas gifts from Santa!</p>
+                <p data-i18n="christmas.happyHolidays">Merry Christmas & Happy Holidays! 🎄</p>
+                <a href="index.html" class="btn-back-home" data-i18n="christmas.backHome">Back to Homepage</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Promotion Closed Message -->
+    <div class="promotion-closed" id="promotionClosed" style="display: none;">
+        <div class="closed-content">
+            <h2>🎅 <span data-i18n="christmas.promotionEnded">Christmas Promotion Has Ended</span></h2>
+            <p data-i18n="christmas.comeBackNextYear">Come back next year on December 24th for more free gifts!</p>
+            <p data-i18n="christmas.exploreProducts">Explore our amazing products:</p>
+            <a href="index.html" class="btn-back-home" data-i18n="christmas.backHome">Back to Homepage</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="christmas-footer">
+        <p>&copy; 2024 Kids Digital Hub | <span data-i18n="christmas.specialOffer">Special Christmas Offer: December
+                24-25</span></p>
+    </footer>
+
+</body>
+
+</html>
