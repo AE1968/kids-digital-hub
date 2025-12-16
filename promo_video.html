@@ -110,7 +110,6 @@
             border-radius: 10px;
             padding: 0 15px;
             background: #FF0000;
-            /* Red for recording/download */
             font-size: 1rem;
             font-weight: bold;
         }
@@ -164,10 +163,10 @@
     <div id="outro-overlay" style="display: none;">
         <h1 style="color: #00FFFF; text-shadow: 0 0 10px #00FFFF;">VIDEO FINISHED</h1>
 
-        <!-- Download Button Logic -->
+        <!-- STATIC INSTANT DOWNLOAD Logic -->
         <div id="download-controls" style="margin-bottom: 20px;">
-            <button id="saveBtn" class="cta-btn" onclick="startRecordingAndDownload()">⬇️ DOWNLOAD VIDEO FILE</button>
-            <p style="font-size: 0.9rem; color: #aaa;">(Generates & Downloads .webm file for TikTok)</p>
+            <button id="saveBtn" class="cta-btn" onclick="downloadInstant()">⬇️ DOWNLOAD INSTANT</button>
+            <p style="font-size: 0.9rem; color: #aaa;">(For TikTok & Instagram)</p>
         </div>
 
         <!-- NOTICE / AVERTISMENT MULTI-LANGUAGE -->
@@ -205,22 +204,13 @@
 
         let startTime = null;
         let audioCtx;
-        let audioDest;
         let isPlaying = false;
-        let isRecording = false;
-
-        let mediaRecorder;
-        let recordedChunks = [];
 
         // Auto-detect Language
         function setWarningLanguage() {
-            // Try to get lang from URL param (tier/lang) or Browser
             const urlParams = new URLSearchParams(window.location.search);
             let lang = urlParams.get('lang') || navigator.language.substring(0, 2).toLowerCase();
-
-            // Check stored lang from main site (simulated via simple logic or default)
-            // If 'ro' is prevalent in navigator, use ro.
-            if (!translations[lang]) lang = 'en'; // Default
+            if (!translations[lang]) lang = 'en';
 
             const warningEl = document.getElementById('share-warning');
             if (warningEl && translations[lang]) {
@@ -229,7 +219,7 @@
         }
 
         function loop(timestamp) {
-            if (!isPlaying && !isRecording) return;
+            if (!isPlaying) return;
             if (!startTime) startTime = timestamp;
             const progress = (timestamp - startTime) / 1000;
 
@@ -241,7 +231,7 @@
             else if (progress < 15) scene3_Solution(progress);
             else if (progress < 20) scene4_Outro(progress);
             else {
-                if (isRecording) { stopRecordingAndSave(); } else { endAd(); }
+                endAd();
                 return;
             }
             drawScanlines(progress);
@@ -261,10 +251,10 @@
         function initAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            audioDest = audioCtx.createMediaStreamDestination();
         }
 
         function playCyberpunkMusic() {
+            // Audio logic remains for video Preview
             const bassOsc = audioCtx.createOscillator();
             const bassGain = audioCtx.createGain();
             bassOsc.type = 'sawtooth';
@@ -277,12 +267,11 @@
             bassOsc.connect(filter);
             filter.connect(bassGain);
             bassGain.connect(audioCtx.destination);
-            if (audioDest) bassGain.connect(audioDest);
             bassOsc.start();
             bassGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
             bassOsc.stop(audioCtx.currentTime + 20);
             const melodyInterval = setInterval(() => {
-                if (!isPlaying && !isRecording) { clearInterval(melodyInterval); return; }
+                if (!isPlaying) { clearInterval(melodyInterval); return; }
                 if (Math.random() > 0.5) playNote();
             }, 250);
         }
@@ -297,87 +286,24 @@
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-            if (audioDest) gain.connect(audioDest);
             osc.start();
             osc.stop(audioCtx.currentTime + 0.2);
         }
 
-        // UPDATED FUNCTION: Robust Recording Support
-        function startRecordingAndDownload() {
-            document.getElementById('outro-overlay').style.display = 'none';
-            if (!audioCtx) initAudio();
+        // --- INSTANT DOWNLOAD ---
+        function downloadInstant() {
+            const link = document.createElement('a');
+            link.href = 'assets/videos/kids_digital_hub_promo.webm';
+            link.download = 'kids_digital_hub_promo.webm';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
 
-            try {
-                const canvasStream = canvas.captureStream(30);
-                const finalStream = new MediaStream([
-                    ...canvasStream.getVideoTracks(),
-                    ...audioDest.stream.getAudioTracks()
-                ]);
-
-                // --- BROWSER COMPATIBILITY CHECK ---
-                let mimeType = 'video/webm;codecs=vp9';
-                if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm';
-                if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/mp4';
-
-                if (!MediaRecorder.isTypeSupported(mimeType)) {
-                    alert("❌ ERROR: Browserul tău nu suportă înregistrarea. Te rog încearcă Chrome!");
-                    document.getElementById('outro-overlay').style.display = 'flex';
-                    return;
-                }
-
-                mediaRecorder = new MediaRecorder(finalStream, { mimeType: mimeType });
-                recordedChunks = [];
-
-                mediaRecorder.ondataavailable = (e) => {
-                    if (e.data.size > 0) recordedChunks.push(e.data);
-                };
-
-                mediaRecorder.onerror = (e) => {
-                    console.error("Recording error:", e);
-                    alert("⚠️ Recording Error: " + e.error);
-                };
-
-                mediaRecorder.start();
-                isRecording = true;
-                isPlaying = true;
-                startTime = null;
-                requestAnimationFrame(loop);
-                playCyberpunkMusic();
-
-                alert("🎥 GENERATING PROMO (" + mimeType + "). Wait 20s... ⏳");
-
-            } catch (err) {
-                console.error(err);
-                alert("❌ Code Error: " + err.message);
-                document.getElementById('outro-overlay').style.display = 'flex';
-            }
-        }
-
-        function stopRecordingAndSave() {
-            isRecording = false;
-            isPlaying = false;
-            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-                mediaRecorder.stop();
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    document.body.appendChild(a);
-                    a.style = 'display: none';
-                    a.href = url;
-                    a.download = 'kids_digital_hub_promo.webm';
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-
-                    // AUTO REDIRECT TO TIKTOK
-                    setTimeout(() => {
-                        alert("✅ DESCARCAT! Acum te redirecționez spre TikTok pentru a-l plasa! 🚀");
-                        window.location.href = "https://www.tiktok.com/upload?lang=ro";
-                    }, 1500);
-
-                    document.getElementById('outro-overlay').style.display = 'flex';
-                };
-            }
+            // Auto-Redirect to TikTok
+            setTimeout(() => {
+                alert("✅ DESCARCAT! Redirecting to TikTok... 🚀");
+                window.location.href = "https://www.tiktok.com/upload?lang=ro";
+            }, 1500);
         }
 
         function scene1_Hook(t) { ctx.textAlign = 'center'; ctx.font = 'bold 150px Orbitron'; let offX = (Math.random() - 0.5) * 20; let offY = (Math.random() - 0.5) * 20; if (Math.random() > 0.9) offX += 50; ctx.fillStyle = '#FF0055'; ctx.fillText('ARE YOUR', 540 + offX, 640 + offY); ctx.fillStyle = '#00FFFF'; ctx.fillText('ARE YOUR', 540 - offX, 640 - offY); ctx.fillStyle = '#FFFFFF'; ctx.fillText('ARE YOUR', 540, 640); ctx.font = 'bold 200px Orbitron'; ctx.fillStyle = '#FFFF00'; ctx.fillText('KIDS', 540, 960); ctx.fillText('BORED?', 540, 1160); }
@@ -406,7 +332,7 @@
             setWarningLanguage();
             setTimeout(startAd, 500);
         };
-        document.body.addEventListener('click', () => { if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); if (!isPlaying && !isRecording) startAd(); });
+        document.body.addEventListener('click', () => { if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); if (!isPlaying) startAd(); });
     </script>
 </body>
 
