@@ -75,14 +75,17 @@
           </li>
           <li>
             <a href="login.html" class="nav-btn">
-              <span class="nav-icon">👤</span>
+              <span class="nav-icon"><img src="assets/images/logo_ae.png" alt="AE"
+                  style="width: 30px; height: 30px; object-fit: contain; vertical-align: middle;"></span>
               <span class="nav-text">My Hub</span>
             </a>
           </li>
           <li>
-            <a href="mailto:contact@kidsdigitalhub.com" class="nav-btn">
-              <span class="nav-icon">📧</span>
-              <span class="nav-text">Contact</span>
+            <a href="suggestions.html" class="nav-btn"
+              style="display: flex; flex-direction: column; align-items: center; padding: 8px 12px;">
+              <img src="assets/images/hero_kids_flags.png" alt="Kids"
+                style="width: 40px; height: 30px; object-fit: cover; border-radius: 5px; margin-bottom: 4px;">
+              <span class="nav-text" data-i18n="nav_suggestions" style="font-size: 0.85rem;">Suggestions</span>
             </a>
           </li>
         </ul>
@@ -127,16 +130,25 @@
       </div>
 
       <div class="creator-btn" onclick="toggleShare()">
-        <img src="assets/images/ai_co_creator.png" alt="AI Co-Creator">
-        <span class="creator-tag">AI</span>
+        <img src="assets/images/logo_ae.png" alt="AE - AI Co-Creator">
+        <span class="creator-tag">AE</span>
       </div>
     </div>
   </section>
 
-  <footer>
+  <footer style="position: relative;">
     <p data-i18n="footer_rights">© 2025 Kids Digital Hub • Made with ❤️ for Kids</p>
     <br>
     <p style="font-size: 0.8rem; opacity: 0.8">Terms & Conditions | Privacy Policy</p>
+
+    <!-- Contact Button in Footer -->
+    <a href="contact.html"
+      style="position: fixed; bottom: 20px; right: 20px; display: flex; align-items: center; gap: 10px; background: #4CAF50; color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4); transition: transform 0.3s ease, box-shadow 0.3s ease; z-index: 1000;"
+      onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(76, 175, 80, 0.6)';"
+      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(76, 175, 80, 0.4)';">
+      <span style="font-size: 1.5rem;">📧</span>
+      <span>Contact</span>
+    </a>
   </footer>
 
   <!-- Scriptul cu datele reale (Generat de Python) -->

@@ -5,6 +5,7 @@ const translations = {
         "nav_stories": "Stories",
         "nav_myhub": "My Hub",
         "nav_contact": "Contact",
+        "nav_suggestions": "Suggestions",
         "hero_title": "Welcome to the Creative Universe! ✨",
         "choice_title": "Choose Version:",
         "btn_choice_free": "Free Version",
@@ -20,6 +21,7 @@ const translations = {
         "nav_stories": "Povești",
         "nav_myhub": "Contul Meu",
         "nav_contact": "Contact",
+        "nav_suggestions": "Sugestii",
         "hero_title": "Bine ai venit în Universul Creativ! ✨",
         "choice_title": "Alege Versiunea:",
         "btn_choice_free": "Versiunea Gratuită",
@@ -35,6 +37,7 @@ const translations = {
         "nav_stories": "Histoires",
         "nav_myhub": "Mon Compte",
         "nav_contact": "Contact",
+        "nav_suggestions": "Suggestions",
         "hero_title": "Bienvenue dans l'Univers Créatif! ✨",
         "choice_title": "Choisissez la Version:",
         "btn_choice_free": "Version Gratuite",
@@ -123,7 +126,7 @@ const translations = {
 
 function changeLanguage(lang) {
     const selectedLang = translations[lang] || translations['en'];
-    
+
     // Update elements with data-i18n attribute
     const elements = document.querySelectorAll('[data-i18n]');
     elements.forEach(el => {

@@ -9,16 +9,53 @@
             margin: 0;
             padding: 0;
             background-color: #000;
+            background-image: url('assets/images/parent_chaos.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             overflow: hidden;
             font-family: 'Orbitron', sans-serif;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #video-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 350px;
+            height: 350px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            border: 5px solid #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #000;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            #video-container {
+                width: 200px;
+                height: 200px;
+                bottom: 10px;
+                left: 10px;
+            }
+
+            .tap-text {
+                font-size: 1rem !important;
+            }
+
+            .cta-btn {
+                padding: 10px 20px !important;
+                font-size: 1rem !important;
+                margin: 10px 0 !important;
+            }
         }
 
         #promoCanvas {
+            width: 100%;
+            height: 100%;
             display: block;
-            margin: 0 auto;
-            height: 100vh;
-            max-width: 100%;
-            background: #000;
         }
 
         #overlay,
@@ -39,48 +76,47 @@
         }
 
         #overlay {
-            display: none;
-        }
-
-        .tap-text {
-            font-size: 2rem;
-            animation: pulse 1s infinite alternate;
+            display: flex;
             cursor: pointer;
         }
 
-        .cta-btn {
-            padding: 20px 40px;
+        .tap-text {
             font-size: 1.5rem;
+            animation: pulse 1s infinite alternate;
+        }
+
+        .cta-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
             background: #FF00E6;
             color: white;
-            border: 4px solid #00FFFF;
+            border: 3px solid #00FFFF;
             border-radius: 50px;
             text-decoration: none;
             font-family: inherit;
             font-weight: bold;
             box-shadow: 0 0 20px #FF00E6;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
             margin-bottom: 20px;
             animation: shake 3s infinite;
         }
 
-        /* Social Bar */
         .social-bar {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
             z-index: 20;
         }
 
         .social-btn {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: white;
             text-decoration: none;
             transition: transform 0.2s;
@@ -103,15 +139,6 @@
         .tiktok {
             background: #000000;
             border-color: #FE2C55;
-        }
-
-        .download-btn {
-            width: auto;
-            border-radius: 10px;
-            padding: 0 15px;
-            background: #FF0000;
-            font-size: 1rem;
-            font-weight: bold;
         }
 
         @keyframes pulse {
@@ -154,37 +181,63 @@
 
 <body>
 
-    <canvas id="promoCanvas"></canvas>
-
-    <div id="overlay" onclick="startAd()">
-        <div class="tap-text">🔊 TAP ANYWHERE TO START 🔊</div>
+    <!-- Main Content Over Background -->
+    <div style="position: absolute; top: 10%; left: 5%; max-width: 60%; z-index: 5; text-align: left;">
+        <h1 style="font-size: 4rem; color: #fff; text-shadow: 2px 2px 4px #000; margin-bottom: 20px; line-height: 1.2;">
+            IS IT THE SAME FOR YOU?
+        </h1>
+        <h2 style="font-size: 2.5rem; color: #00FFFF; text-shadow: 1px 1px 3px #000; margin-bottom: 40px;">
+            HERE IS THE SOLUTION!
+        </h2>
+        <a href="https://kidsdigitalhub.com" class="cta-btn"
+            style="text-decoration: none; display: inline-block; animation: none;">
+            🚀 VISITEAZĂ KIDS DIGITAL HUB
+        </a>
     </div>
 
-    <div id="outro-overlay" style="display: none;">
-        <h1 style="color: #00FFFF; text-shadow: 0 0 10px #00FFFF;">VIDEO FINISHED</h1>
-
-        <!-- STATIC INSTANT DOWNLOAD Logic -->
-        <div id="download-controls" style="margin-bottom: 20px;">
-            <button id="saveBtn" class="cta-btn" onclick="downloadInstant()">⬇️ DOWNLOAD INSTANT</button>
-            <p style="font-size: 0.9rem; color: #aaa;">(For TikTok & Instagram)</p>
-        </div>
-
-        <!-- NOTICE / AVERTISMENT MULTI-LANGUAGE -->
-        <div id="share-warning"
-            style="margin: 30px 0 10px 0; color: #ffeb3b; font-size: 1rem; font-weight:bold; max-width: 90%; background:rgba(0,0,0,0.5); padding:10px; border-radius:10px;">
-            ⚠️ NOTICE: By tapping the icons below, you will automatically share this promo video to your friends!
-        </div>
-
-        <div class="social-bar">
-            <a href="#" class="social-btn whatsapp" onclick="shareSocial('whatsapp')" title="Share on WhatsApp">📱</a>
-            <a href="#" class="social-btn facebook" onclick="shareSocial('facebook')" title="Share on Facebook">📘</a>
-            <a href="#" class="social-btn tiktok" onclick="shareSocial('tiktok')" title="Copy Link for TikTok">🎵</a>
-        </div>
-
-        <br>
-        <a href="https://AE1968.github.io/kids-digital-hub/" style="color:white; text-decoration:underline;">Go to
-            Website 🏠</a>
+    <!-- AE Logo Watermark -->
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 200;">
+        <a href="https://kidsdigitalhub.com" target="_blank" title="Visit Kids Digital Hub">
+            <img src="assets/images/logo_ae.png" alt="AE Logo"
+                style="width: 100px; height: auto; opacity: 0.9; filter: drop-shadow(0 0 10px rgba(0,255,255,0.5)); transition: transform 0.3s ease, opacity 0.3s ease; cursor: pointer;"
+                onmouseover="this.style.transform='scale(1.1)'; this.style.opacity='1';"
+                onmouseout="this.style.transform='scale(1)'; this.style.opacity='0.9';">
+        </a>
     </div>
+
+    <!-- Video Container in Bottom Right Corner -->
+    <div id="video-container">
+        <canvas id="promoCanvas"></canvas>
+
+        <div id="overlay" onclick="startAd()">
+            <div class="tap-text">▶ PLAY</div>
+        </div>
+
+        <div id="outro-overlay" style="display: none;">
+            <h2 style="color: #00FFFF; font-size: 1.5rem; margin: 10px 0;">FINISHED</h2>
+
+            <!-- STATIC INSTANT DOWNLOAD Logic -->
+            <div id="download-controls" style="margin-bottom: 15px;">
+                <button id="saveBtn" class="cta-btn" onclick="downloadInstant()">⬇️ DOWNLOAD</button>
+            </div>
+
+            <div class="social-bar">
+                <a href="#" class="social-btn whatsapp" onclick="shareSocial('whatsapp')"
+                    title="Share on WhatsApp">📱</a>
+                <a href="#" class="social-btn facebook" onclick="shareSocial('facebook')"
+                    title="Share on Facebook">📘</a>
+                <a href="#" class="social-btn tiktok" onclick="shareSocial('tiktok')"
+                    title="Copy Link for TikTok">🎵</a>
+            </div>
+
+            <br>
+            <a href="https://kidsdigitalhub.com" style="color:white; text-decoration:underline; font-size: 0.8rem;">Go
+                to Website 🏠</a>
+        </div>
+    </div>
+
+    <!-- Hidden warnings logic preserved but visually removed from small player to save space -->
+    <div id="share-warning" style="display:none;"></div>
 
     <script>
         const translations = {
