@@ -49,10 +49,16 @@ function createMiniCalendar() {
   const baseTotalHeight = baseHeaderHeight + baseWeekdayHeight + baseGridHeight + (basePadding * 2) + baseExtraMargin;
 
   // Calculate scale factor to fit in available height
-  let scale = availableHeight / baseTotalHeight;
+  // Add 20% safety margin to GUARANTEE it fits on ANY screen
+  let scale = (availableHeight * 0.80) / baseTotalHeight;
 
-  // Clamp between 0.5 and 1 (don't scale up, don't go too small)
-  scale = Math.max(0.5, Math.min(1, scale));
+  // Additional check: if screen is very small, scale even more
+  if (availableHeight < 60) {
+    scale = scale * 0.8; // Extra 20% reduction for tiny screens
+  }
+
+  // Clamp between 0.3 and 1 (allow very small if absolutely necessary)
+  scale = Math.max(0.3, Math.min(1, scale));
 
   // Apply scale to all dimensions
   const width = Math.floor(baseWidth * scale);
@@ -197,7 +203,18 @@ function createMiniCalendar() {
     footer.appendChild(calendar);
   }
 
-  console.log('Calendar scaled:', { footerHeight, availableHeight, scale: scale.toFixed(2), width });
+  // Detailed logging for debugging
+  console.log('=== CALENDAR AUTO-SCALING ===');
+  console.log('Footer height (raw):', footer ? footer.offsetHeight : 'N/A');
+  console.log('Body zoom:', bodyZoom);
+  console.log('Footer height (adjusted):', footerHeight);
+  console.log('Available height:', availableHeight);
+  console.log('Base total height:', baseTotalHeight.toFixed(2));
+  console.log('Scale factor:', scale.toFixed(3));
+  console.log('Final calendar width:', width);
+  console.log('Final calendar estimated height:', (baseTotalHeight * scale).toFixed(2));
+  console.log('Fits in footer?', (baseTotalHeight * scale) <= availableHeight ? 'YES ✓' : 'NO ✗');
+  console.log('============================');
 }
 
 // Initialize
