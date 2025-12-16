@@ -118,7 +118,14 @@
         Intră pe butoane să vezi! 🤝✨
       </div>
 
-      <div class="creator-btn" onclick="toggleBubble()">
+      <!-- Share Menu Popup -->
+      <div id="share-menu" class="share-menu">
+        <button class="share-icon-btn btn-whatsapp" onclick="share('whatsapp')" title="Share on WhatsApp">📱</button>
+        <button class="share-icon-btn btn-facebook" onclick="share('facebook')" title="Share on Facebook">📘</button>
+        <button class="share-icon-btn btn-copy" onclick="share('copy')" title="Copy Link">📋</button>
+      </div>
+
+      <div class="creator-btn" onclick="toggleShare()">
         <img src="assets/images/ai_co_creator.png" alt="AI Co-Creator">
         <span class="creator-tag">AI</span>
       </div>
@@ -134,6 +141,7 @@
   <!-- Scriptul cu datele reale (Generat de Python) -->
   <script src="js/products_data.js"></script>
   <script src="js/admin.js"></script>
+  <script src="js/translations.js"></script>
   <script>
     let currentCategory = 'All';
 
@@ -284,13 +292,40 @@
       // (Handled automatically by data-i18n above)
     }
 
-    function toggleBubble() {
+    function toggleShare() {
+      // Toggle Bubble
       const bubble = document.getElementById('ai-bubble');
+
+      // Toggle Share Menu
+      const menu = document.getElementById('share-menu');
+
+      // Logic: Show both for interaction
       bubble.classList.toggle('show');
-      if (bubble.classList.contains('show')) {
+      menu.classList.toggle('show');
+
+      if (menu.classList.contains('show')) {
         setTimeout(() => {
           bubble.classList.remove('show');
-        }, 5000);
+          menu.classList.remove('show');
+        }, 8000); // 8 seconds visibility
+      }
+    }
+
+    // Alias for backward compatibility if needed, using the new function
+    function toggleBubble() { toggleShare(); }
+
+    function share(platform) {
+      const url = "https://kidsdigitalhub.com";
+      const text = "Hey! 🎨 Am găsit un loc magic pentru copii: Kids Digital Hub! Desene, jocuri și povești. Hai și tu! ✨";
+
+      if (platform === 'whatsapp') {
+        window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`, '_blank');
+      } else if (platform === 'facebook') {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+      } else if (platform === 'copy') {
+        navigator.clipboard.writeText(url).then(() => {
+          alert('Link copiat! Trimite-l prietenilor pe TikTok/Insta! 📋✨');
+        });
       }
     }
   </script>
