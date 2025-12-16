@@ -35,12 +35,14 @@ function setSeasonalBackground() {
     if (!monthData) return;
 
     // Set background image
-    const heroSection = document.querySelector('.hero-section');
-    if (heroSection) {
-        heroSection.style.backgroundImage = `url('assets/images/seasonal/${monthData.image}')`;
-        heroSection.style.backgroundSize = 'cover';
-        heroSection.style.backgroundPosition = 'center';
-        heroSection.style.backgroundRepeat = 'no-repeat';
+    // Set background image
+    const targetElement = document.body; // Changed from .hero-section to body
+    if (targetElement) {
+        targetElement.style.backgroundImage = `url('assets/images/seasonal/${monthData.image}')`;
+        targetElement.style.backgroundSize = 'cover'; // Cover full page
+        targetElement.style.backgroundPosition = 'center top'; // Start from top
+        targetElement.style.backgroundRepeat = 'no-repeat';
+        targetElement.style.backgroundAttachment = 'fixed'; // Keep background fixed while scrolling
     }
 
     // Month display removed - now shown in calendar widget
