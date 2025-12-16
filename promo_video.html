@@ -302,49 +302,82 @@
             osc.stop(audioCtx.currentTime + 0.2);
         }
 
+        // UPDATED FUNCTION: Robust Recording Support
         function startRecordingAndDownload() {
             document.getElementById('outro-overlay').style.display = 'none';
             if (!audioCtx) initAudio();
-            const canvasStream = canvas.captureStream(30);
-            const finalStream = new MediaStream([
-                ...canvasStream.getVideoTracks(),
-                ...audioDest.stream.getAudioTracks()
-            ]);
-            mediaRecorder = new MediaRecorder(finalStream, { mimeType: 'video/webm;codecs=vp9' });
-            recordedChunks = [];
-            mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
-            mediaRecorder.start();
-            isRecording = true;
-            isPlaying = true;
-            startTime = null;
-            requestAnimationFrame(loop);
-            playCyberpunkMusic();
-            alert("🎥 GENERATING VIDEO... (Wait 20s) ⏳");
+
+            try {
+                const canvasStream = canvas.captureStream(30);
+                const finalStream = new MediaStream([
+                    ...canvasStream.getVideoTracks(),
+                    ...audioDest.stream.getAudioTracks()
+                ]);
+
+                // --- BROWSER COMPATIBILITY CHECK ---
+                let mimeType = 'video/webm;codecs=vp9';
+                if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm';
+                if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/mp4';
+
+                if (!MediaRecorder.isTypeSupported(mimeType)) {
+                    alert("❌ ERROR: Browserul tău nu suportă înregistrarea. Te rog încearcă Chrome!");
+                    document.getElementById('outro-overlay').style.display = 'flex';
+                    return;
+                }
+
+                mediaRecorder = new MediaRecorder(finalStream, { mimeType: mimeType });
+                recordedChunks = [];
+
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) recordedChunks.push(e.data);
+                };
+
+                mediaRecorder.onerror = (e) => {
+                    console.error("Recording error:", e);
+                    alert("⚠️ Recording Error: " + e.error);
+                };
+
+                mediaRecorder.start();
+                isRecording = true;
+                isPlaying = true;
+                startTime = null;
+                requestAnimationFrame(loop);
+                playCyberpunkMusic();
+
+                alert("🎥 GENERATING PROMO (" + mimeType + "). Wait 20s... ⏳");
+
+            } catch (err) {
+                console.error(err);
+                alert("❌ Code Error: " + err.message);
+                document.getElementById('outro-overlay').style.display = 'flex';
+            }
         }
 
         function stopRecordingAndSave() {
             isRecording = false;
             isPlaying = false;
-            mediaRecorder.stop();
-            mediaRecorder.onstop = () => {
-                const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                document.body.appendChild(a);
-                a.style = 'display: none';
-                a.href = url;
-                a.download = 'kids_digital_hub_promo.webm';
-                a.click();
-                window.URL.revokeObjectURL(url);
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    document.body.appendChild(a);
+                    a.style = 'display: none';
+                    a.href = url;
+                    a.download = 'kids_digital_hub_promo.webm';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
 
-                // AUTO REDIRECT TO TIKTOK
-                setTimeout(() => {
-                    alert("✅ DESCARCAT! Acum te redirecționez spre TikTok pentru a-l plasa! 🚀");
-                    window.location.href = "https://www.tiktok.com/upload?lang=ro";
-                }, 1500);
+                    // AUTO REDIRECT TO TIKTOK
+                    setTimeout(() => {
+                        alert("✅ DESCARCAT! Acum te redirecționez spre TikTok pentru a-l plasa! 🚀");
+                        window.location.href = "https://www.tiktok.com/upload?lang=ro";
+                    }, 1500);
 
-                document.getElementById('outro-overlay').style.display = 'flex';
-            };
+                    document.getElementById('outro-overlay').style.display = 'flex';
+                };
+            }
         }
 
         function scene1_Hook(t) { ctx.textAlign = 'center'; ctx.font = 'bold 150px Orbitron'; let offX = (Math.random() - 0.5) * 20; let offY = (Math.random() - 0.5) * 20; if (Math.random() > 0.9) offX += 50; ctx.fillStyle = '#FF0055'; ctx.fillText('ARE YOUR', 540 + offX, 640 + offY); ctx.fillStyle = '#00FFFF'; ctx.fillText('ARE YOUR', 540 - offX, 640 - offY); ctx.fillStyle = '#FFFFFF'; ctx.fillText('ARE YOUR', 540, 640); ctx.font = 'bold 200px Orbitron'; ctx.fillStyle = '#FFFF00'; ctx.fillText('KIDS', 540, 960); ctx.fillText('BORED?', 540, 1160); }
