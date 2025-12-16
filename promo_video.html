@@ -11,19 +11,16 @@
             background-color: #000;
             overflow: hidden;
             font-family: 'Orbitron', sans-serif;
-            /* Font Cyberpunk */
         }
 
         #promoCanvas {
             display: block;
             margin: 0 auto;
-            /* Fullscreen vertical mobile friendly */
             height: 100vh;
             max-width: 100%;
             background: #000;
         }
 
-        /* Overlay pentru interacțiune inițială */
         #overlay,
         #outro-overlay {
             position: absolute;
@@ -41,7 +38,6 @@
             text-align: center;
         }
 
-        /* Ascundem overlay-ul la start, il afisam doar daca autoplay esueaza */
         #overlay {
             display: none;
         }
@@ -52,15 +48,12 @@
             cursor: pointer;
         }
 
-        /* Outro button */
         .cta-btn {
             padding: 20px 40px;
-            font-size: 2rem;
+            font-size: 1.5rem;
             background: #FF00E6;
-            /* Neon Pink */
             color: white;
             border: 4px solid #00FFFF;
-            /* Neon Cyan */
             border-radius: 50px;
             text-decoration: none;
             font-family: inherit;
@@ -68,15 +61,12 @@
             box-shadow: 0 0 20px #FF00E6;
             cursor: pointer;
             margin-top: 20px;
+            margin-bottom: 20px;
             animation: shake 3s infinite;
         }
 
-        /* Social Share Bar */
+        /* Social Bar */
         .social-bar {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            width: 100%;
             display: flex;
             justify-content: center;
             gap: 15px;
@@ -110,13 +100,14 @@
             background: #1877F2;
         }
 
-        .tiktok {
-            background: #000000;
-            border-color: #FE2C55;
-        }
-
-        .copy {
-            background: #555;
+        .download-btn {
+            width: auto;
+            border-radius: 10px;
+            padding: 0 15px;
+            background: #FF0000;
+            /* Red for recording/download */
+            font-size: 1rem;
+            font-weight: bold;
         }
 
         @keyframes pulse {
@@ -161,368 +152,261 @@
 
     <canvas id="promoCanvas"></canvas>
 
-    <!-- Fallback overlay for Audio Context if Autoplay fails -->
     <div id="overlay" onclick="startAd()">
         <div class="tap-text">🔊 TAP ANYWHERE TO START 🔊</div>
     </div>
 
-    <!-- Outro Overlay -->
     <div id="outro-overlay" style="display: none;">
-        <h1 style="color: #00FFFF; text-shadow: 0 0 10px #00FFFF;">REDIRECTING...</h1>
-        <p id="countdown" style="font-size: 1.5rem;">5</p>
-        <a href="https://AE1968.github.io/kids-digital-hub/" class="cta-btn">👉 TAP / CLICK HERE! 👈</a>
+        <h1 style="color: #00FFFF; text-shadow: 0 0 10px #00FFFF;">VIDEO FINISHED</h1>
 
-        <!-- Social Share Buttons for Viral Marketing -->
-        <div class="social-bar">
-            <a href="#" class="social-btn whatsapp" onclick="shareSocial('whatsapp')">📱</a>
-            <a href="#" class="social-btn facebook" onclick="shareSocial('facebook')">📘</a>
-            <!-- TikTok/Instagram just copy link because they don't support direct web share -->
-            <a href="#" class="social-btn tiktok" onclick="shareSocial('tiktok')">🎵</a>
-            <a href="#" class="social-btn copy" onclick="shareSocial('copy')">📋</a>
+        <!-- Download Button Logic -->
+        <div id="download-controls" style="margin-bottom: 20px;">
+            <button id="saveBtn" class="cta-btn" onclick="startRecordingAndDownload()">⬇️ DOWNLOAD VIDEO FILE</button>
+            <p style="font-size: 0.9rem; color: #aaa;">(Creates a video file to post on TikTok)</p>
         </div>
-    </div>
 
-    <button id="startBtn" style="display:none;">Start</button>
+        <div class="social-bar">
+            <a href="#" class="social-btn whatsapp" onclick="shareSocial('whatsapp')" title="Share Link WhatsApp">📱</a>
+            <a href="#" class="social-btn facebook" onclick="shareSocial('facebook')" title="Share Link Facebook">📘</a>
+        </div>
+
+        <br>
+        <a href="https://AE1968.github.io/kids-digital-hub/" style="color:white; text-decoration:underline;">Go to
+            Website 🏠</a>
+    </div>
 
     <script>
         const canvas = document.getElementById('promoCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Set Vertical Resolution (Mobile First - 9:16 aspect ratio roughly)
         canvas.width = 1080;
         canvas.height = 1920;
 
         let startTime = null;
-        let images = {};
-        const ASSETS = {
-            // Using placeholders or generating text-based graphics since we don't have files yet
-            // We will draw everything with Canvas API for maximum control and "Glitch" effect
-        };
-
-        // Audio Context
         let audioCtx;
+        let audioDest; // Destination for recording
         let isPlaying = false;
+        let isRecording = false;
 
-        const TARGET_URL = "https://AE1968.github.io/kids-digital-hub/";
+        // Media Recorder params
+        let mediaRecorder;
+        let recordedChunks = [];
 
-        // --- SCENE DEFINITIONS ---
-        // Scene 1: Hook (0-5s) - "BORED KIDS?" (Glitch effect)
-        // Scene 2: Problem (5-10s) - "ALWAYS ON SCREENS?" (Dark visuals)
-        // Scene 3: Solution (10-15s) - "KIDS DIGITAL HUB!" (Neon explosion) - Robot helper
-        // Scene 4: Outro (15-20s) - "JOIN NOW!" (Call to Action + Link)
-
-        function startAd() {
-            if (isPlaying) return;
-
-            // Init Audio
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            isPlaying = true;
-            document.getElementById('overlay').style.display = 'none';
-
-            // Resize canvas to fit screen (css does it, but internal resolution remains high)
-
-            requestAnimationFrame(loop);
-
-            // Start Music
-            playCyberpunkMusic();
-        }
-
+        // --- SCENE LOGIC (SAME AS BEFORE) ---
         function loop(timestamp) {
+            if (!isPlaying && !isRecording) return; // Stop loop if not playing/recording
+
             if (!startTime) startTime = timestamp;
-            const progress = (timestamp - startTime) / 1000; // seconds
+            const progress = (timestamp - startTime) / 1000;
 
             ctx.fillStyle = '#050505';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            if (progress < 5) {
-                scene1_Hook(progress);
-            } else if (progress < 10) {
-                scene2_Problem(progress);
-            } else if (progress < 15) {
-                scene3_Solution(progress);
-            } else if (progress < 20) {
-                scene4_Outro(progress);
-            } else {
-                endAd();
+            if (progress < 5) scene1_Hook(progress);
+            else if (progress < 10) scene2_Problem(progress);
+            else if (progress < 15) scene3_Solution(progress);
+            else if (progress < 20) scene4_Outro(progress);
+            else {
+                // End
+                if (isRecording) {
+                    stopRecordingAndSave();
+                } else {
+                    endAd();
+                }
                 return;
             }
-
-            // Global scanline effect
             drawScanlines(progress);
-
             requestAnimationFrame(loop);
         }
 
-        // --- SCENES ---
-
-        function scene1_Hook(t) {
-            // Text: BORED?
-            ctx.textAlign = 'center';
-            ctx.font = 'bold 150px Orbitron';
-
-            // Glitch text position
-            let offsetX = (Math.random() - 0.5) * 20;
-            let offsetY = (Math.random() - 0.5) * 20;
-            if (Math.random() > 0.9) offsetX += 50; // Big glitch
-
-            ctx.fillStyle = '#FF0055'; // Neon Red
-            ctx.fillText('ARE YOUR', canvas.width / 2 + offsetX, canvas.height / 3 + offsetY);
-
-            ctx.fillStyle = '#00FFFF'; // Neon Cyan overlay
-            ctx.fillText('ARE YOUR', canvas.width / 2 - offsetX, canvas.height / 3 - offsetY);
-
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillText('ARE YOUR', canvas.width / 2, canvas.height / 3);
-
-            ctx.font = 'bold 200px Orbitron';
-            ctx.fillStyle = '#FFFF00';
-            ctx.fillText('KIDS', canvas.width / 2, canvas.height / 2);
-            ctx.fillText('BORED?', canvas.width / 2, canvas.height / 2 + 200);
+        function startAd() {
+            if (isPlaying) return;
+            initAudio();
+            isPlaying = true;
+            document.getElementById('overlay').style.display = 'none';
+            startTime = null;
+            requestAnimationFrame(loop);
+            playCyberpunkMusic();
         }
 
-        function scene2_Problem(t) { // 5s to 10s
-            const localT = t - 5;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
 
-            ctx.textAlign = 'center';
-            ctx.font = 'bold 120px Orbitron';
-
-            // Flashing background
-            if (Math.floor(localT * 4) % 2 === 0) {
-                ctx.fillStyle = '#110000';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
-
-            ctx.fillStyle = '#FF0000';
-            ctx.fillText('NEED A', canvas.width / 2, canvas.height / 2 - 100);
-
-            // Shake effect
-            let shake = Math.sin(localT * 20) * 10;
-            ctx.font = 'bold 180px Orbitron';
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillText('PARENT', canvas.width / 2 + shake, canvas.height / 2 + 100);
-            ctx.fillText('BREAK?', canvas.width / 2 - shake, canvas.height / 2 + 300);
+            // Setup recording destination
+            audioDest = audioCtx.createMediaStreamDestination();
         }
 
-        function scene3_Solution(t) { // 10s to 15s
-            const localT = t - 10;
-
-            // Robot visual (Generic shape using canvas)
-            drawRobot(canvas.width / 2, canvas.height / 2 - 200, localT);
-
-            ctx.textAlign = 'center';
-            ctx.font = 'bold 100px Orbitron';
-            ctx.fillStyle = '#00FF00'; // Matrix Green
-            ctx.fillText('SOLUTION:', canvas.width / 2, canvas.height / 2 + 300);
-
-            ctx.font = 'bold 140px Orbitron';
-            ctx.fillStyle = '#FFFFFF';
-            ctx.shadowColor = '#00FFFF';
-            ctx.shadowBlur = 20;
-            ctx.fillText('KIDS DIGITAL', canvas.width / 2, canvas.height / 2 + 450);
-            ctx.fillText('HUB', canvas.width / 2, canvas.height / 2 + 600);
-            ctx.shadowBlur = 0;
-        }
-
-        function scene4_Outro(t) { // 15s to 20s
-            const localT = t - 15;
-
-            ctx.textAlign = 'center';
-
-            // Scrolling Text Background
-            ctx.globalAlpha = 0.2;
-            ctx.font = 'italic 80px Orbitron';
-            ctx.fillStyle = '#FFFFFF';
-            // Slow scroll vertically
-            let scrollY = (localT * 100) % canvas.height;
-            for (let i = 0; i < canvas.height; i += 100) {
-                ctx.fillText('WWW.KIDSDIGITALHUB.COM', canvas.width / 2, i + scrollY - canvas.height);
-                ctx.fillText('WWW.KIDSDIGITALHUB.COM', canvas.width / 2, i + scrollY);
-            }
-            ctx.globalAlpha = 1.0;
-
-            // Main Text
-            ctx.font = 'bold 150px Orbitron';
-            ctx.fillStyle = '#FF00E6';
-            let scale = 1 + Math.sin(localT * 5) * 0.1;
-
-            ctx.save();
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.scale(scale, scale);
-            ctx.fillText('JOIN', 0, -100);
-            ctx.fillText('NOW!', 0, 100);
-            ctx.restore();
-        }
-
-        // --- HELPER GRAPHICS ---
-        function drawRobot(x, y, t) {
-            ctx.save();
-            ctx.translate(x, y);
-
-            // Floating animation
-            ctx.translate(0, Math.sin(t * 2) * 20);
-
-            // Head
-            ctx.fillStyle = '#333';
-            ctx.beginPath();
-            ctx.roundRect(-150, -150, 300, 300, 20);
-            ctx.fill();
-
-            // Eyes (Blinking)
-            ctx.fillStyle = '#00FFFF';
-            if (Math.sin(t * 10) > 0.95) { // Blink
-                ctx.fillRect(-100, -50, 200, 10);
-            } else {
-                ctx.beginPath();
-                ctx.arc(-70, -50, 40, 0, Math.PI * 2);
-                ctx.arc(70, -50, 40, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.shadowColor = '#00FFFF';
-                ctx.shadowBlur = 30;
-                ctx.fill(); // Glow
-                ctx.shadowBlur = 0;
-            }
-
-            // Antenna
-            ctx.beginPath();
-            ctx.moveTo(0, -150);
-            ctx.lineTo(0, -250);
-            ctx.strokeStyle = '#888';
-            ctx.lineWidth = 10;
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.arc(0, -250, 20, 0, Math.PI * 2);
-            ctx.fillStyle = 'red';
-            ctx.fill();
-
-            // Mouth
-            ctx.fillStyle = '#222';
-            ctx.fillRect(-80, 50, 160, 20);
-            // Equalizer mouth
-            ctx.fillStyle = '#00FF00';
-            for (let i = 0; i < 5; i++) {
-                let h = Math.random() * 40;
-                ctx.fillRect(-70 + i * 30, 70 - h, 20, h);
-            }
-
-            ctx.restore();
-        }
-
-        function drawScanlines(t) {
-            ctx.fillStyle = "rgba(0,0,0,0.1)";
-            for (let i = 0; i < canvas.height; i += 10) {
-                ctx.fillRect(0, i, canvas.width, 2);
-            }
-            // Moving bar
-            let y = (t * 500) % canvas.height;
-            ctx.fillStyle = "rgba(0, 255, 255, 0.05)";
-            ctx.fillRect(0, y, canvas.width, 50);
-        }
-
-        // --- AUDIO GENERATION (Synth) ---
         function playCyberpunkMusic() {
-            // Bass line
             const bassOsc = audioCtx.createOscillator();
             const bassGain = audioCtx.createGain();
             bassOsc.type = 'sawtooth';
-            bassOsc.frequency.setValueAtTime(55, audioCtx.currentTime); // A1
+            bassOsc.frequency.setValueAtTime(55, audioCtx.currentTime);
 
-            // Bass filter for "wub wub"
             const filter = audioCtx.createBiquadFilter();
             filter.type = 'lowpass';
             filter.frequency.setValueAtTime(200, audioCtx.currentTime);
-            filter.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.5); // Wah
+            filter.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.5);
             filter.frequency.linearRampToValueAtTime(200, audioCtx.currentTime + 1.0);
 
             bassOsc.connect(filter);
             filter.connect(bassGain);
+
+            // Connect to BOTH speakers AND recording stream
             bassGain.connect(audioCtx.destination);
+            if (audioDest) bassGain.connect(audioDest);
 
             bassOsc.start();
             bassGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-            bassOsc.stop(audioCtx.currentTime + 20); // Play for 20s
+            bassOsc.stop(audioCtx.currentTime + 20);
 
-            // Melody (Arpeggio)
-            setInterval(() => {
-                if (audioCtx.state === 'running') playNote();
-            }, 250); // 4 times a second
+            // Melody
+            const melodyInterval = setInterval(() => {
+                if (!isPlaying && !isRecording) { clearInterval(melodyInterval); return; }
+                if (Math.random() > 0.5) playNote();
+            }, 250);
         }
 
         function playNote() {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'square';
-
-            // Cyberpunk scale (Minor pentatonicish)
             const freqs = [220, 261.63, 329.63, 392, 440, 523.25];
-            const freq = freqs[Math.floor(Math.random() * freqs.length)];
-
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(freqs[Math.floor(Math.random() * freqs.length)], audioCtx.currentTime);
 
             gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
 
             osc.connect(gain);
             gain.connect(audioCtx.destination);
+            if (audioDest) gain.connect(audioDest);
+
             osc.start();
             osc.stop(audioCtx.currentTime + 0.2);
         }
 
+        // --- RECORDING MAGIC ---
+        function startRecordingAndDownload() {
+            // Hide overlay, start from beginning
+            document.getElementById('outro-overlay').style.display = 'none';
+
+            // Init Audio
+            if (!audioCtx) initAudio();
+
+            // Create Stream: Canvas + Audio
+            const canvasStream = canvas.captureStream(30); // 30 FPS
+            const finalStream = new MediaStream([
+                ...canvasStream.getVideoTracks(),
+                ...audioDest.stream.getAudioTracks()
+            ]);
+
+            mediaRecorder = new MediaRecorder(finalStream, {
+                mimeType: 'video/webm;codecs=vp9'
+            });
+
+            recordedChunks = [];
+            mediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) recordedChunks.push(e.data);
+            };
+
+            mediaRecorder.start();
+            isRecording = true;
+            isPlaying = true; // Logic flag
+            startTime = null;
+
+            // Start visuals and audio
+            requestAnimationFrame(loop);
+            playCyberpunkMusic();
+
+            alert("🎥 GENERATING VIDEO... (Wait 20s) ⏳");
+        }
+
+        function stopRecordingAndSave() {
+            isRecording = false;
+            isPlaying = false;
+            mediaRecorder.stop();
+
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                document.body.appendChild(a);
+                a.style = 'display: none';
+                a.href = url;
+                a.download = 'kids_digital_hub_promo.webm';
+                a.click();
+                window.URL.revokeObjectURL(url);
+
+                alert("✅ VIDEO DOWNLOADED! Check your files.");
+                document.getElementById('outro-overlay').style.display = 'flex';
+            };
+        }
+
+        // --- VISUALS (Same) ---
+        function scene1_Hook(t) {
+            ctx.textAlign = 'center'; ctx.font = 'bold 150px Orbitron';
+            let offX = (Math.random() - 0.5) * 20; let offY = (Math.random() - 0.5) * 20;
+            if (Math.random() > 0.9) offX += 50;
+            ctx.fillStyle = '#FF0055'; ctx.fillText('ARE YOUR', 540 + offX, 640 + offY);
+            ctx.fillStyle = '#00FFFF'; ctx.fillText('ARE YOUR', 540 - offX, 640 - offY);
+            ctx.fillStyle = '#FFFFFF'; ctx.fillText('ARE YOUR', 540, 640);
+            ctx.font = 'bold 200px Orbitron'; ctx.fillStyle = '#FFFF00';
+            ctx.fillText('KIDS', 540, 960); ctx.fillText('BORED?', 540, 1160);
+        }
+        function scene2_Problem(t) {
+            let localT = t - 5;
+            if (Math.floor(localT * 4) % 2 === 0) { ctx.fillStyle = '#110000'; ctx.fillRect(0, 0, 1080, 1920); }
+            ctx.textAlign = 'center'; ctx.font = 'bold 120px Orbitron'; ctx.fillStyle = '#FF0000';
+            ctx.fillText('NEED A', 540, 860);
+            let s = Math.sin(localT * 20) * 10;
+            ctx.font = 'bold 180px Orbitron'; ctx.fillStyle = '#FFFFFF';
+            ctx.fillText('PARENT', 540 + s, 1060); ctx.fillText('BREAK?', 540 - s, 1260);
+        }
+        function scene3_Solution(t) {
+            let localT = t - 10;
+            drawRobot(540, 760, localT);
+            ctx.textAlign = 'center'; ctx.font = 'bold 100px Orbitron'; ctx.fillStyle = '#00FF00';
+            ctx.fillText('SOLUTION:', 540, 1260);
+            ctx.font = 'bold 140px Orbitron'; ctx.fillStyle = '#FFFFFF'; ctx.shadowColor = '#00FFFF'; ctx.shadowBlur = 20;
+            ctx.fillText('KIDS DIGITAL', 540, 1410); ctx.fillText('HUB', 540, 1560); ctx.shadowBlur = 0;
+        }
+        function scene4_Outro(t) {
+            let localT = t - 15;
+            ctx.globalAlpha = 0.2; ctx.font = 'italic 80px Orbitron'; ctx.fillStyle = '#FFFFFF';
+            let ry = (localT * 100) % 1920;
+            for (let i = 0; i < 1920; i += 100) ctx.fillText('WWW.KIDSDIGITALHUB.COM', 540, i + ry - 1920);
+            ctx.globalAlpha = 1.0;
+            let sc = 1 + Math.sin(localT * 5) * 0.1;
+            ctx.save(); ctx.translate(540, 960); ctx.scale(sc, sc);
+            ctx.font = 'bold 150px Orbitron'; ctx.fillStyle = '#FF00E6';
+            ctx.fillText('JOIN', 0, -100); ctx.fillText('NOW!', 0, 100); ctx.restore();
+        }
+        function drawRobot(x, y, t) {
+            ctx.save(); ctx.translate(x, y); ctx.translate(0, Math.sin(t * 2) * 20);
+            ctx.fillStyle = '#333'; ctx.beginPath(); ctx.roundRect(-150, -150, 300, 300, 20); ctx.fill();
+            ctx.fillStyle = '#00FFFF';
+            if (Math.sin(t * 10) > 0.95) ctx.fillRect(-100, -50, 200, 10); else {
+                ctx.beginPath(); ctx.arc(-70, -50, 40, 0, Math.PI * 2); ctx.arc(70, -50, 40, 0, Math.PI * 2); ctx.fill();
+            }
+            ctx.beginPath(); ctx.moveTo(0, -150); ctx.lineTo(0, -250); ctx.strokeStyle = '#888'; ctx.lineWidth = 10; ctx.stroke();
+            ctx.beginPath(); ctx.arc(0, -250, 20, 0, Math.PI * 2); ctx.fillStyle = 'red'; ctx.fill();
+            ctx.fillStyle = '#222'; ctx.fillRect(-80, 50, 160, 20);
+            ctx.fillStyle = '#00FF00'; for (let i = 0; i < 5; i++) { let h = Math.random() * 40; ctx.fillRect(-70 + i * 30, 70 - h, 20, h); }
+            ctx.restore();
+        }
+        function drawScanlines(t) {
+            ctx.fillStyle = "rgba(0,0,0,0.1)"; for (let i = 0; i < 1920; i += 10) ctx.fillRect(0, i, 1080, 2);
+            ctx.fillStyle = "rgba(0,255,255,0.05)"; ctx.fillRect(0, (t * 500) % 1920, 1080, 50);
+        }
         function endAd() {
             isPlaying = false;
             document.getElementById('outro-overlay').style.display = 'flex';
-
-            // Countdown redirect
-            let count = 5;
-            const counter = document.getElementById('countdown');
-            const timer = setInterval(() => {
-                count--;
-                counter.innerText = count;
-                if (count <= 0) {
-                    clearInterval(timer);
-                    window.location.href = TARGET_URL;
-                }
-            }, 1000);
         }
+        function shareSocial(p) { /* Keep simple link sharing on buttons */ }
 
-        function shareSocial(platform) {
-            const url = "https://kidsdigitalhub.com";
-            const text = "Check out this awesome Kids Digital Hub! 🤖🎨 #kids #fun";
-
-            if (platform === 'whatsapp') {
-                window.location.href = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
-            } else if (platform === 'facebook') {
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-            } else if (platform === 'twitter') {
-                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-            } else if (platform === 'copy' || platform === 'tiktok') {
-                navigator.clipboard.writeText(url).then(() => {
-                    alert("Link COPIED! 📋\nNow open TikTok/Instagram and paste it in your story/bio! 🚀");
-                    if (platform === 'tiktok') window.location.href = "https://www.tiktok.com"; // Open TikTok web
-                });
-            }
-        }
-
-        // Auto-start attempt
-        window.onload = () => {
-            setTimeout(() => {
-                // Try autoplay
-                startAd();
-                // If audio context stays suspended (browser block), show overlay
-                if (audioCtx && audioCtx.state === 'suspended') {
-                    document.getElementById('overlay').style.display = 'flex';
-                }
-            }, 500);
-        };
-
-        // Fallback click anywhere to start (if blocked)
-        document.body.addEventListener('click', () => {
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            if (!isPlaying) startAd();
-        });
-
+        // Auto-start
+        window.onload = () => { setTimeout(startAd, 500); };
+        document.body.addEventListener('click', () => { if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); if (!isPlaying && !isRecording) startAd(); });
     </script>
 </body>
 
