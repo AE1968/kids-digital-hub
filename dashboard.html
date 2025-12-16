@@ -197,7 +197,33 @@
     </main>
 
     <script>
-        // Placeholder for dynamic data logic
+        // Check Premium Status
+        document.addEventListener('DOMContentLoaded', () => {
+            const isPremium = localStorage.getItem('kdh_premium_user') === 'true';
+
+            if (isPremium) {
+                const teaser = document.querySelector('.premium-teaser');
+                teaser.style.background = "linear-gradient(45deg, #81C784, #4CAF50)";
+                teaser.style.color = "white";
+                teaser.style.border = "none";
+                teaser.innerHTML = `
+                    <h2>🌟 Premium Member</h2>
+                    <p>You have UNLIMITED access to all features!</p>
+                    <div style="font-size:3rem; margin:10px;">🔓</div>
+                    <button onclick="alert('Accessing Premium Library...')" style="background:white; color:#2E7D32; border:none; padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer;">Browse Premium Content</button>
+                `;
+
+                // Update Profile Badge
+                document.querySelector('.user-profile span').textContent = "👑 Premium Super-Star";
+            } else {
+                // Link Teaser to Payment
+                const teaser = document.querySelector('.premium-teaser');
+                teaser.style.cursor = "pointer";
+                teaser.onclick = () => {
+                    window.location.href = "payment.html";
+                }
+            }
+        });
     </script>
 </body>
 

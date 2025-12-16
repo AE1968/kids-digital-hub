@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout - Kids Digital Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #E8F5E9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .checkout-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            border: 2px solid #66BB6A;
+        }
+
+        .summary {
+            background: #F1F8E9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .prod-img {
+            width: 60px;
+            height: 60px;
+            background: #C8E6C9;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .btn-pay {
+            background: #4CAF50;
+            color: white;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .btn-pay:hover {
+            background: #43A047;
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 15px;
+        }
+
+        .card-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-family: inherit;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="checkout-box" id="step-payment">
+        <h2 style="text-align: center; color: #2E7D32;">🛒 Secure Checkout</h2>
+
+        <div class="summary">
+            <img src="assets/images/products/pack_variety.png" class="prod-img"
+                onerror="this.src='assets/images/logo_ae.png'">
+            <div>
+                <h3 style="margin: 0; font-size: 1.1rem;">Mega Variety Pack (50+)</h3>
+                <p style="margin: 5px 0; color: #555;">Digital Download</p>
+                <span style="font-weight: bold; color: #E64A19;">$4.99 USD</span>
+            </div>
+        </div>
+
+        <form onsubmit="processPayment(event)">
+            <label style="font-weight: bold; font-size: 0.9rem;">Email Address</label>
+            <input type="email" class="card-input" placeholder="parent@example.com" required>
+
+            <label style="font-weight: bold; font-size: 0.9rem;">Card Information</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" class="card-input" placeholder="1234 5678 9101 1121" style="flex: 2;">
+                <input type="text" class="card-input" placeholder="MM/YY" style="flex: 1;">
+                <input type="text" class="card-input" placeholder="CVC" style="flex: 1;">
+            </div>
+
+            <button type="submit" class="btn-pay">Pay $4.99 & Download</button>
+        </form>
+
+        <div class="secure-badge">
+            🔒 SSL Encrypted • Powered by Stripe/Gumroad
+        </div>
+        <div style="text-align: center; margin-top: 10px;">
+            <a href="dashboard.html" style="color: #999; text-decoration: none; font-size: 0.8rem;">Cancel & Go Back</a>
+        </div>
+    </div>
+
+    <div class="checkout-box" id="step-success" style="display: none; text-align: center;">
+        <div style="font-size: 4rem;">🎉</div>
+        <h2 style="color: #2E7D32;">Payment Successful!</h2>
+        <p>Thank you for your purchase. Your premium content is now unlocked.</p>
+
+        <div style="background: #E3F2FD; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h3>📥 Mega Variety Pack.zip</h3>
+            <button onclick="downloadFile()"
+                style="background: #2196F3; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer;">Download
+                Now</button>
+        </div>
+
+        <button onclick="location.href='dashboard.html?status=premium'" class="btn-pay" style="background: #607D8B;">Go
+            to Dashboard</button>
+    </div>
+
+    <script>
+        function processPayment(e) {
+            e.preventDefault();
+            const btn = document.querySelector('.btn-pay');
+            btn.innerHTML = "Processing... ⏳";
+            btn.style.opacity = "0.7";
+
+            // Simulate API delay
+            setTimeout(() => {
+                document.getElementById('step-payment').style.display = 'none';
+                document.getElementById('step-success').style.display = 'block';
+
+                // Unlock logic
+                localStorage.setItem('kdh_premium_user', 'true');
+            }, 2000);
+        }
+
+        function downloadFile() {
+            alert("🔽 Downloading file... (This is a demo)");
+        }
+    </script>
+
+</body>
+
+</html>
