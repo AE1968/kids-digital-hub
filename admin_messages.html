@@ -655,6 +655,30 @@
         // Initialize
         loadMessages();
     </script>
+    <script>
+        // 📊 Live Traffic Stats Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('https://api.counterapi.dev/v1/kidsdigitalhub/view')
+                .then(res => res.json())
+                .then(data => {
+                    const statsDiv = document.querySelector('.stats-container');
+                    if (statsDiv) {
+                        const card = document.createElement('div');
+                        card.className = 'stat-card';
+                        card.style.background = 'linear-gradient(135deg, #1E88E5, #1565C0)';
+                        card.style.color = 'white';
+                        card.innerHTML = `
+                            <h3>🌍 Site Visitors</h3>
+                            <div class="value">${data.count || 0}</div>
+                            <small>Global Unique Views</small>
+                        `;
+                        // Insert as first card
+                        statsDiv.insertBefore(card, statsDiv.firstChild);
+                    }
+                })
+                .catch(e => console.log('Stats Error:', e));
+        });
+    </script>
 </body>
 
 </html>
