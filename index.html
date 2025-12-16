@@ -122,6 +122,8 @@
       <div id="share-menu" class="share-menu">
         <button class="share-icon-btn btn-whatsapp" onclick="share('whatsapp')" title="Share on WhatsApp">📱</button>
         <button class="share-icon-btn btn-facebook" onclick="share('facebook')" title="Share on Facebook">📘</button>
+        <button class="share-icon-btn btn-tiktok" onclick="share('tiktok')" title="Share on TikTok">🎵</button>
+        <button class="share-icon-btn btn-instagram" onclick="share('instagram')" title="Share on Instagram">📸</button>
         <button class="share-icon-btn btn-copy" onclick="share('copy')" title="Copy Link">📋</button>
       </div>
 
@@ -322,12 +324,19 @@
         window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`, '_blank');
       } else if (platform === 'facebook') {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+      } else if (platform === 'tiktok' || platform === 'instagram') {
+        // TiKTok/Insta don't have direct web share links mostly
+        navigator.clipboard.writeText(url).then(() => {
+          alert(`🔗 Link copiat! Deschide ${platform.charAt(0).toUpperCase() + platform.slice(1)} și postează un story/video! 🎥✨`);
+          // Open the app website as convenience
+          if (platform === 'tiktok') window.open('https://www.tiktok.com', '_blank');
+          if (platform === 'instagram') window.open('https://www.instagram.com', '_blank');
+        });
       } else if (platform === 'copy') {
         navigator.clipboard.writeText(url).then(() => {
           alert('Link copiat! Trimite-l prietenilor pe TikTok/Insta! 📋✨');
         });
       }
-    }
   </script>
 </body>
 
