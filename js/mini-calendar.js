@@ -1,4 +1,4 @@
-// Mini Calendar Widget for Footer
+// Mini Calendar Widget for Footer - Auto-scaling to fit footer height
 function createMiniCalendar() {
   const today = new Date();
   const currentDay = today.getDate();
@@ -22,34 +22,65 @@ function createMiniCalendar() {
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
 
-  // Create calendar widget
+  // DETECT BODY ZOOM (for responsive scaling)
+  const bodyStyle = window.getComputedStyle(document.body);
+  const bodyZoom = parseFloat(bodyStyle.zoom) || 1; // Get zoom value, default to 1
+
+  // CALCULATE FOOTER HEIGHT AND AVAILABLE SPACE
+  const footer = document.querySelector('footer');
+  let footerHeight = footer ? footer.offsetHeight : 80; // Default 80px if not found
+
+  // Adjust for body zoom - if body is zoomed, footer appears smaller
+  footerHeight = footerHeight * bodyZoom;
+
+  const margin = 7; // 2mm ≈ 7-8px margin
+  const availableHeight = footerHeight - (margin * 2); // Height minus top and bottom margins
+
+  // CALCULATE OPTIMAL CALENDAR SIZE
+  // Calendar needs: header + weekdays + ~5 rows of days
+  // Let's calculate scale factor
+  const baseHeight = 180; // Base calendar height at normal size
+  const scaleFactor = Math.min(1, availableHeight / baseHeight); // Don't scale up, only down
+
+  // Apply scale to all dimensions
+  const calendarWidth = Math.floor(150 * scaleFactor);
+  const padding = Math.max(3, Math.floor(5 * scaleFactor));
+  const headerFontSize = Math.max(0.6, 0.75 * scaleFactor);
+  const dayFontSize = Math.max(0.5, 0.6 * scaleFactor);
+  const todayFontSize = Math.max(0.7, 0.85 * scaleFactor);
+  const gap = Math.max(1, Math.floor(2 * scaleFactor));
+
+  // Create calendar widget - auto-scaled
   const calendarWidget = document.createElement('div');
   calendarWidget.id = 'mini-calendar-widget';
   calendarWidget.style.cssText = `
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
+    position: absolute;
+    top: 50%;
+    left: ${margin}px;
+    transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
-    padding: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    z-index: 999;
+    border-radius: ${Math.max(5, Math.floor(8 * scaleFactor))}px;
+    padding: ${padding}px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10;
     backdrop-filter: blur(10px);
-    border: 2px solid #667eea;
+    border: ${Math.max(1, Math.floor(2 * scaleFactor))}px solid #667eea;
     font-family: 'Fredoka', sans-serif;
-    width: 220px;
+    width: ${calendarWidth}px;
+    max-height: ${availableHeight}px;
+    overflow: hidden;
   `;
 
   // Calendar header
   const header = document.createElement('div');
   header.style.cssText = `
     text-align: center;
-    font-size: 1.2rem;
+    font-size: ${headerFontSize}rem;
     font-weight: 700;
     color: #667eea;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #667eea;
+    margin-bottom: ${Math.max(2, Math.floor(3 * scaleFactor))}px;
+    padding-bottom: ${Math.max(2, Math.floor(3 * scaleFactor))}px;
+    border-bottom: ${Math.max(1, Math.floor(2 * scaleFactor))}px solid #667eea;
   `;
   header.textContent = `${monthName} ${currentYear}`;
   calendarWidget.appendChild(header);
@@ -60,15 +91,15 @@ function createMiniCalendar() {
   weekdayRow.style.cssText = `
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    margin-bottom: 5px;
+    gap: ${gap}px;
+    margin-bottom: ${Math.max(1, Math.floor(2 * scaleFactor))}px;
   `;
 
   weekdays.forEach(day => {
     const dayHeader = document.createElement('div');
     dayHeader.style.cssText = `
       text-align: center;
-      font-size: 0.8rem;
+      font-size: ${Math.max(0.5, 0.6 * scaleFactor)}rem;
       font-weight: 600;
       color: #999;
     `;
@@ -82,7 +113,7 @@ function createMiniCalendar() {
   daysGrid.style.cssText = `
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+    gap: ${gap}px;
   `;
 
   // Add empty cells for days before month starts
@@ -107,15 +138,15 @@ function createMiniCalendar() {
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 8px;
-      font-size: ${isToday ? '1.4rem' : '0.9rem'};
+      border-radius: ${Math.max(2, Math.floor(4 * scaleFactor))}px;
+      font-size: ${isToday ? todayFontSize : dayFontSize}rem;
       font-weight: ${isToday ? '900' : '500'};
       color: ${isToday ? 'white' : '#333'};
       background: ${isToday ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'transparent'};
       cursor: pointer;
       transition: all 0.3s ease;
-      transform: ${isToday ? 'scale(1.2)' : 'scale(1)'};
-      box-shadow: ${isToday ? '0 5px 15px rgba(102, 126, 234, 0.5)' : 'none'};
+      transform: ${isToday ? 'scale(1.1)' : 'scale(1)'};
+      box-shadow: ${isToday ? '0 2px 8px rgba(102, 126, 234, 0.5)' : 'none'};
       z-index: ${isToday ? '10' : '1'};
       position: relative;
     `;
@@ -126,7 +157,7 @@ function createMiniCalendar() {
     if (!isToday) {
       dayCell.addEventListener('mouseenter', () => {
         dayCell.style.background = '#e8f0fe';
-        dayCell.style.transform = 'scale(1.1)';
+        dayCell.style.transform = 'scale(1.05)';
       });
       dayCell.addEventListener('mouseleave', () => {
         dayCell.style.background = 'transparent';
@@ -139,8 +170,8 @@ function createMiniCalendar() {
       const style = document.createElement('style');
       style.textContent = `
         @keyframes pulse {
-          0%, 100% { transform: scale(1.2); }
-          50% { transform: scale(1.3); }
+          0%, 100% { transform: scale(1.1); }
+          50% { transform: scale(1.15); }
         }
       `;
       if (!document.getElementById('calendar-pulse-animation')) {
@@ -155,13 +186,26 @@ function createMiniCalendar() {
 
   calendarWidget.appendChild(daysGrid);
 
-  // Add to page
-  document.body.appendChild(calendarWidget);
+  // Add to footer (not body) so it's inside the green bar
+  if (footer) {
+    footer.appendChild(calendarWidget);
+  } else {
+    document.body.appendChild(calendarWidget);
+  }
+
+  // Log scaling info for debugging
+  console.log('Calendar auto-scaled:', {
+    footerHeight,
+    availableHeight,
+    scaleFactor: scaleFactor.toFixed(2),
+    calendarWidth,
+    margin
+  });
 }
 
 // Initialize mini calendar on page load
 document.addEventListener('DOMContentLoaded', () => {
-  // Wait a bit to ensure page is fully loaded
+  // Wait for footer to be rendered
   setTimeout(createMiniCalendar, 500);
 });
 
@@ -172,4 +216,13 @@ window.addEventListener('languageChanged', () => {
     existingCalendar.remove();
   }
   createMiniCalendar();
+});
+
+// Recreate calendar on window resize to adjust to new footer size
+window.addEventListener('resize', () => {
+  const existingCalendar = document.getElementById('mini-calendar-widget');
+  if (existingCalendar) {
+    existingCalendar.remove();
+  }
+  setTimeout(createMiniCalendar, 100);
 });

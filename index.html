@@ -10,6 +10,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Kids Digital Hub - Fun & Creativity</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/responsive-footer.css">
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
   <script src="js/translations.js"></script>
@@ -141,10 +142,10 @@
     <p style="font-size: 0.8rem; opacity: 0.8">Terms & Conditions | Privacy Policy</p>
 
     <!-- Contact Button in Footer -->
-    <a href="contact.html"
-      style="position: fixed; bottom: 10px; right: 10px; display: flex; align-items: center; gap: 10px; background: #4CAF50; color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4); transition: transform 0.3s ease, box-shadow 0.3s ease; z-index: 1000;"
-      onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(76, 175, 80, 0.6)';"
-      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(76, 175, 80, 0.4)';">
+    <a href="contact.html" id="contact-button"
+      style="position: absolute; top: 50%; right: 7px; transform: translateY(-50%); display: flex; align-items: center; gap: 10px; background: #4CAF50; color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4); transition: transform 0.3s ease, box-shadow 0.3s ease; z-index: 10;"
+      onmouseover="this.style.transform='translateY(-50%) translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(76, 175, 80, 0.6)';"
+      onmouseout="this.style.transform='translateY(-50%)'; this.style.boxShadow='0 4px 15px rgba(76, 175, 80, 0.4)';">
       <span style="font-size: 1.5rem;">📧</span>
       <span>Contact</span>
     </a>
@@ -156,6 +157,7 @@
   <script src="js/translations.js"></script>
   <script src="js/seasonal.js"></script>
   <script src="js/mini-calendar.js"></script>
+  <script src="js/contact-button-scale.js"></script>
   <script>
     let currentCategory = 'All';
 
