@@ -18,7 +18,14 @@ function createMiniCalendar() {
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
 
-  // Create calendar with CSS-based sizing
+  // Calculate exact height needed
+  const headerHeight = 25; // Header approx
+  const weekdaysHeight = 15; // Weekdays approx
+  const rows = Math.ceil((firstDay + daysInMonth) / 7); // Calculate actual rows needed (usually 5 or 6)
+  const rowHeight = 22; // 20px cell + 2px gap
+  const totalContentHeight = headerHeight + weekdaysHeight + (rows * rowHeight) + 15; // + padding
+
+  // Create calendar with EXPLICIT sizing
   const calendar = document.createElement('div');
   calendar.id = 'mini-calendar-widget';
   calendar.style.cssText = `
@@ -35,12 +42,11 @@ function createMiniCalendar() {
     backdrop-filter: blur(10px);
     border: 2px solid #667eea;
     font-family: 'Fredoka', sans-serif;
-    width: 160px; /* putin mai lat */
-    height: auto !important; /* Force auto height */
-    min-height: 100px;
-    display: block; /* Back to block model */
+    width: 160px;
+    height: ${totalContentHeight}px; /* EXPLICIT HEIGHT - NO AUTO */
+    display: block;
     box-sizing: border-box;
-    overflow: visible; /* Let it show if logic fails, but borders should wrap */
+    overflow: hidden; /* Contain everything nicely */
   `;
 
   // Header
