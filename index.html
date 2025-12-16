@@ -233,6 +233,23 @@
       });
     }
 
+    function changeLanguage(lang) {
+      // Update flag button appearance if needed
+      // Use the translations object from translations.js
+      const t = translations[lang] || translations['en'];
+
+      // Update all elements with data-i18n
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) {
+          el.innerHTML = t[key]; // Use innerHTML to allow emojis
+        }
+      });
+
+      // Special update for choice buttons text if they exist
+      // (Handled automatically by data-i18n above)
+    }
+
     function toggleBubble() {
       const bubble = document.getElementById('ai-bubble');
       bubble.classList.toggle('show');
