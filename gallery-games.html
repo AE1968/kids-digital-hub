@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Games - Kids Digital Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .gallery-header {
+            background: #42A5F5;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            border-bottom: 5px solid #1565C0;
+        }
+
+        .gallery-grid {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .slot {
+            aspect-ratio: 1;
+            background: white;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .slot.filled {
+            border: 4px solid #90CAF9;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: #E3F2FD;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .slot.filled:hover {
+            transform: scale(1.05);
+        }
+
+        .slot.empty {
+            border: 4px dashed #CFD8DC;
+            background: #F5F5F5;
+        }
+
+        .empty-label {
+            color: #B0BEC5;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .slot-number {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .game-icon {
+            font-size: 4rem;
+        }
+
+        .game-title {
+            font-weight: bold;
+            color: #1565C0;
+            font-size: 1rem;
+            text-align: center;
+            padding: 0 5px;
+        }
+
+        .btn-play {
+            margin-top: 5px;
+            padding: 5px 15px;
+            background: #42A5F5;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-back-dash {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="gallery-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:2rem;">🎮</span>
+            <h2 style="margin:0;">My Games Arcade</h2>
+        </div>
+        <a href="dashboard.html" class="btn-back-dash">⬅️ Dashboard</a>
+    </header>
+
+    <main>
+        <div class="gallery-grid">
+            <!-- SLOT 1: FILLED -->
+            <div class="slot filled">
+                <span class="slot-number">1</span>
+                <span class="game-icon">🚀</span>
+                <span class="game-title">Space Jump</span>
+                <button class="btn-play">▶ Play</button>
+            </div>
+
+            <!-- SLOT 2: FILLED -->
+            <div class="slot filled">
+                <span class="slot-number">2</span>
+                <span class="game-icon">🔢</span>
+                <span class="game-title">Math Whiz</span>
+                <button class="btn-play">▶ Play</button>
+            </div>
+            <!-- SLOT 3: FILLED -->
+            <div class="slot filled">
+                <span class="slot-number">3</span>
+                <span class="game-icon">🧩</span>
+                <span class="game-title">Puzzle Mix</span>
+                <button class="btn-play">▶ Play</button>
+            </div>
+            <!-- SLOT 4: FILLED -->
+            <div class="slot filled">
+                <span class="slot-number">4</span>
+                <span class="game-icon">🐸</span>
+                <span class="game-title">Frogger Hop</span>
+                <button class="btn-play">▶ Play</button>
+            </div>
+            <!-- SLOT 5: FILLED -->
+            <div class="slot filled">
+                <span class="slot-number">5</span>
+                <span class="game-icon">🎹</span>
+                <span class="game-title">Piano Kids</span>
+                <button class="btn-play">▶ Play</button>
+            </div>
+
+            <!-- SLOTS 6-10: EMPTY -->
+            <div class="slot empty"><span class="slot-number">6</span>
+                <div class="empty-label"><span>➕</span><span>Empty</span></div>
+            </div>
+            <div class="slot empty"><span class="slot-number">7</span>
+                <div class="empty-label"><span>➕</span><span>Empty</span></div>
+            </div>
+            <div class="slot empty"><span class="slot-number">8</span>
+                <div class="empty-label"><span>➕</span><span>Empty</span></div>
+            </div>
+            <div class="slot empty"><span class="slot-number">9</span>
+                <div class="empty-label"><span>➕</span><span>Empty</span></div>
+            </div>
+            <div class="slot empty"><span class="slot-number">10</span>
+                <div class="empty-label"><span>🔒 Premium</span></div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>
