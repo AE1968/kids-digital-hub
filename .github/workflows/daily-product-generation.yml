@@ -1,0 +1,71 @@
+name: Daily Product Generation
+
+on:
+  # Rulează automat în fiecare zi la ora 9:00 AM UTC (11:00 AM România)
+  schedule:
+    - cron: '0 9 * * *'
+  
+  # Permite și rulare manuală din GitHub UI
+  workflow_dispatch:
+    inputs:
+      product_count:
+        description: 'Number of products to generate'
+        required: false
+        default: '5'
+
+jobs:
+  generate-products:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pillow python-dotenv
+      
+      - name: Generate new products with AI
+        env:
+          PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
+          GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+          PRODUCT_COUNT: ${{ github.event.inputs.product_count || '5' }}
+        run: |
+          echo "🤖 Generare produse cu AI..."
+          python generate_ai_products.py
+      
+      - name: Sync products to Printful
+        env:
+          PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
+        run: |
+          python sync_products_now.py
+      
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || (git commit -m "🤖 Auto-generated products - $(date +'%Y-%m-%d %H:%M')" && git push)
+      
+      - name: Deploy to Netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --prod
+      
+      - name: Send notification on failure
+        if: failure()
+        run: |
+          echo "❌ Product generation failed! Check the logs."
+          # Aici poți adăuga notificări prin email, Slack, Discord, etc.

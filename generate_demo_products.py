@@ -1,116 +1,93 @@
+import os
 import json
+import random
+from datetime import datetime
 
-# Produse demo folosind imaginile existente
-demo_products = [
-    {
-        "id": 1,
-        "name": "Santa's Magic Workshop",
-        "category": "Coloring",
-        "price": "GRATIS",
-        "image": "seasonal/winter-santa-lapland.png",
-        "views": 1234,
-        "sales": 89,
-        "is_free": True
-    },
-    {
-        "id": 2,
-        "name": "Space Explorer Adventure",
-        "category": "Games",
-        "price": "$4.99",
-        "image": "products/space_dog.png",
-        "views": 987,
-        "sales": 67,
-        "is_free": False
-    },
-    {
-        "id": 3,
-        "name": "The Friendly Dragon",
-        "category": "Stories",
-        "price": "$4.99",
-        "image": "products/story_dino.png",
-        "views": 1456,
-        "sales": 102,
-        "is_free": False
-    },
-    {
-        "id": 4,
-        "name": "Unicorn Dreams",
-        "category": "Coloring",
-        "price": "GRATIS",
-        "image": "products/unicorn.png",
-        "views": 823,
-        "sales": 45,
-        "is_free": True
-    },
-    {
-        "id": 5,
-        "name": "Dino Safari Adventure",
-        "category": "Games",
-        "price": "$4.99",
-        "image": "products/dino_safari.png",
-        "views": 654,
-        "sales": 34,
-        "is_free": False
-    },
-    {
-        "id": 6,
-        "name": "Mermaid Tales",
-        "category": "Stories",
-        "price": "$4.99",
-        "image": "products/story_mermaid.png",
-        "views": 912,
-        "sales": 56,
-        "is_free": False
-    },
-    {
-        "id": 7,
-        "name": "Robot Builder",
-        "category": "Games",
-        "price": "GRATIS",
-        "image": "products/robot.png",
-        "views": 567,
-        "sales": 23,
-        "is_free": True
-    },
-    {
-        "id": 8,
-        "name": "Ocean Friends",
-        "category": "Coloring",
-        "price": "$4.99",
-        "image": "products/octopus.png",
-        "views": 789,
-        "sales": 41,
-        "is_free": False
-    },
-    {
-        "id": 9,
-        "name": "Moon Adventure Story",
-        "category": "Stories",
-        "price": "GRATIS",
-        "image": "products/story_moon.png",
-        "views": 445,
-        "sales": 19,
-        "is_free": True
-    },
-    {
-        "id": 10,
-        "name": "Variety Activity Pack",
-        "category": "Worksheets",
-        "price": "$4.99",
-        "image": "products/pack_variety.png",
-        "views": 334,
-        "sales": 15,
-        "is_free": False
-    }
+# Configurare - citește din variabile de mediu
+PRODUCT_COUNT = int(os.getenv('PRODUCT_COUNT', '5'))
+
+# Teme pentru generare produse
+THEMES = [
+    "Space Adventure", "Underwater World", "Dinosaur Safari", "Fairy Tale Castle",
+    "Robot Factory", "Jungle Explorer", "Arctic Animals", "Farm Friends",
+    "Superhero Academy", "Magical Forest", "Pirate Treasure", "Dragon Kingdom",
+    "Rainbow Unicorns", "Ocean Creatures", "Wild West", "Circus Fun",
+    "Monster Friends", "Princess Palace", "Knight's Quest", "Wizard School"
 ]
 
-# Scrie in products_data.js
-js_content = f"var allProducts = {json.dumps(demo_products, indent=2)};"
+CATEGORIES = ["Coloring", "Stories", "Games", "Worksheets"]
 
-with open("js/products_data.js", "w", encoding="utf-8") as f:
-    f.write(js_content)
+def generate_product_name(theme):
+    """Generează un nume de produs bazat pe temă"""
+    prefixes = ["Amazing", "Magical", "Super", "Fun", "Creative", "Exciting"]
+    suffixes = ["Adventure", "Collection", "Pack", "Set", "Bundle", "Experience"]
+    
+    return f"{random.choice(prefixes)} {theme} {random.choice(suffixes)}"
 
-print(f"✅ Generat {len(demo_products)} produse demo în js/products_data.js")
-print("\nProduse create:")
-for p in demo_products:
-    print(f"  - {p['name']} ({p['category']}) - {p['price']}")
+def generate_products(count):
+    """Generează produse noi"""
+    products = []
+    
+    # Încarcă produsele existente pentru a continua ID-urile
+    try:
+        with open("js/products_data.js", "r", encoding="utf-8") as f:
+            content = f.read()
+            # Extrage JSON din fișierul JS
+            json_str = content.replace("var allProducts = ", "").rstrip(";")
+            existing_products = json.loads(json_str)
+            next_id = max([p['id'] for p in existing_products]) + 1
+    except (FileNotFoundError, json.JSONDecodeError):
+        existing_products = []
+        next_id = 1
+    
+    for i in range(count):
+        theme = random.choice(THEMES)
+        category = random.choice(CATEGORIES)
+        is_free = random.choice([True, False, False])  # 33% șanse să fie gratuit
+        
+        product = {
+            "id": next_id + i,
+            "name": generate_product_name(theme),
+            "category": category,
+            "price": "GRATIS" if is_free else f"${random.choice([4.99, 5.99, 6.99, 7.99])}",
+            "image": f"products/generated_{next_id + i}.png",
+            "views": random.randint(100, 2000),
+            "sales": random.randint(10, 150),
+            "is_free": is_free,
+            "generated_at": datetime.now().isoformat(),
+            "theme": theme
+        }
+        
+        products.append(product)
+    
+    # Combină cu produsele existente
+    all_products = existing_products + products
+    
+    # Scrie în products_data.js
+    js_content = f"var allProducts = {json.dumps(all_products, indent=2)};"
+    
+    with open("js/products_data.js", "w", encoding="utf-8") as f:
+        f.write(js_content)
+    
+    return products
+
+def main():
+    print(f"🎨 Generare {PRODUCT_COUNT} produse noi...")
+    print(f"📅 Data: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("-" * 50)
+    
+    products = generate_products(PRODUCT_COUNT)
+    
+    print(f"\n✅ Generat {len(products)} produse noi în js/products_data.js")
+    print("\n📦 Produse create:")
+    for p in products:
+        print(f"  - {p['name']} ({p['category']}) - {p['price']}")
+    
+    print("\n" + "=" * 50)
+    print("🚀 Următorii pași:")
+    print("  1. Rulează sync_products_now.py pentru a sincroniza cu Printful")
+    print("  2. Deploy pe Netlify pentru a actualiza site-ul")
+    print("=" * 50)
+
+if __name__ == "__main__":
+    main()
