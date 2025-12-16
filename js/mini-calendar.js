@@ -35,11 +35,12 @@ function createMiniCalendar() {
     backdrop-filter: blur(10px);
     border: 2px solid #667eea;
     font-family: 'Fredoka', sans-serif;
-    width: 150px;
-    height: auto; /* Allow height to grow with content */
-    display: flex; /* Use flex to organize children properly */
-    flex-direction: column;
+    width: 160px; /* putin mai lat */
+    height: auto !important; /* Force auto height */
+    min-height: 100px;
+    display: block; /* Back to block model */
     box-sizing: border-box;
+    overflow: visible; /* Let it show if logic fails, but borders should wrap */
   `;
 
   // Header
