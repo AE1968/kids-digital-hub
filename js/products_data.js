@@ -2,64 +2,7 @@
 // PRODUCT DATABASE (Simulated for Demo)
 // ============================================
 
-var allProducts = [
-    {
-        id: 101,
-        name: "Santa's Magic Workshop",
-        category: "Coloring",
-        image: "assets/images/winter-santa-lapland.png",
-        is_free: true,
-        description: "Color the elves and Santa preparing for Christmas!",
-        link: "#"
-    },
-    {
-        id: 102,
-        name: "Space Explorer Adventure",
-        category: "Games",
-        image: "assets/images/hero_kids_flags.png", // Placeholder
-        is_free: true,
-        description: "Navigate through the stars in this fun maze game.",
-        link: "#"
-    },
-    {
-        id: 103,
-        name: "The Friendly Dragon",
-        category: "Stories",
-        image: "assets/images/logo_ae.png", // Use logo as abstract book cover
-        is_free: true,
-        description: "A heartwarming tale about a dragon who loves cookies.",
-        link: "#"
-    },
-    {
-        id: 104,
-        name: "Winter Wonderland Puzzle",
-        category: "Games",
-        image: "assets/images/winter-santa-lapland.png",
-        is_free: false,
-        premium: true,
-        description: "Premium 100-piece digital puzzle for snowy days.",
-        link: "#"
-    },
-    {
-        id: 105,
-        name: "Underwater Kingdom",
-        category: "Coloring",
-        image: "assets/images/hero_kids_flags.png",
-        is_free: true,
-        description: "Discover the secrets of the deep blue sea.",
-        link: "#"
-    },
-    {
-        id: 106,
-        name: "Bedtime Moon Stories",
-        category: "Stories",
-        image: "assets/images/logo_ae.png",
-        is_free: false,
-        premium: true,
-        description: "Calm and sleepy stories for a perfect night's rest.",
-        link: "#"
-    }
-];
+var allProducts = [];
 
 // ============================================
 // RENDER ENGINE

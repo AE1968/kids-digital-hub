@@ -112,6 +112,7 @@
     </div>
   </main>
 
+  <!-- Fixed AE Co-Creator Button -->
   <section class="creator-spotlight">
     <h3 data-i18n="creator_title">Meet the Digital Co-Creator 🤖</h3>
     <div style="position: relative; display: inline-block;">
@@ -164,7 +165,30 @@
     let currentCategory = 'All';
 
     // Init simplu
+    // Initialize Language
     document.addEventListener('DOMContentLoaded', () => {
+      // 1. Check for Saved Preference (localStorage)
+      const savedLang = localStorage.getItem('kdh_lang');
+
+      // 2. Check for Edge Function Auto-Detect (Cookie)
+      const getCookie = (name) => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+      };
+      const autoLang = getCookie('nf_lang');
+
+      // Priority: Saved > Auto > Default (en)
+      const lang = savedLang || autoLang || 'en';
+
+      // Set dropdown value
+      const select = document.querySelector('.lang-select');
+      if (select) {
+        select.value = lang;
+      }
+
+      // Apply translation
+      changeLanguage(lang);
       renderProducts(allProducts);
     });
 
@@ -287,13 +311,27 @@
     }
 
     function changeLanguage(lang) {
+      // Save preference
+      localStorage.setItem('kdh_lang', lang);
+
+      // Also update cookie to match selection
+      document.cookie = `nf_lang=${lang}; Path=/; SameSite=Lax`;
+
       const t = translations[lang] || translations['en'];
+
+      if (!t) return; // Safety check
+
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (t[key]) {
           el.innerHTML = t[key];
         }
       });
+
+      // Update Seasonal Background Text if function exists
+      if (typeof updateSeasonalBackground === 'function') {
+        updateSeasonalBackground();
+      }
     }
 
     function toggleShare() {
