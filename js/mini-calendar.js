@@ -34,10 +34,10 @@ function createMiniCalendar() {
     left: 7px;
     transform: translateY(-50%) scale(1);
     transform-origin: left center;
-    background: rgba(255, 255, 255, 0.95);
+    background: #ffffff; /* Solid white for maximum readability */
     border-radius: 8px;
     padding: 5px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* Stronger shadow */
     z-index: 10;
     backdrop-filter: blur(10px);
     border: 2px solid #667eea;

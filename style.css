@@ -308,12 +308,19 @@ header {
 
 /* --- FOOTER --- */
 footer {
-    background: var(--color-secondary);
+    background: rgba(0, 137, 123, 0.1);
+    /* Almost invisible */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+    /* Strong shadow for readability */
+    text-align: center;
     text-align: center;
     padding: 40px;
     margin-top: 60px;
-    border-top: 5px solid #00897B;
+    border-top: none;
+    /* Removed solid border to blend better */
 }
 
 /* Hero Image Styling */
