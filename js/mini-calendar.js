@@ -92,7 +92,7 @@ function createMiniCalendar() {
   // Empty cells
   for (let i = 0; i < firstDay; i++) {
     const empty = document.createElement('div');
-    empty.style.cssText = 'aspect-ratio: 1;';
+    empty.style.cssText = 'height: 20px; width: 100%;';
     daysGrid.appendChild(empty);
   }
 
@@ -102,7 +102,8 @@ function createMiniCalendar() {
     const cell = document.createElement('div');
 
     cell.style.cssText = `
-      aspect-ratio: 1;
+      width: 100%; /* Ensure full width */
+      height: 20px; /* FIXED HEIGHT instead of aspect-ratio */
       display: flex;
       align-items: center;
       justify-content: center;
