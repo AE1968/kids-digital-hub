@@ -81,17 +81,61 @@
 
     // --- UPDATE LOGIC ---
     function updateClocks() {
-        const now = new Date().getTime();
+        const now = new Date();
+        const currentTime = now.getTime();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth(); // 0-11 (Dec is 11)
+
+        // Only show clocks if it's December OR early January (for NY) OR November (anticipation)
+        // We want them to reappear every December.
+        const isFestiveSeason = (currentMonth === 11) || (currentMonth === 10); // Nov & Dec
+
+        const leftClock = document.getElementById('clock-christmas');
+        const rightClock = document.getElementById('clock-newyear');
+
+        if (!leftClock || !rightClock) return;
+
+        // Auto-hide if not festive season
+        if (!isFestiveSeason) {
+            leftClock.style.display = 'none';
+            rightClock.style.display = 'none';
+            return;
+        } else {
+            leftClock.style.display = 'flex';
+            rightClock.style.display = 'flex';
+        }
+
+        // Dynamic Target Calculation (Always look for THIS year's Dec or NEXT year's Jan)
+        let xmasTarget = new Date(`December 25, ${currentYear} 00:00:00`).getTime();
+        // If passed Dec 25, target NEXT year (though we hide it anyway until next Nov)
+        if (currentTime > xmasTarget + (1000 * 60 * 60 * 24)) { // +1 day buffer
+            xmasTarget = new Date(`December 25, ${currentYear + 1} 00:00:00`).getTime();
+        }
+
+        let nyTarget = new Date(`January 1, ${currentYear + 1} 00:00:00`).getTime();
+
         const currentLang = localStorage.getItem('selectedLanguage') || 'en';
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS['en'];
 
         // Update Left (Christmas)
-        const xmasDiff = TARGETS.christmas - now;
-        updateClockContent('clock-christmas', xmasDiff, t.christmas, t, '🎄');
+        if (currentTime > xmasTarget && currentTime < xmasTarget + (1000 * 60 * 60 * 24)) {
+            // It is Christmas Day!
+            updateClockContent('clock-christmas', -1, t.christmas, t, '🎄');
+        } else if (currentTime > xmasTarget) {
+            leftClock.style.display = 'none'; // Hide if passed
+        } else {
+            const xmasDiff = xmasTarget - currentTime;
+            updateClockContent('clock-christmas', xmasDiff, t.christmas, t, '🎄');
+        }
 
         // Update Right (New Year)
-        const nyDiff = TARGETS.newyear - now;
-        updateClockContent('clock-newyear', nyDiff, t.newyear, t, '🎆');
+        if (currentTime > nyTarget) {
+            // Passed New Year
+            rightClock.style.display = 'none';
+        } else {
+            const nyDiff = nyTarget - currentTime;
+            updateClockContent('clock-newyear', nyDiff, t.newyear.replace('2026', currentYear + 1), t, '🎆');
+        }
     }
 
     function updateClockContent(id, diff, label, t, icon) {
