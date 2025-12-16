@@ -2,6 +2,49 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
 
+/* NEON MARQUEE BANNER */
+.neon-marquee-container {
+    background: #263238;
+    /* Dark elegant background */
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-top: 2px solid #00E5FF;
+    border-bottom: 2px solid #D500F9;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+    position: relative;
+    display: none;
+    /* Hidden by default, shown via JS */
+}
+
+.neon-text {
+    display: inline-block;
+    color: #FFFFFF;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #D500F9,
+        0 0 30px #D500F9,
+        0 0 40px #D500F9;
+    animation: neon-scroll 20s linear infinite;
+    padding-left: 100%;
+    /* Start from far right */
+}
+
+@keyframes neon-scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
 :root {
     --color-bg: #E0F7FA;
     /* Light Blue BG */

@@ -98,6 +98,13 @@
 
   <!-- ZONA PRODUSE -->
   <main>
+    <!-- Marquee Banner that appears on filtering -->
+    <div id="monthly-banner" class="neon-marquee-container">
+      <div class="neon-text" id="neon-msg">
+        🌟 Noutățile Lunii Decembrie! Grăbește-te să le salvezi, dispar pe 1 Ianuarie! ❄️✨
+      </div>
+    </div>
+
     <div id="product-grid" class="products-container">
       <!-- Produsele vor aparea aici via JavaScript -->
     </div>
@@ -151,7 +158,25 @@
       });
 
       const grid = document.getElementById('product-grid');
+      const banner = document.getElementById('monthly-banner');
+
       grid.style.display = 'grid';
+
+      // Show/Hide Banner based on category
+      if (currentCategory !== 'All') {
+        banner.style.display = 'block';
+        // Update month dynamically
+        const monthNames = ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
+        const d = new Date();
+        const currentMonth = monthNames[d.getMonth()];
+        const nextMonth = monthNames[(d.getMonth() + 1) % 12];
+        const year = (d.getMonth() == 11) ? d.getFullYear() + 1 : d.getFullYear(); // Next year if Dec
+
+        const msgElement = document.getElementById('neon-msg');
+        msgElement.innerHTML = `🌟 Noutățile Lunii <u>${currentMonth}</u>! Grăbește-te să le salvezi, dispar pe 1 ${nextMonth}! ⏳✨`;
+      } else {
+        banner.style.display = 'none';
+      }
 
       // Remove old action container if exists
       const oldAction = document.getElementById('grid-action-container');
@@ -159,8 +184,12 @@
 
       renderProducts(filtered);
 
-      // Scroll to grid
-      grid.scrollIntoView({ behavior: 'smooth' });
+      // Scroll to banner if visible, else grid
+      if (currentCategory !== 'All') {
+        banner.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        grid.scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
     function selectTier(tier) {
