@@ -336,7 +336,13 @@
                 a.download = 'kids_digital_hub_promo.webm';
                 a.click();
                 window.URL.revokeObjectURL(url);
-                alert("✅ VIDEO DOWNLOADED! Check your files.");
+
+                // AUTO REDIRECT TO TIKTOK
+                setTimeout(() => {
+                    alert("✅ DESCARCAT! Acum te redirecționez spre TikTok pentru a-l plasa! 🚀");
+                    window.location.href = "https://www.tiktok.com/upload?lang=ro";
+                }, 1500);
+
                 document.getElementById('outro-overlay').style.display = 'flex';
             };
         }
