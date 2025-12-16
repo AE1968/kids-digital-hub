@@ -136,6 +136,12 @@ function changeLanguage(lang) {
         }
     });
 
+    // Save selected language
+    localStorage.setItem('selectedLanguage', lang);
+
+    // Dispatch event for seasonal background update
+    window.dispatchEvent(new Event('languageChanged'));
+
     // Update Flag in Select if needed (optional, select handles itself mostly)
     console.log(`Language changed to: ${lang}`);
 }
