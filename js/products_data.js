@@ -2,7 +2,63 @@
 // PRODUCT DATABASE (Simulated for Demo)
 // ============================================
 
-var allProducts = [];
+// Product Database (Live)
+var allProducts = [
+    {
+        id: "col-001",
+        name: "Space Adventure Dog",
+        category: "Coloring",
+        is_free: true,
+        image: "assets/images/products/space_dog.png",
+        description: "Join the brave astronaut puppy on a mission to the stars! Perfect for little dreamers.",
+        link: "assets/images/products/space_dog.png"
+    },
+    {
+        id: "col-002",
+        name: "Dino Safari Jeep",
+        category: "Coloring",
+        is_free: true,
+        image: "assets/images/products/dino_safari.png",
+        description: "Beep beep! T-Rex is driving through the jungle. A fun page for dino lovers.",
+        link: "assets/images/products/dino_safari.png"
+    },
+    {
+        id: "col-003",
+        name: "Magical Unicorn Castle",
+        category: "Coloring",
+        is_free: true,
+        image: "assets/images/products/unicorn.png",
+        description: "Fly over the rainbow with this magical unicorn and her castle in the clouds.",
+        link: "assets/images/products/unicorn.png"
+    },
+    {
+        id: "col-004",
+        name: "Underwater Octopus Party",
+        category: "Coloring",
+        is_free: true,
+        image: "assets/images/products/octopus.png",
+        description: "Deep dive with Mr. Octopus as he juggles shells! Fun and easy to color.",
+        link: "assets/images/products/octopus.png"
+    },
+    {
+        id: "col-005",
+        name: "Friendly Garden Robot",
+        category: "Coloring",
+        is_free: true,
+        image: "assets/images/products/robot.png",
+        description: "Beep boop! This friendly robot loves nature. A great mix of tech and nature.",
+        link: "assets/images/products/robot.png"
+    },
+    {
+        id: "pack-001",
+        name: "🦄 Mega Variety Pack (50+ Pages)",
+        category: "Coloring",
+        is_free: false,
+        image: "assets/images/products/pack_variety.png",
+        description: "The ultimate collection! Dinos, Unicorns, Space & more. Hours of fun guaranteed.",
+        link: "login.html?redirect=premium"
+    }
+];
 
 // ============================================
 // RENDER ENGINE
@@ -39,7 +95,7 @@ function renderProducts(products) {
         card.className = 'product-card';
         // Add subtle animation delay
         card.style.animation = 'fadeInUp 0.5s ease forwards';
-        
+
         card.innerHTML = `
             <div class="card-image-container">
                 <span class="product-badge ${badgeClass}" style="background-color: ${badgeColor};">${badgeText}</span>
