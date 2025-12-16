@@ -170,7 +170,7 @@
             <p style="font-size: 0.9rem; color: #aaa;">(Generates & Downloads .webm file for TikTok)</p>
         </div>
 
-        <!-- NOTICE / AVERTISMENT -->
+        <!-- NOTICE / AVERTISMENT MULTI-LANGUAGE -->
         <div id="share-warning"
             style="margin: 30px 0 10px 0; color: #ffeb3b; font-size: 1rem; font-weight:bold; max-width: 90%; background:rgba(0,0,0,0.5); padding:10px; border-radius:10px;">
             ⚠️ NOTICE: By tapping the icons below, you will automatically share this promo video to your friends!
@@ -188,6 +188,15 @@
     </div>
 
     <script>
+        const translations = {
+            en: "⚠️ NOTICE: By tapping the icons below, you will automatically share this promo video to your friends!",
+            ro: "⚠️ ATENȚIE: Apăsând iconițele de mai jos, vei distribui acest video automat prietenilor tăi!",
+            fr: "⚠️ ATTENTION: En appuyant sur les icônes ci-dessous, vous partagerez automatiquement cette vidéo avec vos amis !",
+            de: "⚠️ HINWEIS: Durch Tippen auf die Symbole teilen Sie dieses Video automatisch mit Freunden!",
+            es: "⚠️ AVISO: ¡Al tocar los iconos de abajo, compartirás este video con tus amigos!",
+            it: "⚠️ AVVISO: Toccando le icone qui sotto, condividerai questo video con gli amici!"
+        };
+
         const canvas = document.getElementById('promoCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -196,18 +205,31 @@
 
         let startTime = null;
         let audioCtx;
-        let audioDest; // Destination for recording
+        let audioDest;
         let isPlaying = false;
         let isRecording = false;
 
-        // Media Recorder params
         let mediaRecorder;
         let recordedChunks = [];
 
-        // --- SCENE LOGIC (SAME AS BEFORE) ---
-        function loop(timestamp) {
-            if (!isPlaying && !isRecording) return; // Stop loop if not playing/recording
+        // Auto-detect Language
+        function setWarningLanguage() {
+            // Try to get lang from URL param (tier/lang) or Browser
+            const urlParams = new URLSearchParams(window.location.search);
+            let lang = urlParams.get('lang') || navigator.language.substring(0, 2).toLowerCase();
 
+            // Check stored lang from main site (simulated via simple logic or default)
+            // If 'ro' is prevalent in navigator, use ro.
+            if (!translations[lang]) lang = 'en'; // Default
+
+            const warningEl = document.getElementById('share-warning');
+            if (warningEl && translations[lang]) {
+                warningEl.innerText = translations[lang];
+            }
+        }
+
+        function loop(timestamp) {
+            if (!isPlaying && !isRecording) return;
             if (!startTime) startTime = timestamp;
             const progress = (timestamp - startTime) / 1000;
 
@@ -219,12 +241,7 @@
             else if (progress < 15) scene3_Solution(progress);
             else if (progress < 20) scene4_Outro(progress);
             else {
-                // End
-                if (isRecording) {
-                    stopRecordingAndSave();
-                } else {
-                    endAd();
-                }
+                if (isRecording) { stopRecordingAndSave(); } else { endAd(); }
                 return;
             }
             drawScanlines(progress);
@@ -244,8 +261,6 @@
         function initAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
-
-            // Setup recording destination
             audioDest = audioCtx.createMediaStreamDestination();
         }
 
@@ -254,25 +269,18 @@
             const bassGain = audioCtx.createGain();
             bassOsc.type = 'sawtooth';
             bassOsc.frequency.setValueAtTime(55, audioCtx.currentTime);
-
             const filter = audioCtx.createBiquadFilter();
             filter.type = 'lowpass';
             filter.frequency.setValueAtTime(200, audioCtx.currentTime);
             filter.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.5);
             filter.frequency.linearRampToValueAtTime(200, audioCtx.currentTime + 1.0);
-
             bassOsc.connect(filter);
             filter.connect(bassGain);
-
-            // Connect to BOTH speakers AND recording stream
             bassGain.connect(audioCtx.destination);
             if (audioDest) bassGain.connect(audioDest);
-
             bassOsc.start();
             bassGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
             bassOsc.stop(audioCtx.currentTime + 20);
-
-            // Melody
             const melodyInterval = setInterval(() => {
                 if (!isPlaying && !isRecording) { clearInterval(melodyInterval); return; }
                 if (Math.random() > 0.5) playNote();
@@ -285,51 +293,32 @@
             osc.type = 'square';
             const freqs = [220, 261.63, 329.63, 392, 440, 523.25];
             osc.frequency.setValueAtTime(freqs[Math.floor(Math.random() * freqs.length)], audioCtx.currentTime);
-
             gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             if (audioDest) gain.connect(audioDest);
-
             osc.start();
             osc.stop(audioCtx.currentTime + 0.2);
         }
 
-        // --- RECORDING MAGIC ---
         function startRecordingAndDownload() {
-            // Hide overlay, start from beginning
             document.getElementById('outro-overlay').style.display = 'none';
-
-            // Init Audio
             if (!audioCtx) initAudio();
-
-            // Create Stream: Canvas + Audio
-            const canvasStream = canvas.captureStream(30); // 30 FPS
+            const canvasStream = canvas.captureStream(30);
             const finalStream = new MediaStream([
                 ...canvasStream.getVideoTracks(),
                 ...audioDest.stream.getAudioTracks()
             ]);
-
-            mediaRecorder = new MediaRecorder(finalStream, {
-                mimeType: 'video/webm;codecs=vp9'
-            });
-
+            mediaRecorder = new MediaRecorder(finalStream, { mimeType: 'video/webm;codecs=vp9' });
             recordedChunks = [];
-            mediaRecorder.ondataavailable = (e) => {
-                if (e.data.size > 0) recordedChunks.push(e.data);
-            };
-
+            mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
             mediaRecorder.start();
             isRecording = true;
-            isPlaying = true; // Logic flag
+            isPlaying = true;
             startTime = null;
-
-            // Start visuals and audio
             requestAnimationFrame(loop);
             playCyberpunkMusic();
-
             alert("🎥 GENERATING VIDEO... (Wait 20s) ⏳");
         }
 
@@ -337,7 +326,6 @@
             isRecording = false;
             isPlaying = false;
             mediaRecorder.stop();
-
             mediaRecorder.onstop = () => {
                 const blob = new Blob(recordedChunks, { type: 'video/webm' });
                 const url = URL.createObjectURL(blob);
@@ -348,81 +336,25 @@
                 a.download = 'kids_digital_hub_promo.webm';
                 a.click();
                 window.URL.revokeObjectURL(url);
-
                 alert("✅ VIDEO DOWNLOADED! Check your files.");
                 document.getElementById('outro-overlay').style.display = 'flex';
             };
         }
 
-        // --- VISUALS (Same) ---
-        function scene1_Hook(t) {
-            ctx.textAlign = 'center'; ctx.font = 'bold 150px Orbitron';
-            let offX = (Math.random() - 0.5) * 20; let offY = (Math.random() - 0.5) * 20;
-            if (Math.random() > 0.9) offX += 50;
-            ctx.fillStyle = '#FF0055'; ctx.fillText('ARE YOUR', 540 + offX, 640 + offY);
-            ctx.fillStyle = '#00FFFF'; ctx.fillText('ARE YOUR', 540 - offX, 640 - offY);
-            ctx.fillStyle = '#FFFFFF'; ctx.fillText('ARE YOUR', 540, 640);
-            ctx.font = 'bold 200px Orbitron'; ctx.fillStyle = '#FFFF00';
-            ctx.fillText('KIDS', 540, 960); ctx.fillText('BORED?', 540, 1160);
-        }
-        function scene2_Problem(t) {
-            let localT = t - 5;
-            if (Math.floor(localT * 4) % 2 === 0) { ctx.fillStyle = '#110000'; ctx.fillRect(0, 0, 1080, 1920); }
-            ctx.textAlign = 'center'; ctx.font = 'bold 120px Orbitron'; ctx.fillStyle = '#FF0000';
-            ctx.fillText('NEED A', 540, 860);
-            let s = Math.sin(localT * 20) * 10;
-            ctx.font = 'bold 180px Orbitron'; ctx.fillStyle = '#FFFFFF';
-            ctx.fillText('PARENT', 540 + s, 1060); ctx.fillText('BREAK?', 540 - s, 1260);
-        }
-        function scene3_Solution(t) {
-            let localT = t - 10;
-            drawRobot(540, 760, localT);
-            ctx.textAlign = 'center'; ctx.font = 'bold 100px Orbitron'; ctx.fillStyle = '#00FF00';
-            ctx.fillText('SOLUTION:', 540, 1260);
-            ctx.font = 'bold 140px Orbitron'; ctx.fillStyle = '#FFFFFF'; ctx.shadowColor = '#00FFFF'; ctx.shadowBlur = 20;
-            ctx.fillText('KIDS DIGITAL', 540, 1410); ctx.fillText('HUB', 540, 1560); ctx.shadowBlur = 0;
-        }
-        function scene4_Outro(t) {
-            let localT = t - 15;
-            ctx.globalAlpha = 0.2; ctx.font = 'italic 80px Orbitron'; ctx.fillStyle = '#FFFFFF';
-            let ry = (localT * 100) % 1920;
-            for (let i = 0; i < 1920; i += 100) ctx.fillText('WWW.KIDSDIGITALHUB.COM', 540, i + ry - 1920);
-            ctx.globalAlpha = 1.0;
-            let sc = 1 + Math.sin(localT * 5) * 0.1;
-            ctx.save(); ctx.translate(540, 960); ctx.scale(sc, sc);
-            ctx.font = 'bold 150px Orbitron'; ctx.fillStyle = '#FF00E6';
-            ctx.fillText('JOIN', 0, -100); ctx.fillText('NOW!', 0, 100); ctx.restore();
-        }
-        function drawRobot(x, y, t) {
-            ctx.save(); ctx.translate(x, y); ctx.translate(0, Math.sin(t * 2) * 20);
-            ctx.fillStyle = '#333'; ctx.beginPath(); ctx.roundRect(-150, -150, 300, 300, 20); ctx.fill();
-            ctx.fillStyle = '#00FFFF';
-            if (Math.sin(t * 10) > 0.95) ctx.fillRect(-100, -50, 200, 10); else {
-                ctx.beginPath(); ctx.arc(-70, -50, 40, 0, Math.PI * 2); ctx.arc(70, -50, 40, 0, Math.PI * 2); ctx.fill();
-            }
-            ctx.beginPath(); ctx.moveTo(0, -150); ctx.lineTo(0, -250); ctx.strokeStyle = '#888'; ctx.lineWidth = 10; ctx.stroke();
-            ctx.beginPath(); ctx.arc(0, -250, 20, 0, Math.PI * 2); ctx.fillStyle = 'red'; ctx.fill();
-            ctx.fillStyle = '#222'; ctx.fillRect(-80, 50, 160, 20);
-            ctx.fillStyle = '#00FF00'; for (let i = 0; i < 5; i++) { let h = Math.random() * 40; ctx.fillRect(-70 + i * 30, 70 - h, 20, h); }
-            ctx.restore();
-        }
-        function drawScanlines(t) {
-            ctx.fillStyle = "rgba(0,0,0,0.1)"; for (let i = 0; i < 1920; i += 10) ctx.fillRect(0, i, 1080, 2);
-            ctx.fillStyle = "rgba(0,255,255,0.05)"; ctx.fillRect(0, (t * 500) % 1920, 1080, 50);
-        }
-        function endAd() {
-            isPlaying = false;
-            document.getElementById('outro-overlay').style.display = 'flex';
-        }
+        function scene1_Hook(t) { ctx.textAlign = 'center'; ctx.font = 'bold 150px Orbitron'; let offX = (Math.random() - 0.5) * 20; let offY = (Math.random() - 0.5) * 20; if (Math.random() > 0.9) offX += 50; ctx.fillStyle = '#FF0055'; ctx.fillText('ARE YOUR', 540 + offX, 640 + offY); ctx.fillStyle = '#00FFFF'; ctx.fillText('ARE YOUR', 540 - offX, 640 - offY); ctx.fillStyle = '#FFFFFF'; ctx.fillText('ARE YOUR', 540, 640); ctx.font = 'bold 200px Orbitron'; ctx.fillStyle = '#FFFF00'; ctx.fillText('KIDS', 540, 960); ctx.fillText('BORED?', 540, 1160); }
+        function scene2_Problem(t) { let localT = t - 5; if (Math.floor(localT * 4) % 2 === 0) { ctx.fillStyle = '#110000'; ctx.fillRect(0, 0, 1080, 1920); } ctx.textAlign = 'center'; ctx.font = 'bold 120px Orbitron'; ctx.fillStyle = '#FF0000'; ctx.fillText('NEED A', 540, 860); let s = Math.sin(localT * 20) * 10; ctx.font = 'bold 180px Orbitron'; ctx.fillStyle = '#FFFFFF'; ctx.fillText('PARENT', 540 + s, 1060); ctx.fillText('BREAK?', 540 - s, 1260); }
+        function scene3_Solution(t) { let localT = t - 10; drawRobot(540, 760, localT); ctx.textAlign = 'center'; ctx.font = 'bold 100px Orbitron'; ctx.fillStyle = '#00FF00'; ctx.fillText('SOLUTION:', 540, 1260); ctx.font = 'bold 140px Orbitron'; ctx.fillStyle = '#FFFFFF'; ctx.shadowColor = '#00FFFF'; ctx.shadowBlur = 20; ctx.fillText('KIDS DIGITAL', 540, 1410); ctx.fillText('HUB', 540, 1560); ctx.shadowBlur = 0; }
+        function scene4_Outro(t) { let localT = t - 15; ctx.globalAlpha = 0.2; ctx.font = 'italic 80px Orbitron'; ctx.fillStyle = '#FFFFFF'; let ry = (localT * 100) % 1920; for (let i = 0; i < 1920; i += 100) ctx.fillText('WWW.KIDSDIGITALHUB.COM', 540, i + ry - 1920); ctx.globalAlpha = 1.0; let sc = 1 + Math.sin(localT * 5) * 0.1; ctx.save(); ctx.translate(540, 960); ctx.scale(sc, sc); ctx.font = 'bold 150px Orbitron'; ctx.fillStyle = '#FF00E6'; ctx.fillText('JOIN', 0, -100); ctx.fillText('NOW!', 0, 100); ctx.restore(); }
+        function drawRobot(x, y, t) { ctx.save(); ctx.translate(x, y); ctx.translate(0, Math.sin(t * 2) * 20); ctx.fillStyle = '#333'; ctx.beginPath(); ctx.roundRect(-150, -150, 300, 300, 20); ctx.fill(); ctx.fillStyle = '#00FFFF'; if (Math.sin(t * 10) > 0.95) ctx.fillRect(-100, -50, 200, 10); else { ctx.beginPath(); ctx.arc(-70, -50, 40, 0, Math.PI * 2); ctx.arc(70, -50, 40, 0, Math.PI * 2); ctx.fill(); } ctx.beginPath(); ctx.moveTo(0, -150); ctx.lineTo(0, -250); ctx.strokeStyle = '#888'; ctx.lineWidth = 10; ctx.stroke(); ctx.beginPath(); ctx.arc(0, -250, 20, 0, Math.PI * 2); ctx.fillStyle = 'red'; ctx.fill(); ctx.fillStyle = '#222'; ctx.fillRect(-80, 50, 160, 20); ctx.fillStyle = '#00FF00'; for (let i = 0; i < 5; i++) { let h = Math.random() * 40; ctx.fillRect(-70 + i * 30, 70 - h, 20, h); } ctx.restore(); }
+        function drawScanlines(t) { ctx.fillStyle = "rgba(0,0,0,0.1)"; for (let i = 0; i < 1920; i += 10) ctx.fillRect(0, i, 1080, 2); ctx.fillStyle = "rgba(0,255,255,0.05)"; ctx.fillRect(0, (t * 500) % 1920, 1080, 50); }
+        function endAd() { isPlaying = false; document.getElementById('outro-overlay').style.display = 'flex'; }
         function shareSocial(platform) {
             const url = "https://kidsdigitalhub.com";
             const text = "Check out this awesome Kids Digital Hub! 🤖🎨 #kids #fun";
 
-            if (platform === 'whatsapp') {
-                window.location.href = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
-            } else if (platform === 'facebook') {
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-            } else if (platform === 'tiktok' || platform === 'copy') {
+            if (platform === 'whatsapp') { window.location.href = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`; }
+            else if (platform === 'facebook') { window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank'); }
+            else if (platform === 'tiktok' || platform === 'copy') {
                 navigator.clipboard.writeText(url).then(() => {
                     alert("Link COPIED! 📋\nPaste it in TikTok/Instagram Bio/Story! 🚀");
                     if (platform === 'tiktok') window.location.href = "https://www.tiktok.com";
@@ -430,8 +362,11 @@
             }
         }
 
-        // Auto-start
-        window.onload = () => { setTimeout(startAd, 500); };
+        // Auto-start and Init
+        window.onload = () => {
+            setWarningLanguage();
+            setTimeout(startAd, 500);
+        };
         document.body.addEventListener('click', () => { if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); if (!isPlaying && !isRecording) startAd(); });
     </script>
 </body>
