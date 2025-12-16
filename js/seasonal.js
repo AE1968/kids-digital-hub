@@ -43,65 +43,7 @@ function setSeasonalBackground() {
         heroSection.style.backgroundRepeat = 'no-repeat';
     }
 
-    // Get current language
-    const currentLang = localStorage.getItem('selectedLanguage') || 'en';
-    const monthName = seasonalBackgrounds.monthNames[currentLang]?.[currentMonth - 1] ||
-        seasonalBackgrounds.monthNames['en'][currentMonth - 1];
-
-    // Create or update month display
-    let monthDisplay = document.getElementById('current-month-display');
-    if (!monthDisplay) {
-        monthDisplay = document.createElement('div');
-        monthDisplay.id = 'current-month-display';
-        monthDisplay.style.cssText = `
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 15px 30px;
-      border-radius: 25px;
-      font-family: 'Fredoka', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #667eea;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      z-index: 100;
-      backdrop-filter: blur(10px);
-      border: 3px solid #667eea;
-      animation: fadeInSlide 0.5s ease-out;
-    `;
-
-        if (heroSection) {
-            heroSection.style.position = 'relative';
-            heroSection.appendChild(monthDisplay);
-        }
-    }
-
-    monthDisplay.textContent = `📅 ${monthName}`;
-
-    // Add animation
-    const style = document.createElement('style');
-    style.textContent = `
-    @keyframes fadeInSlide {
-      from {
-        opacity: 0;
-        transform: translateX(50px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    
-    #current-month-display:hover {
-      transform: scale(1.05);
-      transition: transform 0.3s ease;
-    }
-  `;
-    if (!document.getElementById('seasonal-styles')) {
-        style.id = 'seasonal-styles';
-        document.head.appendChild(style);
-    }
+    // Month display removed - now shown in calendar widget
 }
 
 // Update month display when language changes
