@@ -98,22 +98,6 @@
 
   <!-- ZONA PRODUSE -->
   <main>
-    <!-- SERTAR SELECTIE (Free vs Paid) -->
-    <div id="choice-drawer" class="choice-container" style="display:none;">
-      <h2 id="choice-title" data-i18n="choice_title" style="text-align:center; color:#E64A19; margin-bottom:20px;">
-        Choose Version:</h2>
-      <div class="choice-buttons-wrapper">
-        <button onclick="selectTier('Free')" class="btn-choice-big btn-free-big">
-          <span style="font-size:2rem;">🎁</span>
-          <span data-i18n="btn_choice_free">Free Version</span>
-        </button>
-        <button onclick="selectTier('Paid')" class="btn-choice-big btn-paid-big">
-          <span style="font-size:2rem;">💎</span>
-          <span data-i18n="btn_choice_paid">Premium Version</span>
-        </button>
-      </div>
-    </div>
-
     <div id="product-grid" class="products-container">
       <!-- Produsele vor aparea aici via JavaScript -->
     </div>
@@ -153,9 +137,30 @@
 
     function filterCategory(cat) {
       currentCategory = cat;
-      document.getElementById('product-grid').style.display = 'none';
-      document.getElementById('choice-drawer').style.display = 'block';
-      document.getElementById('choice-drawer').scrollIntoView({ behavior: 'smooth' });
+      // Directly filter for FREE products only for guests
+      const filtered = allProducts.filter(p => {
+        const matchCat = (p.category.includes(currentCategory) || p.category === currentCategory);
+        // Assume guests only see 'is_free = true' items.
+        // Or if we want to show all mixed, remove the is_free check.
+        // User said "butoanele free unde deschid", implying free content.
+        // Let's show free only to be safe, or ALL if that's preferred.
+        // Previously logic was to split. Now we simplify.
+        // Let's show ALL items but maybe mark them? Or just Free?
+        // Actually, let's just show Free items as the "demo".
+        return matchCat && p.is_free === true;
+      });
+
+      const grid = document.getElementById('product-grid');
+      grid.style.display = 'grid';
+
+      // Remove old action container if exists
+      const oldAction = document.getElementById('grid-action-container');
+      if (oldAction) oldAction.remove();
+
+      renderProducts(filtered);
+
+      // Scroll to grid
+      grid.scrollIntoView({ behavior: 'smooth' });
     }
 
     function selectTier(tier) {
