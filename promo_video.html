@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Promo Video 2026 - Kids Digital Hub</title>
+    <title>Promo Kids Hub - Auto Start</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body {
@@ -19,6 +19,8 @@
             gap: 20px;
             color: #00FFEA;
             overflow: hidden;
+            cursor: pointer;
+            /* Hint that click might be needed for audio */
         }
 
         #phone-frame {
@@ -44,6 +46,7 @@
             opacity: 0;
             background: black;
             z-index: 1;
+            transition: opacity 0.5s ease;
         }
 
         .active {
@@ -71,6 +74,105 @@
             z-index: 20;
         }
 
+        .overlay-text {
+            position: absolute;
+            top: 15%;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+            text-shadow: 0 0 10px black;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px 0;
+            backdrop-filter: blur(2px);
+            animation: pulse-text 1.5s infinite;
+            border-top: 2px solid #D500F9;
+            border-bottom: 2px solid #D500F9;
+        }
+
+        /* Scrolling Link Container */
+        .scrolling-container {
+            position: absolute;
+            bottom: 50px;
+            width: 100%;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 2px solid #00FFEA;
+            border-bottom: 2px solid #00FFEA;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            white-space: nowrap;
+            z-index: 999;
+        }
+
+        .scrolling-text {
+            display: inline-block;
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00FFEA;
+            animation: scroll-left 15s linear infinite;
+        }
+
+        /* VISIT BUTTON (Only visible at end) */
+        .visit-btn {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #D500F9;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            box-shadow: 0 0 20px #D500F9;
+            cursor: pointer;
+            z-index: 1000;
+            animation: bounce 2s infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateX(-50%) scale(1);
+            }
+
+            50% {
+                transform: translateX(-50%) scale(1.1);
+                box-shadow: 0 0 40px #D500F9;
+            }
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes pulse-text {
+            0% {
+                opacity: 0.9;
+            }
+
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 25px #D500F9;
+            }
+
+            100% {
+                opacity: 0.9;
+            }
+        }
+
         @keyframes glitch-anim {
             0% {
                 transform: translate(0);
@@ -96,164 +198,172 @@
                 transform: translate(0);
             }
         }
-
-        /* Controls */
-        button {
-            background: #000;
-            border: 2px solid #00FFEA;
-            color: #00FFEA;
-            padding: 15px 30px;
-            font-size: 1.5rem;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            cursor: pointer;
-            box-shadow: 0 0 20px #00FFEA;
-            transition: 0.2s;
-        }
-
-        button:hover {
-            background: #00FFEA;
-            color: black;
-            box-shadow: 0 0 40px #00FFEA;
-        }
     </style>
 </head>
 
 <body>
 
-    <div id="controls">
-        <h1>FUTURE 2026 PLAYER</h1>
-        <p>🔊 MAX VOLUME | RECORD SCREEN</p>
-        <button onclick="startAd()">⚡ INITIATE PROTOCOL</button>
-    </div>
+    <!-- Removed Controls - Auto Start -->
 
     <div id="phone-frame">
         <div class="overlay-scanline"></div>
 
+        <!-- Scene 1: Bored Child -->
         <div id="scene-1" class="scene active">
-            <img src="assets/images/promo/scena1.png" class="promo-img" alt="Bored"
-                style="filter: hue-rotate(45deg) contrast(1.5);">
+            <img src="assets/images/promo/scena1.png" class="promo-img" alt="Bored">
         </div>
 
+        <!-- Scene 2: Quality Time -->
         <div id="scene-2" class="scene">
-            <img src="assets/images/promo/scena2.png" class="promo-img" alt="Solution"
-                style="filter: saturate(2) brightness(1.2);">
+            <div class="overlay-text" style="top: 20%;">
+                <h2 style="font-size: 1.4rem; color: #fff; margin: 0; text-shadow: 0 0 10px #00FFEA;">ALWAYS ON SCREENS?
+                    📱</h2>
+                <p style="font-size: 1.2rem; color: #00FFEA;">MAKE IT <b>QUALITY TIME</b>!<br>EDUCATIONAL & FUN ✨</p>
+            </div>
+            <img src="assets/images/promo/scena2.png" class="promo-img" alt="Solution">
         </div>
 
+        <!-- Scene 3: Parent Appeal -->
         <div id="scene-3" class="scene">
+            <div class="overlay-text">
+                <h2 style="font-size: 1.5rem; color: #fff; margin: 0; text-shadow: 0 0 10px #D500F9;">NEED A BREAK,
+                    PARENT?</h2>
+                <p style="font-size: 1.2rem; color: #D500F9; font-weight: bold; margin: 10px 0 0 0;">SEND THEM TO PLAY
+                    HERE! 👇</p>
+            </div>
+            <img src="assets/images/promo/scena3.png" class="promo-img" alt="Final">
+        </div>
+
+        <!-- Scene 4: Outro with Scrolling Link AND Redirect -->
+        <div id="scene-4" class="scene">
+            <div class="overlay-text" style="top: 20%; background: transparent; border: none;">
+                <h2 style="font-size: 2rem; color: #fff; margin: 0; text-shadow: 0 0 20px #D500F9;">JOIN NOW!</h2>
+                <p id="redirect-msg" style="font-size: 1rem; color: #fff;">Redirecting in 5s...</p>
+            </div>
+
+            <button class="visit-btn" onclick="goToSite()">👉 TAP / CLICK HERE! 👈</button>
+
+            <div class="scrolling-container">
+                <div class="scrolling-text">
+                    WWW.KIDSDIGITALHUB.COM &nbsp;&nbsp;★&nbsp;&nbsp; FREE EDUCATIONAL GAMES &nbsp;&nbsp;★&nbsp;&nbsp;
+                    WWW.KIDSDIGITALHUB.COM &nbsp;&nbsp;★&nbsp;&nbsp;
+                </div>
+            </div>
             <img src="assets/images/promo/scena3.png" class="promo-img" alt="Final"
-                style="filter: drop-shadow(0 0 10px #D500F9);">
+                style="filter: hue-rotate(90deg) contrast(1.2);">
         </div>
     </div>
 
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const TARGET_URL = "https://AE1968.github.io/kids-digital-hub/";
+        let hasStarted = false;
+
+        function goToSite() {
+            window.open(TARGET_URL, '_blank');
+        }
 
         function createCyberBass(time, duration) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            const filter = audioCtx.createBiquadFilter();
-
-            osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(80, time);
             osc.frequency.exponentialRampToValueAtTime(30, time + duration);
-
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(1000, time);
-            filter.frequency.exponentialRampToValueAtTime(100, time + duration);
-
             gain.gain.setValueAtTime(0.5, time);
             gain.gain.linearRampToValueAtTime(0, time + duration);
-
-            osc.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.start(time);
-            osc.stop(time + duration);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(time); osc.stop(time + duration);
         }
 
         function createRiser(time, duration) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-
             osc.type = 'square';
             osc.frequency.setValueAtTime(200, time);
             osc.frequency.exponentialRampToValueAtTime(800, time + duration);
-
             gain.gain.setValueAtTime(0, time);
             gain.gain.linearRampToValueAtTime(0.3, time + duration);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.start(time);
-            osc.stop(time + duration);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(time); osc.stop(time + duration);
         }
 
         function createDrop(time) {
-            // Impact
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.frequency.setValueAtTime(50, time);
             gain.gain.setValueAtTime(1, time);
             gain.gain.exponentialRampToValueAtTime(0.01, time + 2);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(time);
-            osc.stop(time + 2);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(time); osc.stop(time + 2);
+        }
 
-            // Melody Arp
-            [500, 600, 700, 800, 500, 600, 900, 1000].forEach((freq, i) => {
-                const o = audioCtx.createOscillator();
-                const g = audioCtx.createGain();
-                o.type = 'square';
-                o.frequency.value = freq;
-                g.gain.value = 0.1;
-                g.gain.linearRampToValueAtTime(0, time + (i * 0.1) + 0.1);
-                o.connect(g);
-                g.connect(audioCtx.destination);
-                o.start(time + i * 0.1);
-                o.stop(time + i * 0.1 + 0.1);
-            });
+        function createAmbientLoop(time, duration) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, time);
+            gain.gain.setValueAtTime(0.05, time);
+            gain.gain.linearRampToValueAtTime(0, time + duration);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(time); osc.stop(time + duration);
         }
 
         function startAd() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+            if (hasStarted) return;
+            hasStarted = true;
+
+            if (audioCtx.state === 'suspended') audioCtx.resume().catch(e => console.log("Audio requires interaction"));
             const now = audioCtx.currentTime;
 
             const s1 = document.getElementById('scene-1');
             const s2 = document.getElementById('scene-2');
             const s3 = document.getElementById('scene-3');
+            const s4 = document.getElementById('scene-4');
 
-            s1.classList.remove('active'); s2.classList.remove('active'); s3.classList.remove('active');
-            document.getElementById('controls').style.display = 'none';
+            s1.classList.remove('active'); s2.classList.remove('active');
+            s3.classList.remove('active'); s4.classList.remove('active');
 
-            // SCENE 1: GLITCH BASS (0s)
+            // SCENE 1 (0s)
             s1.classList.add('active');
-            createCyberBass(now, 0.5);
-            createCyberBass(now + 0.5, 0.5);
-            createCyberBass(now + 1.0, 0.5);
+            createCyberBass(now, 0.5); createCyberBass(now + 0.5, 0.5); createCyberBass(now + 1.0, 0.5);
 
-            // SCENE 2: RISER (3s)
-            setTimeout(() => {
-                s1.classList.remove('active');
-                s2.classList.add('active');
-                createRiser(audioCtx.currentTime, 3);
-            }, 3000);
+            // SCENE 2 (3s)
+            setTimeout(() => { s1.classList.remove('active'); s2.classList.add('active'); createRiser(audioCtx.currentTime, 3); }, 3000);
 
-            // SCENE 3: DROP (6s)
-            setTimeout(() => {
-                s2.classList.remove('active');
-                s3.classList.add('active');
-                createDrop(audioCtx.currentTime);
-            }, 6000);
+            // SCENE 3 (6s)
+            setTimeout(() => { s2.classList.remove('active'); s3.classList.add('active'); createDrop(audioCtx.currentTime); }, 6000);
 
-            // END
+            // SCENE 4 (10s) - OUTRO
             setTimeout(() => {
-                document.getElementById('controls').style.display = 'block';
+                s3.classList.remove('active');
+                s4.classList.add('active');
+                createAmbientLoop(audioCtx.currentTime, 10);
+
+                // Countdown to Redirect
+                let count = 5;
+                const msg = document.getElementById('redirect-msg');
+                const interval = setInterval(() => {
+                    count--;
+                    msg.innerText = "Redirecting in " + count + "s...";
+                    if (count <= 0) {
+                        clearInterval(interval);
+                        goToSite(); // REDIRECT
+                    }
+                }, 1000);
             }, 10000);
         }
+
+        // AUTO START LOGIC
+        window.onload = function () {
+            setTimeout(startAd, 500); // Try to start automatically
+        };
+
+        // Fallback: If auto-audio is blocked, any click starts it
+        document.body.addEventListener('click', () => {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+                if (!hasStarted) startAd();
+            }
+        });
     </script>
 </body>
 
