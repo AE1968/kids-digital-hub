@@ -3,312 +3,239 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="title-key" content="hero.title">
-  <meta name="description"
-    content="Kids Digital Hub - Discover amazing digital products designed for children of all ages. Interactive coloring books, educational games, stories and more!">
-  <meta name="keywords"
-    content="kids digital products, children educational games, interactive coloring books, digital learning">
-  <title>Kids Digital Hub - Digital Products for Children</title>
-
-  <!-- Favicon -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- FORCE RELOAD / NO CACHE (Auto F5 Effect) -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Kids Digital Hub - Fun & Creativity</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Favicon (placeholder) -->
   <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
+  <script src="js/translations.js"></script>
+  <style>
+    .lang-select {
+      padding: 5px 10px;
+      border-radius: 15px;
+      border: 2px solid #E64A19;
+      background: #FFCCBC;
+      color: #D84315;
+      font-weight: bold;
+      font-family: 'Fredoka', sans-serif;
+      cursor: pointer;
+      margin-left: 10px;
+      outline: none;
+      font-size: 0.9rem;
+    }
 
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/home.css">
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="header-content">
-        <a href="index.html" class="logo">
-          <span class="logo-icon">🎨</span>
-          <span>Kids Digital Hub</span>
-        </a>
 
-        <nav class="nav">
-          <ul class="nav-links" id="navLinks">
-            <li><a href="index.html" class="nav-link active" data-i18n="nav.home">Home</a></li>
-            <li><a href="products.html" class="nav-link" data-i18n="nav.products">Products</a></li>
-            <li><a href="#age-groups" class="nav-link" data-i18n="nav.ageGroups">Age Groups</a></li>
-            <li><a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a></li>
-          </ul>
-
-          <div class="language-selector" id="languageSelector">
-            <button class="lang-current">
-              🇬🇧 English
-            </button>
-            <div class="lang-dropdown" id="langDropdown">
-              <!-- Populated by JavaScript -->
-            </div>
-          </div>
-
-          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
-            ☰
-          </button>
-        </nav>
+  <header>
+    <div class="nav-container">
+      <div class="header-left">
+        <a href="#" class="logo">🎨 Kids Hub</a>
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+          <option value="en">🇬🇧 English</option>
+          <option value="fr">🇫🇷 Français</option>
+          <option value="de">🇩🇪 Deutsch</option>
+          <option value="ro">🇷🇴 Română</option>
+          <option value="es">🇪🇸 Español</option>
+          <option value="zh">🇨🇳 中文</option>
+          <option value="ja">🇯🇵 日本語</option>
+          <option value="ko">🇰🇷 한국어</option>
+        </select>
       </div>
+
+      <nav class="main-nav">
+        <ul>
+          <li>
+            <a href="#coloring" class="nav-btn" onclick="filterCategory('Coloring')">
+              <span class="nav-icon">🖍️</span>
+              <span class="nav-text" data-i18n="nav_coloring">Coloring</span>
+            </a>
+          </li>
+          <li>
+            <a href="#games" class="nav-btn" onclick="filterCategory('Games')">
+              <span class="nav-icon">🧩</span>
+              <span class="nav-text" data-i18n="nav_games">Games</span>
+            </a>
+          </li>
+          <li>
+            <a href="#stories" class="nav-btn" onclick="filterCategory('Stories')">
+              <span class="nav-icon">📚</span>
+              <span class="nav-text" data-i18n="nav_stories">Stories</span>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:contact@kidsdigitalhub.com" class="nav-btn">
+              <span class="nav-icon">📧</span>
+              <span class="nav-text">Contact</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
   <section class="hero">
-    <div class="hero-background"></div>
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-text animate-fade-in">
-          <h1 data-i18n="hero.title">Welcome to Kids Digital Hub</h1>
-          <p class="hero-subtitle" data-i18n="hero.subtitle">
-            Discover amazing digital products designed for children of all ages
-          </p>
-          <div class="hero-buttons">
-            <a href="products.html" class="btn btn-primary btn-lg" data-i18n="hero.cta">
-              Explore Products
-            </a>
-            <a href="#featured" class="btn btn-secondary btn-lg" data-i18n="hero.ctaDemo">
-              Try Free Demos
-            </a>
-          </div>
-        </div>
-        <div class="hero-image animate-slide-right">
-          <div class="hero-illustration">
-            <!-- Animated illustration will be added here -->
-            <div class="floating-emoji">🎮</div>
-            <div class="floating-emoji">📚</div>
-            <div class="floating-emoji">🖍️</div>
-            <div class="floating-emoji">🧩</div>
-            <div class="floating-emoji">✨</div>
-          </div>
-        </div>
+    <h1 data-i18n="hero_title">Welcome to the Creative Universe! ✨</h1>
+    <img src="assets/images/hero_kids_flags.png" alt="Children of the World" class="hero-kids-img">
+  </section>
+
+  <!-- ZONA PRODUSE -->
+  <main>
+    <!-- SERTAR SELECTIE (Free vs Paid) -->
+    <div id="choice-drawer" class="choice-container" style="display:none;">
+      <h2 id="choice-title" data-i18n="choice_title" style="text-align:center; color:#E64A19; margin-bottom:20px;">
+        Choose Version:</h2>
+      <div class="choice-buttons-wrapper">
+        <button onclick="selectTier('Free')" class="btn-choice-big btn-free-big">
+          <span style="font-size:2rem;">🎁</span>
+          <span data-i18n="btn_choice_free">Free Version</span>
+        </button>
+        <button onclick="selectTier('Paid')" class="btn-choice-big btn-paid-big">
+          <span style="font-size:2rem;">💎</span>
+          <span data-i18n="btn_choice_paid">Premium Version</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="product-grid" class="products-container">
+      <!-- Produsele vor aparea aici via JavaScript -->
+    </div>
+  </main>
+
+  <section class="creator-spotlight">
+    <h3 data-i18n="creator_title">Meet the Digital Co-Creator 🤖</h3>
+    <div style="position: relative; display: inline-block;">
+      <div id="ai-bubble" class="speech-bubble">
+        Salut! Un proiect născut din Imaginația Umană și Profesionalismul AI! 🤝✨
+      </div>
+
+      <div class="creator-btn" onclick="toggleBubble()">
+        <img src="assets/images/ai_co_creator.png" alt="AI Co-Creator">
+        <span class="creator-tag">AI</span>
       </div>
     </div>
   </section>
 
-  <!-- Age Groups Section -->
-  <section class="age-groups-section py-xl" id="age-groups">
-    <div class="container">
-      <div class="section-header text-center">
-        <h2 data-i18n="ageGroups.title">Browse by Age Group</h2>
-        <p>Find the perfect products for your child's developmental stage</p>
-      </div>
-
-      <div class="age-groups-grid" id="ageGroupsGrid">
-        <!-- Populated by JavaScript -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Categories Section -->
-  <section class="categories-section py-xl">
-    <div class="container">
-      <div class="section-header text-center">
-        <h2 data-i18n="categories.title">Product Categories</h2>
-        <p>Explore our diverse collection of digital products</p>
-      </div>
-
-      <div class="categories-grid" id="categoriesGrid">
-        <!-- Populated by JavaScript -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured Products Section -->
-  <section class="featured-section py-xl" id="featured">
-    <div class="container">
-      <div class="section-header text-center">
-        <h2 data-i18n="featured.title">Featured Products</h2>
-        <p data-i18n="featured.subtitle">Our most popular digital products for kids</p>
-      </div>
-
-      <div class="products-grid" id="featuredProducts">
-        <!-- Populated by JavaScript -->
-      </div>
-
-      <div class="text-center mt-lg">
-        <a href="products.html" class="btn btn-primary btn-lg" data-i18n="buttons.viewAll">
-          View All Products
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- How It Works Section -->
-  <section class="how-it-works-section py-xl">
-    <div class="container">
-      <div class="section-header text-center">
-        <h2 data-i18n="howItWorks.title">How It Works</h2>
-      </div>
-
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-icon">🔍</div>
-          <div class="step-number">1</div>
-          <h3 data-i18n="howItWorks.step1Title">Choose a Product</h3>
-          <p data-i18n="howItWorks.step1Desc">Browse our collection by age or category</p>
-        </div>
-
-        <div class="step-card">
-          <div class="step-icon">🎮</div>
-          <div class="step-number">2</div>
-          <h3 data-i18n="howItWorks.step2Title">Try the Demo</h3>
-          <p data-i18n="howItWorks.step2Desc">Test it for free before downloading</p>
-        </div>
-
-        <div class="step-card">
-          <div class="step-icon">⬇️</div>
-          <div class="step-number">3</div>
-          <h3 data-i18n="howItWorks.step3Title">Download & Enjoy</h3>
-          <p data-i18n="howItWorks.step3Desc">Get instant access to your digital product</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Product Request Section -->
-  <section class="request-section py-xl" id="request-product">
-    <div class="container container-narrow">
-      <div class="section-header text-center">
-        <h2>✨ Request a Custom Product</h2>
-        <p>Have an idea for a digital product? Share it with us!</p>
-      </div>
-
-      <div class="request-form-card">
-        <form id="productRequestForm" class="product-request-form">
-          <div class="form-group">
-            <label for="requestName">Your Name *</label>
-            <input type="text" id="requestName" name="name" required placeholder="Enter your name" class="form-input">
-          </div>
-
-          <div class="form-group">
-            <label for="requestEmail">Email Address *</label>
-            <input type="email" id="requestEmail" name="email" required placeholder="your.email@example.com"
-              class="form-input">
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="requestCategory">Product Category *</label>
-              <select id="requestCategory" name="category" required class="form-select">
-                <option value="">Select a category</option>
-                <option value="coloring">🖍️ Coloring Books</option>
-                <option value="games">🧩 Educational Games</option>
-                <option value="stories">📖 Interactive Stories</option>
-                <option value="printables">📝 Printable Activities</option>
-                <option value="creative">🎭 Creative Tools</option>
-                <option value="other">💡 Other</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="requestAge">Target Age Group *</label>
-              <select id="requestAge" name="ageGroup" required class="form-select">
-                <option value="">Select age group</option>
-                <option value="toddlers">🧸 Toddlers (2-4)</option>
-                <option value="preschool">🎨 Preschool (4-6)</option>
-                <option value="early-elementary">📚 Early Elementary (6-8)</option>
-                <option value="elementary">🎮 Elementary (8-10)</option>
-                <option value="preteens">🚀 Preteens (10-12)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="requestDescription">Product Description *</label>
-            <textarea id="requestDescription" name="description" required rows="5"
-              placeholder="Describe your product idea in detail... What would it do? What would children learn from it?"
-              class="form-textarea" maxlength="1000"></textarea>
-            <div class="char-counter">
-              <span id="charCount">0</span> / 1000 characters
-            </div>
-          </div>
-
-          <div class="form-notice">
-            <p>
-              ⚠️ <strong>Important:</strong> Requests containing inappropriate content
-              (violence, bullying, adult content, etc.) will be automatically rejected
-              and comply with our community guidelines.
-            </p>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary btn-lg">
-              ✉️ Submit Request
-            </button>
-          </div>
-        </form>
-
-        <div id="requestSuccess" class="request-success" style="display: none;">
-          <div class="success-icon">✅</div>
-          <h3>Thank You!</h3>
-          <p>Your product request has been submitted successfully. We'll review it and get back to you soon!</p>
-          <button class="btn btn-secondary" onclick="resetRequestForm()">
-            Submit Another Request
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h4>Kids Digital Hub</h4>
-          <p data-i18n="footer.about">
-            Kids Digital Hub provides high-quality digital products designed to educate,
-            entertain, and inspire children.
-          </p>
-        </div>
-
-        <div class="footer-section">
-          <h4 data-i18n="footer.quickLinks">Quick Links</h4>
-          <ul class="footer-links">
-            <li><a href="index.html" data-i18n="nav.home">Home</a></li>
-            <li><a href="products.html" data-i18n="nav.products">Products</a></li>
-            <li><a href="#age-groups" data-i18n="nav.ageGroups">Age Groups</a></li>
-            <li><a href="#request-product">Request Product</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-section">
-          <h4 data-i18n="footer.categories">Categories</h4>
-          <ul class="footer-links">
-            <li><a href="products.html?category=coloring" data-i18n="categories.coloring">Coloring Books</a></li>
-            <li><a href="products.html?category=games" data-i18n="categories.games">Educational Games</a></li>
-            <li><a href="products.html?category=stories" data-i18n="categories.stories">Interactive Stories</a></li>
-            <li><a href="products.html?category=printables" data-i18n="categories.printables">Printable Activities</a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="footer-section">
-          <h4 data-i18n="footer.support">Support</h4>
-          <ul class="footer-links">
-            <li><a href="#" data-i18n="footer.faq">FAQ</a></li>
-            <li><a href="#" data-i18n="footer.privacy">Privacy Policy</a></li>
-            <li><a href="#" data-i18n="footer.terms">Terms of Service</a></li>
-            <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p data-i18n="footer.copyright">© 2024 Kids Digital Hub. All rights reserved.</p>
-      </div>
-    </div>
+  <footer>
+    <p data-i18n="footer_rights">© 2025 Kids Digital Hub • Made with ❤️ for Kids</p>
+    <br>
+    <p style="font-size: 0.8rem; opacity: 0.8">Terms & Conditions | Privacy Policy</p>
   </footer>
 
-  <!-- Scripts -->
-  <script src="js/christmas-banner.js"></script>
-  <script src="js/currency.js"></script>
-  <script src="js/i18n.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/home.js"></script>
+  <!-- Scriptul cu datele reale (Generat de Python) -->
+  <script src="js/products_data.js"></script>
+  <script src="js/admin.js"></script>
+  <script>
+    let currentCategory = 'All';
+
+    // Init simplu
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts(allProducts);
+    });
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.getElementById('product-grid').style.display = 'none';
+      document.getElementById('choice-drawer').style.display = 'block';
+      document.getElementById('choice-drawer').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function selectTier(tier) {
+      const isFree = (tier === 'Free');
+      const filtered = allProducts.filter(p => {
+        const matchCat = (p.category.includes(currentCategory) || p.category === currentCategory);
+        return matchCat && (p.is_free === isFree);
+      });
+
+      document.getElementById('choice-drawer').style.display = 'none';
+      const grid = document.getElementById('product-grid');
+      grid.style.display = 'grid';
+
+      let actionContainer = document.getElementById('grid-action-container');
+      if (!actionContainer) {
+        actionContainer = document.createElement('div');
+        actionContainer.id = 'grid-action-container';
+        actionContainer.style.gridColumn = "1 / -1";
+        actionContainer.style.textAlign = "center";
+        actionContainer.style.marginBottom = "20px";
+        actionContainer.style.display = "flex";
+        actionContainer.style.justifyContent = "center";
+        actionContainer.style.gap = "20px";
+        actionContainer.style.flexWrap = "wrap";
+        grid.parentNode.insertBefore(actionContainer, grid);
+      }
+      actionContainer.innerHTML = '';
+
+      const folderLabel = isFree ? "Free" : "Premium";
+      const subFolder = isFree ? "Free" : "Paid";
+
+      const folderBtn = document.createElement('a');
+      folderBtn.innerHTML = `📂 OPEN FOLDER: New Products (${folderLabel})`;
+      folderBtn.href = `Produse_Noi/${subFolder}/${currentCategory}`;
+      folderBtn.target = "_blank";
+      folderBtn.className = "action-btn-main";
+      styleBtn(folderBtn, "#F57C00");
+      actionContainer.appendChild(folderBtn);
+
+      if (currentCategory === 'Coloring') {
+        const studioBtn = document.createElement('a');
+        const tierParam = isFree ? 'free' : 'premium';
+        studioBtn.innerHTML = `🎨 START COLORING (${folderLabel})`;
+        studioBtn.href = `coloring.html?tier=${tierParam}`;
+        studioBtn.className = "action-btn-main";
+        styleBtn(studioBtn, "#9C27B0");
+        actionContainer.appendChild(studioBtn);
+      }
+
+      renderProducts(filtered);
+    }
+
+    function styleBtn(btn, color) {
+      btn.style.display = "inline-block";
+      btn.style.padding = "15px 30px";
+      btn.style.backgroundColor = color;
+      btn.style.color = "white";
+      btn.style.borderRadius = "30px";
+      btn.style.textDecoration = "none";
+      btn.style.fontWeight = "bold";
+      btn.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
+      btn.style.border = "2px solid rgba(255,255,255,0.2)";
+      btn.style.fontFamily = "'Fredoka', sans-serif";
+      btn.style.cursor = "pointer";
+      btn.style.transition = "transform 0.2s, filter 0.2s";
+
+      btn.addEventListener('mouseenter', () => {
+        btn.style.filter = "brightness(1.1)";
+        btn.style.transform = "scale(1.05)";
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        btn.style.filter = "none";
+        btn.style.transform = "scale(1)";
+      });
+    }
+
+    function toggleBubble() {
+      const bubble = document.getElementById('ai-bubble');
+      bubble.classList.toggle('show');
+      if (bubble.classList.contains('show')) {
+        setTimeout(() => {
+          bubble.classList.remove('show');
+        }, 5000);
+      }
+    }
+  </script>
 </body>
 
 </html>
