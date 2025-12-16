@@ -100,6 +100,11 @@
             background: #1877F2;
         }
 
+        .tiktok {
+            background: #000000;
+            border-color: #FE2C55;
+        }
+
         .download-btn {
             width: auto;
             border-radius: 10px;
@@ -162,12 +167,19 @@
         <!-- Download Button Logic -->
         <div id="download-controls" style="margin-bottom: 20px;">
             <button id="saveBtn" class="cta-btn" onclick="startRecordingAndDownload()">⬇️ DOWNLOAD VIDEO FILE</button>
-            <p style="font-size: 0.9rem; color: #aaa;">(Creates a video file to post on TikTok)</p>
+            <p style="font-size: 0.9rem; color: #aaa;">(Generates & Downloads .webm file for TikTok)</p>
+        </div>
+
+        <!-- NOTICE / AVERTISMENT -->
+        <div id="share-warning"
+            style="margin: 30px 0 10px 0; color: #ffeb3b; font-size: 1rem; font-weight:bold; max-width: 90%; background:rgba(0,0,0,0.5); padding:10px; border-radius:10px;">
+            ⚠️ NOTICE: By tapping the icons below, you will automatically share this promo video to your friends!
         </div>
 
         <div class="social-bar">
-            <a href="#" class="social-btn whatsapp" onclick="shareSocial('whatsapp')" title="Share Link WhatsApp">📱</a>
-            <a href="#" class="social-btn facebook" onclick="shareSocial('facebook')" title="Share Link Facebook">📘</a>
+            <a href="#" class="social-btn whatsapp" onclick="shareSocial('whatsapp')" title="Share on WhatsApp">📱</a>
+            <a href="#" class="social-btn facebook" onclick="shareSocial('facebook')" title="Share on Facebook">📘</a>
+            <a href="#" class="social-btn tiktok" onclick="shareSocial('tiktok')" title="Copy Link for TikTok">🎵</a>
         </div>
 
         <br>
@@ -402,7 +414,21 @@
             isPlaying = false;
             document.getElementById('outro-overlay').style.display = 'flex';
         }
-        function shareSocial(p) { /* Keep simple link sharing on buttons */ }
+        function shareSocial(platform) {
+            const url = "https://kidsdigitalhub.com";
+            const text = "Check out this awesome Kids Digital Hub! 🤖🎨 #kids #fun";
+
+            if (platform === 'whatsapp') {
+                window.location.href = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
+            } else if (platform === 'facebook') {
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+            } else if (platform === 'tiktok' || platform === 'copy') {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert("Link COPIED! 📋\nPaste it in TikTok/Instagram Bio/Story! 🚀");
+                    if (platform === 'tiktok') window.location.href = "https://www.tiktok.com";
+                });
+            }
+        }
 
         // Auto-start
         window.onload = () => { setTimeout(startAd, 500); };
