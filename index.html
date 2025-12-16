@@ -153,6 +153,14 @@
   </footer>
 
   <!-- Scriptul cu datele reale (Generat de Python) -->
+  <script>
+    // 📊 GLOBAL TRAFFIC TRACKER
+    // Hits the public counter API to increment visits
+    fetch('https://api.counterapi.dev/v1/kidsdigitalhub/view/up')
+      .then(res => res.json())
+      .then(data => console.log('👀 Visitor Count:', data.count))
+      .catch(err => console.log('Tracking Error:', err));
+  </script>
   <script src="js/products_data.js"></script>
   <script src="js/admin.js"></script>
   <script src="js/translations.js"></script>
