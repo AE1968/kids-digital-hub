@@ -1,4 +1,6 @@
-# 🎨 Kids Digital Hub - Sistem Complet Automatizat
+
+
+ Trigger# 🎨 Kids Digital Hub - Sistem Complet Automatizat
 
 ## 🚀 Ce ai creat?
 
