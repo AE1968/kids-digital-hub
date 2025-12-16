@@ -105,103 +105,140 @@
 
         const styleSheet = document.createElement("style");
         styleSheet.innerText = `
-            /* --- QUANTUM MONOLITH (Left) --- */
-            @keyframes shimmer-line { 0% { transform: translateY(-120%); } 100% { transform: translateY(120%); } }
-            @keyframes pulse-mono { 0% { box-shadow: 0 0 10px rgba(0,0,0,0.5); } 50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); } 100% { box-shadow: 0 0 10px rgba(0,0,0,0.5); } }
+            /* --- QUANTUM MONOLITH (Left) - OBSIDIAN GRADE --- */
+            @keyframes scan-laser { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+            @keyframes pulse-gold { 0%, 100% { text-shadow: 0 0 5px #d4af37, 0 0 10px #d4af37; } 50% { text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700; } 100% { text-shadow: 0 0 5px #d4af37, 0 0 10px #d4af37; } }
+            @keyframes holo-flicker { 0% { opacity: 0.9; } 5% { opacity: 0.8; } 10% { opacity: 0.9; } 100% { opacity: 0.9; } }
 
             .monolith-clock {
-                position: absolute; top: 10px; width: 90px; height: 140px;
-                background: linear-gradient(135deg, #1a1a1a, #000000);
-                border: 1px solid #333; border-radius: 4px;
+                position: absolute; top: 20px; width: 100px; height: 160px;
+                background: linear-gradient(135deg, #222 0%, #000 100%);
+                border-radius: 4px;
                 display: flex; flex-direction: column; align-items: center; justify-content: center;
-                box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
+                box-shadow: 
+                    0 0 0 1px #333, /* Edge */
+                    10px 10px 20px rgba(0,0,0,0.8), /* Drop shadow */
+                    inset 2px 2px 10px rgba(255,255,255,0.1); /* Inner light */
                 overflow: hidden; z-index: 5;
                 font-family: 'Share Tech Mono', monospace;
-                animation: pulse-mono 4s infinite;
+                transform: perspective(800px) rotateY(10deg); /* Slight 3D turn */
+                transition: transform 0.3s ease;
             }
-            .mono-screen {
-                z-index: 2; width: 100%; text-align: center;
+            .monolith-clock:hover { transform: perspective(800px) rotateY(0deg) scale(1.05); }
+
+            .mono-surface {
+                position: absolute; inset: 0;
+                background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(212, 175, 55, 0.05) 3px);
+                pointer-events: none; z-index: 1;
             }
-            .mono-text { color: #d4af37; text-shadow: 0 0 5px #d4af37; font-size: 0.8rem; letter-spacing: 1px; margin: 4px 0; }
-            .mono-label { color: #888; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; }
+            .mono-screen { z-index: 2; width: 100%; text-align: center; display: flex; flex-direction: column; gap: 5px; }
+            .mono-label { color: #888; font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; }
+            .mono-xmas { font-size: 1.8rem; margin: 0; filter: drop-shadow(0 0 5px rgba(255,0,0,0.5)); }
+            .mono-text { 
+                color: #d4af37; font-size: 0.9rem; font-weight: bold; letter-spacing: 1px; 
+                animation: pulse-gold 3s infinite;
+            }
             
-            /* Scanning Laser */
             .mono-laser {
-                position: absolute; top: 0; left: 0; right: 0; height: 100%;
-                background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.4), transparent);
-                animation: shimmer-line 3s linear infinite;
-                z-index: 1; pointer-events: none;
+                position: absolute; left: 0; right: 0; height: 2px;
+                background: #ffd700;
+                box-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+                animation: scan-laser 4s linear infinite;
+                z-index: 3;
             }
 
-            /* --- CHRONO CAPSULE (Right) --- */
-            @keyframes float-capsule { 0% { transform: translateY(0); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
-            @keyframes rotate-rings { 0% { transform: rotateX(70deg) rotateZ(0deg); } 100% { transform: rotateX(70deg) rotateZ(360deg); } }
-            @keyframes pulse-core-energy { 0% { transform: scale(0.9); box-shadow: 0 0 15px #00e5ff; } 50% { transform: scale(1.1); box-shadow: 0 0 30px #00e5ff, 0 0 60px #00e5ff; } 100% { transform: scale(0.9); box-shadow: 0 0 15px #00e5ff; } }
-            
+            /* --- CHRONO CAPSULE (Right) - LABORATORY GRADE --- */
+            @keyframes float-capsule { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+            @keyframes plasma-spin { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.1); } 100% { transform: rotate(360deg) scale(1); } }
+            @keyframes ring-gyro { 0% { transform: rotateX(60deg) rotateY(0deg) rotateZ(0deg); } 100% { transform: rotateX(60deg) rotateY(360deg) rotateZ(360deg); } }
+
             .capsule-clock {
-                position: absolute; top: 10px; width: 90px; height: 140px;
-                background: rgba(255, 255, 255, 0.1);
-                border: 2px solid rgba(0, 229, 255, 0.3); border-radius: 45px / 20px;
-                display: flex; flex-direction: column; align-items: center; justify-content: center;
-                backdrop-filter: blur(4px);
-                box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+                position: absolute; top: 10px; width: 100px; height: 160px;
+                background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), rgba(255,255,255,0.05) 60%, rgba(0,229,255,0.1) 100%);
+                border: 1px solid rgba(255,255,255,0.2); 
+                border-top: 1px solid rgba(255,255,255,0.5); /* Highlight top */
+                border-bottom: 1px solid rgba(0,229,255,0.5); /* Glow bottom */
+                border-radius: 50px / 25px; /* Cylinder caps */
+                display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+                padding: 15px 0;
+                backdrop-filter: blur(3px);
+                box-shadow: 
+                    0 0 10px rgba(0,229,255,0.2), 
+                    inset 5px 0 10px rgba(255,255,255,0.1),
+                    inset -5px 0 10px rgba(0,0,0,0.3);
                 z-index: 5;
-                animation: float-capsule 5s ease-in-out infinite;
+                animation: float-capsule 6s ease-in-out infinite;
                 font-family: 'Rajdhani', sans-serif;
             }
-            .capsule-cap { position: absolute; width: 100%; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 1px solid rgba(0,229,255,0.5); }
-            .cap-top { top: 0; } .cap-bottom { bottom: 0; }
-            
-            .energy-core {
-                width: 40px; height: 40px; border-radius: 50%;
-                background: radial-gradient(circle, #ffffff, #00e5ff);
-                animation: pulse-core-energy 1.5s infinite alternate;
-                position: relative; margin-bottom: 10px; z-index: 2;
-            }
-            
-            /* Orbiting Ring */
-            .orbital-ring {
-                position: absolute; top: 40%; left: -10%; width: 120%; height: 30px;
-                border: 2px dashed rgba(0, 229, 255, 0.6); border-radius: 50%;
-                transform-style: preserve-3d;
-                animation: rotate-rings 8s linear infinite;
-                z-index: 1;
+            .capsule-glass-shine {
+                position: absolute; top: 10%; left: 10%; width: 20%; height: 80%;
+                background: linear-gradient(to right, rgba(255,255,255,0.4), transparent);
+                border-radius: 20px; filter: blur(2px); pointer-events: none;
             }
 
-            .capsule-text { color: #fff; font-weight: 800; font-size: 0.85rem; z-index: 3; text-shadow: 0 0 5px #00e5ff; }
-            .capsule-label { color: rgba(255,255,255,0.7); font-size: 0.6rem; text-transform: uppercase; z-index: 3; margin-bottom: 5px;}
+            /* Energy Core Plasma */
+            .plasma-core {
+                width: 50px; height: 50px; border-radius: 50%;
+                background: radial-gradient(circle, #fff, #00e5ff, #004d40);
+                box-shadow: 0 0 20px #00e5ff;
+                position: relative;
+                animation: pulse-gold 2s infinite alternate; /* Reusing pulse */
+            }
+            .plasma-layer {
+                position: absolute; inset: -5px; border-radius: 50%;
+                border: 2px dashed rgba(255,255,255,0.6);
+                animation: plasma-spin 10s linear infinite;
+            }
+            
+            /* Gyro Rings */
+            .gyro-ring {
+                position: absolute; top: 40%; left: -10%; width: 120%; height: 40px;
+                border: 2px solid rgba(0,229,255,0.5); border-radius: 50%;
+                transform-style: preserve-3d;
+                animation: ring-gyro 5s linear infinite;
+                box-shadow: 0 0 5px #00e5ff;
+            }
+
+            .capsule-data { text-align: center; z-index: 2; margin-bottom: 10px; }
+            .capsule-label { font-size: 0.6rem; color: #00e5ff; text-transform: uppercase; letter-spacing: 1px; }
+            .capsule-time { font-size: 0.9rem; font-weight: 800; color: #fff; text-shadow: 0 0 5px #00e5ff; }
         `;
         document.head.appendChild(styleSheet);
 
 
-        // --- CHRISTMAS: QUANTUM MONOLITH (Black & Gold) ---
+        // --- CHRISTMAS: OBSIDIAN MONOLITH ---
         const leftClock = document.createElement('div');
         leftClock.id = 'clock-christmas';
         leftClock.className = 'monolith-clock';
         leftClock.style.left = '30px';
         leftClock.innerHTML = `
+            <div class="mono-surface"></div>
             <div class="mono-laser"></div>
             <div class="mono-screen">
-                <div class="mono-label">TARGET:</div>
-                <div class="mono-label" style="color: #d4af37; font-weight:bold;">X-MAS</div>
-                <div style="font-size:1.5rem; margin:5px 0;">🎄</div>
+                <div class="mono-label">TARGET ACQUIRED</div>
+                <div class="mono-xmas">🎄</div>
+                <div class="mono-label" style="color: #d4af37;">CHRISTMAS</div>
                 <div class="mono-text" id="content-christmas">--:--:--</div>
             </div>
         `;
 
-        // --- NEW YEAR: CHRONO CAPSULE (Ice Blue/Energy) ---
+        // --- NEW YEAR: PLASMA CAPSULE ---
         const rightClock = document.createElement('div');
         rightClock.id = 'clock-newyear';
         rightClock.className = 'capsule-clock';
         rightClock.style.right = '30px';
         rightClock.innerHTML = `
-            <div class="capsule-cap cap-top"></div>
-            <div class="capsule-cap cap-bottom"></div>
-            <div class="orbital-ring"></div>
+            <div class="capsule-glass-shine"></div>
+            <div class="gyro-ring"></div>
             
-            <div class="energy-core"></div>
-            <div class="capsule-label">INITIATING</div>
-            <div class="capsule-text" id="content-newyear">--:--:--</div>
+            <div class="plasma-core">
+                <div class="plasma-layer"></div>
+            </div>
+            
+            <div class="capsule-data">
+                <div class="capsule-label">INIT_SEQ: NY26</div>
+                <div class="capsule-time" id="content-newyear">--:--:--</div>
+            </div>
         `;
 
         // Append
