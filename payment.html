@@ -4,63 +4,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Checkout - Kids Digital Hub</title>
+    <title>Premium Subscription - Kids Digital Hub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- PayPal SDK -->
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=BAAj-KSC-Y905P1Rzgzc07Tb3Lw_aQPq70H69wTNlTdJWcZWZ-U0e0U9tbbbPsS6EClBsYwfbmWuH8Apd0&vault=true&intent=subscription&currency=GBP"></script>
+
     <style>
         body {
-            background: #E8F5E9;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             flex-direction: column;
+            font-family: 'Fredoka', sans-serif;
+            padding: 20px;
         }
 
         .checkout-box {
             background: white;
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
             width: 100%;
-            border: 2px solid #66BB6A;
+            position: relative;
+            overflow: hidden;
         }
 
-        .summary {
-            background: #F1F8E9;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .prod-img {
-            width: 60px;
-            height: 60px;
-            background: #C8E6C9;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        .btn-pay {
-            background: #4CAF50;
+        .holiday-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.2rem;
+            padding: 8px 20px;
+            border-radius: 20px;
             font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: background 0.3s;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+            transform: rotate(12deg);
+            animation: pulse 2s infinite;
         }
 
-        .btn-pay:hover {
-            background: #43A047;
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: rotate(12deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(12deg) scale(1.05);
+            }
+        }
+
+        .countdown-timer {
+            background: #FFF3E0;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px dashed #FF9800;
+        }
+
+        .countdown-timer h4 {
+            margin: 0 0 10px 0;
+            color: #E65100;
+            font-size: 0.9rem;
+        }
+
+        .timer-display {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #D84315;
+            font-family: 'Courier New', monospace;
+        }
+
+        .price-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        .current-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2E7D32;
+            margin: 10px 0;
+        }
+
+        .price-note {
+            font-size: 0.85rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .features-list {
+            background: #F1F8E9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .features-list h3 {
+            margin: 0 0 15px 0;
+            color: #2E7D32;
+            font-size: 1.1rem;
+        }
+
+        .features-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .features-list li {
+            padding: 8px 0;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .features-list li:before {
+            content: "✓ ";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        #paypal-button-container {
+            margin: 20px 0;
         }
 
         .secure-badge {
@@ -73,13 +154,69 @@
             margin-top: 15px;
         }
 
-        .card-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            font-family: inherit;
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back-link a {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+
+        .back-link a:hover {
+            color: #666;
+        }
+
+        .success-box {
+            text-align: center;
+        }
+
+        .success-box .icon {
+            font-size: 5rem;
+            margin: 20px 0;
+            animation: bounce 1s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .success-box h2 {
+            color: #2E7D32;
+            margin: 20px 0;
+        }
+
+        .success-box p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .btn-dashboard {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+
+        .btn-dashboard:hover {
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -87,76 +224,179 @@
 <body>
 
     <div class="checkout-box" id="step-payment">
-        <h2 style="text-align: center; color: #2E7D32;">🛒 Secure Checkout</h2>
+        <div class="holiday-badge" id="holiday-badge">🎄 50% OFF</div>
 
-        <div class="summary">
-            <img src="assets/images/products/pack_variety.png" class="prod-img"
-                onerror="this.src='assets/images/logo_ae.png'">
-            <div>
-                <h3 style="margin: 0; font-size: 1.1rem;">Mega Variety Pack (50+)</h3>
-                <p style="margin: 5px 0; color: #555;">Digital Download</p>
-                <span style="font-weight: bold; color: #E64A19;">$4.99 USD</span>
-            </div>
+        <h2 style="text-align: center; color: #2E7D32; margin-bottom: 10px;">Premium Subscription</h2>
+        <p style="text-align: center; color: #666; font-size: 0.9rem;">Unlock unlimited access to all premium content!
+        </p>
+
+        <div class="countdown-timer" id="countdown-section">
+            <h4>⏰ Holiday Discount Ends In:</h4>
+            <div class="timer-display" id="countdown-timer">Loading...</div>
         </div>
 
-        <form onsubmit="processPayment(event)">
-            <label style="font-weight: bold; font-size: 0.9rem;">Email Address</label>
-            <input type="email" class="card-input" placeholder="parent@example.com" required>
+        <div class="price-section">
+            <div class="old-price" id="old-price">£4.99/month</div>
+            <div class="current-price" id="current-price">£2.49/month</div>
+            <div class="price-note" id="price-note">Holiday Special - Save 50%!</div>
+        </div>
 
-            <label style="font-weight: bold; font-size: 0.9rem;">Card Information</label>
-            <div style="display: flex; gap: 10px;">
-                <input type="text" class="card-input" placeholder="1234 5678 9101 1121" style="flex: 2;">
-                <input type="text" class="card-input" placeholder="MM/YY" style="flex: 1;">
-                <input type="text" class="card-input" placeholder="CVC" style="flex: 1;">
-            </div>
+        <div class="features-list">
+            <h3>✨ What You Get:</h3>
+            <ul>
+                <li>Unlimited access to all premium coloring pages</li>
+                <li>Exclusive interactive games and puzzles</li>
+                <li>Premium story collections</li>
+                <li>New content added weekly</li>
+                <li>Ad-free experience</li>
+                <li>Download and print unlimited times</li>
+                <li>Cancel anytime - no commitment</li>
+            </ul>
+        </div>
 
-            <button type="submit" class="btn-pay">Pay $4.99 & Download</button>
-        </form>
+        <!-- PayPal Button Container -->
+        <div id="paypal-button-container"></div>
 
         <div class="secure-badge">
-            🔒 SSL Encrypted • Powered by Stripe/Gumroad
+            🔒 Secure Payment • Powered by PayPal
         </div>
-        <div style="text-align: center; margin-top: 10px;">
-            <a href="dashboard.html" style="color: #999; text-decoration: none; font-size: 0.8rem;">Cancel & Go Back</a>
+
+        <div class="back-link">
+            <a href="index.html">← Back to Home</a>
         </div>
     </div>
 
-    <div class="checkout-box" id="step-success" style="display: none; text-align: center;">
-        <div style="font-size: 4rem;">🎉</div>
-        <h2 style="color: #2E7D32;">Payment Successful!</h2>
-        <p>Thank you for your purchase. Your premium content is now unlocked.</p>
+    <div class="checkout-box success-box" id="step-success" style="display: none;">
+        <div class="icon">🎉</div>
+        <h2>Welcome to Premium!</h2>
+        <p>Thank you for subscribing! Your premium access is now active.</p>
+        <p style="margin-top: 15px;">You can now enjoy unlimited access to all our premium content. Start exploring!</p>
 
-        <div style="background: #E3F2FD; padding: 20px; border-radius: 10px; margin: 20px 0;">
-            <h3>📥 Mega Variety Pack.zip</h3>
-            <button onclick="downloadFile()"
-                style="background: #2196F3; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer;">Download
-                Now</button>
+        <button onclick="location.href='index.html'" class="btn-dashboard">
+            Start Exploring Premium Content
+        </button>
+
+        <div style="margin-top: 20px; padding: 15px; background: #E3F2FD; border-radius: 10px;">
+            <p style="font-size: 0.85rem; color: #555; margin: 0;">
+                📧 A confirmation email has been sent to your PayPal email address.
+            </p>
         </div>
-
-        <button onclick="location.href='dashboard.html?status=premium'" class="btn-pay" style="background: #607D8B;">Go
-            to Dashboard</button>
     </div>
 
     <script>
-        function processPayment(e) {
-            e.preventDefault();
-            const btn = document.querySelector('.btn-pay');
-            btn.innerHTML = "Processing... ⏳";
-            btn.style.opacity = "0.7";
+        // Calculate dynamic pricing based on date
+        function getPricing() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const endOfYear = new Date(year, 11, 31, 23, 59, 59); // Dec 31, 23:59:59
 
-            // Simulate API delay
-            setTimeout(() => {
-                document.getElementById('step-payment').style.display = 'none';
-                document.getElementById('step-success').style.display = 'block';
+            const isHolidayPeriod = now <= endOfYear;
 
-                // Unlock logic
-                localStorage.setItem('kdh_premium_user', 'true');
-            }, 2000);
+            return {
+                isHoliday: isHolidayPeriod,
+                price: isHolidayPeriod ? '2.49' : '4.99',
+                oldPrice: '4.99',
+                discount: isHolidayPeriod ? 50 : 0
+            };
         }
 
-        function downloadFile() {
-            alert("🔽 Downloading file... (This is a demo)");
+        // Update UI based on pricing
+        function updatePricingUI() {
+            const pricing = getPricing();
+
+            if (pricing.isHoliday) {
+                document.getElementById('old-price').style.display = 'block';
+                document.getElementById('current-price').textContent = `£${pricing.price}/month`;
+                document.getElementById('price-note').textContent = 'Holiday Special - Save 50%!';
+                document.getElementById('holiday-badge').style.display = 'block';
+                document.getElementById('countdown-section').style.display = 'block';
+                startCountdown();
+            } else {
+                document.getElementById('old-price').style.display = 'none';
+                document.getElementById('current-price').textContent = `£${pricing.price}/month`;
+                document.getElementById('price-note').textContent = 'Regular Price';
+                document.getElementById('holiday-badge').style.display = 'none';
+                document.getElementById('countdown-section').style.display = 'none';
+            }
         }
+
+        // Countdown timer
+        function startCountdown() {
+            function updateTimer() {
+                const now = new Date();
+                const year = now.getFullYear();
+                const endOfYear = new Date(year, 11, 31, 23, 59, 59);
+
+                const diff = endOfYear - now;
+
+                if (diff <= 0) {
+                    document.getElementById('countdown-timer').textContent = 'Discount Ended';
+                    updatePricingUI();
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('countdown-timer').textContent =
+                    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // Initialize pricing
+        updatePricingUI();
+
+        // PayPal Integration
+        const pricing = getPricing();
+
+        paypal.Buttons({
+            style: {
+                shape: 'rect',
+                color: 'gold',
+                layout: 'vertical',
+                label: 'subscribe',
+                height: 45
+            },
+            createSubscription: function (data, actions) {
+                // Note: You need to create subscription plans in PayPal Dashboard
+                // For now, this will create a simple payment
+                // Replace 'PLAN-ID' with actual plan ID from PayPal Dashboard
+
+                return actions.order.create({
+                    purchase_units: [{
+                        description: 'Kids Digital Hub - Premium Monthly Subscription',
+                        amount: {
+                            currency_code: 'GBP',
+                            value: pricing.price
+                        }
+                    }]
+                });
+            },
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (details) {
+                    // Save premium status
+                    localStorage.setItem('kdh_premium_user', 'true');
+                    localStorage.setItem('kdh_premium_since', new Date().toISOString());
+                    localStorage.setItem('kdh_subscription_id', data.orderID);
+
+                    // Show success screen
+                    document.getElementById('step-payment').style.display = 'none';
+                    document.getElementById('step-success').style.display = 'block';
+
+                    // Optional: Send to your backend
+                    console.log('Payment successful:', details);
+                });
+            },
+            onError: function (err) {
+                console.error('PayPal error:', err);
+                alert('Payment failed. Please try again or contact support.');
+            }
+        }).render('#paypal-button-container');
     </script>
 
 </body>
