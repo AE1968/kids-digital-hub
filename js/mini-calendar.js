@@ -27,17 +27,17 @@ function createMiniCalendar() {
   calendarWidget.id = 'mini-calendar-widget';
   calendarWidget.style.cssText = `
     position: fixed;
-    bottom: 80px;
-    left: 20px;
+    bottom: 10px;
+    left: 10px;
     background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    padding: 15px;
+    border-radius: 15px;
+    padding: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     z-index: 999;
     backdrop-filter: blur(10px);
-    border: 3px solid #667eea;
+    border: 2px solid #667eea;
     font-family: 'Fredoka', sans-serif;
-    width: 280px;
+    width: 220px;
   `;
 
   // Calendar header

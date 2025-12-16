@@ -46,8 +46,8 @@
 }
 
 :root {
-    --color-bg: #E0F7FA;
-    /* Light Blue BG */
+    --color-bg: transparent;
+    /* Changed from #E0F7FA to show seasonal backgrounds */
     --color-primary: #FFD54F;
     /* Bright Yellow */
     --color-secondary: #4DB6AC;
@@ -191,8 +191,7 @@ header {
 .hero {
     text-align: center;
     padding: 20px 20px;
-    /* Reduced from 60px 20px */
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%);
+    /* Gradient removed to show seasonal background image */
 }
 
 .hero h1 {
