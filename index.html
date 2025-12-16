@@ -112,30 +112,7 @@
     </div>
   </main>
 
-  <!-- Fixed AE Co-Creator Button -->
-  <section class="creator-spotlight">
-    <h3 data-i18n="creator_title">Meet the Digital Co-Creator 🤖</h3>
-    <div style="position: relative; display: inline-block;">
-      <div id="ai-bubble" class="speech-bubble" data-i18n="ai_bubble_text">
-        Salut! Un proiect născut din Imaginația Umană și Profesionalismul AI! Dacă vrei și tu, poți cu ajutorul nostru!
-        Intră pe butoane să vezi! 🤝✨
-      </div>
 
-      <!-- Share Menu Popup -->
-      <div id="share-menu" class="share-menu">
-        <button class="share-icon-btn btn-whatsapp" onclick="share('whatsapp')" title="Share on WhatsApp">📱</button>
-        <button class="share-icon-btn btn-facebook" onclick="share('facebook')" title="Share on Facebook">📘</button>
-        <button class="share-icon-btn btn-tiktok" onclick="share('tiktok')" title="Share on TikTok">🎵</button>
-        <button class="share-icon-btn btn-instagram" onclick="share('instagram')" title="Share on Instagram">📸</button>
-        <button class="share-icon-btn btn-copy" onclick="share('copy')" title="Copy Link">📋</button>
-      </div>
-
-      <div class="creator-btn" onclick="toggleShare()">
-        <img src="assets/images/logo_ae.png" alt="AE - AI Co-Creator">
-        <span class="creator-tag">AE</span>
-      </div>
-    </div>
-  </section>
 
   <footer style="position: relative;">
     <p data-i18n="footer_rights">© 2025 Kids Digital Hub • Made with ❤️ for Kids</p>
@@ -342,42 +319,7 @@
       }
     }
 
-    function toggleShare() {
-      const bubble = document.getElementById('ai-bubble');
-      const menu = document.getElementById('share-menu');
-      bubble.classList.toggle('show');
-      menu.classList.toggle('show');
 
-      if (menu.classList.contains('show')) {
-        setTimeout(() => {
-          bubble.classList.remove('show');
-          menu.classList.remove('show');
-        }, 8000);
-      }
-    }
-
-    function toggleBubble() { toggleShare(); }
-
-    function share(platform) {
-      const url = "https://kidsdigitalhub.com";
-      const text = "Hey! 🎨 Am găsit un loc magic pentru copii: Kids Digital Hub! Desene, jocuri și povești. Hai și tu! ✨";
-
-      if (platform === 'whatsapp') {
-        window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`, '_blank');
-      } else if (platform === 'facebook') {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-      } else if (platform === 'tiktok' || platform === 'instagram') {
-        navigator.clipboard.writeText(url).then(() => {
-          alert(`🔗 Link copiat! Deschide ${platform.charAt(0).toUpperCase() + platform.slice(1)} și postează un story/video! 🎥✨`);
-          if (platform === 'tiktok') window.open('https://www.tiktok.com', '_blank');
-          if (platform === 'instagram') window.open('https://www.instagram.com', '_blank');
-        });
-      } else if (platform === 'copy') {
-        navigator.clipboard.writeText(url).then(() => {
-          alert('Link copiat! Trimite-l prietenilor pe TikTok/Insta! 📋✨');
-        });
-      }
-    }
   </script>
 </body>
 
