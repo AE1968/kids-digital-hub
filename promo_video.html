@@ -4,35 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Promo Video Generator Kids Hub (PRO)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+    <title>Promo Video 2026 - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: #222;
+            background: #000;
             margin: 0;
-            font-family: 'Fredoka', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             flex-direction: column;
             gap: 20px;
+            color: #00FFEA;
+            overflow: hidden;
         }
 
         #phone-frame {
             width: 360px;
-            /* Mobile width */
             height: 640px;
-            /* Mobile height */
             background: black;
-            border: 10px solid #111;
-            border-radius: 30px;
+            border: 5px solid #00FFEA;
+            border-radius: 20px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 50px #00FFEA, 0 0 10px #D500F9 inset;
         }
 
-        /* Common Scene Styles */
         .scene {
             position: absolute;
             top: 0;
@@ -40,12 +39,11 @@
             width: 100%;
             height: 100%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.5s ease;
             background: black;
+            z-index: 1;
         }
 
         .active {
@@ -57,39 +55,66 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            animation: zoomEffect 4s infinite alternate;
+            filter: contrast(1.2) brightness(1.1);
+            animation: glitch-anim 2s infinite;
         }
 
-        @keyframes zoomEffect {
-            from {
-                transform: scale(1);
+        .overlay-scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.2));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        @keyframes glitch-anim {
+            0% {
+                transform: translate(0);
             }
 
-            to {
-                transform: scale(1.1);
+            20% {
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                transform: translate(-2px, -2px);
+            }
+
+            60% {
+                transform: translate(2px, 2px);
+            }
+
+            80% {
+                transform: translate(2px, -2px);
+            }
+
+            100% {
+                transform: translate(0);
             }
         }
 
-        #controls {
-            color: white;
-            text-align: center;
-        }
-
+        /* Controls */
         button {
+            background: #000;
+            border: 2px solid #00FFEA;
+            color: #00FFEA;
             padding: 15px 30px;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
             cursor: pointer;
-            background: #D500F9;
-            /* Neon Purple */
-            border: none;
-            color: white;
-            border-radius: 10px;
-            font-weight: bold;
-            box-shadow: 0 0 15px #D500F9;
+            box-shadow: 0 0 20px #00FFEA;
+            transition: 0.2s;
         }
 
         button:hover {
-            transform: scale(1.05);
+            background: #00FFEA;
+            color: black;
+            box-shadow: 0 0 40px #00FFEA;
         }
     </style>
 </head>
@@ -97,63 +122,137 @@
 <body>
 
     <div id="controls">
-        <h1>🎬 Kids Hub Video Player</h1>
-        <p>Apasă START și înregistrează ecranul!</p>
-        <button onclick="startAd()">🌟 PLAY VIDEO</button>
+        <h1>FUTURE 2026 PLAYER</h1>
+        <p>🔊 MAX VOLUME | RECORD SCREEN</p>
+        <button onclick="startAd()">⚡ INITIATE PROTOCOL</button>
     </div>
 
     <div id="phone-frame">
-        <!-- SCENE 1 -->
+        <div class="overlay-scanline"></div>
+
         <div id="scene-1" class="scene active">
-            <img src="assets/images/promo/scena1.png" class="promo-img" alt="Bored">
+            <img src="assets/images/promo/scena1.png" class="promo-img" alt="Bored"
+                style="filter: hue-rotate(45deg) contrast(1.5);">
         </div>
 
-        <!-- SCENE 2 -->
         <div id="scene-2" class="scene">
-            <img src="assets/images/promo/scena2.png" class="promo-img" alt="Solution">
+            <img src="assets/images/promo/scena2.png" class="promo-img" alt="Solution"
+                style="filter: saturate(2) brightness(1.2);">
         </div>
 
-        <!-- SCENE 3 -->
         <div id="scene-3" class="scene">
-            <img src="assets/images/promo/scena3.png" class="promo-img" alt="Final">
+            <img src="assets/images/promo/scena3.png" class="promo-img" alt="Final"
+                style="filter: drop-shadow(0 0 10px #D500F9);">
         </div>
     </div>
 
     <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function createCyberBass(time, duration) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(80, time);
+            osc.frequency.exponentialRampToValueAtTime(30, time + duration);
+
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(1000, time);
+            filter.frequency.exponentialRampToValueAtTime(100, time + duration);
+
+            gain.gain.setValueAtTime(0.5, time);
+            gain.gain.linearRampToValueAtTime(0, time + duration);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(time);
+            osc.stop(time + duration);
+        }
+
+        function createRiser(time, duration) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(200, time);
+            osc.frequency.exponentialRampToValueAtTime(800, time + duration);
+
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(0.3, time + duration);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(time);
+            osc.stop(time + duration);
+        }
+
+        function createDrop(time) {
+            // Impact
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.frequency.setValueAtTime(50, time);
+            gain.gain.setValueAtTime(1, time);
+            gain.gain.exponentialRampToValueAtTime(0.01, time + 2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(time);
+            osc.stop(time + 2);
+
+            // Melody Arp
+            [500, 600, 700, 800, 500, 600, 900, 1000].forEach((freq, i) => {
+                const o = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                o.type = 'square';
+                o.frequency.value = freq;
+                g.gain.value = 0.1;
+                g.gain.linearRampToValueAtTime(0, time + (i * 0.1) + 0.1);
+                o.connect(g);
+                g.connect(audioCtx.destination);
+                o.start(time + i * 0.1);
+                o.stop(time + i * 0.1 + 0.1);
+            });
+        }
+
         function startAd() {
-            // Reset state
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+
             const s1 = document.getElementById('scene-1');
             const s2 = document.getElementById('scene-2');
             const s3 = document.getElementById('scene-3');
 
-            s1.classList.remove('active');
-            s2.classList.remove('active');
-            s3.classList.remove('active');
-
+            s1.classList.remove('active'); s2.classList.remove('active'); s3.classList.remove('active');
             document.getElementById('controls').style.display = 'none';
 
-            // Start Sequence
-            // Force reflow
-            void s1.offsetWidth;
+            // SCENE 1: GLITCH BASS (0s)
             s1.classList.add('active');
+            createCyberBass(now, 0.5);
+            createCyberBass(now + 0.5, 0.5);
+            createCyberBass(now + 1.0, 0.5);
 
-            // 3s: S2
+            // SCENE 2: RISER (3s)
             setTimeout(() => {
                 s1.classList.remove('active');
                 s2.classList.add('active');
+                createRiser(audioCtx.currentTime, 3);
             }, 3000);
 
-            // 6.5s: S3
+            // SCENE 3: DROP (6s)
             setTimeout(() => {
                 s2.classList.remove('active');
                 s3.classList.add('active');
-            }, 6500);
+                createDrop(audioCtx.currentTime);
+            }, 6000);
 
-            // 10s: End
+            // END
             setTimeout(() => {
                 document.getElementById('controls').style.display = 'block';
-                // Reset to scene 3 or 1
-            }, 10500);
+            }, 10000);
         }
     </script>
 </body>
