@@ -189,8 +189,12 @@ header {
 
 /* --- HERO SECTION --- */
 .hero {
+    position: relative;
+    /* Established context for absolute positioning */
     text-align: center;
     padding: 20px 20px;
+    min-height: 200px;
+    /* Ensure space for clocks */
     /* Gradient removed to show seasonal background image */
 }
 
