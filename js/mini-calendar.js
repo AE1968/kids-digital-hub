@@ -36,7 +36,9 @@ function createMiniCalendar() {
     border: 2px solid #667eea;
     font-family: 'Fredoka', sans-serif;
     width: 150px;
-    /* Removed max-height to allow full rendering, scaling handles the fit */
+    height: auto; /* Allow height to grow with content */
+    display: flex; /* Use flex to organize children properly */
+    flex-direction: column;
     box-sizing: border-box;
   `;
 
@@ -83,6 +85,7 @@ function createMiniCalendar() {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 2px;
+    flex-grow: 1; /* Take up remaining space */
   `;
 
   // Empty cells
