@@ -32,47 +32,6 @@
       display: flex;
       align-items: center;
     }
-
-    /* Style for the new Promo Button */
-    .hero-promo-btn {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 15px 30px;
-      background: -webkit-linear-gradient(45deg, #D500F9, #AA00FF);
-      background: linear-gradient(45deg, #D500F9, #AA00FF);
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1.2rem;
-      border-radius: 50px;
-      box-shadow: 0 0 20px #D500F9;
-      border: 3px solid rgba(255, 255, 255, 0.7);
-      transition: transform 0.2s, box-shadow 0.2s;
-      animation: pulse-promo 2s infinite;
-      position: relative;
-      z-index: 100;
-      font-family: 'Fredoka', sans-serif;
-    }
-
-    .hero-promo-btn:hover {
-      transform: scale(1.1) rotate(-2deg);
-      background: #FF00E6;
-      box-shadow: 0 0 40px #FF00E6;
-    }
-
-    @keyframes pulse-promo {
-      0% {
-        box-shadow: 0 0 0 0 rgba(213, 0, 249, 0.7);
-      }
-
-      70% {
-        box-shadow: 0 0 0 25px rgba(213, 0, 249, 0);
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 rgba(213, 0, 249, 0);
-      }
-    }
   </style>
 </head>
 
@@ -96,12 +55,6 @@
 
       <nav class="main-nav">
         <ul>
-          <li>
-            <a href="promo_video.html" class="nav-btn" target="_blank">
-              <span class="nav-icon">🎬</span>
-              <span class="nav-text">PROMO</span>
-            </a>
-          </li>
           <li>
             <a href="#coloring" class="nav-btn" onclick="filterCategory('Coloring')">
               <span class="nav-icon">🖍️</span>
@@ -139,13 +92,6 @@
 
   <section class="hero">
     <h1 data-i18n="hero_title">Welcome to the Creative Universe! ✨</h1>
-
-    <!-- BIG PROMO BUTTON -->
-    <a href="promo_video.html" target="_blank" class="hero-promo-btn">
-      🎥 WATCH PROMO VIDEO (20s) 🚀
-    </a>
-    <br><br>
-
     <img src="assets/images/hero_kids_flags.png" alt="Children of the World" class="hero-kids-img">
   </section>
 
@@ -226,6 +172,7 @@
         const d = new Date();
         const currentMonth = monthNames[d.getMonth()];
         const nextMonth = monthNames[(d.getMonth() + 1) % 12];
+        const year = (d.getMonth() == 11) ? d.getFullYear() + 1 : d.getFullYear(); // Next year if Dec
 
         const msgElement = document.getElementById('neon-msg');
         msgElement.innerHTML = `🌟 Noutățile Lunii <u>${currentMonth}</u>! Grăbește-te să le salvezi, dispar pe 1 ${nextMonth}! ⏳✨`;
