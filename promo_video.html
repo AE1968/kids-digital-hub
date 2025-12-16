@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promo Video Generator Kids Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #222;
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #phone-frame {
+            width: 360px;
+            /* Mobile width */
+            height: 640px;
+            /* Mobile height */
+            background: black;
+            border: 10px solid #111;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+        }
+
+        .scene {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .active {
+            opacity: 1;
+        }
+
+        /* SCENE 1: PROBLEM */
+        #scene-1 {
+            background: #FF5252;
+            color: white;
+        }
+
+        .bored-emoji {
+            font-size: 8rem;
+            animation: shake 0.5s infinite;
+        }
+
+        .big-text {
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(5deg);
+            }
+
+            50% {
+                transform: rotate(0deg);
+            }
+
+            75% {
+                transform: rotate(-5deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        /* SCENE 2: SOLUTION */
+        #scene-2 {
+            background: #E0F7FA;
+            color: #0277BD;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .icon-item {
+            font-size: 4rem;
+            animation: popIn 0.5s forwards;
+            opacity: 0;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* SCENE 3: CTA */
+        #scene-3 {
+            background: #263238;
+            color: #FFD700;
+        }
+
+        .neon-title {
+            font-size: 3.5rem;
+            text-shadow: 0 0 20px #FFD700;
+            margin-bottom: 20px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        .robot-img {
+            width: 150px;
+            animation: bounce 2s infinite;
+            filter: drop-shadow(0 0 10px #D500F9);
+        }
+
+        .cta-btn {
+            background: #D500F9;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            box-shadow: 0 0 20px #D500F9;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        #controls {
+            color: white;
+            text-align: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            background: #4CAF50;
+            border: none;
+            color: white;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="controls">
+        <h1>🎬 Kids Hub Promo Generator</h1>
+        <p>1. Pregătește Screen Recording (telefon/PC).</p>
+        <p>2. Apasă START. Animația durează 10 secunde.</p>
+        <button onclick="startAd()">🔳 START RECORDING ACTION</button>
+    </div>
+
+    <div id="phone-frame">
+        <!-- SCENE 1 -->
+        <div id="scene-1" class="scene">
+            <div class="bored-emoji">😱</div>
+            <div class="big-text">PLICTISEALĂ?</div>
+            <p style="font-size: 1.5rem;">Cei mici vor ecran?</p>
+            <div style="margin-top:50px; font-size:3rem;">🎵 Ding!</div>
+        </div>
+
+        <!-- SCENE 2 -->
+        <div id="scene-2" class="scene">
+            <h2 style="font-size:2.5rem;">SOLUȚIA E AICI!</h2>
+            <div class="icon-grid">
+                <div class="icon-item" style="animation-delay: 0.2s">🎨</div>
+                <div class="icon-item" style="animation-delay: 0.4s">🎮</div>
+                <div class="icon-item" style="animation-delay: 0.6s">📚</div>
+                <div class="icon-item" style="animation-delay: 0.8s">🤖</div>
+            </div>
+            <p style="font-weight:bold; font-size:1.5rem;">Kids Digital Hub!</p>
+        </div>
+
+        <!-- SCENE 3 -->
+        <div id="scene-3" class="scene">
+            <div class="neon-title">GRATUIT!</div>
+            <img src="assets/images/ai_co_creator.png" class="robot-img" alt="Robot">
+            <div class="cta-btn">ACCESS NOW 🚀</div>
+            <p style="margin-top:20px; color:white;">🔗 LINK ÎN BIO 👇</p>
+        </div>
+    </div>
+
+    <script>
+        function startAd() {
+            // Reset
+            document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+            document.getElementById('controls').style.display = 'none'; // Hide controls for recording
+
+            // 0s: Start Scene 1
+            document.getElementById('scene-1').classList.add('active');
+
+            // 3s: Switch to Scene 2
+            setTimeout(() => {
+                document.getElementById('scene-1').classList.remove('active');
+                document.getElementById('scene-2').classList.add('active');
+            }, 3000);
+
+            // 6.5s: Switch to Scene 3
+            setTimeout(() => {
+                document.getElementById('scene-2').classList.remove('active');
+                document.getElementById('scene-3').classList.add('active');
+            }, 6500);
+
+            // 10s: End (Reset UI)
+            setTimeout(() => {
+                // Optional: Loop or stop
+                document.getElementById('controls').style.display = 'block';
+                alert("🎉 Cut! Video terminat. Verifică înregistrarea!");
+            }, 10500);
+        }
+    </script>
+</body>
+
+</html>
