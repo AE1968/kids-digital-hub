@@ -1,4 +1,4 @@
-// Mini Calendar Widget for Footer - Auto-scaling to fit footer height
+// Mini Calendar Widget - Auto-scaling to fit footer
 function createMiniCalendar() {
   const today = new Date();
   const currentDay = today.getDate();
@@ -14,99 +14,114 @@ function createMiniCalendar() {
     es: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
   };
 
-  // Get current language
   const currentLang = localStorage.getItem('selectedLanguage') || 'en';
   const monthName = monthNames[currentLang]?.[currentMonth] || monthNames['en'][currentMonth];
 
-  // Get days in month
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
 
-  // DETECT BODY ZOOM (for responsive scaling)
+  // DETECT BODY ZOOM
   const bodyStyle = window.getComputedStyle(document.body);
-  const bodyZoom = parseFloat(bodyStyle.zoom) || 1; // Get zoom value, default to 1
+  const bodyZoom = parseFloat(bodyStyle.zoom) || 1;
 
-  // CALCULATE FOOTER HEIGHT AND AVAILABLE SPACE
+  // GET FOOTER AND CALCULATE AVAILABLE SPACE
   const footer = document.querySelector('footer');
-  let footerHeight = footer ? footer.offsetHeight : 80; // Default 80px if not found
-
-  // Adjust for body zoom - if body is zoomed, footer appears smaller
+  let footerHeight = footer ? footer.offsetHeight : 80;
   footerHeight = footerHeight * bodyZoom;
 
-  const margin = 7; // 2mm ≈ 7-8px margin
-  const availableHeight = footerHeight - (margin * 2); // Height minus top and bottom margins
+  const margin = 7;
+  const availableHeight = footerHeight - (margin * 2);
+  const availableWidth = 200; // Max width we want
 
-  // CALCULATE OPTIMAL CALENDAR SIZE
-  // Calendar needs: header + weekdays + ~5 rows of days
-  // Let's calculate scale factor
-  const baseHeight = 180; // Base calendar height at normal size
-  const scaleFactor = Math.min(1, availableHeight / baseHeight); // Don't scale up, only down
+  // PRECISE SCALE CALCULATION
+  // Calculate exact height needed at base scale
+  const basePadding = 5;
+  const baseGap = 2;
+  const baseWidth = 150;
+
+  // Component heights at base scale (in pixels)
+  const baseHeaderHeight = 18;  // Header text + padding
+  const baseWeekdayHeight = 12; // Weekday row
+  const baseCellSize = (baseWidth - (basePadding * 2) - (6 * baseGap)) / 7; // Square cells
+  const baseGridHeight = (baseCellSize * 6) + (5 * baseGap); // 6 rows, 5 gaps
+  const baseExtraMargin = 6; // Extra spacing
+
+  const baseTotalHeight = baseHeaderHeight + baseWeekdayHeight + baseGridHeight + (basePadding * 2) + baseExtraMargin;
+
+  // Calculate scale factor to fit in available height
+  let scale = availableHeight / baseTotalHeight;
+
+  // Clamp between 0.5 and 1 (don't scale up, don't go too small)
+  scale = Math.max(0.5, Math.min(1, scale));
 
   // Apply scale to all dimensions
-  const calendarWidth = Math.floor(150 * scaleFactor);
-  const padding = Math.max(3, Math.floor(5 * scaleFactor));
-  const headerFontSize = Math.max(0.6, 0.75 * scaleFactor);
-  const dayFontSize = Math.max(0.5, 0.6 * scaleFactor);
-  const todayFontSize = Math.max(0.7, 0.85 * scaleFactor);
-  const gap = Math.max(1, Math.floor(2 * scaleFactor));
+  const width = Math.floor(baseWidth * scale);
+  const padding = Math.max(3, Math.floor(basePadding * scale));
+  const borderRadius = Math.max(4, Math.floor(8 * scale));
+  const borderWidth = Math.max(1, Math.floor(2 * scale));
+  const gap = Math.max(1, Math.floor(baseGap * scale));
 
-  // Create calendar widget - auto-scaled
-  const calendarWidget = document.createElement('div');
-  calendarWidget.id = 'mini-calendar-widget';
-  calendarWidget.style.cssText = `
+  // Font sizes with minimums
+  const headerFont = `${Math.max(0.6, 0.75 * scale)}rem`;
+  const weekdayFont = `${Math.max(0.5, 0.6 * scale)}rem`;
+  const dayFont = `${Math.max(0.5, 0.6 * scale)}rem`;
+  const todayFont = `${Math.max(0.65, 0.85 * scale)}rem`;
+
+  // Create calendar
+  const calendar = document.createElement('div');
+  calendar.id = 'mini-calendar-widget';
+  calendar.style.cssText = `
     position: absolute;
     top: 50%;
     left: ${margin}px;
     transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.95);
-    border-radius: ${Math.max(5, Math.floor(8 * scaleFactor))}px;
+    border-radius: ${borderRadius}px;
     padding: ${padding}px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
     z-index: 10;
     backdrop-filter: blur(10px);
-    border: ${Math.max(1, Math.floor(2 * scaleFactor))}px solid #667eea;
+    border: ${borderWidth}px solid #667eea;
     font-family: 'Fredoka', sans-serif;
-    width: ${calendarWidth}px;
-    max-height: ${availableHeight}px;
-    overflow: hidden;
+    width: ${width}px;
   `;
 
-  // Calendar header
+  // Header
   const header = document.createElement('div');
   header.style.cssText = `
     text-align: center;
-    font-size: ${headerFontSize}rem;
+    font-size: ${headerFont};
     font-weight: 700;
     color: #667eea;
-    margin-bottom: ${Math.max(2, Math.floor(3 * scaleFactor))}px;
-    padding-bottom: ${Math.max(2, Math.floor(3 * scaleFactor))}px;
-    border-bottom: ${Math.max(1, Math.floor(2 * scaleFactor))}px solid #667eea;
+    margin-bottom: ${Math.floor(3 * scale)}px;
+    padding-bottom: ${Math.floor(3 * scale)}px;
+    border-bottom: ${borderWidth}px solid #667eea;
   `;
   header.textContent = `${monthName} ${currentYear}`;
-  calendarWidget.appendChild(header);
+  calendar.appendChild(header);
 
-  // Weekday headers
+  // Weekdays
   const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   const weekdayRow = document.createElement('div');
   weekdayRow.style.cssText = `
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: ${gap}px;
-    margin-bottom: ${Math.max(1, Math.floor(2 * scaleFactor))}px;
+    margin-bottom: ${Math.floor(2 * scale)}px;
   `;
 
   weekdays.forEach(day => {
-    const dayHeader = document.createElement('div');
-    dayHeader.style.cssText = `
+    const cell = document.createElement('div');
+    cell.style.cssText = `
       text-align: center;
-      font-size: ${Math.max(0.5, 0.6 * scaleFactor)}rem;
+      font-size: ${weekdayFont};
       font-weight: 600;
       color: #999;
     `;
-    dayHeader.textContent = day;
-    weekdayRow.appendChild(dayHeader);
+    cell.textContent = day;
+    weekdayRow.appendChild(cell);
   });
-  calendarWidget.appendChild(weekdayRow);
+  calendar.appendChild(weekdayRow);
 
   // Days grid
   const daysGrid = document.createElement('div');
@@ -116,30 +131,25 @@ function createMiniCalendar() {
     gap: ${gap}px;
   `;
 
-  // Add empty cells for days before month starts
+  // Empty cells
   for (let i = 0; i < firstDay; i++) {
-    const emptyDay = document.createElement('div');
-    emptyDay.style.cssText = `
-      aspect-ratio: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    `;
-    daysGrid.appendChild(emptyDay);
+    const empty = document.createElement('div');
+    empty.style.cssText = 'aspect-ratio: 1;';
+    daysGrid.appendChild(empty);
   }
 
-  // Add days
+  // Days
   for (let day = 1; day <= daysInMonth; day++) {
-    const dayCell = document.createElement('div');
     const isToday = day === currentDay;
+    const cell = document.createElement('div');
 
-    dayCell.style.cssText = `
+    cell.style.cssText = `
       aspect-ratio: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: ${Math.max(2, Math.floor(4 * scaleFactor))}px;
-      font-size: ${isToday ? todayFontSize : dayFontSize}rem;
+      border-radius: ${Math.floor(4 * scale)}px;
+      font-size: ${isToday ? todayFont : dayFont};
       font-weight: ${isToday ? '900' : '500'};
       color: ${isToday ? 'white' : '#333'};
       background: ${isToday ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'transparent'};
@@ -147,25 +157,21 @@ function createMiniCalendar() {
       transition: all 0.3s ease;
       transform: ${isToday ? 'scale(1.1)' : 'scale(1)'};
       box-shadow: ${isToday ? '0 2px 8px rgba(102, 126, 234, 0.5)' : 'none'};
-      z-index: ${isToday ? '10' : '1'};
-      position: relative;
     `;
 
-    dayCell.textContent = day;
+    cell.textContent = day;
 
-    // Add hover effect (except for today)
     if (!isToday) {
-      dayCell.addEventListener('mouseenter', () => {
-        dayCell.style.background = '#e8f0fe';
-        dayCell.style.transform = 'scale(1.05)';
+      cell.addEventListener('mouseenter', () => {
+        cell.style.background = '#e8f0fe';
+        cell.style.transform = 'scale(1.05)';
       });
-      dayCell.addEventListener('mouseleave', () => {
-        dayCell.style.background = 'transparent';
-        dayCell.style.transform = 'scale(1)';
+      cell.addEventListener('mouseleave', () => {
+        cell.style.background = 'transparent';
+        cell.style.transform = 'scale(1)';
       });
     }
 
-    // Add pulsing animation for today
     if (isToday) {
       const style = document.createElement('style');
       style.textContent = `
@@ -174,55 +180,41 @@ function createMiniCalendar() {
           50% { transform: scale(1.15); }
         }
       `;
-      if (!document.getElementById('calendar-pulse-animation')) {
-        style.id = 'calendar-pulse-animation';
+      if (!document.getElementById('calendar-pulse')) {
+        style.id = 'calendar-pulse';
         document.head.appendChild(style);
       }
-      dayCell.style.animation = 'pulse 2s ease-in-out infinite';
+      cell.style.animation = 'pulse 2s ease-in-out infinite';
     }
 
-    daysGrid.appendChild(dayCell);
+    daysGrid.appendChild(cell);
   }
 
-  calendarWidget.appendChild(daysGrid);
+  calendar.appendChild(daysGrid);
 
-  // Add to footer (not body) so it's inside the green bar
+  // Add to footer
   if (footer) {
-    footer.appendChild(calendarWidget);
-  } else {
-    document.body.appendChild(calendarWidget);
+    footer.appendChild(calendar);
   }
 
-  // Log scaling info for debugging
-  console.log('Calendar auto-scaled:', {
-    footerHeight,
-    availableHeight,
-    scaleFactor: scaleFactor.toFixed(2),
-    calendarWidth,
-    margin
-  });
+  console.log('Calendar scaled:', { footerHeight, availableHeight, scale: scale.toFixed(2), width });
 }
 
-// Initialize mini calendar on page load
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
-  // Wait for footer to be rendered
   setTimeout(createMiniCalendar, 500);
 });
 
-// Update calendar when language changes
+// Update on language change
 window.addEventListener('languageChanged', () => {
-  const existingCalendar = document.getElementById('mini-calendar-widget');
-  if (existingCalendar) {
-    existingCalendar.remove();
-  }
+  const existing = document.getElementById('mini-calendar-widget');
+  if (existing) existing.remove();
   createMiniCalendar();
 });
 
-// Recreate calendar on window resize to adjust to new footer size
+// Recreate on resize
 window.addEventListener('resize', () => {
-  const existingCalendar = document.getElementById('mini-calendar-widget');
-  if (existingCalendar) {
-    existingCalendar.remove();
-  }
+  const existing = document.getElementById('mini-calendar-widget');
+  if (existing) existing.remove();
   setTimeout(createMiniCalendar, 100);
 });
