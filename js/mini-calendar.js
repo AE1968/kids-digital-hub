@@ -36,8 +36,7 @@ function createMiniCalendar() {
     border: 2px solid #667eea;
     font-family: 'Fredoka', sans-serif;
     width: 150px;
-    max-height: calc(100% - 14px);
-    overflow: hidden;
+    /* Removed max-height to allow full rendering, scaling handles the fit */
     box-sizing: border-box;
   `;
 
@@ -147,16 +146,24 @@ function createMiniCalendar() {
   if (footer) {
     footer.appendChild(calendar);
 
-    // Use CSS scale to fit if needed
+    // Use JS to measure and scale
     setTimeout(() => {
+      // 1. Get natural height of the calendar
       const calHeight = calendar.offsetHeight;
+
+      // 2. Get available height in footer (minus margins)
       const footerHeight = footer.offsetHeight;
       const availableHeight = footerHeight - 14; // 7px margin top + bottom
 
-      if (calHeight > availableHeight) {
+      // 3. Scale if needed
+      if (calHeight > availableHeight && availableHeight > 0) {
         const scale = availableHeight / calHeight;
         calendar.style.transform = `translateY(-50%) scale(${scale})`;
+      } else {
+        calendar.style.transform = `translateY(-50%) scale(1)`;
       }
+
+      console.log(`Calendar adjusted: Natural ${calHeight}px, Available ${availableHeight}px, Scale ${calHeight > availableHeight ? (availableHeight / calHeight).toFixed(2) : 1}`);
     }, 100);
   }
 
