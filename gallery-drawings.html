@@ -187,6 +187,10 @@
             // Auth Protection
             auth.applyProtection();
 
+            // Dynamic Stats: Count filled slots and save
+            const filledCount = document.querySelectorAll('.slot.filled').length;
+            localStorage.setItem('kdh_cnt_drawings', filledCount);
+
             // Attach Delete Handlers
             document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.addEventListener('click', function () {

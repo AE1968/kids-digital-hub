@@ -315,6 +315,23 @@
             if (typeof changeLanguage === 'function') {
                 changeLanguage(lang);
             }
+
+            // Update Stats from LocalStorage (Dynamic Refresh)
+            const cntDrawings = localStorage.getItem('kdh_cnt_drawings') || 0;
+            const cntGames = localStorage.getItem('kdh_cnt_games') || 0;
+            const cntStories = localStorage.getItem('kdh_cnt_stories') || 0;
+
+            // Update Drawings Card
+            document.querySelector('.card-drawings .stat-count').textContent = `${cntDrawings}/10`;
+            document.querySelector('.card-drawings .progress-fill').style.width = `${cntDrawings * 10}%`;
+
+            // Update Games Card
+            document.querySelector('.card-games .stat-count').textContent = `${cntGames}/10`;
+            document.querySelector('.card-games .progress-fill').style.width = `${cntGames * 10}%`;
+
+            // Update Stories Card
+            document.querySelector('.card-stories .stat-count').textContent = `${cntStories}/10`;
+            document.querySelector('.card-stories .progress-fill').style.width = `${cntStories * 10}%`;
         });
     </script>
 </body>

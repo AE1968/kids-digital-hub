@@ -132,7 +132,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('kdh_lang') || 'en';
             changeLanguage(lang);
+            // Auth Protection
             auth.applyProtection();
+
+            // Dynamic Stats: Count filled slots and save
+            const filledCount = document.querySelectorAll('.slot.filled').length;
+            localStorage.setItem('kdh_cnt_stories', filledCount);
         });
 
         function readStory(title) {
