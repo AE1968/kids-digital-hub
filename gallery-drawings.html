@@ -192,6 +192,24 @@
 
             // Auth Protection
             auth.applyProtection();
+
+            // Attach Delete Handlers
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const confirmMsg = lang === 'ro' ? "Sigur vrei să ștergi acest desen?" : "Are you sure you want to delete this drawing?";
+                    if (confirm(confirmMsg)) {
+                        const slot = this.parentElement;
+                        // Clear slot content visually
+                        slot.classList.remove('filled');
+                        slot.classList.add('empty');
+                        const number = slot.querySelector('.slot-number').textContent;
+                        slot.innerHTML = `
+                            <span class="slot-number">${number}</span>
+                            <div class="empty-label"><span>➕</span><span>Empty</span></div>
+                        `;
+                    }
+                });
+            });
         });
     </script>
 
