@@ -56,6 +56,16 @@ jobs:
           git add -A
           git diff --quiet && git diff --staged --quiet || (git commit -m "🤖 Auto-generated products - $(date +'%Y-%m-%d %H:%M')" && git push)
       
+      - name: Send Daily Email Report
+        env:
+          SMTP_HOST: smtp.gmail.com
+          SMTP_PORT: 587
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          TO_EMAIL: adrianenc11@gmail.com
+        run: |
+          python send_daily_report.py
+
       - name: Deploy to Netlify
         uses: netlify/actions/cli@master
         env:
