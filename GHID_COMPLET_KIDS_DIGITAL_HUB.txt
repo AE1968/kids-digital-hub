@@ -1,0 +1,56 @@
+========================================================================
+📘 MANUAL DE UTILIZARE & RAPORT TEHNIC - KIDS DIGITAL HUB (17 DEC 2024)
+========================================================================
+
+FELICITĂRI! 🎉
+Ai construit o platformă complexă, automatizată și funcțională.
+Acest document conține TOT ce trebuie să știi despre cum funcționează site-ul tău.
+
+1. UNDE SUNT FIȘIERELE?
+-----------------------
+Locația pe laptop: C:\Users\adria\.gemini\antigravity\scratch\kids-digital-hub
+⚠️ IMPORTANT: Nu șterge acest folder! El este "fabrica" ta. De aici pleacă toate modificările către internet. Dacă îl ștergi, pierzi posibilitatea de a actualiza site-ul ușor.
+
+2. CUM FUNCȚIONEAZĂ SISTEMUL? (Schema Simplă)
+---------------------------------------------
+[ LAPTOPUL TĂU ]  --->  [ GITHUB (Depozit Online) ]  --->  [ NETLIFY (Server Live) ]
+       |                            |                             |
+  (Tu faci modificări)     (Păstrează codul în siguranță)   (Afișează site-ul lumii)
+
+- Tu nu trebuie să urci fișiere manual pe server.
+- Totul se face automat prin comenzi pe care le dăm noi ("git push").
+
+3. DATE IMPORTANTE & LINK-URI
+-----------------------------
+🌐 Adresa Site-ului (LIVE): https://kidsdigitalhub.com
+(Varianta cu www ar trebui să funcționeze automat prin redirecționare).
+
+⚙️ Panou Administrare Netlify: https://app.netlify.com/
+(Aici vezi domeniile și setările serverului).
+
+🛠️ Automatizare (GitHub Actions):
+Zilnic, la ora 8:00 AM (UTC), un "robot" pornește automat, generează produse noi și le pune pe site fără să faci tu nimic.
+
+4. SITUAȚIA TEHNICĂ LA ZI
+-------------------------
+✅ PLĂȚI: PayPal integrat. Banii intră în contul tău.
+✅ CHITANȚE: Clienții primesc confirmare pe email.
+✅ RAPORT ZILNIC: Primești un email în fiecare dimineață cu statistici.
+✅ MENIU: Fixat sus pe ecran, fără animații enervante la încărcare.
+
+❓ PROBLEMA CU WWW (Domeniul)
+Dacă "www.kidsdigitalhub.com" încă nu merge perfect:
+- Am configurat serverul să redirecționeze automat vizitatorii către varianta FĂRĂ www.
+- Aceasta este setarea modernă și preferată de Google.
+- Nu mai umbla la setări. Va merge singur după ce se propagă (max 24h).
+
+5. CE FACI PE VIITOR?
+---------------------
+Dacă vrei să schimbi ceva la site (text, culori, preț):
+1. Deschizi proiectul în editorul de cod.
+2. Faci modificarea.
+3. Scriem comanda "git push" -> și site-ul se actualizează singur în 1 minut.
+
+Succes! Ai făcut o treabă excelentă!
+
+(Document generat de Asistentul AI - Antigravity)
