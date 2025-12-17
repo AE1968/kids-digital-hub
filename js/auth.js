@@ -4,6 +4,7 @@ class AuthManager {
         this.currentUser = JSON.parse(localStorage.getItem('kdh_user')) || null;
         this.users = {
             'admin': { pass: 'admin123', role: 'admin', storage: 'Unlimited' },
+            'Adrian': { pass: '123456', role: 'admin', storage: 'Unlimited' }, // Added for User
             'user1': { pass: 'pass1', role: 'premium_low', storage: '500GB' }, // £2
             'user2': { pass: 'pass2', role: 'premium_mid', storage: '2TB' },   // £4
             'user3': { pass: 'pass3', role: 'premium_high', storage: '10TB' }, // £10
@@ -58,22 +59,19 @@ class AuthManager {
         });
 
         if (!this.isLoggedIn()) {
-            // Guest: Hide Premium Directory or Lock it harder
+            // Guest: Hide Premium Directory COMPLETELY
             premiumContainers.forEach(slot => {
-                slot.style.opacity = '0.5';
-                slot.style.pointerEvents = 'none';
-                slot.title = "Login required";
-                // Optionally hide it completely via CSS class
-                // slot.style.display = 'none'; // User said "nu vor vedea" (won't see)
-                slot.style.display = 'none';
+                slot.closest('.slot') ? slot.closest('.slot').style.display = 'none' : slot.style.display = 'none';
             });
+            // Also hide specific premium marked sections
+            document.querySelectorAll('.premium-slot').forEach(el => el.style.display = 'none');
+            // Hide delete buttons for everyone except Admin handled below
         } else {
-            // Logged In: Show it (View Only is default for slots unless they have delete buttons)
+            // Logged In: Show it (View Only)
             premiumContainers.forEach(slot => {
-                slot.style.display = 'flex';
-                slot.style.opacity = '1';
-                slot.style.pointerEvents = 'auto'; // But maybe just for viewing
+                slot.closest('.slot') ? slot.closest('.slot').style.display = 'flex' : slot.style.display = 'flex';
             });
+            document.querySelectorAll('.premium-slot').forEach(el => el.style.display = 'flex');
         }
 
         // Admin checks for Delete buttons
