@@ -4,18 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Stories - Kids Digital Hub</title>
+    <title>My Games - Kids Digital Hub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         .gallery-header {
-            background: #66BB6A;
+            background: #42A5F5;
             padding: 15px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             color: white;
-            border-bottom: 5px solid #2E7D32;
+            border-bottom: 5px solid #1565C0;
         }
 
         .gallery-grid {
@@ -40,9 +40,9 @@
         }
 
         .slot.filled {
-            border: 4px solid #A5D6A7;
+            border: 4px solid #90CAF9;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            background: #E8F5E9;
+            background: #E3F2FD;
             flex-direction: column;
             gap: 10px;
         }
@@ -82,22 +82,22 @@
             font-weight: bold;
         }
 
-        .book-icon {
+        .game-icon {
             font-size: 4rem;
         }
 
-        .book-title {
+        .game-title {
             font-weight: bold;
-            color: #2E7D32;
+            color: #1565C0;
             font-size: 1rem;
             text-align: center;
             padding: 0 5px;
         }
 
-        .btn-read {
+        .btn-play {
             margin-top: 5px;
             padding: 5px 15px;
-            background: #66BB6A;
+            background: #42A5F5;
             color: white;
             border: none;
             border-radius: 15px;
@@ -121,39 +121,17 @@
 
     <header class="gallery-header">
         <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:2rem;">📚</span>
-            <h2 style="margin:0;">My Story Library</h2>
+            <span style="font-size:2rem;">🎮</span>
+            <h2 style="margin:0;">My Games Arcade</h2>
         </div>
         <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
     <script src="js/translations.js"></script>
-    <script src="js/auth.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('kdh_lang') || 'en';
             changeLanguage(lang);
-            auth.applyProtection();
         });
-
-        function readStory(title) {
-            const lang = localStorage.getItem('kdh_lang') || 'en';
-            const msg = new SpeechSynthesisUtterance();
-            msg.text = "Once upon a time, there was a story called " + title + ". It was a magical journey...";
-
-            // Simple language mapping for TTS
-            const langMap = {
-                'en': 'en-US', 'ro': 'ro-RO', 'fr': 'fr-FR', 'de': 'de-DE',
-                'es': 'es-ES', 'it': 'it-IT', 'ja': 'ja-JP', 'zh': 'zh-CN'
-            };
-            msg.lang = langMap[lang] || 'en-US';
-
-            // Custom text for demo based on language
-            if (lang === 'ro') msg.text = "A fost odată ca niciodată, o poveste numită " + title + ". A fost o călătorie magică...";
-            if (lang === 'fr') msg.text = "Il était une fois une histoire appelée " + title + "...";
-
-            window.speechSynthesis.speak(msg);
-            alert((lang === 'ro' ? 'Se citește: ' : 'Reading: ') + title);
-        }
     </script>
 
     <main>
@@ -161,24 +139,41 @@
             <!-- SLOT 1: FILLED -->
             <div class="slot filled">
                 <span class="slot-number">1</span>
-                <span class="book-icon">🦁</span>
-                <span class="book-title">Leo The Lion</span>
-                <button class="btn-read" data-i18n="btn_read" onclick="readStory('Leo The Lion')">📖 Read</button>
+                <span class="game-icon">🚀</span>
+                <span class="game-title">Space Jump</span>
+                <button class="btn-play" data-i18n="btn_play" onclick="alert('Starting Space Jump...')">▶ Play</button>
             </div>
 
-            <!-- SLOTS 2-10: EMPTY -->
-            <div class="slot empty"><span class="slot-number">2</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
+            <!-- SLOT 2: FILLED -->
+            <div class="slot filled">
+                <span class="slot-number">2</span>
+                <span class="game-icon">🔢</span>
+                <span class="game-title">Math Whiz</span>
+                <button class="btn-play" data-i18n="btn_play" onclick="alert('Starting Math Whiz...')">▶ Play</button>
             </div>
-            <div class="slot empty"><span class="slot-number">3</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
+            <!-- SLOT 3: FILLED -->
+            <div class="slot filled">
+                <span class="slot-number">3</span>
+                <span class="game-icon">🧩</span>
+                <span class="game-title">Puzzle Mix</span>
+                <button class="btn-play" data-i18n="btn_play" onclick="alert('Starting Puzzle Mix...')">▶ Play</button>
             </div>
-            <div class="slot empty"><span class="slot-number">4</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
+            <!-- SLOT 4: FILLED -->
+            <div class="slot filled">
+                <span class="slot-number">4</span>
+                <span class="game-icon">🐸</span>
+                <span class="game-title">Frogger Hop</span>
+                <button class="btn-play" data-i18n="btn_play" onclick="alert('Starting Frogger Hop...')">▶ Play</button>
             </div>
-            <div class="slot empty"><span class="slot-number">5</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
+            <!-- SLOT 5: FILLED -->
+            <div class="slot filled">
+                <span class="slot-number">5</span>
+                <span class="game-icon">🎹</span>
+                <span class="game-title">Piano Kids</span>
+                <button class="btn-play" data-i18n="btn_play" onclick="alert('Starting Piano Kids...')">▶ Play</button>
             </div>
+
+            <!-- SLOTS 6-10: EMPTY -->
             <div class="slot empty"><span class="slot-number">6</span>
                 <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
@@ -191,7 +186,7 @@
             <div class="slot empty"><span class="slot-number">9</span>
                 <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
-            <div class="slot empty premium-slot"><span class="slot-number">10</span>
+            <div class="slot empty"><span class="slot-number">10</span>
                 <div class="empty-label"><span>🔒 Premium</span></div>
             </div>
         </div>

@@ -130,7 +130,7 @@
             <span style="font-size:2rem;">🎨</span>
             <h2 style="margin:0;">My Art Gallery</h2>
         </div>
-        <a href="index.html" class="btn-back-dash">⬅️ Back</a>
+        <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
 
     <main>
@@ -171,11 +171,24 @@
             <div class="slot empty"><span class="slot-number">9</span>
                 <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
-            <div class="slot empty"><span class="slot-number">10</span>
+            <div class="slot empty premium-slot"><span class="slot-number">10</span>
                 <div class="empty-label"><span>🔒 Premium</span></div>
             </div>
         </div>
     </main>
+
+    <script src="js/translations.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Language
+            const lang = localStorage.getItem('kdh_lang') || 'en';
+            changeLanguage(lang);
+
+            // Auth Protection
+            auth.applyProtection();
+        });
+    </script>
 
 </body>
 

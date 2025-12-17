@@ -127,33 +127,11 @@
         <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
     <script src="js/translations.js"></script>
-    <script src="js/auth.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('kdh_lang') || 'en';
             changeLanguage(lang);
-            auth.applyProtection();
         });
-
-        function readStory(title) {
-            const lang = localStorage.getItem('kdh_lang') || 'en';
-            const msg = new SpeechSynthesisUtterance();
-            msg.text = "Once upon a time, there was a story called " + title + ". It was a magical journey...";
-
-            // Simple language mapping for TTS
-            const langMap = {
-                'en': 'en-US', 'ro': 'ro-RO', 'fr': 'fr-FR', 'de': 'de-DE',
-                'es': 'es-ES', 'it': 'it-IT', 'ja': 'ja-JP', 'zh': 'zh-CN'
-            };
-            msg.lang = langMap[lang] || 'en-US';
-
-            // Custom text for demo based on language
-            if (lang === 'ro') msg.text = "A fost odată ca niciodată, o poveste numită " + title + ". A fost o călătorie magică...";
-            if (lang === 'fr') msg.text = "Il était une fois une histoire appelée " + title + "...";
-
-            window.speechSynthesis.speak(msg);
-            alert((lang === 'ro' ? 'Se citește: ' : 'Reading: ') + title);
-        }
     </script>
 
     <main>
@@ -163,7 +141,8 @@
                 <span class="slot-number">1</span>
                 <span class="book-icon">🦁</span>
                 <span class="book-title">Leo The Lion</span>
-                <button class="btn-read" data-i18n="btn_read" onclick="readStory('Leo The Lion')">📖 Read</button>
+                <button class="btn-read" data-i18n="btn_read" onclick="alert('Opening Leo The Lion...')">📖
+                    Read</button>
             </div>
 
             <!-- SLOTS 2-10: EMPTY -->
@@ -191,7 +170,7 @@
             <div class="slot empty"><span class="slot-number">9</span>
                 <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
-            <div class="slot empty premium-slot"><span class="slot-number">10</span>
+            <div class="slot empty"><span class="slot-number">10</span>
                 <div class="empty-label"><span>🔒 Premium</span></div>
             </div>
         </div>
