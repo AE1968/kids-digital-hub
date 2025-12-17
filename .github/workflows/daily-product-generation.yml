@@ -64,16 +64,6 @@ jobs:
         with:
           args: deploy --prod
       
-      - name: Send Daily Report Email
-        if: always() # Trimite raportul chiar daca pasii anteriori au avertismente
-        env:
-          SMTP_HOST: 'smtp.gmail.com'
-          SMTP_PORT: '587'
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASS: ${{ secrets.SMTP_PASS }}
-          TO_EMAIL: 'adrianenc11@gmail.com'
-        run: |
-          python send_daily_report.py      
       - name: Send notification on failure
         if: failure()
         run: |
