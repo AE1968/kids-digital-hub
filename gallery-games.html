@@ -124,8 +124,15 @@
             <span style="font-size:2rem;">🎮</span>
             <h2 style="margin:0;">My Games Arcade</h2>
         </div>
-        <a href="dashboard.html" class="btn-back-dash">⬅️ Dashboard</a>
+        <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
+    <script src="js/translations.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lang = localStorage.getItem('kdh_lang') || 'en';
+            changeLanguage(lang);
+        });
+    </script>
 
     <main>
         <div class="gallery-grid">
@@ -134,7 +141,7 @@
                 <span class="slot-number">1</span>
                 <span class="game-icon">🚀</span>
                 <span class="game-title">Space Jump</span>
-                <button class="btn-play">▶ Play</button>
+                <button class="btn-play" data-i18n="btn_play" onclick="alert('Starting Space Jump...')">▶ Play</button>
             </div>
 
             <!-- SLOT 2: FILLED -->
@@ -142,28 +149,28 @@
                 <span class="slot-number">2</span>
                 <span class="game-icon">🔢</span>
                 <span class="game-title">Math Whiz</span>
-                <button class="btn-play">▶ Play</button>
+                <button class="btn-play" data-i18n="btn_play" onclick="alert('Starting Math Whiz...')">▶ Play</button>
             </div>
             <!-- SLOT 3: FILLED -->
             <div class="slot filled">
                 <span class="slot-number">3</span>
                 <span class="game-icon">🧩</span>
                 <span class="game-title">Puzzle Mix</span>
-                <button class="btn-play">▶ Play</button>
+                <button class="btn-play" data-i18n="btn_play" onclick="alert('Starting Puzzle Mix...')">▶ Play</button>
             </div>
             <!-- SLOT 4: FILLED -->
             <div class="slot filled">
                 <span class="slot-number">4</span>
                 <span class="game-icon">🐸</span>
                 <span class="game-title">Frogger Hop</span>
-                <button class="btn-play">▶ Play</button>
+                <button class="btn-play" data-i18n="btn_play" onclick="alert('Starting Frogger Hop...')">▶ Play</button>
             </div>
             <!-- SLOT 5: FILLED -->
             <div class="slot filled">
                 <span class="slot-number">5</span>
                 <span class="game-icon">🎹</span>
                 <span class="game-title">Piano Kids</span>
-                <button class="btn-play">▶ Play</button>
+                <button class="btn-play" data-i18n="btn_play" onclick="alert('Starting Piano Kids...')">▶ Play</button>
             </div>
 
             <!-- SLOTS 6-10: EMPTY -->

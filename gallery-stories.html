@@ -124,8 +124,15 @@
             <span style="font-size:2rem;">📚</span>
             <h2 style="margin:0;">My Story Library</h2>
         </div>
-        <a href="dashboard.html" class="btn-back-dash">⬅️ Dashboard</a>
+        <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
+    <script src="js/translations.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lang = localStorage.getItem('kdh_lang') || 'en';
+            changeLanguage(lang);
+        });
+    </script>
 
     <main>
         <div class="gallery-grid">
@@ -134,7 +141,8 @@
                 <span class="slot-number">1</span>
                 <span class="book-icon">🦁</span>
                 <span class="book-title">Leo The Lion</span>
-                <button class="btn-read">📖 Read</button>
+                <button class="btn-read" data-i18n="btn_read" onclick="alert('Opening Leo The Lion...')">📖
+                    Read</button>
             </div>
 
             <!-- SLOTS 2-10: EMPTY -->
