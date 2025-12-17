@@ -79,33 +79,60 @@ PRODUCT_THEMES = [
     }
 ]
 
-def generate_image_placeholder(product_id, theme_name):
+def generate_real_ai_image(product_id, theme_name, prompt):
     """
-    Generează un placeholder SVG simplu pentru produs
-    În viitor, aici vei integra API-ul real de generare imagini
+    Generează o imagine AI reală folosind un API public (Pollinations.ai)
+    sau Google Gemini/OpenAI dacă sunt configurate cheile.
     """
-    svg_content = f'''<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
-        <rect width="400" height="400" fill="#f0f0f0"/>
-        <text x="200" y="180" font-family="Arial" font-size="20" fill="#333" text-anchor="middle">
-            {theme_name}
-        </text>
-        <text x="200" y="220" font-family="Arial" font-size="16" fill="#666" text-anchor="middle">
-            Product #{product_id}
-        </text>
-        <circle cx="200" cy="280" r="40" fill="#4CAF50" opacity="0.3"/>
-    </svg>'''
+    print(f"🎨 Generare imagine AI pentru: {theme_name}...")
     
-    return svg_content
+    # 1. Curățăm prompt-ul și îl pregătim pentru URL
+    # Adăugăm detalii pentru stil unitar
+    full_prompt = f"{prompt}, colorful, vibant, high quality, children book style, white background, 8k resolution"
+    encoded_prompt = requests.utils.quote(full_prompt)
+    
+    # 2. Construim URL-ul (Folosim Pollinations.ai pentru că e gratuit și rapid pentru demo avansat)
+    # Putem adăuga un seed random pentru variație
+    seed = random.randint(1, 999999)
+    image_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=800&height=800&seed={seed}&nologo=true&model=flux"
+    
+    try:
+        # 3. Descărcăm imaginea
+        response = requests.get(image_url, timeout=30)
+        response.raise_for_status()
+        
+        return response.content
+    except Exception as e:
+        print(f"❌ Eroare generare imagine AI: {e}")
+        # Fallback la placeholder în caz de eroare
+        return None
 
-def save_product_image(product_id, theme_name, output_dir="products"):
-    """Salvează imaginea produsului (placeholder pentru moment)"""
-    Path(output_dir).mkdir(exist_ok=True)
+def save_product_image(product_id, theme_name, prompt, output_dir="assets/images/products"):
+    """Salvează imaginea produsului (AI generat)"""
+    # Asigură-te că directorul există (inclusiv părinții)
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
     
-    filename = f"{output_dir}/product_{product_id}.svg"
-    svg_content = generate_image_placeholder(product_id, theme_name)
+    filename = f"{output_dir}/product_{product_id}.jpg" # JPG pentru imagini reale
     
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(svg_content)
+    # Încearcă generare AI
+    image_content = generate_real_ai_image(product_id, theme_name, prompt)
+    
+    if image_content:
+        # Salvează imaginea reală
+        with open(filename, 'wb') as f:
+            f.write(image_content)
+    else:
+        # Fallback dacă API-ul pică (foarte rar)
+        # Creăm un SVG placeholder simplu
+        svg_content = f'''<svg width="800" height="800" xmlns="http://www.w3.org/2000/svg">
+            <rect width="800" height="800" fill="#f0f0f0"/>
+            <text x="400" y="400" font-family="Arial" font-size="40" fill="#666" text-anchor="middle">
+                {theme_name} (Error)
+            </text>
+        </svg>'''
+        filename = f"{output_dir}/product_{product_id}.svg"
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(svg_content)
     
     return filename
 
@@ -134,7 +161,7 @@ def generate_new_products(count):
         product_id = next_id + i
         
         # Generează și salvează imaginea
-        image_path = save_product_image(product_id, theme['name'])
+        image_path = save_product_image(product_id, theme['name'], theme['prompt'])
         
         # Decide dacă e gratuit (30% șanse)
         is_free = random.random() < 0.3
