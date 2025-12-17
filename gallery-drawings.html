@@ -95,21 +95,24 @@
 
         .btn-delete {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            background: #FF5252;
-            color: white;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9);
             border: none;
+            border-radius: 50%;
             width: 30px;
             height: 30px;
-            border-radius: 50%;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.2s;
-            z-index: 2;
+            font-size: 1.2rem;
+            display: none;
+            /* Hidden by default, shown by JS if admin */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+        }
+
+        .btn-delete:hover {
+            background: #ffebee;
+            transform: scale(1.1);
         }
 
         .slot.filled:hover .btn-delete {
