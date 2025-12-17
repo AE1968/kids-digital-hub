@@ -158,15 +158,10 @@
 
     <main>
         <div class="gallery-grid">
-            <!-- SLOT 1: FILLED -->
-            <div class="slot filled">
-                <span class="slot-number">1</span>
-                <span class="book-icon">🦁</span>
-                <span class="book-title">Leo The Lion</span>
-                <button class="btn-read" data-i18n="btn_read" onclick="readStory('Leo The Lion')">📖 Read</button>
+            <!-- SLOTS 1-9: ALL EMPTY (Site Reset) -->
+            <div class="slot empty"><span class="slot-number">1</span>
+                <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
-
-            <!-- SLOTS 2-10: EMPTY -->
             <div class="slot empty"><span class="slot-number">2</span>
                 <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
@@ -191,6 +186,8 @@
             <div class="slot empty"><span class="slot-number">9</span>
                 <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
+
+            <!-- SLOT 10: PREMIUM -->
             <div class="slot empty premium-slot"><span class="slot-number">10</span>
                 <div class="empty-label"><span>🔒 Premium</span></div>
             </div>

@@ -130,73 +130,114 @@
     <script src="js/auth.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Language
+            // Language logic
             const lang = localStorage.getItem('kdh_lang') || 'en';
             changeLanguage(lang);
-
-            // Auth Protection
+            // Auth logic
             auth.applyProtection();
         });
 
+        // Simple Pong Game Engine
         function playGame(gameName) {
-            // Mock Game Loader
-            const container = document.querySelector('.gallery-grid');
-            const originalContent = container.innerHTML;
+            const overlay = document.getElementById('gameOverlay');
+            overlay.style.display = 'flex';
 
+            const container = document.querySelector('.game-container');
             container.innerHTML = `
-                <div style="grid-column: 1/-1; background: #000; color: white; height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 20px;">
-                    <h2>🎮 ${gameName}</h2>
-                    <p>Loading Game Engine...</p>
-                    <div class="progress-bar" style="width: 300px; height: 20px; background: #333; border-radius: 10px; overflow: hidden; margin: 20px;">
-                        <div style="width: 100%; height: 100%; background: #4CAF50; animation: load 2s linear;"></div>
-                    </div>
-                    <button onclick="location.reload()" style="padding: 10px 20px; background: #f44336; color: white; border: none; border-radius: 10px; cursor: pointer;">Exit Game</button>
-                    <style>@keyframes load { from { width: 0; } to { width: 100%; } }</style>
-                </div>
+                <h2 style="color:white; margin-bottom:10px;">${gameName}</h2>
+                <canvas id="gameCanvas" width="480" height="320" style="background:black; border:2px solid #555;"></canvas>
+                <div style="color:#aaa; font-size:0.9rem; margin-top:5px;">Use Mouse to Move Paddle</div>
+                <button class="btn-exit" onclick="closeGame()">Exit Game</button>
             `;
+
+            // Pong Logic
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            let ballRadius = 10;
+            let x = canvas.width / 2;
+            let y = canvas.height - 30;
+            let dx = 2;
+            let dy = -2;
+            let paddleHeight = 10;
+            let paddleWidth = 75;
+            let paddleX = (canvas.width - paddleWidth) / 2;
+            let interval;
+
+            function drawBall() {
+                ctx.beginPath();
+                ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+            }
+            function drawPaddle() {
+                ctx.beginPath();
+                ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+            }
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawBall();
+                drawPaddle();
+
+                if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                    dx = -dx;
+                }
+                if (y + dy < ballRadius) {
+                    dy = -dy;
+                } else if (y + dy > canvas.height - ballRadius) {
+                    if (x > paddleX && x < paddleX + paddleWidth) {
+                        dy = -dy;
+                    } else {
+                        // Game Over logic simplified - just bounce bottom for endless play demo
+                        dy = -dy;
+                    }
+                }
+
+                x += dx;
+                y += dy;
+            }
+
+            document.addEventListener("mousemove", mouseMoveHandler, false);
+            function mouseMoveHandler(e) {
+                const relativeX = e.clientX - canvas.offsetLeft;
+                if (relativeX > 0 && relativeX < canvas.width) {
+                    paddleX = relativeX - paddleWidth / 2;
+                }
+            }
+
+            interval = setInterval(draw, 10);
+
+            // attach interval to window to clear it later
+            window.currentGameInterval = interval;
+        }
+
+        function closeGame() {
+            document.getElementById('gameOverlay').style.display = 'none';
+            if (window.currentGameInterval) clearInterval(window.currentGameInterval);
         }
     </script>
 
     <main>
         <div class="gallery-grid">
-            <!-- SLOT 1: FILLED -->
-            <div class="slot filled">
-                <span class="slot-number">1</span>
-                <span class="game-icon">🚀</span>
-                <span class="game-title">Space Jump</span>
-                <button class="btn-play" data-i18n="btn_play" onclick="playGame('Space Jump')">▶ Play</button>
+            <!-- SLOTS 1-9: ALL EMPTY (Site Reset) -->
+            <div class="slot empty"><span class="slot-number">1</span>
+                <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
-
-            <!-- SLOT 2: FILLED -->
-            <div class="slot filled">
-                <span class="slot-number">2</span>
-                <span class="game-icon">🔢</span>
-                <span class="game-title">Math Whiz</span>
-                <button class="btn-play" data-i18n="btn_play" onclick="playGame('Math Whiz')">▶ Play</button>
+            <div class="slot empty"><span class="slot-number">2</span>
+                <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
-            <!-- SLOT 3: FILLED -->
-            <div class="slot filled">
-                <span class="slot-number">3</span>
-                <span class="game-icon">🧩</span>
-                <span class="game-title">Puzzle Mix</span>
-                <button class="btn-play" data-i18n="btn_play" onclick="playGame('Puzzle Mix')">▶ Play</button>
+            <div class="slot empty"><span class="slot-number">3</span>
+                <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
-            <!-- SLOT 4: FILLED -->
-            <div class="slot filled">
-                <span class="slot-number">4</span>
-                <span class="game-icon">🐸</span>
-                <span class="game-title">Frogger Hop</span>
-                <button class="btn-play" data-i18n="btn_play" onclick="playGame('Frogger Hop')">▶ Play</button>
+            <div class="slot empty"><span class="slot-number">4</span>
+                <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
-            <!-- SLOT 5: FILLED -->
-            <div class="slot filled">
-                <span class="slot-number">5</span>
-                <span class="game-icon">🎹</span>
-                <span class="game-title">Piano Kids</span>
-                <button class="btn-play" data-i18n="btn_play" onclick="playGame('Piano Kids')">▶ Play</button>
+            <div class="slot empty"><span class="slot-number">5</span>
+                <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
-
-            <!-- SLOTS 6-10: EMPTY -->
             <div class="slot empty"><span class="slot-number">6</span>
                 <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
@@ -209,6 +250,8 @@
             <div class="slot empty"><span class="slot-number">9</span>
                 <div class="empty-label"><span>➕</span><span>Empty</span></div>
             </div>
+
+            <!-- SLOT 10: PREMIUM -->
             <div class="slot empty premium-slot"><span class="slot-number">10</span>
                 <div class="empty-label"><span>🔒 Premium</span></div>
             </div>
