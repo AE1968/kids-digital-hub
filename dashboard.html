@@ -316,22 +316,38 @@
                 changeLanguage(lang);
             }
 
-            // Update Stats from LocalStorage (Dynamic Refresh)
-            const cntDrawings = localStorage.getItem('kdh_cnt_drawings') || 0;
-            const cntGames = localStorage.getItem('kdh_cnt_games') || 0;
-            const cntStories = localStorage.getItem('kdh_cnt_stories') || 0;
+            // --- LIVE MONITORING SYSTEM ---
+            function checkGallery(url, cardSelector) {
+                // Fetch the gallery page in background
+                fetch(url + '?t=' + Date.now())
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        // Count elements with class .slot.filled
+                        const count = doc.querySelectorAll('.slot.filled').length;
 
-            // Update Drawings Card
-            document.querySelector('.card-drawings .stat-count').textContent = `${cntDrawings}/10`;
-            document.querySelector('.card-drawings .progress-fill').style.width = `${cntDrawings * 10}%`;
+                        // Update Dashboard UI
+                        const card = document.querySelector(cardSelector);
+                        if (card) {
+                            card.querySelector('.stat-count').textContent = `${count}/10`;
+                            card.querySelector('.progress-fill').style.width = `${count * 10}%`;
+                        }
+                    })
+                    .catch(err => {
+                        // Silent error
+                    });
+            }
 
-            // Update Games Card
-            document.querySelector('.card-games .stat-count').textContent = `${cntGames}/10`;
-            document.querySelector('.card-games .progress-fill').style.width = `${cntGames * 10}%`;
+            function runLiveUpdate() {
+                checkGallery('gallery-drawings.html', '.card-drawings');
+                checkGallery('gallery-games.html', '.card-games');
+                checkGallery('gallery-stories.html', '.card-stories');
+            }
 
-            // Update Stories Card
-            document.querySelector('.card-stories .stat-count').textContent = `${cntStories}/10`;
-            document.querySelector('.card-stories .progress-fill').style.width = `${cntStories * 10}%`;
+            // Run immediately and then every 2 seconds
+            runLiveUpdate();
+            setInterval(runLiveUpdate, 2000);
         });
     </script>
 </body>
