@@ -1,7 +1,7 @@
 [build]
   publish = "."
 
-# Redirect WWW to non-WWW (works on Netlify subdomain too)
+# Fix /www path (redirect to root but keep domain as-is)
 [[redirects]]
   from = "/www"
   to = "/"
@@ -14,7 +14,7 @@
   status = 301
   force = true
 
-# SPA fallback
+# SPA fallback (serves index.html without changing URL)
 [[redirects]]
   from = "/*"
   to = "/index.html"
