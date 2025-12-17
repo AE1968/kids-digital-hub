@@ -4,7 +4,7 @@ class AuthManager {
         this.currentUser = JSON.parse(localStorage.getItem('kdh_user')) || null;
         this.users = {
             'admin': { pass: 'admin123', role: 'admin', storage: 'Unlimited' },
-            'Adrian': { pass: '123456', role: 'admin', storage: 'Unlimited' }, // Added for User
+            'Adrian': { pass: 'Andrada_1968!', role: 'admin', storage: 'Unlimited' }, // Added for User
             'user1': { pass: 'pass1', role: 'premium_low', storage: '500GB' }, // £2
             'user2': { pass: 'pass2', role: 'premium_mid', storage: '2TB' },   // £4
             'user3': { pass: 'pass3', role: 'premium_high', storage: '10TB' }, // £10
