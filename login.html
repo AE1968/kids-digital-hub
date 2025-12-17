@@ -141,7 +141,15 @@
             btn.innerHTML = "Opening... 🔓";
 
             setTimeout(() => {
-                window.location.href = "dashboard.html";
+                // Check for redirect param
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirect = urlParams.get('redirect');
+
+                if (redirect === 'premium') {
+                    window.location.href = "payment.html";
+                } else {
+                    window.location.href = "dashboard.html";
+                }
             }, 1000);
         }
     </script>
