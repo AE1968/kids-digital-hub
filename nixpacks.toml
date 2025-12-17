@@ -1,8 +1,8 @@
 [phases.setup]
-nixPkgs = ["python310", "gcc"]
+nixPkgs = ["python311", "gcc"]
 
 [phases.build]
-cmds = ["pip install -r requirements.txt"]
+cmds = ["python -m pip install -r requirements.txt"]
 
 [start]
-cmd = "python webhook_server.py"
+cmd = "gunicorn webhook_server:app"

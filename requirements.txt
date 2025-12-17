@@ -1,0 +1,9 @@
+
+flask
+gunicorn
+requests
+python-dotenv
+stripe
+paypal-rest-sdk
+google-generativeai
+pillow
