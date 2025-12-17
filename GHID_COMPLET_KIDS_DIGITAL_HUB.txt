@@ -9,47 +9,46 @@ Acest document conține TOT ce trebuie să știi despre cum funcționează site-
 1. UNDE SUNT FIȘIERELE?
 -----------------------
 Locația pe laptop: C:\Users\adria\.gemini\antigravity\scratch\kids-digital-hub
-⚠️ IMPORTANT: Nu șterge acest folder! El este "fabrica" ta. De aici pleacă toate modificările către internet. Dacă îl ștergi, pierzi posibilitatea de a actualiza site-ul ușor.
+⚠️ IMPORTANT: Nu șterge acest folder! El este "fabrica" ta. De aici pleacă toate modificările către internet.
 
-2. CUM FUNCȚIONEAZĂ SISTEMUL? (Schema Simplă)
+2. ARHITECTURA (Ce rol are fiecare serviciu?)
 ---------------------------------------------
-[ LAPTOPUL TĂU ]  --->  [ GITHUB (Depozit Online) ]  --->  [ NETLIFY (Server Live) ]
-       |                            |                             |
-  (Tu faci modificări)     (Păstrează codul în siguranță)   (Afișează site-ul lumii)
+A. SITE-UL WEB (Partea vizibilă)
+   - Unde stă: NETLIFY
+   - Status: ✅ LIVE
+   - Adresa: https://kidsdigitalhub.com
+   - Ce face: Afișează paginile, jocurile și desenele clienților.
 
-- Tu nu trebuie să urci fișiere manual pe server.
-- Totul se face automat prin comenzi pe care le dăm noi ("git push").
+B. AUTOMATIZAREA (Robotul Zilnic)
+   - Unde stă: GITHUB ACTIONS
+   - Status: ✅ ACTIV
+   - Ce face: În fiecare dimineață la 8:00 AM, crează produse noi și îți trimite raportul pe email.
+
+C. SERVERUL DE BACKEND (Opțional / Avansat)
+   - Unde stă: RAILWAY
+   - Status: ⚠️ POSIBILE ERORI DE DEPLOY (Ignorabile momentan)
+   - Ce face: Ar trebui să preia notificări instant de la Printful.
+   - NOTĂ: Dacă primești erori de la "Railway", nu te panica. Site-ul principal (A) și Robotul (B) merg independent de el. Poți ignora aceste erori dacă site-ul merge bine.
 
 3. DATE IMPORTANTE & LINK-URI
 -----------------------------
-🌐 Adresa Site-ului (LIVE): https://kidsdigitalhub.com
-(Varianta cu www ar trebui să funcționeze automat prin redirecționare).
-
+🌐 Adresa Site-ului: https://kidsdigitalhub.com
 ⚙️ Panou Administrare Netlify: https://app.netlify.com/
-(Aici vezi domeniile și setările serverului).
+📧 Email Rapoarte: Verifică zilnic inbox-ul (adrianenc11@gmail.com).
 
-🛠️ Automatizare (GitHub Actions):
-Zilnic, la ora 8:00 AM (UTC), un "robot" pornește automat, generează produse noi și le pune pe site fără să faci tu nimic.
-
-4. SITUAȚIA TEHNICĂ LA ZI
--------------------------
-✅ PLĂȚI: PayPal integrat. Banii intră în contul tău.
-✅ CHITANȚE: Clienții primesc confirmare pe email.
-✅ RAPORT ZILNIC: Primești un email în fiecare dimineață cu statistici.
-✅ MENIU: Fixat sus pe ecran, fără animații enervante la încărcare.
-
-❓ PROBLEMA CU WWW (Domeniul)
-Dacă "www.kidsdigitalhub.com" încă nu merge perfect:
-- Am configurat serverul să redirecționeze automat vizitatorii către varianta FĂRĂ www.
-- Aceasta este setarea modernă și preferată de Google.
-- Nu mai umbla la setări. Va merge singur după ce se propagă (max 24h).
+4. PROBLEMA CU "WWW"
+--------------------
+Dacă "www.kidsdigitalhub.com" are momente când nu merge:
+- Am configurat serverul să redirecționeze automat totul către https://kidsdigitalhub.com (fără www).
+- Aceasta este setarea corectă. Nu mai umbla la butoane, lasă DNS-ul să se propage (poate dura 24h).
 
 5. CE FACI PE VIITOR?
 ---------------------
 Dacă vrei să schimbi ceva la site (text, culori, preț):
-1. Deschizi proiectul în editorul de cod.
-2. Faci modificarea.
-3. Scriem comanda "git push" -> și site-ul se actualizează singur în 1 minut.
+1. Deschizi folderul de pe laptop.
+2. Faci modificarea în fișiere (ex: index.html).
+3. Folosești un terminal sau asistent AI să dai comanda "git push".
+   -> Site-ul se actualizează singur în 1 minut.
 
 Succes! Ai făcut o treabă excelentă!
 
