@@ -4,52 +4,38 @@
 
 FELICITĂRI! 🎉
 Ai construit o platformă complexă, automatizată și funcțională.
-Acest document conține TOT ce trebuie să știi despre cum funcționează site-ul tău.
+Acest document conține TOT ce trebuie să știi.
 
 1. UNDE SUNT FIȘIERELE?
 -----------------------
 Locația pe laptop: C:\Users\adria\.gemini\antigravity\scratch\kids-digital-hub
-⚠️ IMPORTANT: Nu șterge acest folder! El este "fabrica" ta. De aici pleacă toate modificările către internet.
+⚠️ IMPORTANT: Nu șterge acest folder! El este "fabrica" ta.
 
-2. ARHITECTURA (Ce rol are fiecare serviciu?)
----------------------------------------------
-A. SITE-UL WEB (Partea vizibilă)
-   - Unde stă: NETLIFY
-   - Status: ✅ LIVE
-   - Adresa: https://kidsdigitalhub.com
-   - Ce face: Afișează paginile, jocurile și desenele clienților.
+2. SITUAȚIA TEHNICĂ (CE MERGE BINE) ✅
+--------------------------------------
+- Site-ul principal (fără www) este LIVE: https://kidsdigitalhub.com
+- Plățile PayPal funcționează.
+- Raportul zilnic pe email vine automat la 8:00 AM.
+- Meniul este fixat sus pe ecran.
 
-B. AUTOMATIZAREA (Robotul Zilnic)
-   - Unde stă: GITHUB ACTIONS
-   - Status: ✅ ACTIV
-   - Ce face: În fiecare dimineață la 8:00 AM, crează produse noi și îți trimite raportul pe email.
+3. PROBLEME RĂMASE DE REZOLVAT (URGENT!) ⚠️
+--------------------------------------------
+A. BUTONUL "MY HUB" (Sigla AE)
+   - Simptom: Zici că "funcționalitățile lui nu sunt".
+   - Ce trebuie verificat data viitoare: 
+     a) Dacă există imaginea `logo_ae.png`.
+     b) Dacă pagina `login.html` funcționează corect.
+     c) Dacă dashboard-ul de administrare se deschide.
 
-C. SERVERUL DE BACKEND (Opțional / Avansat)
-   - Unde stă: RAILWAY
-   - Status: ⚠️ POSIBILE ERORI DE DEPLOY (Ignorabile momentan)
-   - Ce face: Ar trebui să preia notificări instant de la Printful.
-   - NOTĂ: Dacă primești erori de la "Railway", nu te panica. Site-ul principal (A) și Robotul (B) merg independent de el. Poți ignora aceste erori dacă site-ul merge bine.
+B. ADRESA CU "WWW" (www.kidsdigitalhub.com)
+   - Simptom: Încă dă eroare în browser la tine.
+   - Cauză: Propagarea DNS (internetul local ține minte eroarea veche).
+   - Soluție: Așteptăm 24h. Dacă mâine tot nu merge, verificăm setările DNS (CNAME) la providerul de domeniu.
 
-3. DATE IMPORTANTE & LINK-URI
------------------------------
-🌐 Adresa Site-ului: https://kidsdigitalhub.com
-⚙️ Panou Administrare Netlify: https://app.netlify.com/
-📧 Email Rapoarte: Verifică zilnic inbox-ul (adrianenc11@gmail.com).
+4. CUM CONTINUI DE AICI?
+------------------------
+Data viitoare când lucrezi cu un asistent AI, spune-i:
+"Salut, verifică te rog punctul 3 din fișierul GHID_COMPLET.txt de pe Desktop. Vreau să reparăm butonul My Hub și să verificăm www."
 
-4. PROBLEMA CU "WWW"
---------------------
-Dacă "www.kidsdigitalhub.com" are momente când nu merge:
-- Am configurat serverul să redirecționeze automat totul către https://kidsdigitalhub.com (fără www).
-- Aceasta este setarea corectă. Nu mai umbla la butoane, lasă DNS-ul să se propage (poate dura 24h).
-
-5. CE FACI PE VIITOR?
----------------------
-Dacă vrei să schimbi ceva la site (text, culori, preț):
-1. Deschizi folderul de pe laptop.
-2. Faci modificarea în fișiere (ex: index.html).
-3. Folosești un terminal sau asistent AI să dai comanda "git push".
-   -> Site-ul se actualizează singur în 1 minut.
-
-Succes! Ai făcut o treabă excelentă!
-
+Succes!
 (Document generat de Asistentul AI - Antigravity)
