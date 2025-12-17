@@ -20,11 +20,4 @@
   path = "/"
   function = "geo_language"
 
-# Protecție Admin (Basic Auth via Netlify Headers)
-# Notă: Netlify Basic Auth se configurează de obicei din Panou sau via _headers separat.
-# Dar aici definim regula de acces.
-# [[redirects]]
-#   from = "/*"
-#   to = "/index.html"
-#   status = 200
-#   force = true
+
