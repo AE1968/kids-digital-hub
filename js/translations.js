@@ -225,8 +225,23 @@ function changeLanguage(lang) {
     localStorage.setItem('kdh_lang', lang);
     document.cookie = `nf_lang=${lang}; Path=/; SameSite=Lax`;
 
+    // Sync Dropdown if exists
+    const select = document.querySelector('.lang-select');
+    if (select && select.value !== lang) {
+        select.value = lang;
+    }
+
     // Dispatch event for seasonal background update
     window.dispatchEvent(new Event('languageChanged'));
 
     console.log(`Language changed to: ${lang}`);
 }
+
+// AUTO-INITIALIZE LANGUAGE ON LOAD
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Get saved language (or default en)
+    const savedLang = localStorage.getItem('kdh_lang') || 'en';
+
+    // 2. Apply immediately
+    changeLanguage(savedLang);
+});

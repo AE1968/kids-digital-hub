@@ -4,105 +4,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Stories - Kids Digital Hub</title>
+    <title>Magical Stories - Kids Digital Hub</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Georgia&display=swap"
+        rel="stylesheet">
     <style>
-        .gallery-header {
-            background: #66BB6A;
+        .stories-header {
+            background: #9C27B0;
             padding: 15px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             color: white;
-            border-bottom: 5px solid #2E7D32;
+            border-bottom: 5px solid #7B1FA2;
+        }
+
+        /* --- FILTERS --- */
+        .age-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid #E1BEE7;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: bold;
+            color: #7B1FA2;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #F3E5F5;
+        }
+
+        .filter-btn.active {
+            background: #9C27B0;
+            color: white;
+            border-color: #9C27B0;
         }
 
         .gallery-grid {
             max-width: 1000px;
-            margin: 40px auto;
+            margin: 0 auto;
             padding: 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
         }
 
-        .slot {
-            aspect-ratio: 1;
+        .story-card {
             background: white;
-            border-radius: 20px;
-            position: relative;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s;
+            border-left: 8px solid #ddd;
+            position: relative;
         }
 
-        .slot.filled {
-            border: 4px solid #A5D6A7;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            background: #E8F5E9;
-            flex-direction: column;
-            gap: 10px;
+        .story-card:hover {
+            transform: translateY(-8px) rotate(-1deg);
         }
 
-        .slot.filled:hover {
-            transform: scale(1.05);
+        .story-card.premium {
+            border-left-color: gold;
+            background: #fff8e1;
         }
 
-        .slot.empty {
-            border: 4px dashed #CFD8DC;
-            background: #F5F5F5;
+        .book-cover {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
         }
 
-        .empty-label {
-            color: #B0BEC5;
-            font-weight: bold;
-            font-size: 0.9rem;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+        .age-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 10px;
         }
 
         .slot-number {
             position: absolute;
             top: 10px;
             left: 10px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             color: white;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 20;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .story-info {
+            padding: 15px;
+        }
+
+        .story-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #4A148C;
+            margin-bottom: 5px;
+        }
+
+        .story-author {
             font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .book-icon {
-            font-size: 4rem;
-        }
-
-        .book-title {
-            font-weight: bold;
-            color: #2E7D32;
-            font-size: 1rem;
-            text-align: center;
-            padding: 0 5px;
-        }
-
-        .btn-read {
-            margin-top: 5px;
-            padding: 5px 15px;
-            background: #66BB6A;
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-weight: bold;
-            cursor: pointer;
+            color: #888;
         }
 
         .btn-back-dash {
@@ -114,91 +142,370 @@
             font-weight: bold;
             border: 2px solid white;
         }
+
+        /* READER OVERLAY */
+        #storyOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            z-index: 5000;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .reader-header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            background: white;
+        }
+
+        .mode-switch {
+            display: flex;
+            background: #E1BEE7;
+            padding: 5px;
+            border-radius: 30px;
+            gap: 5px;
+        }
+
+        .mode-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #4A148C;
+        }
+
+        .mode-btn.active {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .reader-body {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .text-view {
+            max-width: 700px;
+            line-height: 1.8;
+            font-family: 'Georgia', serif;
+            font-size: 1.3rem;
+            color: #333;
+            display: none;
+            /* Hidden by default */
+        }
+
+        .audio-view {
+            display: none;
+            /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .audio-icon {
+            font-size: 5rem;
+            color: #9C27B0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .reader-close {
+            background: #D32F2F;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
 
-    <header class="gallery-header">
+    <header class="stories-header">
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:2rem;">📚</span>
-            <h2 style="margin:0;">My Story Library</h2>
+            <h2 style="margin:0;">Story Library</h2>
         </div>
         <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
-    <script src="js/translations.js"></script>
-    <script src="js/auth.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const lang = localStorage.getItem('kdh_lang') || 'en';
-            changeLanguage(lang);
-            // Auth Protection
-            auth.applyProtection();
 
-            // Dynamic Stats: Count filled slots and save
-            const filledCount = document.querySelectorAll('.slot.filled').length;
-            localStorage.setItem('kdh_cnt_stories', filledCount);
-        });
-
-        function readStory(title) {
-            const lang = localStorage.getItem('kdh_lang') || 'en';
-            const msg = new SpeechSynthesisUtterance();
-            msg.text = "Once upon a time, there was a story called " + title + ". It was a magical journey...";
-
-            // Simple language mapping for TTS
-            const langMap = {
-                'en': 'en-US', 'ro': 'ro-RO', 'fr': 'fr-FR', 'de': 'de-DE',
-                'es': 'es-ES', 'it': 'it-IT', 'ja': 'ja-JP', 'zh': 'zh-CN'
-            };
-            msg.lang = langMap[lang] || 'en-US';
-
-            // Custom text for demo based on language
-            if (lang === 'ro') msg.text = "A fost odată ca niciodată, o poveste numită " + title + ". A fost o călătorie magică...";
-            if (lang === 'fr') msg.text = "Il était une fois une histoire appelée " + title + "...";
-
-            window.speechSynthesis.speak(msg);
-            alert((lang === 'ro' ? 'Se citește: ' : 'Reading: ') + title);
-        }
-    </script>
+    <!-- AGE FILTERS -->
+    <div class="age-filters">
+        <button class="filter-btn active" onclick="filterStories('all')">All Ages</button>
+        <button class="filter-btn" onclick="filterStories('3-5')">3-5 Years (Tiny)</button>
+        <button class="filter-btn" onclick="filterStories('6-9')">6-9 Years (Kids)</button>
+        <button class="filter-btn" onclick="filterStories('10+')">10+ Years (Big)</button>
+    </div>
 
     <main>
-        <div class="gallery-grid">
-            <!-- SLOTS 1-9: ALL EMPTY (Site Reset) -->
-            <div class="slot empty"><span class="slot-number">1</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
-            </div>
-            <div class="slot empty"><span class="slot-number">2</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
-            </div>
-            <div class="slot empty"><span class="slot-number">3</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
-            </div>
-            <div class="slot empty"><span class="slot-number">4</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
-            </div>
-            <div class="slot empty"><span class="slot-number">5</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
-            </div>
-            <div class="slot empty"><span class="slot-number">6</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
-            </div>
-            <div class="slot empty"><span class="slot-number">7</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
-            </div>
-            <div class="slot empty"><span class="slot-number">8</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
-            </div>
-            <div class="slot empty"><span class="slot-number">9</span>
-                <div class="empty-label"><span>➕</span><span>Empty</span></div>
-            </div>
-
-            <!-- SLOT 10: PREMIUM -->
-            <div class="slot empty premium-slot"><span class="slot-number">10</span>
-                <div class="empty-label"><span>🔒 Premium</span></div>
-            </div>
+        <div class="gallery-grid" id="storiesContainer">
+            <!-- Dynamic Stories Here -->
         </div>
     </main>
 
+    <!-- READER OVERLAY -->
+    <div id="storyOverlay">
+        <div class="reader-header">
+            <h3 id="readerTitle" style="margin:0; color:#4A148C;">Title</h3>
+
+            <!-- MODE SWITCH -->
+            <div class="mode-switch">
+                <button class="mode-btn active" id="btnModeRead" onclick="setReaderMode('read')">📖 Read</button>
+                <button class="mode-btn" id="btnModeAudio" onclick="setReaderMode('audio')">🎧 Listen</button>
+            </div>
+
+            <button class="reader-close" onclick="closeReader()">❌ Exit</button>
+        </div>
+
+        <div class="reader-body">
+            <!-- COMMON IMAGE -->
+            <img id="readerImage" src="" style="max-width:200px; border-radius:10px; margin-bottom:20px;">
+
+            <!-- READ MODE CONTENT -->
+            <div id="readContent" class="text-view" style="display:block;">
+                <!-- Text Injected Here -->
+            </div>
+
+            <!-- AUDIO MODE CONTENT -->
+            <div id="audioContent" class="audio-view">
+                <div class="audio-icon">🔊</div>
+                <p>The Narrator is reading...</p>
+                <div
+                    style="margin-top:20px; width:300px; height:10px; background:#eee; border-radius:5px; overflow:hidden;">
+                    <div style="width:40%; height:100%; background:#9C27B0;"></div>
+                </div>
+                <button onclick="toggleSpeech()"
+                    style="margin-top:20px; padding:10px 20px; font-size:1.2rem; cursor:pointer;">⏯️ Play/Pause</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/translations.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // --- MULTI-LANGUAGE STORIES DATABASE ---
+        // Content is 100% Original & AI Generated (Safe for Copyright)
+        const storiesConfig = [
+            {
+                id: 1,
+                img: 'assets/images/coloring_robot_space.png',
+                age: '3-5',
+                premium: false,
+                content: {
+                    en: { title: 'Sparky the Robot', text: 'Once upon a time, there was a little robot named Sparky. He loved to fly among the stars. One day, he landed on a purple planet where the rocks sang happy songs!' },
+                    ro: { title: 'Robotul Sparky', text: 'A fost odată un robot mic pe nume Sparky. Lui îi plăcea să zboare printre stele. Într-o zi, a ajuns pe o planetă mov unde pietrele cântau cântece vesele!' },
+                    it: { title: 'Il Robot Sparky', text: 'Cera una volta un piccolo robot di nome Sparky. Amava volare tra le stelle. Un giorno atterrò su un pianeta viola dove le rocce cantavano canzoni felici!' },
+                    de: { title: 'Sparky der Roboter', text: 'Es war einmal ein kleiner Roboter namens Sparky. Er liebte es, zwischen den Sternen zu fliegen. Eines Tages landete er auf einem lila Planeten, wo die Steine fröhliche Lieder sangen!' },
+                    fr: { title: 'Le Robot Sparky', text: 'Il était une fois un petit robot nommé Sparky. Il aimait voler parmi les étoiles. Un jour, il atterrit sur une planète violette où les rochers chantaient des chansons joyeuses !' },
+                    es: { title: 'El Robot Sparky', text: 'Había una vez un pequeño robot llamado Sparky. Le encantaba volar entre las estrellas. ¡Un día aterrizó en un planeta morado donde las rocas cantaban canciones felices!' }
+                }
+            },
+            {
+                id: 2,
+                img: 'assets/images/coloring_dino.png',
+                age: '3-5',
+                premium: false,
+                content: {
+                    en: { title: 'The Shy Dino', text: 'Dino was a big dinosaur with a very small voice. "Squeak!" he said. His friends laughed, but Dino didn\'t mind. He talked to the butterflies and ants.' },
+                    ro: { title: 'Dino cel Timid', text: 'Dino era un dinozaur mare, dar cu o voce mică. "Chiț-chiț!" făcea el. Prietenii lui râdeau, dar Dino nu se supăra. El vorbea cu fluturii și furnicile.' },
+                    it: { title: 'Il Dino Timido', text: 'Dino era un grande dinosauro con una voce molto piccola. "Squeak!" disse. I suoi amici ridevano, ma a Dino non importava. Parlava con le farfalle e le formiche.' },
+                    de: { title: 'Der schüchterne Dino', text: 'Dino war ein großer Dinosaurier mit einer sehr kleinen Stimme. "Piep!" machte er. Seine Freunde lachten, aber Dino machte das nichts aus. Er sprach mit den Schmetterlingen.' },
+                    fr: { title: 'Le Dino Timide', text: 'Dino était un grand dinosaure avec une toute petite voix. Ses amis riaient, mais Dino s\'en fichait. Il parlait aux papillons et aux fourmis.' },
+                    es: { title: 'El Dino Tímido', text: 'Dino era un gran dinosaurio con una voz muy pequeña. Sus amigos se reían, pero a Dino no le importaba. Hablaba con las mariposas y las hormigas.' }
+                }
+            },
+            {
+                id: 3,
+                img: 'assets/images/coloring_submarine.png',
+                age: '6-9',
+                premium: false,
+                content: {
+                    en: { title: 'Submarine Adventure', text: 'Captain Nemo and the yellow submarine dove deep into the ocean. They saw glowing fish and colorful corals. Suddenly, a friendly octopus waved at them!' },
+                    ro: { title: 'Aventura Submarinului', text: 'Căpitanul Nemo și submarinul galben s-au scufundat adânc în ocean. Au văzut pești luminoși și corali colorați. Deodată, o caracatiță prietenoasă le-a făcut cu mâna!' },
+                    it: { title: 'Avventura Sottomarina', text: 'Il Capitano Nemo e il sottomarino giallo si immersero in profondità nell\'oceano. Videro pesci luminosi e coralli colorati. All\'improvviso, un polpo amichevole li salutò!' },
+                    de: { title: 'U-Boot Abenteuer', text: 'Kapitän Nemo und das gelbe U-Boot tauchten tief in den Ozean ein. Sie sahen leuchtende Fische und bunte Korallen. Plötzlich winkte ihnen ein freundlicher Oktopus zu!' },
+                    fr: { title: 'Aventure Sous-marine', text: 'Le Capitaine Nemo et le sous-marin jaune ont plongé profondément dans l\'océan. Ils ont vu des poissons brillants et des coraux colorés.' },
+                    es: { title: 'Aventura Submarina', text: 'El Capitán Nemo y el submarino amarillo se sumergieron en el océano. Vieron peces brillantes y corales coloridos.' }
+                }
+            },
+            {
+                id: 4,
+                img: 'assets/images/coloring_mandala_complex.png',
+                age: '10+',
+                premium: true,
+                content: {
+                    en: { title: 'Mandala Mystery', text: 'Premium Content. Subscription required.' },
+                    ro: { title: 'Misterul Mandalei', text: 'Conținut Premium. Necesită abonament.' },
+                    it: { title: 'Mistero Mandala', text: 'Contenuto Premium. Abbonamento richiesto.' },
+                    de: { title: 'Mandala Geheimnis', text: 'Premium Inhalt. Abonnement erforderlich.' },
+                    fr: { title: 'Mystère Mandala', text: 'Contenu Premium. Abonnement requis.' },
+                    es: { title: 'Misterio Mandala', text: 'Contenido Premium. Suscripción requerida.' }
+                }
+            }
+        ];
+
+        let currentStory = null;
+        let isSpeaking = false;
+        const synth = window.speechSynthesis;
+        let utterance = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const lang = localStorage.getItem('kdh_lang') || 'en';
+            changeLanguage(lang);
+            auth.applyProtection();
+
+            filterStories('all');
+        });
+
+        function getCurrentLang() {
+            return localStorage.getItem('kdh_lang') || 'en';
+        }
+
+        function filterStories(ageGroup) {
+            const isAdmin = localStorage.getItem('kdh_admin_mode') === 'true';
+            const lang = getCurrentLang();
+            const container = document.getElementById('storiesContainer');
+            container.innerHTML = '';
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.toLowerCase().includes(ageGroup) || (ageGroup === 'all' && btn.innerText.includes('All'))) {
+                    btn.classList.add('active');
+                }
+            });
+
+            storiesConfig.forEach(story => {
+                if (story.premium && !isAdmin) return;
+                if (ageGroup !== 'all' && story.age !== ageGroup) return;
+
+                const content = story.content[lang] || story.content['en'];
+
+                const card = document.createElement('div');
+                card.className = story.premium ? 'story-card premium' : 'story-card';
+                card.innerHTML = `
+                    <div style="position:relative;">
+                        <span class="slot-number">${story.id}</span>
+                        <img src="${story.img}" class="book-cover">
+                        <span class="age-badge">${story.age} +</span>
+                    </div>
+                    <div class="story-info">
+                        <div class="story-title">${story.premium ? '🔒 ' : ''}${content.title}</div>
+                        <div style="font-size:12px; color:#555;">${lang.toUpperCase()} Audio Available 🎧</div>
+                    </div>
+                `;
+                card.onclick = () => openReader(story);
+                container.appendChild(card);
+            });
+        }
+
+        function openReader(story) {
+            currentStory = story;
+            const lang = getCurrentLang();
+            const content = story.content[lang] || story.content['en'];
+
+            document.getElementById('storyOverlay').style.display = 'flex';
+            document.getElementById('readerTitle').textContent = content.title;
+            document.getElementById('readerImage').src = story.img;
+            document.getElementById('readContent').innerHTML = content.text;
+
+            setReaderMode('read');
+        }
+
+        function setReaderMode(mode) {
+            stopSpeech();
+            document.getElementById('btnModeRead').classList.remove('active');
+            document.getElementById('btnModeAudio').classList.remove('active');
+
+            document.getElementById('readContent').style.display = 'none';
+            document.getElementById('audioContent').style.display = 'none';
+
+            if (mode === 'read') {
+                document.getElementById('btnModeRead').classList.add('active');
+                document.getElementById('readContent').style.display = 'block';
+            } else {
+                document.getElementById('btnModeAudio').classList.add('active');
+                document.getElementById('audioContent').style.display = 'flex';
+
+                if (currentStory.premium) {
+                    alert("Audiobook Player requires Premium files.");
+                } else {
+                    const lang = getCurrentLang();
+                    const content = currentStory.content[lang] || currentStory.content['en'];
+                    startSpeech(content.text);
+                }
+            }
+        }
+
+        function startSpeech(text) {
+            if (synth.speaking) { return; }
+            if (text !== '') {
+                utterance = new SpeechSynthesisUtterance(text);
+
+                // Map App Lang to Browser Speech Lang
+                const langMap = {
+                    'en': 'en-US', 'ro': 'ro-RO', 'it': 'it-IT',
+                    'de': 'de-DE', 'fr': 'fr-FR', 'es': 'es-ES'
+                };
+                utterance.lang = langMap[getCurrentLang()] || 'en-US';
+
+                utterance.onend = function (event) { isSpeaking = false; }
+                synth.speak(utterance);
+                isSpeaking = true;
+            }
+        }
+
+        function stopSpeech() {
+            if (synth.speaking) { synth.cancel(); }
+            isSpeaking = false;
+        }
+
+        function toggleSpeech() {
+            if (synth.paused) {
+                synth.resume();
+            } else if (synth.speaking) {
+                synth.pause();
+            } else {
+                const lang = getCurrentLang();
+                const content = currentStory.content[lang] || currentStory.content['en'];
+                startSpeech(content.text);
+            }
+        }
+
+        function closeReader() {
+            stopSpeech();
+            document.getElementById('storyOverlay').style.display = 'none';
+        }
+    </script>
 </body>
 
 </html>

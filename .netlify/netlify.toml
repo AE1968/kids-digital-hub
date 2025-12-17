@@ -1,14 +1,13 @@
+redirectsOrigin = "config"
 plugins = []
 headers = []
-redirects = []
-
-[functions]
-
-[functions."*"]
 
 [build]
+edge_functions = "C:\\Users\\adria\\.gemini\\antigravity\\scratch\\kids-digital-hub\\netlify\\edge-functions"
 publish = "C:\\Users\\adria\\.gemini\\antigravity\\scratch\\kids-digital-hub"
 publishOrigin = "config"
+commandOrigin = "ui"
+command = "echo 'No build command needed for static site'"
 
 [build.environment]
 
@@ -23,3 +22,43 @@ publishOrigin = "config"
 [build.processing.js]
 
 [build.services]
+
+[functions]
+
+[functions."*"]
+
+[[redirects]]
+from = "/www"
+to = "/"
+status = 301.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/www/*"
+to = "/:splat"
+status = 301.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

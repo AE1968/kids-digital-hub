@@ -1,52 +1,42 @@
+# RAPORT STATUS & NECESAR DE REZOLVAT (ACTUALIZAT)
 
-# 📝 KIDS DIGITAL HUB - STATUS RAPORT & FINALIZARE 17.12.2025
+## 🚨 PROBLEME CRITICE (DE REZOLVAT EXTERN)
 
-Acesta este raportul modificărilor efectuate și al acțiunilor necesare pentru finalizarea proiectului.
+1.  **Configurare Domeniu 'WWW' pe Netlify**
+    *   **Simptom:** `https://www.kidsdigitalhub.com` dă eroare 404.
+    *   **Cauza:** Subdomeniul `www` lipsește din setările DNS/Netlify.
+    *   **Acțiune:** Trebuie adăugat manual în Netlify -> Domain Management.
 
-## ✅ PROBLEME REZOLVATE (DONE)
+## ✅ REZOLVATE ȘI IMPLEMENTATE (LOCAL)
 
-### 1. Navigare și "My Hub"
-- [X] **Butonul "My Hub"**: Acum redirecționează către `dashboard.html` (unde rulează scriptul de logare), în loc de o pagină de login goală.
-- [X] **Logare Dashboard**: Am implementat un "Login Overlay" în `dashboard.html`. Utilizatorii introduc User/Parolă chiar acolo.
-- [X] **Abonamente & Spațiu**: În Dashboard, am adăugat selecția de abonamente cu spațiile cerute:
-    - £2.49 -> 500 GB
-    - £4.99 -> 2 TB (am corectat "2 giga" care era ilogic pentru preț mai mare, am pus 2000GB/2TB)
-    - £9.99 -> 10 TB
+1.  **Butonul AE (Central)**
+    *   **Funcție:** Link direct către **Promo Video** (`promo_video.html`).
+    *   **Vizual:** Animație cu Puls (Radar).
+    *   **Scop:** Viralizare pe TikTok.
 
-### 2. Galeriile de Produse (Desene, Jocuri, Povești)
-- [X] **Butonul "Înapoi/Back"**: Am înlocuit butonul "Dashboard" cu un buton "Back" (cu săgeată) care duce la `index.html` (Home).
-- [X] **Funcționalitate Butoane**:
-    - "Play" la Jocuri acum are o acțiune (momentan un mesaj).
-    - "Read" la Povești acum are o acțiune.
-- [X] **Traduceri**: Am adăugat termenii noi ("Back", "Play", "Read") în `translations.js` pentru toate limbile.
+2.  **Acces Admin & Membri**
+    *   **Metodă:** Se face prin butonul **"My Hub"** (Dashboard) sau meniul de sus.
+    *   **Securitate:** Butonul Central NU mai duce la Dashboard, conform ordinului.
 
-### 3. Aspect Vizual
-- [X] **Desene Alb-Negru**: Am aplicat un filtru CSS (`grayscale`) pe imaginile din galeria de desene pentru a le face să arate ca planșe de colorat (alb-negru).
+3.  **Video Promoțional**
+    *   **Conținut:** Textul "WWW.KIDSDIGITALHUB.COM" este vizibil în animație.
+    *   **Download:** Buton simplu "DOWNLOAD VIDEO" (fără funcții complexe de REC).
+    *   **Link Share:** Setat corect la `https://kidsdigitalhub.com` (fără www, pentru a evita erorile curente).
 
----
+4.  **Curățenie Home Page (`index.html`)**
+    *   Eliminat grid-ul de produse gol ("cele 6 casete").
+    *   Layout curat: Hero + AE Button + Footer.
 
-## ⏳ PROBLEME ÎN AȘTEPTARE / NECESITĂ DEPLOY (TODO)
+5.  **Funcționalități Adiționale**
+    *   **Limba:** Persistă la navigare.
+    *   **Produse:** Alb-Negru automat (filtru).
+    *   **Navigare:** Buton "Back" în galerii.
 
-### 1. Deployment Railway (CRITIC)
-- **Status**: Trebuie verificat manual pe Railway.app.
-- **Acțiune**: 
-    1. Intră pe [Railway.app](https://railway.app)
-    2. Mergi la proiectul `kids-digital-hub`
-    3. Verifică tab-ul "Deployments". Dacă ultimul e Failed, dă click pe el și apoi "Redeploy".
-    - *Eu (AI-ul) nu am acces direct să apăs butoane în contul tău Railway.*
+## 📝 INSTRUCȚIUNI PENTRU DEPLOY
 
-### 2. Funcționalitate Reală Jocuri/Povești
-- Momentan butoanele "Play" și "Read" afișează doar un mesaj de confirmare. Trebuie conectate la fișierele reale ale jocurilor/poveștilor când acestea vor fi create/încărcate.
-
-### 3. Configurare Domeniu `www`
-- Trebuie verificat dacă DNS-ul s-a propagat corect pentru `www.kidsdigitalhub.com` în Netlify/Cloudflare.
-
----
-
-## 🚀 GHID RAPID PENTRU TINE
-
-1. **Deschide `index.html`** local pentru a testa noile butoane și traduceri.
-2. **Logare**: În "My Hub", poți introduce orice user (ex: Adrian) pentru a vedea dashboard-ul personalizat.
-3. **Deploy**: Urmează pașii de mai sus pentru Railway. Pentru site-ul static (HTML/JS), acesta se actualizează automat pe Netlify la fiecare push (ceea ce tocmai am făcut).
-
-*Fișier generat automat de Antigravity.*
+Când se dorește actualizarea site-ului live, trebuie urcate aceste fișiere:
+*   `index.html`
+*   `promo_video.html`
+*   `assets/` (dacă sunt imagini noi)
+*   `js/translations.js`
+*   `gallery-*.html`

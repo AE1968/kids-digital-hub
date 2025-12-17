@@ -316,6 +316,41 @@
                 changeLanguage(lang);
             }
 
+            // --- DASHBOARD SYNC LOGIC (LocalStorage) ---
+            function updateDashboardStats() {
+                // Read from LocalStorage (set by the gallery pages)
+                const cntDrawings = localStorage.getItem('kdh_cnt_drawings') || 0;
+                const cntGames = localStorage.getItem('kdh_cnt_games') || 0;
+                const cntStories = localStorage.getItem('kdh_cnt_stories') || 0;
+
+                // Update UI: Drawings
+                const drawCard = document.querySelector('.card-drawings');
+                if (drawCard) {
+                    drawCard.querySelector('.stat-count').textContent = `${cntDrawings}/10`;
+                    drawCard.querySelector('.progress-fill').style.width = `${cntDrawings * 10}%`;
+                }
+
+                // Update UI: Games
+                const gameCard = document.querySelector('.card-games');
+                if (gameCard) {
+                    gameCard.querySelector('.stat-count').textContent = `${cntGames}/10`;
+                    gameCard.querySelector('.progress-fill').style.width = `${cntGames * 10}%`;
+                }
+
+                // Update UI: Stories
+                const storyCard = document.querySelector('.card-stories');
+                if (storyCard) {
+                    storyCard.querySelector('.stat-count').textContent = `${cntStories}/10`;
+                    storyCard.querySelector('.progress-fill').style.width = `${cntStories * 10}%`;
+                }
+            }
+
+            // Run on load
+            updateDashboardStats();
+
+            // Optional: Listen for storage changes in other tabs
+            window.addEventListener('storage', updateDashboardStats);
+
             // --- LIVE MONITORING SYSTEM (JSON BASED) ---
             // Efficiently reads the lightweight stats.json file
             function updateStats() {

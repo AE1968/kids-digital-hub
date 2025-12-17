@@ -1,4 +1,4 @@
-<!-- Deploy Check 314159 -->
+<!-- Deploy Check FINAL_READY_TO_LAUNCH -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,11 +10,11 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>Kids Digital Hub - Fun & Creativity</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="css/responsive-footer.css">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/css/responsive-footer.css">
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
-  <script src="js/translations.js"></script>
+  <script src="/js/translations.js"></script>
   <style>
     .lang-select {
       padding: 5px 10px;
@@ -34,6 +34,69 @@
       display: flex;
       align-items: center;
     }
+
+    /* CENTERED AE BUTTON STYLE */
+    /* CENTERED AE BUTTON WITH PULSE */
+    .ae-hero-btn {
+      display: inline-block;
+      margin-top: 80px;
+      position: relative;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .ae-hero-btn img {
+      width: 120px;
+      height: auto;
+      filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+      position: relative;
+      /* Above the pulse */
+      z-index: 2;
+      transition: transform 0.3s;
+    }
+
+    .ae-hero-btn:hover img {
+      transform: scale(1.1);
+    }
+
+    /* PULSE ANIMATION (Warning Circles) */
+    .ae-pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255, 87, 34, 0.4);
+      /* Warning Orange */
+      animation: pulse-ring 2s infinite;
+      z-index: 1;
+    }
+
+    .ae-pulse::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid #FF5722;
+      animation: pulse-ring 2s infinite 0.5s;
+    }
+
+    @keyframes pulse-ring {
+      0% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(2.5);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 
@@ -42,10 +105,7 @@
   <header>
     <div class="nav-container">
       <div class="header-left">
-        <a href="#" class="logo">
-          <span onclick="window.location.href='dashboard.html'" style="cursor: pointer;" title="Admin Portal">🎨</span>
-          <span onclick="window.location.href='index.html'">Kids Hub</span>
-        </a>
+        <a href="#" class="logo">🎨 Kids Hub</a>
         <select class="lang-select" onchange="changeLanguage(this.value)">
           <option value="en">🇬🇧 English</option>
           <option value="fr">🇫🇷 Français</option>
@@ -98,18 +158,22 @@
     </div>
   </header>
 
-  <section class="hero hero-section">
-    <h1 data-i18n="hero_title">Welcome to the Creative Universe! ✨</h1>
+  <section class="hero hero-section" style="text-align:center; padding: 60px 20px;">
+    <h1 data-i18n="hero_title" style="margin-bottom:20px;">Welcome to the Creative Universe! ✨</h1>
+
+    <!-- SEASONAL CLOCKS CONTAINER -->
+    <div id="hero-clock-container" style="min-height: 100px; margin-bottom: 20px;"></div>
+
+    <!-- THE CENTRAL AE BUTTON -->
+    <!-- THE CENTRAL AE BUTTON -->
+    <a href="promo_video.html" class="ae-hero-btn" title="Watch Promo & Share">
+      <div class="ae-pulse"></div> <!-- PULSE CIRCLES -->
+      <img src="assets/images/logo_ae.png" alt="AE - Promo Video">
+    </a>
   </section>
 
 
-  <main>
-    <div class="container">
-      <div id="product-grid" class="product-grid">
-        <!-- Products will be loaded here dynamically by js/products_data.js -->
-      </div>
-    </div>
-  </main>
+
 
 
   <footer style="position: relative;">
