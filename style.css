@@ -100,10 +100,19 @@ header {
     padding: 10px 0;
     /* Reduced from 20px */
     border-bottom: 5px solid #FBC02D;
-    position: sticky;
+    position: fixed; /* FIXED POSITION - Mereu sus */
+    width: 100%;
     top: 0;
-    z-index: 100;
+    left: 0;
+    z-index: 9999; /* Deasupra la orice */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Spacer to prevent content from hiding behind fixed header */
+body::before {
+    content: "";
+    display: block;
+    height: 100px; /* Adjust based on header height */
 }
 
 .nav-container {
