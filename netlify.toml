@@ -2,25 +2,14 @@
   publish = "."
   functions = "netlify/functions"
 
-# 🚀 Canonical Redirect: Force WWW and HTTPS
-# This avoids loops by only matching the apex domain.
-[[redirects]]
-  from = "https://kidsdigitalhub.com/*"
-  to = "https://www.kidsdigitalhub.com/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "http://kidsdigitalhub.com/*"
-  to = "https://www.kidsdigitalhub.com/:splat"
-  status = 301
-  force = true
-
 # 📡 Backend API proxy
 [[redirects]]
   from = "/api/*"
   to = "https://web-production-b215.up.railway.app/api/:splat"
   status = 200
   force = true
+
+# NOTE: Domain redirects (WWW vs non-WWW) are now handled by Netlify Dashboard 
+# to avoid ERR_TOO_MANY_REDIRECTS loops with Cloudflare.
 
 # NOTE: SPA redirect (/* to /index.html) removed for Multi-Page Site stability.

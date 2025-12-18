@@ -1,5 +1,5 @@
 functionsDirectory = "C:\\Users\\adria\\.gemini\\antigravity\\scratch\\kids-digital-hub\\netlify\\functions"
-functionsDirectoryOrigin = "default"
+functionsDirectoryOrigin = "config-v1"
 redirectsOrigin = "config"
 plugins = []
 headers = []
@@ -55,10 +55,10 @@ force = true
 [redirects.headers]
 
 [[redirects]]
-from = "/*"
-to = "/index.html"
+from = "/api/*"
+to = "https://web-production-b215.up.railway.app/api/:splat"
 status = 200.0
-force = false
+force = true
 
 [redirects.query]
 
