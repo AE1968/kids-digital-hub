@@ -33,13 +33,13 @@ const KDH_Bedtime = {
             const settings = JSON.parse(saved);
             return {
                 enabled: settings.bedtimeMode !== false,
-                startTime: settings.bedtimeStart || '20:00',
+                startTime: settings.bedtimeStart || '22:00',
                 endTime: settings.bedtimeEnd || '07:00'
             };
         }
         return {
             enabled: true,
-            startTime: '20:00',
+            startTime: '22:00',
             endTime: '07:00'
         };
     },
@@ -130,16 +130,26 @@ const KDH_Bedtime = {
 
     // Initialize
     init() {
+        // Handle admin trigger visibility (if exists)
+        const updateAdminTrigger = () => {
+            const trigger = document.getElementById('secret-admin-trigger');
+            if (trigger) {
+                trigger.style.display = this.isActive() ? 'inline-flex' : 'none';
+            }
+        };
+
         // Check on load
         if (this.isActive()) {
             this.showOverlay();
         }
+        updateAdminTrigger();
 
         // Check periodically
         setInterval(() => {
             if (this.isActive() && !document.getElementById('bedtime-overlay')) {
                 this.showOverlay();
             }
+            updateAdminTrigger();
         }, 60000); // Check every minute
     }
 };
