@@ -596,23 +596,30 @@
         function displayResolutions(fixes) {
             const container = document.getElementById('resolutionsList');
             if (!fixes || fixes.length === 0) {
-                container.innerHTML = '<div class="empty-state"><h3>No fixes reported yet.</h3></div>';
+                container.innerHTML = '<div class="empty-state"><h3>Robot Doctor is on standby. All systems are green!</h3></div>';
                 return;
             }
 
             container.innerHTML = fixes.map(fix => `
-                <div class="message-item" style="border-left-color: #4CAF50;">
+                <div class="message-item" style="border-left: 8px solid #4CAF50; background: #f1f8e9;">
                     <div class="message-header">
                         <div class="message-meta">
-                            <span class="message-type" style="background: #4CAF50; color: white;">✅ RESOLVED</span>
-                            <div class="message-from">${fix.problem}</div>
-                            <div class="message-time">⏰ ${fix.time}</div>
+                            <span class="message-type" style="background: #2E7D32; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold;">
+                                🛡️ AUTO-HEALED
+                            </span>
+                            <div class="message-from" style="color: #1b5e20; font-weight: bold; font-size: 1.2rem; margin-top: 10px;">
+                                ${fix.healing_action}
+                            </div>
+                            <div class="message-time">⏰ Detected & Fixed: ${fix.timestamp}</div>
                         </div>
                     </div>
-                    <div class="message-content">
+                    <div class="message-content" style="background: white; border-radius: 10px; margin-top: 10px; border: 1px solid #c8e6c9;">
                         <div class="romanian-translation">
-                            <div class="label">Auto-Fix Solution:</div>
-                            <div class="text">${fix.solution}</div>
+                            <div class="label" style="color: #666;">Incident Description:</div>
+                            <div class="text" style="font-style: italic;">"${fix.incident}"</div>
+                        </div>
+                        <div style="margin-top: 10px; font-size: 0.85rem; color: #2e7d32; font-weight: 600;">
+                            Status: Dossier Filed | Handled by AI Agent
                         </div>
                     </div>
                 </div>
