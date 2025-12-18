@@ -314,10 +314,41 @@
                 </div>
 
                 <form class="input-area" onsubmit="sendNeuralMessage(event)">
-                    <input type="text" id="neuralMsg" class="neural-input" placeholder="Transmit direct command..."
-                        autocomplete="off" data-i18n="[placeholder]transmit_command">
-                    <button type="submit" class="send-btn" data-i18n="btn_transmit">TRANSMIT</button>
+                    <button type="button" id="micBtn" class="mic-btn" onclick="toggleVoiceInput()"
+                        title="Voice Command">
+                        🎤
+                    </button>
+                    <input type="text" id="neuralMsg" class="neural-input" placeholder="Transmit command..."
+                        autocomplete="off">
+                    <button type="submit" class="send-btn">SEND</button>
+                    <div id="recording-indicator" style="display:none; color: red; animation: pulse 1s infinite;">● REC
+                    </div>
                 </form>
+                <style>
+                    .mic-btn {
+                        background: rgba(0, 243, 255, 0.1);
+                        border: 1px solid var(--neon-cyan);
+                        color: var(--neon-cyan);
+                        border-radius: 50%;
+                        width: 45px;
+                        height: 45px;
+                        font-size: 1.2rem;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                    }
+
+                    .mic-btn:hover {
+                        background: rgba(0, 243, 255, 0.3);
+                        box-shadow: 0 0 10px var(--neon-cyan);
+                    }
+
+                    .mic-btn.listening {
+                        background: red;
+                        border-color: red;
+                        color: white;
+                        animation: pulse 1s infinite;
+                    }
+                </style>
             </div>
 
             <script src="js/translations.js"></script>
@@ -459,19 +490,91 @@
                     }, 800);
                 }
 
+                // --- AUDIO MODULE ---
+                function speakText(text) {
+                    if (!window.speechSynthesis) return;
+
+                    // Stop previous speech
+                    window.speechSynthesis.cancel();
+
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.rate = 0.9; // Slightly slower, more deliberate
+                    utterance.pitch = 0.8; // Deeper, more robotic tone
+                    utterance.volume = 1.0;
+
+                    // Try to finding a cool voice
+                    const voices = window.speechSynthesis.getVoices();
+                    // Prefer English Male/Robot voices usually found in browsers
+                    const preferred = voices.find(v => v.name.includes('Google UK English Male') || v.name.includes('Daniel') || v.name.includes('Microsoft David'));
+                    if (preferred) utterance.voice = preferred;
+
+                    window.speechSynthesis.speak(utterance);
+                }
+
+                // Initialize text processing
                 function addLog(text, sender) {
                     const log = document.getElementById('chatLog');
-                    // Remove "processing" message if it exists
+                    // Remove "processing" message
                     if (sender !== 'system') {
                         const processing = log.querySelector('.chat-system');
                         if (processing) processing.remove();
                     }
+
                     const div = document.createElement('div');
                     div.className = `chat-entry chat-${sender}`;
                     const prefix = sender === 'system' ? '⏳' : `[${sender.toUpperCase()}]`;
                     div.innerHTML = `${prefix}: ${text}`;
                     log.appendChild(div);
                     log.scrollTop = log.scrollHeight;
+
+                    // SPEAK ONLY NEXUS MESSAGES
+                    if (sender === 'nexus') {
+                        speakText(text);
+                    }
+                }
+
+                // --- VOICE INPUT MODULE ---
+                let recognition;
+
+                function toggleVoiceInput() {
+                    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                        alert("Voice input not supported in this browser. Try Chrome/Edge.");
+                        return;
+                    }
+
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+                    if (!recognition) {
+                        recognition = new SpeechRecognition();
+                        recognition.continuous = false;
+                        recognition.interimResults = false;
+                        recognition.lang = 'en-US'; // Default, will auto-detect mostly
+
+                        recognition.onstart = function () {
+                            document.getElementById('micBtn').classList.add('listening');
+                            document.getElementById('recording-indicator').style.display = 'block';
+                            addLog('Listening...', 'system');
+                        };
+
+                        recognition.onend = function () {
+                            document.getElementById('micBtn').classList.remove('listening');
+                            document.getElementById('recording-indicator').style.display = 'none';
+                        };
+
+                        recognition.onresult = function (event) {
+                            const transcript = event.results[0][0].transcript;
+                            document.getElementById('neuralMsg').value = transcript;
+                            // Auto-send
+                            setTimeout(() => sendNeuralMessage(new Event('submit')), 500);
+                        };
+
+                        recognition.onerror = function (event) {
+                            console.error('Speech error', event.error);
+                            document.getElementById('micBtn').classList.remove('listening');
+                        };
+                    }
+
+                    recognition.start();
                 }
             </script>
 </body>
