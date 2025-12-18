@@ -38,7 +38,7 @@ const KDH_Bedtime = {
             };
         }
         return {
-            enabled: true,
+            enabled: false,
             startTime: '22:00',
             endTime: '07:00'
         };
