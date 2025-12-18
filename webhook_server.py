@@ -12,6 +12,7 @@ import hashlib
 from datetime import datetime
 from webhook_order_handler import process_new_order
 import google.generativeai as genai
+from nexus_memory import save_conversation, get_context_for_prompt, update_user_profile, get_user_profile
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 CORS(app) # Enable CORS for all routes
@@ -46,24 +47,41 @@ def api_get_products():
 
 @app.route('/api/nexus/chat', methods=['POST'])
 def api_nexus_chat():
-    """Handles chat messages for the Nexus AI Interface"""
+    """Handles chat messages for the Nexus AI Interface with Memory"""
     try:
         data = request.json
         user_msg = data.get('message', '')
         user_name = data.get('user', 'Commander')
+        user_id = data.get('user_id', request.remote_addr)  # Use IP as fallback ID
         
         if not user_msg:
             return jsonify({'error': 'No message provided'}), 400
 
-        # Construct Prompt with context
+        # AUTO-ACTIVATE MEMORY: Get conversation history
+        conversation_context = get_context_for_prompt(user_id)
+        
+        # Update user profile automatically
+        update_user_profile(user_id, name=user_name)
+        user_profile = get_user_profile(user_id)
+        
+        # Construct Prompt with memory context
         timestamp = datetime.now().strftime("%H:%M")
-        full_prompt = f"{NEXUS_SYSTEM_PROMPT}\n\n[TIME: {timestamp}]\nUSER ({user_name}): {user_msg}\nNEXUS:"
+        full_prompt = f"""{NEXUS_SYSTEM_PROMPT}
+
+[TIME: {timestamp}]
+[USER PROFILE: {user_profile.get('name', 'Unknown')}]
+
+{conversation_context}
+
+CURRENT MESSAGE:
+USER ({user_name}): {user_msg}
+NEXUS:"""
         
         reply_text = "Transmission interrupted."
         
         if nexus_model:
             try:
-                # Generate AI Response
+                # Generate AI Response with full context
                 response = nexus_model.generate_content(full_prompt)
                 reply_text = response.text.strip()
             except Exception as e:
@@ -71,10 +89,14 @@ def api_nexus_chat():
                 reply_text = "Neural link unstable. Stand by."
         else:
             reply_text = "AI Module Offline (API Key Missing)."
+        
+        # AUTO-SAVE to memory
+        save_conversation(user_id, user_msg, reply_text)
             
         return jsonify({
             'reply': reply_text,
-            'timestamp': datetime.now().isoformat()
+            'timestamp': datetime.now().isoformat(),
+            'memory_active': True
         })
         
     except Exception as e:
