@@ -1,0 +1,255 @@
+import base64
+import os
+
+def img_to_b64(path):
+    try:
+        with open(path, "rb") as f:
+            return "data:image/png;base64," + base64.b64encode(f.read()).decode('utf-8')
+    except Exception as e:
+        print(f"Error reading {path}: {e}")
+        return ""
+
+# Paths to the English versions (overwritten as scena1,2,3)
+img1 = img_to_b64(os.path.join("assets", "images", "promo", "scena1.png"))
+img2 = img_to_b64(os.path.join("assets", "images", "promo", "scena2.png"))
+img3 = img_to_b64(os.path.join("assets", "images", "promo", "scena3.png"))
+
+html_content = f"""<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promo Video 2026 - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #000;
+            margin: 0;
+            font-family: 'Orbitron', sans-serif;
+            flex-direction: column;
+            gap: 20px;
+            color: #00FFEA;
+            overflow: hidden;
+        }}
+
+        #phone-frame {{
+            width: 360px;
+            height: 640px;
+            background: black;
+            border: 5px solid #00FFEA;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px #00FFEA, 0 0 10px #D500F9 inset;
+        }}
+
+        .scene {{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            background: black;
+            z-index: 1;
+        }}
+
+        .active {{ opacity: 1; z-index: 10; }}
+
+        .promo-img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.2) brightness(1.1);
+            animation: glitch-anim 2s infinite;
+        }}
+
+        .overlay-scanline {{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 20;
+        }}
+
+        @keyframes glitch-anim {{
+            0% {{ transform: translate(0); }}
+            20% {{ transform: translate(-2px, 2px); }}
+            40% {{ transform: translate(-2px, -2px); }}
+            60% {{ transform: translate(2px, 2px); }}
+            80% {{ transform: translate(2px, -2px); }}
+            100% {{ transform: translate(0); }}
+        }}
+
+        /* Controls */
+        button {{
+            background: #000;
+            border: 2px solid #00FFEA;
+            color: #00FFEA;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 20px #00FFEA;
+            transition: 0.2s;
+        }}
+        button:hover {{
+            background: #00FFEA;
+            color: black;
+            box-shadow: 0 0 40px #00FFEA;
+        }}
+    </style>
+</head>
+<body>
+
+    <div id="controls">
+        <h1>FUTURE 2026 PLAYER</h1>
+        <p>🔊 MAX VOLUME | RECORD SCREEN</p>
+        <button onclick="startAd()">⚡ INITIATE PROTOCOL</button>
+    </div>
+
+    <div id="phone-frame">
+        <div class="overlay-scanline"></div>
+        
+        <div id="scene-1" class="scene active">
+            <img src="{img1}" class="promo-img" alt="Bored" style="filter: hue-rotate(45deg) contrast(1.5);">
+        </div>
+        
+        <div id="scene-2" class="scene">
+            <img src="{img2}" class="promo-img" alt="Solution" style="filter: saturate(2) brightness(1.2);">
+        </div>
+        
+        <div id="scene-3" class="scene">
+            <img src="{img3}" class="promo-img" alt="Final" style="filter: drop-shadow(0 0 10px #D500F9);">
+        </div>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function createCyberBass(time, duration) {{
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(80, time);
+            osc.frequency.exponentialRampToValueAtTime(30, time + duration);
+
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(1000, time);
+            filter.frequency.exponentialRampToValueAtTime(100, time + duration);
+
+            gain.gain.setValueAtTime(0.5, time);
+            gain.gain.linearRampToValueAtTime(0, time + duration);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(time);
+            osc.stop(time + duration);
+        }}
+
+        function createRiser(time, duration) {{
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(200, time);
+            osc.frequency.exponentialRampToValueAtTime(800, time + duration);
+            
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(0.3, time + duration);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start(time);
+            osc.stop(time + duration);
+        }}
+
+        function createDrop(time) {{
+            // Impact
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.frequency.setValueAtTime(50, time);
+            gain.gain.setValueAtTime(1, time);
+            gain.gain.exponentialRampToValueAtTime(0.01, time + 2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(time);
+            osc.stop(time + 2);
+
+            // Melody Arp
+            [500, 600, 700, 800, 500, 600, 900, 1000].forEach((freq, i) => {{
+                const o = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                o.type = 'square';
+                o.frequency.value = freq;
+                g.gain.value = 0.1;
+                g.gain.linearRampToValueAtTime(0, time + (i * 0.1) + 0.1);
+                o.connect(g);
+                g.connect(audioCtx.destination);
+                o.start(time + i * 0.1);
+                o.stop(time + i * 0.1 + 0.1);
+            }});
+        }}
+
+        function startAd() {{
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+
+            const s1 = document.getElementById('scene-1');
+            const s2 = document.getElementById('scene-2');
+            const s3 = document.getElementById('scene-3');
+            
+            s1.classList.remove('active'); s2.classList.remove('active'); s3.classList.remove('active');
+            document.getElementById('controls').style.display = 'none';
+
+            // SCENE 1: GLITCH BASS (0s)
+            s1.classList.add('active');
+            createCyberBass(now, 0.5);
+            createCyberBass(now + 0.5, 0.5);
+            createCyberBass(now + 1.0, 0.5);
+
+            // SCENE 2: RISER (3s)
+            setTimeout(() => {{
+                s1.classList.remove('active');
+                s2.classList.add('active');
+                createRiser(audioCtx.currentTime, 3);
+            }}, 3000);
+
+            // SCENE 3: DROP (6s)
+            setTimeout(() => {{
+                s2.classList.remove('active');
+                s3.classList.add('active');
+                createDrop(audioCtx.currentTime);
+            }}, 6000);
+
+            // END
+            setTimeout(() => {{
+                document.getElementById('controls').style.display = 'block';
+            }}, 10000);
+        }}
+    </script>
+</body>
+</html>
+"""
+
+with open("promo_video_full.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("SUCCESS: promo_video_full.html created with embedded images!")

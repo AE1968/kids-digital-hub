@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Coloring Book - Kids Digital Hub</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖍️</text></svg>">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/demo.css">
+</head>
+
+<body class="demo-body">
+    <!-- Demo Header -->
+    <header class="demo-header">
+        <div class="container">
+            <div class="demo-header-content">
+                <a href="../index.html" class="demo-back-btn">
+                    ← Back to Home
+                </a>
+                <h1 class="demo-title">🖍️ Interactive Coloring Book</h1>
+                <div class="demo-actions">
+                    <button id="clearBtn" class="btn btn-secondary btn-sm">
+                        🗑️ Clear
+                    </button>
+                    <button id="saveBtn" class="btn btn-primary btn-sm">
+                        💾 Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Coloring Canvas Section -->
+    <main class="demo-main">
+        <div class="container-wide">
+            <div class="coloring-workspace">
+                <!-- Toolbar -->
+                <div class="coloring-toolbar">
+                    <div class="toolbar-section">
+                        <h3>🎨 Colors</h3>
+                        <div class="color-palette" id="colorPalette">
+                            <!-- Colors populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="toolbar-section">
+                        <h3>✏️ Brush Size</h3>
+                        <div class="brush-sizes">
+                            <button class="brush-btn active" data-size="small">
+                                <div class="brush-preview brush-small"></div>
+                                Small
+                            </button>
+                            <button class="brush-btn" data-size="medium">
+                                <div class="brush-preview brush-medium"></div>
+                                Medium
+                            </button>
+                            <button class="brush-btn" data-size="large">
+                                <div class="brush-preview brush-large"></div>
+                                Large
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="toolbar-section">
+                        <h3>🛠️ Tools</h3>
+                        <div class="tools">
+                            <button class="tool-btn active" data-tool="brush">
+                                🖌️ Brush
+                            </button>
+                            <button class="tool-btn" data-tool="eraser">
+                                🧹 Eraser
+                            </button>
+                            <button class="tool-btn" data-tool="fill">
+                                🪣 Fill
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="toolbar-section">
+                        <h3>🖼️ Templates</h3>
+                        <div class="templates" id="templatesList">
+                            <!-- Templates populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canvas Area -->
+                <div class="canvas-area">
+                    <div class="canvas-container">
+                        <canvas id="coloringCanvas"></canvas>
+                        <canvas id="drawingCanvas"></canvas>
+                    </div>
+
+                    <div class="canvas-info">
+                        <div class="current-color-display">
+                            <span>Current Color:</span>
+                            <div class="color-preview" id="currentColorPreview"></div>
+                            <span id="currentColorName">Red</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Tutorial Modal -->
+    <div id="tutorialModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎨 How to Use the Coloring Book</h2>
+                <button class="modal-close" onclick="closeTutorial()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="tutorial-steps">
+                    <div class="tutorial-step">
+                        <div class="tutorial-icon">1️⃣</div>
+                        <h3>Choose a Color</h3>
+                        <p>Click on any color from the palette on the left</p>
+                    </div>
+                    <div class="tutorial-step">
+                        <div class="tutorial-icon">2️⃣</div>
+                        <h3>Select Brush Size</h3>
+                        <p>Pick small, medium, or large brush size</p>
+                    </div>
+                    <div class="tutorial-step">
+                        <div class="tutorial-icon">3️⃣</div>
+                        <h3>Start Coloring!</h3>
+                        <p>Click and drag on the picture to color it</p>
+                    </div>
+                    <div class="tutorial-step">
+                        <div class="tutorial-icon">4️⃣</div>
+                        <h3>Save Your Art</h3>
+                        <p>Click the Save button to download your masterpiece!</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-lg" onclick="closeTutorial()">
+                    Let's Start! 🎨
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/coloring.js"></script>
+</body>
+
+</html>

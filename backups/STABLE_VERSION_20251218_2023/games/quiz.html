@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Fun Quiz - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .game-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .game-header h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            height: 20px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            height: 100%;
+            border-radius: 20px;
+            transition: width 0.5s;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .question-number {
+            color: #f5576c;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .question-emoji {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .answer-btn {
+            padding: 20px;
+            border: 3px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .answer-btn:hover {
+            border-color: #f5576c;
+            transform: scale(1.02);
+        }
+
+        .answer-btn.correct {
+            background: #4CAF50;
+            border-color: #4CAF50;
+            color: white;
+            animation: correctPulse 0.5s;
+        }
+
+        .answer-btn.wrong {
+            background: #f44336;
+            border-color: #f44336;
+            color: white;
+            animation: shake 0.5s;
+        }
+
+        @keyframes correctPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .score-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 25px;
+            border-radius: 20px;
+        }
+
+        .results-card {
+            background: white;
+            border-radius: 30px;
+            padding: 50px;
+            text-align: center;
+            display: none;
+        }
+
+        .results-card.show {
+            display: block;
+            animation: popIn 0.5s;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .results-emoji {
+            font-size: 6rem;
+            margin-bottom: 20px;
+        }
+
+        .results-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .results-score {
+            font-size: 3rem;
+            color: #f5576c;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .stars-earned {
+            color: #FFD700;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../gallery-games.html" class="back-btn">← Back</a>
+
+    <div class="game-header">
+        <h1>🧠 Fun Quiz!</h1>
+        <p>Test your knowledge!</p>
+    </div>
+
+    <div class="quiz-container">
+        <div class="score-display">
+            <div class="score-item">⭐ Score: <span id="score">0</span></div>
+            <div class="score-item">❤️ Lives: <span id="lives">3</span></div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <div class="question-card" id="questionCard">
+            <div class="question-number" id="questionNumber">Question 1 of 10</div>
+            <div class="question-emoji" id="questionEmoji">🤔</div>
+            <div class="question-text" id="questionText">Loading...</div>
+            <div class="answers" id="answersContainer"></div>
+        </div>
+
+        <div class="results-card" id="resultsCard">
+            <div class="results-emoji" id="resultsEmoji">🏆</div>
+            <div class="results-title" id="resultsTitle">Amazing!</div>
+            <div class="stars-earned" id="starsEarned">⭐⭐⭐</div>
+            <div class="results-score"><span id="finalScore">0</span>/10</div>
+            <p style="color: #666; margin-bottom: 30px;">Great job! Keep learning!</p>
+            <button class="btn" onclick="restartQuiz()">🔄 Play Again</button>
+            <a href="../gallery-games.html" class="btn">🎮 More Games</a>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                emoji: '🌍',
+                question: 'What is the third planet from the Sun?',
+                answers: ['Mars', 'Earth', 'Venus', 'Jupiter'],
+                correct: 1
+            },
+            {
+                emoji: '🦁',
+                question: 'What sound does a lion make?',
+                answers: ['Meow', 'Bark', 'Roar', 'Squeak'],
+                correct: 2
+            },
+            {
+                emoji: '🌈',
+                question: 'How many colors are in a rainbow?',
+                answers: ['5', '6', '7', '8'],
+                correct: 2
+            },
+            {
+                emoji: '🐘',
+                question: 'Which is the largest land animal?',
+                answers: ['Giraffe', 'Elephant', 'Hippo', 'Rhino'],
+                correct: 1
+            },
+            {
+                emoji: '🍎',
+                question: 'What color is an apple usually?',
+                answers: ['Blue', 'Green', 'Red', 'Purple'],
+                correct: 2
+            },
+            {
+                emoji: '🌙',
+                question: 'What comes after the Sun sets?',
+                answers: ['Morning', 'Night', 'Afternoon', 'Noon'],
+                correct: 1
+            },
+            {
+                emoji: '🐝',
+                question: 'What do bees make?',
+                answers: ['Milk', 'Honey', 'Butter', 'Cheese'],
+                correct: 1
+            },
+            {
+                emoji: '❄️',
+                question: 'What falls from clouds in winter?',
+                answers: ['Rain', 'Snow', 'Leaves', 'Flowers'],
+                correct: 1
+            },
+            {
+                emoji: '🐸',
+                question: 'What does a caterpillar become?',
+                answers: ['Bird', 'Butterfly', 'Fish', 'Spider'],
+                correct: 1
+            },
+            {
+                emoji: '🌳',
+                question: 'What do trees produce that we breathe?',
+                answers: ['Carbon', 'Oxygen', 'Nitrogen', 'Smoke'],
+                correct: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let lives = 3;
+        let answered = false;
+
+        function loadQuestion() {
+            answered = false;
+            const q = questions[currentQuestion];
+
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            document.getElementById('questionEmoji').textContent = q.emoji;
+            document.getElementById('questionText').textContent = q.question;
+            document.getElementById('progressFill').style.width = `${(currentQuestion / questions.length) * 100}%`;
+
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            q.answers.forEach((answer, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.textContent = answer;
+                btn.onclick = () => selectAnswer(index);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(index) {
+            if (answered) return;
+            answered = true;
+
+            const q = questions[currentQuestion];
+            const buttons = document.querySelectorAll('.answer-btn');
+
+            if (index === q.correct) {
+                buttons[index].classList.add('correct');
+                score++;
+                document.getElementById('score').textContent = score;
+            } else {
+                buttons[index].classList.add('wrong');
+                buttons[q.correct].classList.add('correct');
+                lives--;
+                document.getElementById('lives').textContent = lives;
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions.length && lives > 0) {
+                    loadQuestion();
+                } else {
+                    showResults();
+                }
+            }, 1500);
+        }
+
+        function showResults() {
+            document.getElementById('questionCard').style.display = 'none';
+            document.getElementById('resultsCard').classList.add('show');
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('progressFill').style.width = '100%';
+
+            // Set emoji and title based on score
+            const percentage = (score / questions.length) * 100;
+            let emoji, title, stars;
+
+            if (percentage >= 80) {
+                emoji = '🏆';
+                title = 'Amazing!';
+                stars = '⭐⭐⭐';
+            } else if (percentage >= 50) {
+                emoji = '🎉';
+                title = 'Good Job!';
+                stars = '⭐⭐';
+            } else {
+                emoji = '💪';
+                title = 'Keep Trying!';
+                stars = '⭐';
+            }
+
+            document.getElementById('resultsEmoji').textContent = emoji;
+            document.getElementById('resultsTitle').textContent = title;
+            document.getElementById('starsEarned').textContent = stars;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            lives = 3;
+            document.getElementById('score').textContent = '0';
+            document.getElementById('lives').textContent = '3';
+            document.getElementById('questionCard').style.display = 'block';
+            document.getElementById('resultsCard').classList.remove('show');
+            loadQuestion();
+        }
+
+        // Initialize
+        loadQuestion();
+    </script>
+</body>
+
+</html>

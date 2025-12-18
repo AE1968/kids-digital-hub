@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>My Hub Login - Kids Digital Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: var(--color-bg);
+            background-image: radial-gradient(#B2EBF2 15%, transparent 16%), radial-gradient(#B2EBF2 15%, transparent 16%);
+            background-size: 60px 60px;
+        }
+
+        .login-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 5px solid #FFD54F;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+
+        .login-logo {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            background: #E1F5FE;
+            padding: 20px;
+            border-radius: 50%;
+            border: 3px solid #4FC3F7;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #546E7A;
+            margin-left: 10px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px 20px;
+            border: 3px solid #E0E0E0;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-family: 'Fredoka', sans-serif;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: #4DB6AC;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: #4DB6AC;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-bottom: 5px solid #00897B;
+            transition: transform 0.1s;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .btn-login:active {
+            transform: translateY(4px);
+            border-bottom-width: 0;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #78909C;
+            text-decoration: none;
+            font-weight: bold;
+            background: #ECEFF1;
+            padding: 10px 20px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-logo">👤</div>
+            <h2 style="color: #455A64; margin-bottom: 30px;">My Secret Base</h2>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Super Name (User)</label>
+                    <input type="text" class="input-field" placeholder="guest" required value="guest">
+                </div>
+
+                <div class="input-group">
+                    <label>Secret Code (Pass)</label>
+                    <input type="password" class="input-field" placeholder="1234" required value="1234">
+                </div>
+
+                <button type="submit" class="btn-login">Open My Hub! 🚀</button>
+            </form>
+
+            <a href="index.html" class="btn-back">⬅️ Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            // Simple mockup login
+            const btn = document.querySelector('.btn-login');
+            btn.innerHTML = "Opening... 🔓";
+
+            setTimeout(() => {
+                // Check for redirect param
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirect = urlParams.get('redirect');
+
+                if (redirect === 'premium') {
+                    window.location.href = "payment.html";
+                } else {
+                    window.location.href = "dashboard.html";
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>

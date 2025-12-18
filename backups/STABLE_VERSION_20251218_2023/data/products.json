@@ -1,0 +1,912 @@
+{
+  "ageGroups": [
+    {
+      "id": "toddlers",
+      "nameKey": "ageGroups.toddlers",
+      "ageRange": "2-4",
+      "icon": "🧸",
+      "color": "#FFB6C1"
+    },
+    {
+      "id": "preschool",
+      "nameKey": "ageGroups.preschool",
+      "ageRange": "4-6",
+      "icon": "🎨",
+      "color": "#87CEEB"
+    },
+    {
+      "id": "early-elementary",
+      "nameKey": "ageGroups.earlyElementary",
+      "ageRange": "6-8",
+      "icon": "📚",
+      "color": "#98FB98"
+    },
+    {
+      "id": "elementary",
+      "nameKey": "ageGroups.elementary",
+      "ageRange": "8-10",
+      "icon": "🎮",
+      "color": "#DDA0DD"
+    },
+    {
+      "id": "preteens",
+      "nameKey": "ageGroups.preteens",
+      "ageRange": "10-12",
+      "icon": "🚀",
+      "color": "#F0E68C"
+    }
+  ],
+  "categories": [
+    {
+      "id": "coloring",
+      "nameKey": "categories.coloring",
+      "icon": "🖍️",
+      "color": "#FF6B9D"
+    },
+    {
+      "id": "games",
+      "nameKey": "categories.games",
+      "icon": "🧩",
+      "color": "#4ECDC4"
+    },
+    {
+      "id": "stories",
+      "nameKey": "categories.stories",
+      "icon": "📖",
+      "color": "#FFE66D"
+    },
+    {
+      "id": "printables",
+      "nameKey": "categories.printables",
+      "icon": "📝",
+      "color": "#A8E6CF"
+    },
+    {
+      "id": "creative",
+      "nameKey": "categories.creative",
+      "icon": "🎭",
+      "color": "#FF8B94"
+    }
+  ],
+  "genders": [
+    {
+      "id": "girls",
+      "nameKey": "genders.girls",
+      "icon": "🎀",
+      "color": "#FF69B4"
+    },
+    {
+      "id": "boys",
+      "nameKey": "genders.boys",
+      "icon": "🚀",
+      "color": "#4ECDC4"
+    },
+    {
+      "id": "unisex",
+      "nameKey": "genders.unisex",
+      "icon": "🌈",
+      "color": "#FFD700"
+    }
+  ],
+  "products": [
+    {
+      "id": "pokemon-coloring-book",
+      "nameKey": "products.pokemonColoring.name",
+      "descriptionKey": "products.pokemonColoring.description",
+      "category": "coloring",
+      "ageGroup": "early-elementary",
+      "ageRange": "6-8",
+      "price": "$4.99",
+      "gender": "unisex",
+      "trending": true,
+      "featured": true,
+      "educational": true,
+      "demoUrl": null,
+      "image": "pokemon-coloring.png",
+      "features": [
+        "50+ Pokémon characters",
+        "Pikachu, Charizard, Eevee",
+        "Educational: Colors & creativity",
+        "Relaxing activity"
+      ]
+    },
+    {
+      "id": "frozen-activity-pack",
+      "nameKey": "products.frozenActivity.name",
+      "descriptionKey": "products.frozenActivity.description",
+      "category": "printables",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "$5.99",
+      "gender": "girls",
+      "trending": true,
+      "featured": true,
+      "educational": true,
+      "demoUrl": null,
+      "image": "frozen-activities.png",
+      "features": [
+        "Elsa, Anna & Olaf activities",
+        "Mazes, puzzles, coloring",
+        "Educational: Problem solving",
+        "30+ printable pages"
+      ]
+    },
+    {
+      "id": "spiderman-coloring",
+      "nameKey": "products.spidermanColoring.name",
+      "descriptionKey": "products.spidermanColoring.description",
+      "category": "coloring",
+      "ageGroup": "early-elementary",
+      "ageRange": "6-8",
+      "price": "$4.99",
+      "gender": "boys",
+      "trending": true,
+      "featured": true,
+      "educational": true,
+      "demoUrl": null,
+      "image": "spiderman-coloring.png",
+      "features": [
+        "Spider-Man action scenes",
+        "Miles Morales included",
+        "Educational: Fine motor skills",
+        "40+ coloring pages"
+      ]
+    },
+    {
+      "id": "bluey-interactive-story",
+      "nameKey": "products.blueyStory.name",
+      "descriptionKey": "products.blueyStory.description",
+      "category": "stories",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "$6.99",
+      "gender": "unisex",
+      "trending": true,
+      "featured": true,
+      "educational": true,
+      "demoUrl": null,
+      "image": "bluey-story.png",
+      "features": [
+        "Interactive Bluey adventures",
+        "Family values & friendship",
+        "Educational: Social skills",
+        "Relaxing storytelling"
+      ]
+    },
+    {
+      "id": "my-hero-academia-game",
+      "nameKey": "products.mhaGame.name",
+      "descriptionKey": "products.mhaGame.description",
+      "category": "games",
+      "ageGroup": "elementary",
+      "ageRange": "8-10",
+      "price": "$7.99",
+      "gender": "unisex",
+      "trending": true,
+      "featured": true,
+      "educational": true,
+      "demoUrl": null,
+      "image": "anime_hero_academy.png",
+      "features": [
+        "Deku & All Might adventures",
+        "Quirk-based puzzles",
+        "Educational: Strategy & logic",
+        "Anime-style graphics"
+      ]
+    },
+    {
+      "id": "barbie-fashion-designer",
+      "nameKey": "products.barbieDesigner.name",
+      "descriptionKey": "products.barbieDesigner.description",
+      "category": "creative",
+      "ageGroup": "elementary",
+      "ageRange": "8-10",
+      "price": "$8.99",
+      "gender": "girls",
+      "trending": true,
+      "featured": true,
+      "educational": true,
+      "demoUrl": null,
+      "image": "barbie-designer.png",
+      "features": [
+        "Design Barbie outfits",
+        "Mix & match accessories",
+        "Educational: Creativity & design",
+        "Save & print designs"
+      ]
+    },
+    {
+      "id": "mario-adventure-game",
+      "nameKey": "products.marioGame.name",
+      "descriptionKey": "products.marioGame.description",
+      "category": "games",
+      "ageGroup": "early-elementary",
+      "ageRange": "6-8",
+      "price": "$6.99",
+      "gender": "boys",
+      "trending": true,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "mario-game.png",
+      "features": [
+        "Mario & Luigi adventures",
+        "Classic platformer puzzles",
+        "Educational: Problem solving",
+        "Kid-friendly challenges"
+      ]
+    },
+    {
+      "id": "paw-patrol-rescue-missions",
+      "nameKey": "products.pawPatrolMissions.name",
+      "descriptionKey": "products.pawPatrolMissions.description",
+      "category": "games",
+      "ageGroup": "toddlers",
+      "ageRange": "2-4",
+      "price": "$5.99",
+      "gender": "unisex",
+      "trending": true,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "paw-patrol.png",
+      "features": [
+        "Chase, Marshall & team",
+        "Simple rescue missions",
+        "Educational: Teamwork & helping",
+        "Perfect for toddlers"
+      ]
+    },
+    {
+      "id": "animal-coloring-book",
+      "nameKey": "products.animalColoringBook.name",
+      "descriptionKey": "products.animalColoringBook.description",
+      "category": "coloring",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "free",
+      "gender": "unisex",
+      "trending": false,
+      "featured": true,
+      "educational": true,
+      "demoUrl": "demo/coloring-book.html",
+      "image": "coloring_animals.png",
+      "features": [
+        "6 animal templates",
+        "Interactive coloring",
+        "Educational: Animals & colors",
+        "Relaxing & creative"
+      ]
+    },
+    {
+      "id": "unicorn-princess-coloring",
+      "nameKey": "products.unicornPrincess.name",
+      "descriptionKey": "products.unicornPrincess.description",
+      "category": "coloring",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "$3.99",
+      "gender": "girls",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "unicorn-princess.png",
+      "features": [
+        "Magical unicorns & princesses",
+        "Glitter & sparkle themes",
+        "Educational: Imagination",
+        "30+ coloring pages"
+      ]
+    },
+    {
+      "id": "dinosaur-coloring",
+      "nameKey": "products.dinosaurColoring.name",
+      "descriptionKey": "products.dinosaurColoring.description",
+      "category": "coloring",
+      "ageGroup": "early-elementary",
+      "ageRange": "6-8",
+      "price": "$3.99",
+      "gender": "boys",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "dinosaur-coloring.png",
+      "features": [
+        "T-Rex, Triceratops & more",
+        "Realistic dinosaur scenes",
+        "Educational: Dinosaur facts",
+        "25+ coloring pages"
+      ]
+    },
+    {
+      "id": "ocean-animals-coloring",
+      "nameKey": "products.oceanAnimals.name",
+      "descriptionKey": "products.oceanAnimals.description",
+      "category": "coloring",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "$3.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "ocean-animals.png",
+      "features": [
+        "Dolphins, whales, fish",
+        "Underwater scenes",
+        "Educational: Ocean life",
+        "Relaxing water themes"
+      ]
+    },
+    {
+      "id": "space-coloring",
+      "nameKey": "products.spaceColoring.name",
+      "descriptionKey": "products.spaceColoring.description",
+      "category": "coloring",
+      "ageGroup": "early-elementary",
+      "ageRange": "6-8",
+      "price": "$4.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "space-coloring.png",
+      "features": [
+        "Planets, rockets, astronauts",
+        "Solar system scenes",
+        "Educational: Space & astronomy",
+        "35+ coloring pages"
+      ]
+    },
+    {
+      "id": "fairy-tale-coloring",
+      "nameKey": "products.fairyTale.name",
+      "descriptionKey": "products.fairyTale.description",
+      "category": "coloring",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "$3.99",
+      "gender": "girls",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "fairy-tale.png",
+      "features": [
+        "Fairy tales & castles",
+        "Magical characters",
+        "Educational: Classic stories",
+        "28+ coloring pages"
+      ]
+    },
+    {
+      "id": "vehicles-coloring",
+      "nameKey": "products.vehicles.name",
+      "descriptionKey": "products.vehicles.description",
+      "category": "coloring",
+      "ageGroup": "toddlers",
+      "ageRange": "2-4",
+      "price": "$2.99",
+      "gender": "boys",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "vehicles.png",
+      "features": [
+        "Cars, trucks, trains",
+        "Simple vehicle shapes",
+        "Educational: Transportation",
+        "20+ coloring pages"
+      ]
+    },
+    {
+      "id": "mandala-kids-coloring",
+      "nameKey": "products.mandalaKids.name",
+      "descriptionKey": "products.mandalaKids.description",
+      "category": "coloring",
+      "ageGroup": "elementary",
+      "ageRange": "8-10",
+      "price": "$4.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "mandala-kids.png",
+      "features": [
+        "Kid-friendly mandalas",
+        "Geometric patterns",
+        "Educational: Focus & relaxation",
+        "30+ designs"
+      ]
+    },
+    {
+      "id": "memory-game-animals",
+      "nameKey": "products.memoryGameAnimals.name",
+      "descriptionKey": "products.memoryGameAnimals.description",
+      "category": "games",
+      "ageGroup": "early-elementary",
+      "ageRange": "6-8",
+      "price": "free",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": "demo/memory-game.html",
+      "image": "memory_game.png",
+      "features": [
+        "Animal matching game",
+        "Multiple difficulty levels",
+        "Educational: Memory & concentration",
+        "Relaxing gameplay"
+      ]
+    },
+    {
+      "id": "puzzle-game-collection",
+      "nameKey": "products.puzzleCollection.name",
+      "descriptionKey": "products.puzzleCollection.description",
+      "category": "games",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "$4.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "puzzle-collection.png",
+      "features": [
+        "Jigsaw puzzles for kids",
+        "Animals, vehicles, nature",
+        "Educational: Spatial awareness",
+        "20+ puzzles"
+      ]
+    },
+    {
+      "id": "math-adventure-game",
+      "nameKey": "products.mathAdventure.name",
+      "descriptionKey": "products.mathAdventure.description",
+      "category": "games",
+      "ageGroup": "elementary",
+      "ageRange": "8-10",
+      "price": "$5.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "math-adventure.png",
+      "features": [
+        "Fun math challenges",
+        "Addition, subtraction, multiplication",
+        "Educational: Math skills",
+        "Adventure storyline"
+      ]
+    },
+    {
+      "id": "word-search-kids",
+      "nameKey": "products.wordSearch.name",
+      "descriptionKey": "products.wordSearch.description",
+      "category": "games",
+      "ageGroup": "elementary",
+      "ageRange": "8-10",
+      "price": "$3.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "word-search.png",
+      "features": [
+        "Age-appropriate word searches",
+        "Various themes",
+        "Educational: Vocabulary & spelling",
+        "50+ puzzles"
+      ]
+    },
+    {
+      "id": "shape-sorting-game",
+      "nameKey": "products.shapeSorting.name",
+      "descriptionKey": "products.shapeSorting.description",
+      "category": "games",
+      "ageGroup": "toddlers",
+      "ageRange": "2-4",
+      "price": "$2.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "shape-sorting.png",
+      "features": [
+        "Learn shapes & colors",
+        "Drag & drop gameplay",
+        "Educational: Shape recognition",
+        "Relaxing for toddlers"
+      ]
+    },
+    {
+      "id": "coding-basics-game",
+      "nameKey": "products.codingBasics.name",
+      "descriptionKey": "products.codingBasics.description",
+      "category": "games",
+      "ageGroup": "preteens",
+      "ageRange": "10-12",
+      "price": "$7.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "coding-game.png",
+      "features": [
+        "Introduction to coding",
+        "Block-based programming",
+        "Educational: Logic & sequencing",
+        "Fun challenges"
+      ]
+    },
+    {
+      "id": "music-rhythm-game",
+      "nameKey": "products.musicRhythm.name",
+      "descriptionKey": "products.musicRhythm.description",
+      "category": "games",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "$4.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "music-rhythm.png",
+      "features": [
+        "Musical rhythm game",
+        "Kid-friendly songs",
+        "Educational: Rhythm & timing",
+        "Relaxing music"
+      ]
+    },
+    {
+      "id": "forest-adventure-story",
+      "nameKey": "products.forestAdventure.name",
+      "descriptionKey": "products.forestAdventure.description",
+      "category": "stories",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "free",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": "demo/interactive-story.html",
+      "image": "forest_story.png",
+      "features": [
+        "Interactive forest adventure",
+        "Woodland animals",
+        "Educational: Nature & friendship",
+        "Relaxing storytelling"
+      ]
+    },
+    {
+      "id": "bedtime-stories-collection",
+      "nameKey": "products.bedtimeStories.name",
+      "descriptionKey": "products.bedtimeStories.description",
+      "category": "stories",
+      "ageGroup": "toddlers",
+      "ageRange": "2-4",
+      "price": "$5.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "bedtime-stories.png",
+      "features": [
+        "Calming bedtime stories",
+        "Soothing narration",
+        "Educational: Relaxation & sleep",
+        "10+ stories"
+      ]
+    },
+    {
+      "id": "fairy-tales-interactive",
+      "nameKey": "products.fairyTalesInteractive.name",
+      "descriptionKey": "products.fairyTalesInteractive.description",
+      "category": "stories",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "$6.99",
+      "gender": "girls",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "fairy-tales-interactive.png",
+      "features": [
+        "Classic fairy tales",
+        "Interactive elements",
+        "Educational: Classic literature",
+        "Beautiful illustrations"
+      ]
+    },
+    {
+      "id": "space-adventure-story",
+      "nameKey": "products.spaceAdventure.name",
+      "descriptionKey": "products.spaceAdventure.description",
+      "category": "stories",
+      "ageGroup": "elementary",
+      "ageRange": "8-10",
+      "price": "$6.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "space-story.png",
+      "features": [
+        "Space exploration adventure",
+        "Astronaut characters",
+        "Educational: Space & science",
+        "Exciting storyline"
+      ]
+    },
+    {
+      "id": "superhero-stories",
+      "nameKey": "products.superheroStories.name",
+      "descriptionKey": "products.superheroStories.description",
+      "category": "stories",
+      "ageGroup": "early-elementary",
+      "ageRange": "6-8",
+      "price": "$5.99",
+      "gender": "boys",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "superhero-stories.png",
+      "features": [
+        "Superhero adventures",
+        "Positive values",
+        "Educational: Courage & kindness",
+        "Action-packed stories"
+      ]
+    },
+    {
+      "id": "animal-facts-stories",
+      "nameKey": "products.animalFacts.name",
+      "descriptionKey": "products.animalFacts.description",
+      "category": "stories",
+      "ageGroup": "elementary",
+      "ageRange": "8-10",
+      "price": "$4.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "animal-facts.png",
+      "features": [
+        "Animal fact stories",
+        "Real animal behaviors",
+        "Educational: Zoology & nature",
+        "Fascinating facts"
+      ]
+    },
+    {
+      "id": "alphabet-tracing",
+      "nameKey": "products.alphabetTracing.name",
+      "descriptionKey": "products.alphabetTracing.description",
+      "category": "printables",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "free",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "alphabet-tracing.png",
+      "features": [
+        "Letter tracing worksheets",
+        "A-Z practice",
+        "Educational: Handwriting",
+        "26+ pages"
+      ]
+    },
+    {
+      "id": "numbers-tracing",
+      "nameKey": "products.numbersTracing.name",
+      "descriptionKey": "products.numbersTracing.description",
+      "category": "printables",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "$2.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "numbers-tracing.png",
+      "features": [
+        "Number tracing 1-20",
+        "Counting practice",
+        "Educational: Math basics",
+        "20+ worksheets"
+      ]
+    },
+    {
+      "id": "maze-collection",
+      "nameKey": "products.mazeCollection.name",
+      "descriptionKey": "products.mazeCollection.description",
+      "category": "printables",
+      "ageGroup": "early-elementary",
+      "ageRange": "6-8",
+      "price": "$3.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "mazes.png",
+      "features": [
+        "Fun mazes for kids",
+        "Various difficulty levels",
+        "Educational: Problem solving",
+        "40+ mazes"
+      ]
+    },
+    {
+      "id": "dot-to-dot-collection",
+      "nameKey": "products.dotToDot.name",
+      "descriptionKey": "products.dotToDot.description",
+      "category": "printables",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "$2.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "dot-to-dot.png",
+      "features": [
+        "Connect the dots",
+        "Numbers 1-50",
+        "Educational: Number sequence",
+        "30+ activities"
+      ]
+    },
+    {
+      "id": "handwriting-practice",
+      "nameKey": "products.handwriting.name",
+      "descriptionKey": "products.handwriting.description",
+      "category": "printables",
+      "ageGroup": "early-elementary",
+      "ageRange": "6-8",
+      "price": "$3.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "handwriting.png",
+      "features": [
+        "Handwriting practice sheets",
+        "Words & sentences",
+        "Educational: Writing skills",
+        "50+ pages"
+      ]
+    },
+    {
+      "id": "simple-shapes",
+      "nameKey": "products.simpleShapes.name",
+      "descriptionKey": "products.simpleShapes.description",
+      "category": "printables",
+      "ageGroup": "toddlers",
+      "ageRange": "2-4",
+      "price": "free",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "shapes-coloring.png",
+      "features": [
+        "Basic shapes worksheets",
+        "Circle, square, triangle",
+        "Educational: Shape recognition",
+        "15+ pages"
+      ]
+    },
+    {
+      "id": "avatar-creator",
+      "nameKey": "products.avatarCreator.name",
+      "descriptionKey": "products.avatarCreator.description",
+      "category": "creative",
+      "ageGroup": "elementary",
+      "ageRange": "8-10",
+      "price": "$5.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "avatar-creator.png",
+      "features": [
+        "Create custom avatars",
+        "Mix & match features",
+        "Educational: Creativity & design",
+        "Save & share creations"
+      ]
+    },
+    {
+      "id": "story-builder",
+      "nameKey": "products.storyBuilder.name",
+      "descriptionKey": "products.storyBuilder.description",
+      "category": "creative",
+      "ageGroup": "preteens",
+      "ageRange": "10-12",
+      "price": "$6.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "story-builder.png",
+      "features": [
+        "Create your own stories",
+        "Story prompts & templates",
+        "Educational: Creative writing",
+        "Print & share stories"
+      ]
+    },
+    {
+      "id": "craft-templates",
+      "nameKey": "products.craftTemplates.name",
+      "descriptionKey": "products.craftTemplates.description",
+      "category": "creative",
+      "ageGroup": "preschool",
+      "ageRange": "4-6",
+      "price": "$4.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "craft-templates.png",
+      "features": [
+        "Paper craft templates",
+        "Animals, flowers, decorations",
+        "Educational: Fine motor skills",
+        "25+ templates"
+      ]
+    },
+    {
+      "id": "drawing-tutorials",
+      "nameKey": "products.drawingTutorials.name",
+      "descriptionKey": "products.drawingTutorials.description",
+      "category": "creative",
+      "ageGroup": "elementary",
+      "ageRange": "8-10",
+      "price": "$5.99",
+      "gender": "unisex",
+      "trending": false,
+      "featured": false,
+      "educational": true,
+      "demoUrl": null,
+      "image": "drawing-tutorials.png",
+      "features": [
+        "Step-by-step drawing",
+        "Animals, characters, objects",
+        "Educational: Art skills",
+        "30+ tutorials"
+      ]
+    }
+  ]
+}

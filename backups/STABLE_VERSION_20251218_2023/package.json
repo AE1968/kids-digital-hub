@@ -1,0 +1,11 @@
+{
+    "name": "kids-digital-hub",
+    "version": "2.0.0",
+    "description": "Kids Digital Hub - Static Site",
+    "scripts": {
+        "build": "echo 'Build successful - Static Site'"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}

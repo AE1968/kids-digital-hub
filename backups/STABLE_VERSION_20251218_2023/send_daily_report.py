@@ -1,0 +1,166 @@
+"""
+Daily Report Email Sender
+Runs on GitHub Actions after nightly content generation.
+"""
+
+import os
+import json
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime
+import requests
+
+# Configuration
+SMTP_HOST = os.getenv('SMTP_HOST', 'smtp.gmail.com')
+SMTP_PORT = int(os.getenv('SMTP_PORT', 587))
+SMTP_USER = os.getenv('SMTP_USER') 
+SMTP_PASS = os.getenv('SMTP_PASS') 
+TO_EMAIL = os.getenv('TO_EMAIL', 'adrianenc11@gmail.com')
+
+SITE_URL = "https://www.kidsdigitalhub.com"
+
+def load_stats():
+    stats = {}
+    try:
+        if os.path.exists("site_statistics.json"):
+            with open("site_statistics.json", "r", encoding="utf-8") as f:
+                stats = json.load(f)
+    except Exception as e:
+        print(f"⚠️ Error loading stats: {e}")
+    return stats
+
+def load_suggestions():
+    suggestions = []
+    
+    # 1. Try to fetch from Railway (Central Server)
+    try:
+        response = requests.get("https://web-production-b215.up.railway.app/api/admin/suggestions/text", timeout=10)
+        if response.status_code == 200:
+            lines = response.text.strip().split('\n')
+            for line in lines[-5:]:
+                if line.strip():
+                    suggestions.append(line.strip())
+            if suggestions:
+                return suggestions
+    except Exception as e:
+        print(f"⚠️ Could not fetch suggestions from Railway for report: {e}")
+
+    # 2. Local Fallback
+    try:
+        if os.path.exists("data/suggestions.txt"):
+            with open("data/suggestions.txt", "r", encoding="utf-8") as f:
+                lines = f.readlines()
+                # Get last 5 suggestions
+                for line in lines[-5:]:
+                    if line.strip():
+                        suggestions.append(line.strip())
+    except:
+        pass
+    return suggestions
+
+def check_site_status():
+    try:
+        response = requests.get(SITE_URL, timeout=10)
+        return {
+            "status": "ONLINE" if response.status_code == 200 else f"OFFLINE ({response.status_code})",
+            "code": response.status_code,
+            "latency": f"{response.elapsed.total_seconds():.2f}s"
+        }
+    except Exception as e:
+        return {"status": "ERROR", "code": 0, "latency": "0s", "error": str(e)}
+
+def create_email_body(stats, suggestions, site_status):
+    total_products = stats.get('total_products', 0)
+    
+    suggestion_items = "".join([f"<li style='margin-bottom:5px;'>💡 {s}</li>" for s in suggestions])
+    if not suggestion_items:
+        suggestion_items = "<li>No new suggestions today.</li>"
+    
+    html = f"""
+    <html>
+    <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+        <div style="max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 10px; overflow: hidden;">
+            <div style="background: #1e3c72; color: white; padding: 20px; text-align: center;">
+                <h2 style="margin: 0;">📊 Kids Digital Hub Daily Report</h2>
+                <p style="margin: 5px 0 0;">{datetime.now().strftime('%d %B %Y')}</p>
+            </div>
+            
+            <div style="padding: 20px;">
+                <h3 style="color: #1e3c72; border-bottom: 2px solid #eee; padding-bottom: 10px;">🚀 AI System Status</h3>
+                <p><strong>Generation Status:</strong> <span style="color: green;">✅ ACTIVE</span></p>
+                
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 10px; border: 1px solid #eee;">📦 Total Products in Catalog</td>
+                        <td style="padding: 10px; border: 1px solid #eee; font-weight: bold;">{total_products}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #eee;">💎 Premium Products</td>
+                        <td style="padding: 10px; border: 1px solid #eee;">{stats.get('paid_products', 0)}</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 10px; border: 1px solid #eee;">🎁 Free Products</td>
+                        <td style="padding: 10px; border: 1px solid #eee;">{stats.get('free_products', 0)}</td>
+                    </tr>
+                </table>
+
+                <h3 style="color: #4CAF50; border-bottom: 2px solid #eee; padding-bottom: 10px;">💭 Recent User Suggestions</h3>
+                <ul style="padding-left: 20px;">
+                    {suggestion_items}
+                </ul>
+
+                <h3 style="color: #2196F3; border-bottom: 2px solid #eee; padding-bottom: 10px;">🌐 Website Health</h3>
+                <p><strong>URL:</strong> <a href="{SITE_URL}">{SITE_URL}</a></p>
+                <p><strong>Status:</strong> <span style="background: #E8F5E9; color: #2E7D32; padding: 3px 8px; border-radius: 4px; font-weight: bold;">{site_status['status']}</span></p>
+                <p><strong>Response Time:</strong> {site_status['latency']}</p>
+
+                <h3 style="color: #FF9800; border-bottom: 2px solid #eee; padding-bottom: 10px;">📊 Traffic Summary</h3>
+                <p>Total Views: <strong>{stats.get('total_views', 0):,}</strong></p>
+                <p>Total Orders Processed: <strong>{stats.get('total_sales', 0):,}</strong></p>
+
+                <div style="background: #f0f4f8; padding: 15px; border-radius: 5px; margin-top: 20px; font-size: 0.9em;">
+                    <p style="margin: 0;"><em>This report was automatically generated by the Kids Digital Hub Master System.</em></p>
+                </div>
+            </div>
+            
+            <div style="background: #f4f4f4; padding: 10px; text-align: center; font-size: 0.8em; color: #666;">
+                &copy; {datetime.now().year} Kids Digital Hub Automation System
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    return html
+
+def send_email():
+    print("📧 Preparing daily report email...")
+    
+    if not SMTP_USER or not SMTP_PASS:
+        print("⚠️ SMTP_USER or SMTP_PASS missing. Cannot send email.")
+        return
+
+    stats = load_stats()
+    suggestions = load_suggestions()
+    site_status = check_site_status()
+    
+    html_content = create_email_body(stats, suggestions, site_status)
+    
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = f"📊 Daily Hub Report: {stats.get('total_products', 0)} Products - {datetime.now().strftime('%d/%m/%Y')}"
+    msg['From'] = f"Kids Hub Admin <{SMTP_USER}>"
+    msg['To'] = TO_EMAIL
+    
+    msg.attach(MIMEText(html_content, 'html'))
+    
+    try:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            server.send_message(msg)
+            print(f"✅ Email sent successfully to {TO_EMAIL}!")
+    except Exception as e:
+        print(f"❌ Error sending email: {e}")
+
+if __name__ == "__main__":
+    send_email()

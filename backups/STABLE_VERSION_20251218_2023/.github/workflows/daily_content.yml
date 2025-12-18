@@ -1,0 +1,44 @@
+name: Nightly Operations & Content
+
+on:
+  schedule:
+    # Run at 4:00 AM UTC every day
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  nightly-tasks:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: 🎨 Generate Daily Content
+        run: python daily_content_manager.py
+
+      - name: 🤖 Generate New AI Products
+        run: python generate_ai_products.py
+        
+      - name: 🩺 Robot Doctor - Auto-Fix & Verify
+        run: python utils/robot_doctor.py
+
+      - name: Commit & Push Updates
+        run: |
+          git config --global user.name 'KidsHub AutoBot'
+          git config --global user.email 'bot@kidsdigitalhub.com'
+          git add .
+          git commit -m "🤖 Nightly Content & Optimization" || echo "No changes to commit"
+          git push

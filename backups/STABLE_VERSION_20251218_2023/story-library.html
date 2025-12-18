@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Story Library - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .story-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .story-cover {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            position: relative;
+        }
+
+        .story-cover.space {
+            background: linear-gradient(180deg, #0a0a2a 0%, #1a1a4a 100%);
+        }
+
+        .story-cover.forest {
+            background: linear-gradient(180deg, #2d5016 0%, #1a3009 100%);
+        }
+
+        .story-cover.ocean {
+            background: linear-gradient(180deg, #0077b6 0%, #00b4d8 100%);
+        }
+
+        .story-cover.magic {
+            background: linear-gradient(180deg, #9d4edd 0%, #5a189a 100%);
+        }
+
+        .story-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .story-badge.interactive {
+            background: #4CAF50;
+        }
+
+        .story-info {
+            padding: 25px;
+        }
+
+        .story-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .story-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .story-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .story-length {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .read-btn {
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .coming-soon {
+            opacity: 0.7;
+            position: relative;
+        }
+
+        .coming-soon::after {
+            content: 'COMING SOON';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            background: #FFD700;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back-btn">← Back Home</a>
+
+    <div class="header">
+        <h1>📚 Story Library</h1>
+        <p>Interactive stories for curious minds!</p>
+    </div>
+
+    <div class="container">
+        <div class="category-filter">
+            <button class="filter-btn active">All Stories</button>
+            <button class="filter-btn">🌟 Adventure</button>
+            <button class="filter-btn">🐾 Animals</button>
+            <button class="filter-btn">✨ Magic</button>
+        </div>
+
+        <div class="stories-grid">
+            <a href="stories/brave-star.html" class="story-card">
+                <div class="story-cover space">
+                    🌟
+                    <span class="story-badge interactive">Interactive</span>
+                </div>
+                <div class="story-info">
+                    <h3 class="story-title">The Brave Little Star</h3>
+                    <p class="story-description">A tiny star embarks on a big adventure to help the Moon find its lost
+                        glow. Make choices that change the story!</p>
+                    <div class="story-meta">
+                        <span class="story-length">📖 5 min read</span>
+                        <span class="read-btn">Read Now →</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="stories/friendly-dragon.html" class="story-card">
+                <div class="story-cover forest">
+                    🐉
+                    <span class="story-badge interactive">Interactive</span>
+                </div>
+                <div class="story-info">
+                    <h3 class="story-title">The Friendly Dragon</h3>
+                    <p class="story-description">Meet Ember, a dragon who loves baking cookies! Join her as she helps a
+                        lost girl find her way home.</p>
+                    <div class="story-meta">
+                        <span class="story-length">📖 6 min read</span>
+                        <span class="read-btn">Read Now →</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="stories/ocean-princess.html" class="story-card">
+                <div class="story-cover ocean">
+                    🧜‍♀️
+                    <span class="story-badge interactive">Interactive</span>
+                </div>
+                <div class="story-info">
+                    <h3 class="story-title">The Ocean Princess</h3>
+                    <p class="story-description">Dive deep into the ocean and discover a magical underwater kingdom with
+                        Princess Marina!</p>
+                    <div class="story-meta">
+                        <span class="story-length">📖 5 min read</span>
+                        <span class="read-btn">Read Now →</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="stories/magic-unicorn.html" class="story-card">
+                <div class="story-cover magic">
+                    🦄
+                    <span class="story-badge interactive">Interactive</span>
+                </div>
+                <div class="story-info">
+                    <h3 class="story-title">The Magic Unicorn</h3>
+                    <p class="story-description">Follow a young unicorn named Sparkle as she learns to use her magical
+                        rainbow powers! An adventure full of sparkles.</p>
+                    <div class="story-meta">
+                        <span class="story-length">📖 5 min read</span>
+                        <span class="read-btn">Read Now →</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+[
+  {
+    "timestamp": "2025-12-18 20:19:31",
+    "incident": "Infrastructure Alert",
+    "healing_action": "Nexus server (Railway) is currently unreachable. Dashboard fallback active.",
+    "status": "CRITICAL",
+    "agent": "Nexus Robot Doctor v2.1"
+  },
+  {
+    "timestamp": "2025-12-18 20:15:05",
+    "incident": "Infrastructure Alert",
+    "healing_action": "Nexus server (Railway) is currently unreachable. Dashboard fallback active.",
+    "status": "CRITICAL",
+    "agent": "Nexus Robot Doctor v2.1"
+  },
+  {
+    "timestamp": "2025-12-18 20:11:07",
+    "incident": "Infrastructure Alert",
+    "healing_action": "Nexus server (Railway) is currently unreachable. Dashboard fallback active.",
+    "status": "CRITICAL",
+    "agent": "Nexus Robot Doctor v2.1"
+  },
+  {
+    "timestamp": "2025-12-18 20:11:07",
+    "incident": "File Clutter",
+    "healing_action": "Deleted backup file index.html.bak to optimize system speed.",
+    "status": "HEALED",
+    "agent": "Nexus Robot Doctor v2.1"
+  },
+  {
+    "timestamp": "2025-12-18 20:11:07",
+    "incident": "File Clutter",
+    "healing_action": "Deleted backup file gallery-stories.html.bak to optimize system speed.",
+    "status": "HEALED",
+    "agent": "Nexus Robot Doctor v2.1"
+  },
+  {
+    "timestamp": "2025-12-18 20:11:07",
+    "incident": "File Clutter",
+    "healing_action": "Deleted backup file gallery-games.html.bak to optimize system speed.",
+    "status": "HEALED",
+    "agent": "Nexus Robot Doctor v2.1"
+  },
+  {
+    "timestamp": "2025-12-18 20:11:07",
+    "incident": "File Clutter",
+    "healing_action": "Deleted backup file gallery-drawings.html.bak to optimize system speed.",
+    "status": "HEALED",
+    "agent": "Nexus Robot Doctor v2.1"
+  },
+  {
+    "timestamp": "2025-12-18 20:11:07",
+    "incident": "File Clutter",
+    "healing_action": "Deleted backup file dashboard.html.bak to optimize system speed.",
+    "status": "HEALED",
+    "agent": "Nexus Robot Doctor v2.1"
+  },
+  {
+    "timestamp": "2025-12-18 20:08:58",
+    "incident": "Railway Offline",
+    "healing_action": "Server heartbeat missing. Infrastructure alert triggered.",
+    "status": "CRITICAL",
+    "agent": "Nexus Robot Doctor v2.0"
+  },
+  {
+    "timestamp": "2025-12-18 20:08:55",
+    "incident": "Critical Config Error",
+    "healing_action": "Self-corrected redirect logic in netlify.toml",
+    "status": "HEALED",
+    "agent": "Nexus Robot Doctor v2.0"
+  },
+  {
+    "timestamp": "2025-12-18 20:08:55",
+    "incident": "Audit Failure in Dashboard",
+    "healing_action": "Triggering full asset synchronization pulse.",
+    "status": "HEALED",
+    "agent": "Nexus Robot Doctor v2.0"
+  },
+  {
+    "timestamp": "2025-12-18 20:08:55",
+    "incident": "Audit Failure in Homepage",
+    "healing_action": "Triggering full asset synchronization pulse.",
+    "status": "HEALED",
+    "agent": "Nexus Robot Doctor v2.0"
+  },
+  {
+    "time": "2025-12-18 13:30:36",
+    "problem": "Network integrity check failed.",
+    "solution": "Self-healing protocol active. Monitoring continues.",
+    "status": "Urgent \u2705"
+  }
+]

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>The Ocean Princess - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: #0077b6;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ocean-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #00b4d8 0%, #0077b6 50%, #03045e 100%);
+            z-index: -1;
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatUp 10s linear infinite;
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(-100px) scale(1);
+                opacity: 0.5;
+            }
+        }
+
+        .story-card {
+            max-width: 650px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .scene-emoji {
+            font-size: 6rem;
+            margin-bottom: 25px;
+            animation: swim 4s ease-in-out infinite;
+        }
+
+        @keyframes swim {
+
+            0%,
+            100% {
+                transform: rotate(-5deg) translateX(0);
+            }
+
+            50% {
+                transform: rotate(5deg) translateX(10px);
+            }
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #caf0f8;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(202, 240, 248, 0.5);
+        }
+
+        .story-text {
+            font-size: 1.3rem;
+            margin-bottom: 35px;
+            line-height: 1.7;
+        }
+
+        .choices {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .choice-btn {
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #90e0ef;
+            color: #fff;
+            border-radius: 25px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .choice-btn:hover {
+            background: #90e0ef;
+            color: #03045e;
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(144, 224, 239, 0.4);
+        }
+
+        .progress-indicator {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .indicator-dot.active {
+            background: #90e0ef;
+            transform: scale(1.3);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            color: #90e0ef;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ocean-bg"></div>
+    <div id="bubbles"></div>
+    <a href="../story-library.html" class="back-btn">← 🌊 Library</a>
+
+    <div class="story-card">
+        <div class="scene-emoji" id="sceneEmoji">🧜‍♀️</div>
+        <h2 id="sceneTitle">The Ocean Princess</h2>
+        <p class="story-text" id="storyText">
+            Princess Marina lives in a palace made of shining pearls. Today is the great Coral Festival, but the magical
+            Royal Conch has disappeared! Without its song, the party cannot start.
+        </p>
+        <div class="choices" id="choicesArea">
+            <button class="choice-btn" onclick="nextScene('dolphin')">Ask Delphie the Dolphin 🐬</button>
+            <button class="choice-btn" onclick="nextScene('crab')">Search the Sandy Caves 🦀</button>
+        </div>
+        <div class="progress-indicator" id="indicators"></div>
+    </div>
+
+    <script>
+        const storyData = {
+            start: {
+                emoji: "🧜‍♀️",
+                title: "The Missing Conch",
+                text: "Princess Marina lives in a palace made of shining pearls. Today is the great Coral Festival, but the magical Royal Conch has disappeared! Everywhere is quiet...",
+                choices: [
+                    { text: "Ask Delphie the Dolphin 🐬", next: "dolphin_help" },
+                    { text: "Search the Sandy Caves 🦀", next: "cave_search" }
+                ],
+                step: 0
+            },
+            dolphin_help: {
+                emoji: "🐬",
+                title: "Delphie's Clue",
+                text: "Delphie says he saw a naughty octopus juggling something shiny near the Shipwreck. 'Follow me!' he whistles, swimming through a school of colorful fish.",
+                choices: [
+                    { text: "Swim to the Shipwreck 🚢", next: "shipwreck" },
+                    { text: "Check the Kelp Forest 🌿", next: "forest" }
+                ],
+                step: 1
+            },
+            cave_search: {
+                emoji: "🦀",
+                title: "Bernie the Crab",
+                text: "You find Bernie the Crab hiding under a rock. 'I saw a purple shadow carrying a shell into the Kelp Forest!' he pinches excitedly.",
+                choices: [
+                    { text: "Head to the Kelp Forest 🌿", next: "forest" }
+                ],
+                step: 1
+            },
+            shipwreck: {
+                emoji: "🚢",
+                title: "The Ghostly Ship",
+                text: "Among the old wood and chains, you find Barnaby the Octopus. He is trying to play the Conch but only 'thump-thump' sounds come out. He looks embarrassed.",
+                choices: [
+                    { text: "Tell him it's for everyone ❤️", next: "victory" },
+                    { text: "Trade it for a shiny pearl 💎", next: "trade" }
+                ],
+                step: 2
+            },
+            forest: {
+                emoji: "🌿",
+                title: "The Kelp Forest",
+                text: "The kelp is so tall and green! You spot the Conch stuck in a current. It's vibrating with a beautiful melody. You need to grab it before it floats away!",
+                choices: [
+                    { text: "Use your magic song 🎶", next: "victory" }
+                ],
+                step: 2
+            },
+            trade: {
+                emoji: "💎",
+                title: "The Shiny Trade",
+                text: "Barnaby loves the pearl! He gives you back the Royal Conch and even offers to help carry it to the festival. Everyone is happy!",
+                choices: [
+                    { text: "Go to the Festival 🥳", next: "victory" }
+                ],
+                step: 3
+            },
+            victory: {
+                emoji: "🐚",
+                title: "The Song of the Sea",
+                text: "Marina returns with the Conch. She blows into it, and a magical melody fills the ocean. The fish start dancing and the coral begins to glow! The festival has begun!",
+                choices: [
+                    { text: "Dance! 💃", next: "end" }
+                ],
+                step: 4
+            },
+            end: {
+                emoji: "🌟",
+                title: "A Happy Kingdom",
+                text: "Princess Marina and her friends celebrated all night long. The ocean was full of music and light. You completed the quest of the Ocean Princess!",
+                choices: [
+                    { text: "Read Again 🔄", next: "start" },
+                    { text: "More Stories 📚", next: "library" }
+                ],
+                step: 5
+            }
+        };
+
+        function createBubbles() {
+            const container = document.getElementById('bubbles');
+            for (let i = 0; i < 15; i++) {
+                const b = document.createElement('div');
+                b.className = 'bubble';
+                const size = Math.random() * 30 + 10;
+                b.style.width = size + 'px';
+                b.style.height = size + 'px';
+                b.style.left = Math.random() * 100 + 'vw';
+                b.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                b.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(b);
+            }
+        }
+
+        function nextScene(sceneId) {
+            if (sceneId === 'library') {
+                window.location.href = '../story-library.html';
+                return;
+            }
+            const data = storyData[sceneId];
+            if (!data) return;
+
+            document.getElementById('sceneEmoji').textContent = data.emoji;
+            document.getElementById('sceneTitle').textContent = data.title;
+            document.getElementById('storyText').textContent = data.text;
+
+            const choicesArea = document.getElementById('choicesArea');
+            choicesArea.innerHTML = '';
+            data.choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.textContent = choice.text;
+                btn.onclick = () => nextScene(choice.next);
+                choicesArea.appendChild(btn);
+            });
+
+            updateIndicators(data.step);
+
+            if (data.step === 5 && window.KDH_Achievements) {
+                KDH_Achievements.addProgress('reading');
+            }
+        }
+
+        function updateIndicators(step) {
+            const container = document.getElementById('indicators');
+            container.innerHTML = '';
+            for (let i = 0; i < 6; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'indicator-dot' + (i === step ? ' active' : '');
+                container.appendChild(dot);
+            }
+        }
+
+        createBubbles();
+        updateIndicators(0);
+    </script>
+</body>
+
+</html>
