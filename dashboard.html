@@ -225,13 +225,19 @@
                 <span style="font-size: 1.2rem;">🪙</span>
                 <span id="coin-balance-display" style="font-weight: bold; color: #ffd700;">0</span>
             </div>
-            <a href="index.html" class="btn-logout" data-i18n="btn_back"
+            <a href="index.html" class="btn-logout"
                 style="margin-right:10px; border-color:#fff; color:#00897B;">Back</a>
-            <button id="btn-logout" class="btn-logout" style="display:none;" data-i18n="nav_myhub">Logout</button>
+            <button id="btn-logout" class="btn-logout" style="display:none;">Logout</button>
         </div>
     </header>
-    data-i18n="login_pass"><button type="submit" class="login-btn" data-i18n="btn_login">Login</button></form>
-    </div>
+    <section id="login-section" style="display:none;">
+        <div class="login-box">
+            <h2>Parent Access</h2>
+            <form onsubmit="handleLogin(event)">
+                <input type="password" id="login-pass" class="login-input" placeholder="Enter Password">
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+        </div>
     </section>
     < !-- PROFILE SECTION (Initially Hidden) -->
         <section id="profile-section" style="display:none;">
@@ -239,42 +245,41 @@
                 < !-- SLOT 1: DRAWINGS -->
                     <div class="stat-card card-drawings"> <span class="stat-icon">🎨</span>
                         <div class="stat-count">1/10</div>
-                        <div class="stat-label" data-i18n="nav_coloring">Coloring</div>
+                        <div class="stat-label">Coloring</div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 10%; background: #FF7043;"></div>
                         </div> <button class="btn-action" style="background:#FFCCBC; color:#BF360C;"
-                            onclick="location.href='gallery-drawings.html'" data-i18n="nav_coloring">Go</button>
+                            onclick="location.href='gallery-drawings.html'">Go</button>
                     </div>
-                    < !-- SLOT 2: GAMES -->
-                        <div class="stat-card card-games"> <span class="stat-icon">🎮</span>
-                            <div class="stat-count">0/10</div>
-                            <div class="stat-label" data-i18n="nav_games">Games</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 0%; background: #42A5F5;"></div>
-                            </div> <button class="btn-action" style="background:#BBDEFB; color:#0D47A1;"
-                                onclick="location.href='gallery-games.html'" data-i18n="btn_play">Play</button>
-                        </div>
-                        < !-- SLOT 3: STORIES -->
-                            <div class="stat-card card-stories"> <span class="stat-icon">📚</span>
-                                <div class="stat-count">0/10</div>
-                                <div class="stat-label" data-i18n="nav_stories">Stories</div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 0%; background: #66BB6A;"></div>
-                                </div> <button class="btn-action" style="background:#C8E6C9; color:#1B5E20;"
-                                    onclick="location.href='gallery-stories.html'" data-i18n="btn_read">Read</button>
+                    <!-- SLOT 2: GAMES -->
+                    <div class="stat-card card-games"> <span class="stat-icon">🎮</span>
+                        <div class="stat-count">0/10</div>
+                        <div class="stat-label">Games</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%; background: #42A5F5;"></div>
+                        </div> <button class="btn-action" style="background:#BBDEFB; color:#0D47A1;"
+                            onclick="location.href='gallery-games.html'">Play</button>
+                    </div>
+                    <!-- SLOT 3: STORIES -->
+                    <div class="stat-card card-stories"> <span class="stat-icon">📚</span>
+                        <div class="stat-count">0/10</div>
+                        <div class="stat-label">Stories</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%; background: #66BB6A;"></div>
+                        </div> <button class="btn-action" style="background:#C8E6C9; color:#1B5E20;"
+                            onclick="location.href='gallery-stories.html'">Read</button>
+                    </div>
+                    < !-- SLOT 4: REDEEM BONUS (REPLACES OLD FRIENDS SLOT FOR BETTER ECONOMY VISIBILITY) -->
+                        <div class="stat-card" style="border-color: #FFD700; color: #FF8F00;"> <span
+                                class="stat-icon">🎁</span>
+                            <div class="stat-label" style="font-size:1rem; margin-bottom:5px;">Bonus Code</div>
+                            <div style="display:flex; flex-direction:column; gap:5px;"> <input type="text"
+                                    id="redeem-input" placeholder="Enter Code..."
+                                    style="padding:8px; border-radius:10px; border:2px solid #FFECB3; text-align:center; text-transform:uppercase;">
+                                <button class="btn-action" style="background:#FFF8E1; color:#FF8F00; margin-top:5px;"
+                                    onclick="redeemBonus()">Redeem</button>
                             </div>
-                            < !-- SLOT 4: REDEEM BONUS (REPLACES OLD FRIENDS SLOT FOR BETTER ECONOMY VISIBILITY) -->
-                                <div class="stat-card" style="border-color: #FFD700; color: #FF8F00;"> <span
-                                        class="stat-icon">🎁</span>
-                                    <div class="stat-label" style="font-size:1rem; margin-bottom:5px;">Bonus Code</div>
-                                    <div style="display:flex; flex-direction:column; gap:5px;"> <input type="text"
-                                            id="redeem-input" placeholder="Enter Code..."
-                                            style="padding:8px; border-radius:10px; border:2px solid #FFECB3; text-align:center; text-transform:uppercase;">
-                                        <button class="btn-action"
-                                            style="background:#FFF8E1; color:#FF8F00; margin-top:5px;"
-                                            onclick="redeemBonus()">Redeem</button>
-                                    </div>
-                                </div>
+                        </div>
             </div>
             <section class="premium-teaser" style="cursor: pointer; margin-top:20px;"
                 onclick="location.href='messenger.html'">
