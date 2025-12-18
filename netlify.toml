@@ -1,9 +1,14 @@
 [build]
-  command = "echo 'Forcing Nexus Rebuild'"
   publish = "."
   functions = "netlify/functions"
 
+# Fortam redirectarea de la radacina catre nexus.html
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/"
+  to = "/nexus.html"
   status = 200
+
+[[redirects]]
+  from = "/index.html"
+  to = "/nexus.html"
+  status = 301
