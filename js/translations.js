@@ -104,7 +104,8 @@ const translations = {
         "admin_policy_note": "* Bonus Policy will appear in the specific ad region when enabled.",
         "countdown_target": "TARGET ACQUIRED",
         "countdown_xmas": "CHRISTMAS",
-        "countdown_ny_seq": "INIT_SEQ: NY26"
+        "countdown_ny_seq": "INIT_SEQ: NY26",
+        "ae_promo_tooltip": "Watch Promo & Share"
     },
     "ro": {
         "nav_coloring": "Colorat",
@@ -211,7 +212,8 @@ const translations = {
         "admin_policy_note": "* Politica de bonus va apărea în regiunea de publicitate specifică atunci când este activată.",
         "countdown_target": "ȚINTĂ ATINSĂ",
         "countdown_xmas": "CRĂCIUN",
-        "countdown_ny_seq": "SECV_INIT: AN26"
+        "countdown_ny_seq": "SECV_INIT: AN26",
+        "ae_promo_tooltip": "Vezi Promo & Distribuie"
     },
     "fr": {
         "nav_coloring": "Coloriage",
@@ -311,6 +313,15 @@ function changeLanguage(lang) {
         const key = el.getAttribute('data-i18n-placeholder');
         if (selectedLang[key]) {
             el.placeholder = selectedLang[key];
+        }
+    });
+
+    // Update title attributes (tooltips)
+    const titles = document.querySelectorAll('[data-i18n-title]');
+    titles.forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        if (selectedLang[key]) {
+            el.title = selectedLang[key];
         }
     });
 
