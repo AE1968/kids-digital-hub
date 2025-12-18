@@ -8,11 +8,17 @@
 (function () {
 
     // --- CONFIGURATION ---
-    const TARGET_YEAR = 2025;
+    // Auto-detect current year for dynamic updates
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth(); // 0-11
+
+    // If we're in January and New Year has passed, use next year for Christmas
+    const TARGET_YEAR = (currentMonth === 0) ? currentYear : currentYear;
 
     const TARGETS = {
         christmas: new Date(`December 25, ${TARGET_YEAR} 00:00:00`).getTime(),
-        newyear: new Date(`January 1, ${TARGET_YEAR + 1} 00:00:00`).getTime() // Jan 1, 2026
+        newyear: new Date(`January 1, ${TARGET_YEAR + 1} 00:00:00`).getTime()
     };
 
     const TRANSLATIONS = {
@@ -263,7 +269,10 @@
         const currentYear = now.getFullYear();
         const currentMonth = now.getMonth();
 
-        const isFestiveSeason = (currentMonth === 11) || (currentMonth === 10);
+        // Show clocks from November 1st through January 2nd
+        // November = month 10, December = month 11, January = month 0
+        const isFestiveSeason = (currentMonth === 10) || (currentMonth === 11) ||
+            (currentMonth === 0 && now.getDate() <= 2);
 
         const leftClock = document.getElementById('clock-christmas');
         const rightClock = document.getElementById('clock-newyear');
@@ -288,11 +297,13 @@
 
         // --- UPDATE CHRISTMAS (Left) ---
         if (currentTime > xmasTarget && currentTime < xmasTarget + (1000 * 60 * 60 * 24)) {
-            // Is Christmas Day
-            document.getElementById('content-christmas').innerHTML = "DEPLOYED";
-        } else if (currentTime > xmasTarget) {
+            // Is Christmas Day - Show festive message
+            document.getElementById('content-christmas').innerHTML = "🎅🎁<br>MERRY<br>XMAS!";
+        } else if (currentTime > xmasTarget + (1000 * 60 * 60 * 24)) {
+            // After Christmas Day - hide clock
             leftClock.style.display = 'none';
         } else {
+            // Counting down to Christmas
             const xmasDiff = xmasTarget - currentTime;
             updateClockContent('content-christmas', xmasDiff, t, false);
         }
