@@ -303,25 +303,71 @@
             </div>
 
             <div class="visor-container">
-                <!-- THE ROBOT BRAIN VISUALIZATION -->
-                <div class="robot-head">
-                    <div class="circuit-lines"></div>
-                    <div class="brain-core"></div>
-                    <div class="eye-scanner"></div>
-
-                    <!-- SVG ICON OVERLAY -->
-                    <svg viewBox="0 0 100 100"
-                        style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0.3; fill:none; stroke:var(--neon-cyan); stroke-width:0.5;">
-                        <path d="M20,20 L80,20 L90,40 L90,80 L80,90 L20,90 L10,80 L10,40 Z" />
-                        <path d="M30,30 L70,30 M30,40 L70,40 M30,50 L70,50" stroke-dasharray="2,2" />
-                        <circle cx="50" cy="50" r="10" stroke="var(--neon-purple)" />
-                    </svg>
-                </div>
+                <!-- NEXUS AVATAR IMAGE -->
+                <img src="assets/nexus_avatar.png" alt="Nexus AI" class="robot-head-image" />
 
                 <div style="margin-top: 30px; font-family: 'Courier New'; color: var(--neon-cyan); opacity: 0.8;">
                     >_ PROCESSING NEURAL STREAMS... <span id="stream-cursor">▋</span>
                 </div>
             </div>
+
+            <style>
+                /* Advanced Nexus Avatar Animations */
+                @keyframes breathe {
+
+                    0%,
+                    100% {
+                        transform: scale(1) translateY(0px);
+                    }
+
+                    50% {
+                        transform: scale(1.015) translateY(-3px);
+                    }
+                }
+
+                @keyframes float {
+
+                    0%,
+                    100% {
+                        transform: translateY(0px);
+                    }
+
+                    50% {
+                        transform: translateY(-12px);
+                    }
+                }
+
+                @keyframes eyeGlow {
+
+                    0%,
+                    100% {
+                        filter: drop-shadow(0 0 25px rgba(0, 243, 255, 0.8)) brightness(1);
+                    }
+
+                    50% {
+                        filter: drop-shadow(0 0 45px rgba(0, 243, 255, 1)) brightness(1.15);
+                    }
+                }
+
+                .robot-head-image {
+                    width: 320px;
+                    height: 320px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    animation:
+                        breathe 4.5s ease-in-out infinite,
+                        float 6s ease-in-out infinite;
+                    filter: drop-shadow(0 0 25px rgba(0, 243, 255, 0.6));
+                    transition: filter 0.3s ease;
+                }
+
+                .robot-head-image.speaking {
+                    animation:
+                        breathe 4.5s ease-in-out infinite,
+                        float 6s ease-in-out infinite,
+                        eyeGlow 1.2s ease-in-out infinite;
+                }
+            </style>
 
             <!-- COMMUNICATION TAB -->
             <div class="comm-panel">
@@ -513,7 +559,7 @@
                     }, 800);
                 }
 
-                // --- AUDIO MODULE ---
+                // --- AUDIO MODULE WITH LIP-SYNC ---
                 function speakText(text) {
                     if (!window.speechSynthesis) return;
 
@@ -521,15 +567,41 @@
                     window.speechSynthesis.cancel();
 
                     const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.rate = 0.9; // Slightly slower, more deliberate
-                    utterance.pitch = 0.8; // Deeper, more robotic tone
+                    utterance.rate = 0.85; // Slower, more calm and warm
+                    utterance.pitch = 0.95; // Warmer tone (not too deep/robotic)
                     utterance.volume = 1.0;
 
-                    // Try to finding a cool voice
+                    // Calculate estimated speech duration based on text length and rate
+                    const wordsPerMinute = 150 * utterance.rate; // Average speaking speed
+                    const wordCount = text.split(' ').length;
+                    const estimatedDuration = (wordCount / wordsPerMinute) * 60 * 1000; // in milliseconds
+
+                    // Try to find a warm male voice
                     const voices = window.speechSynthesis.getVoices();
-                    // Prefer English Male/Robot voices usually found in browsers
-                    const preferred = voices.find(v => v.name.includes('Google UK English Male') || v.name.includes('Daniel') || v.name.includes('Microsoft David'));
+                    const preferred = voices.find(v =>
+                        (v.name.includes('Google UK English Male') ||
+                            v.name.includes('Microsoft David') ||
+                            v.name.includes('Daniel') ||
+                            v.name.includes('Alex')) &&
+                        v.lang.includes('en')
+                    );
                     if (preferred) utterance.voice = preferred;
+
+                    // Add speaking animation synchronized with speech
+                    const avatar = document.querySelector('.robot-head-image');
+                    if (avatar) {
+                        avatar.classList.add('speaking');
+
+                        // Remove speaking class when speech ends (with fallback timer)
+                        utterance.onend = () => {
+                            avatar.classList.remove('speaking');
+                        };
+
+                        // Fallback: remove after estimated duration + buffer
+                        setTimeout(() => {
+                            avatar.classList.remove('speaking');
+                        }, estimatedDuration + 500);
+                    }
 
                     window.speechSynthesis.speak(utterance);
                 }
