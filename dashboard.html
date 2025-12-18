@@ -4,18 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Dashboard - Kids Digital Hub</title>
+    <meta name="google" content="notranslate">
+    <title>My Hub - Kids Digital Hub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        body {
+            background: #F5F7FA;
+        }
+
         .dashboard-header {
-            background: #4DB6AC;
+            background: #00897B;
             padding: 15px 20px;
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: white;
-            border-bottom: 5px solid #00897B;
+            border-bottom: 5px solid #00695C;
         }
 
         .user-profile {
@@ -25,186 +30,110 @@
         }
 
         .avatar-circle {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            border: 3px solid #B2DFDB;
+            font-size: 1.5rem;
+            border: 3px solid #00695C;
         }
 
         .stats-container {
-            max-width: 1000px;
-            margin: 40px auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
             padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .stat-card {
             background: white;
-            border-radius: 25px;
-            padding: 30px;
+            padding: 20px;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.1);
-            border: 4px solid;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-drawings {
-            border-color: #FF7043;
-            color: #D84315;
-        }
-
-        .card-games {
-            border-color: #42A5F5;
-            color: #1565C0;
-        }
-
-        .card-stories {
-            border-color: #66BB6A;
-            color: #2E7D32;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-bottom: 5px solid #ddd;
         }
 
         .stat-icon {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
             display: block;
+            margin-bottom: 10px;
         }
 
         .stat-count {
-            font-size: 2.5rem;
+            font-size: 1.5rem;
             font-weight: bold;
+            margin: 10px 0;
         }
 
         .stat-label {
-            font-size: 1.2rem;
+            color: #666;
             font-weight: 600;
-            opacity: 0.8;
+            text-transform: uppercase;
+            font-size: 0.8rem;
         }
 
         .progress-bar {
-            background: #ECEFF1;
-            height: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 15px 0;
             overflow: hidden;
         }
 
         .progress-fill {
             height: 100%;
-            border-radius: 10px;
-            transition: width 0.5s;
-        }
-
-        .premium-teaser {
-            background: linear-gradient(45deg, #FFD54F, #FFCA28);
-            margin: 40px 20px;
-            padding: 40px;
-            border-radius: 30px;
-            text-align: center;
-            color: #5D4037;
-            position: relative;
-            overflow: hidden;
-            border: 4px dashed #FFA000;
+            border-radius: 5px;
+            transition: width 0.5s ease;
         }
 
         .btn-action {
-            margin-top: 15px;
-            padding: 10px 20px;
-            border-radius: 15px;
+            width: 100%;
+            padding: 10px;
             border: none;
+            border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .btn-action:active {
+            transform: translateY(2px);
+        }
+
+        .premium-teaser {
+            background: linear-gradient(135deg, #FFF9C4 0%, #FFF176 100%);
+            margin: 20px;
+            padding: 30px;
+            border-radius: 30px;
+            text-align: center;
+            border: 3px dashed #FBC02D;
         }
 
         .btn-logout {
-            background: #FFF;
-            color: #d32f2f;
-            padding: 8px 15px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: bold;
-            border: 2px solid #d32f2f;
-            cursor: pointer;
-        }
-
-        .login-box {
             background: white;
-            padding: 40px;
-            border-radius: 25px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            margin: 40px auto;
-            border: 5px solid #00897B;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 2px solid #B2DFDB;
-            border-radius: 10px;
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-
-        .login-btn {
-            background: #00897B;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 20px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .plans-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .plan-card {
-            background: white;
-            border: 3px solid #E0E0E0;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .plan-card:hover {
-            transform: translateY(-5px);
-            border-color: #00897B;
-        }
-
-        .plan-card.active {
-            border-color: #00897B;
-            background: #E0F2F1;
-        }
-
-        .plan-price {
-            font-size: 1.5rem;
-            font-weight: bold;
             color: #00897B;
-            margin: 10px 0;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .admin-panel {
+            background: #ffebee;
+            border: 2px solid #ef5350;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 20px;
+            display: none;
         }
     </style>
 </head>
@@ -216,7 +145,7 @@
             <div class="avatar-circle">🦖</div>
             <div>
                 <h2 style="margin:0;" id="user-name-display">Guest</h2>
-                <span style="font-size:0.9rem; opacity:0.9;" id="storage-display">0GB</span>
+                <span style="font-size:0.9rem; opacity:0.9;" id="storage-display">0% Storage Used</span>
             </div>
         </div>
         <div style="display: flex; align-items: center; gap: 1rem;">
@@ -225,315 +154,238 @@
                 <span style="font-size: 1.2rem;">🪙</span>
                 <span id="coin-balance-display" style="font-weight: bold; color: #ffd700;">0</span>
             </div>
-            <a href="index.html" class="btn-logout"
-                style="margin-right:10px; border-color:#fff; color:#00897B;">Back</a>
-            <button id="btn-logout" class="btn-logout" style="display:none;">Logout</button>
+            <a href="index.html" class="btn-logout">Back</a>
+            <button id="btn-logout" class="btn-logout" onclick="logout()" style="display:none;">Logout</button>
         </div>
     </header>
-    <section id="login-section" style="display:none;">
-        <div class="login-box">
-            <h2>Parent Access</h2>
-            <form onsubmit="handleLogin(event)">
-                <input type="password" id="login-pass" class="login-input" placeholder="Enter Password">
-                <button type="submit" class="login-btn">Login</button>
+
+    <!-- PARENT LOGIN SECTION -->
+    <section id="login-section" style="padding: 50px 20px; text-align: center;">
+        <div
+            style="background: white; max-width: 400px; margin: 0 auto; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <h2 style="color: #00897B; margin-bottom: 20px;">Parent Dashboard</h2>
+            <p style="color: #666; margin-bottom: 20px;">Please enter your password to access settings and stats.</p>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <input type="password" id="login-pass"
+                    style="width: 100%; padding: 12px; border-radius: 15px; border: 2px solid #eee; margin-bottom: 20px; text-align: center; font-size: 1.2rem;"
+                    placeholder="••••••••">
+                <button type="submit" class="btn-action" style="background: #00897B; color: white;">Access Hub</button>
             </form>
         </div>
     </section>
-    < !-- PROFILE SECTION (Initially Hidden) -->
-        <section id="profile-section" style="display:none;">
-            <div class="stats-container">
-                < !-- SLOT 1: DRAWINGS -->
-                    <div class="stat-card card-drawings"> <span class="stat-icon">🎨</span>
-                        <div class="stat-count">1/10</div>
-                        <div class="stat-label">Coloring</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 10%; background: #FF7043;"></div>
-                        </div> <button class="btn-action" style="background:#FFCCBC; color:#BF360C;"
-                            onclick="location.href='gallery-drawings.html'">Go</button>
-                    </div>
-                    <!-- SLOT 2: GAMES -->
-                    <div class="stat-card card-games"> <span class="stat-icon">🎮</span>
-                        <div class="stat-count">0/10</div>
-                        <div class="stat-label">Games</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%; background: #42A5F5;"></div>
-                        </div> <button class="btn-action" style="background:#BBDEFB; color:#0D47A1;"
-                            onclick="location.href='gallery-games.html'">Play</button>
-                    </div>
-                    <!-- SLOT 3: STORIES -->
-                    <div class="stat-card card-stories"> <span class="stat-icon">📚</span>
-                        <div class="stat-count">0/10</div>
-                        <div class="stat-label">Stories</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%; background: #66BB6A;"></div>
-                        </div> <button class="btn-action" style="background:#C8E6C9; color:#1B5E20;"
-                            onclick="location.href='gallery-stories.html'">Read</button>
-                    </div>
-                    < !-- SLOT 4: REDEEM BONUS (REPLACES OLD FRIENDS SLOT FOR BETTER ECONOMY VISIBILITY) -->
-                        <div class="stat-card" style="border-color: #FFD700; color: #FF8F00;"> <span
-                                class="stat-icon">🎁</span>
-                            <div class="stat-label" style="font-size:1rem; margin-bottom:5px;">Bonus Code</div>
-                            <div style="display:flex; flex-direction:column; gap:5px;"> <input type="text"
-                                    id="redeem-input" placeholder="Enter Code..."
-                                    style="padding:8px; border-radius:10px; border:2px solid #FFECB3; text-align:center; text-transform:uppercase;">
-                                <button class="btn-action" style="background:#FFF8E1; color:#FF8F00; margin-top:5px;"
-                                    onclick="redeemBonus()">Redeem</button>
-                            </div>
-                        </div>
-            </div>
-            <section class="premium-teaser" style="cursor: pointer; margin-top:20px;"
-                onclick="location.href='messenger.html'">
-                <div style="font-size:3rem; margin-bottom:5px;">👫</div>
-                <h2>Connect with Friends !</h2>
-                <p style="font-size:1.1rem; margin:10px 0;">Visit the new Safe Messenger to play & chat.</p> <button
-                    class="btn-action"
-                    style="background:white; color:#AB47BC; font-size:1.1rem; border:2px solid #AB47BC;">Open
-                    Messenger</button>
-            </section>
-            <section class="premium-teaser" style="cursor: pointer;" onclick="location.href='payment.html'">
-                <div style="font-size:3rem; margin-bottom:15px;">🚀</div>
-                <h2>Unlock Unlimited Fun !</h2>
-                <p style="font-size:1.2rem; margin:15px 0;">Get full access to all stories, games, and premium drawings.
-                </p> <button class="btn-action"
-                    style="background:white; color:#FF8F00; font-size:1.2rem; border:2px solid #FF8F00;"> Get Premium
-                    Membership 👑 </button>
-            </section>
-        </section>
-        < !-- Admin / Parent Control Panel (Hidden by default) -->
-            <div id="admin-panel"
-                style="display: none; background: #2d3748; padding: 2rem; border-radius: 1rem; margin: 2rem auto; max-width: 1000px; border: 2px solid #4fd1c5;">
-                <h2 style="color: #4fd1c5; margin-bottom: 1rem;">🛡️ Parent & Admin Zone</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                    < !-- Time Controls -->
-                        <div class="control-card"
-                            style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #4fd1c5;">
-                            <h3 style="color: white; margin-bottom: 1rem;">⏰ Active Hours</h3>
-                            <p style="color: #a0aec0; font-size: 0.9rem; margin-bottom: 1rem;">Define when the child can
-                                engage in active play. Outside these hours, only Stories are available (Sleep Mode).</p>
-                            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;"> <label
-                                    style="color: white;">Start:</label> <input type="number" id="setting-start-hour"
-                                    value="8" min="6" max="20"
-                                    style="padding: 0.3rem; border-radius: 0.2rem; border: none; width: 60px;"> <label
-                                    style="color: white;">End:</label> <input type="number" id="setting-end-hour"
-                                    value="21" min="12" max="21"
-                                    style="padding: 0.3rem; border-radius: 0.2rem; border: none; width: 60px;"> </div>
-                            <button class="btn-primary" onclick="saveParentSettings()"
-                                style="width: 100%; font-size: 0.9rem; padding: 8px; background: #4fd1c5; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: #1a202c;">Save
-                                Interval</button>
-                        </div>
-                        < !-- Economy Controls -->
-                            <div class="control-card"
-                                style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #ecc94b;">
-                                <h3 style="color: white; margin-bottom: 1rem;">💰 Economy Manager</h3>
-                                <p style="color: #a0aec0; font-size: 0.9rem; margin-bottom: 1rem;">Admin has unlimited
-                                    resources. Manage bonus policies here.</p>
-                                <div style="display: flex; gap: 0.5rem;"> <button class="btn-secondary"
-                                        onclick="addAdminCoins()"
-                                        style="flex: 1; font-size: 0.9rem; padding: 8px; background: #ecc94b; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: #1a202c;">Add
-                                        Bonus 100</button> <button class="btn-primary"
-                                        onclick="alert('Bonus Policy will be editable here.')"
-                                        style="flex: 1; font-size: 0.9rem; padding: 8px; background: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Edit
-                                        Policy</button> </div>
-                            </div>
+
+    <!-- PROFILE SECTION -->
+    <section id="profile-section" style="display:none;">
+        <div style="text-align: center; padding: 30px 20px;">
+            <h1 id="welcome-message" style="color: #333;">Welcome back!</h1>
+            <p style="color: #777;">Here is what's happening in your creative world.</p>
+        </div>
+
+        <div class="stats-container">
+            <!-- DRAWINGS -->
+            <div class="stat-card card-drawings">
+                <span class="stat-icon">🎨</span>
+                <div class="stat-label">Drawings</div>
+                <div class="stat-count">0/10</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%; background: #FF7043;"></div>
                 </div>
-                < !-- Bonus Policy Placeholder (Public View Logic to be added) -->
-                    <div style="margin-top: 1rem; color: #a0aec0; font-size: 0.8rem; text-align: center;"> * Bonus
-                        Policy will appear in the specific ad region when enabled. </div>
+                <button class="btn-action" style="background:#FFCCBC; color:#BF360C;"
+                    onclick="location.href='gallery-drawings.html'">View Gallery</button>
             </div>
-            </main>
-            <script src="js/auth.js"></script>
-            <script src="js/time_manager.js"></script>
-            <script src="js/economy.js"></script>
-            <script> document.addEventListener('DOMContentLoaded', () => {
-                    // Initialize Systems
-                    if (window.TimeManager) TimeManager.init();
-                    if (window.EconomyManager) EconomyManager.init();
 
-                    const auth = new AuthManager();
-                    const user = auth.getUser();
+            <!-- GAMES -->
+            <div class="stat-card card-games">
+                <span class="stat-icon">🎮</span>
+                <div class="stat-label">Games Played</div>
+                <div class="stat-count">0/10</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%; background: #42A5F5;"></div>
+                </div>
+                <button class="btn-action" style="background:#BBDEFB; color:#0D47A1;"
+                    onclick="location.href='gallery-games.html'">Play Games</button>
+            </div>
 
-                    if (user) {
-                        document.getElementById('welcome-message').textContent = `Welcome, $ {
-                            user.username
-                        }
+            <!-- STORIES -->
+            <div class="stat-card card-stories">
+                <span class="stat-icon">📚</span>
+                <div class="stat-label">Stories Read</div>
+                <div class="stat-count">0/10</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%; background: #66BB6A;"></div>
+                </div>
+                <button class="btn-action" style="background:#C8E6C9; color:#1B5E20;"
+                    onclick="location.href='gallery-stories.html'">Read Library</button>
+            </div>
 
-                        !`;
-                        // document.getElementById('user-avatar').src = user.avatar || 'assets/avatars/default.png'; // Avatar logic if exists
-                    }
+            <!-- BONUS -->
+            <div class="stat-card" style="border-color: #FFD700;">
+                <span class="stat-icon">🎁</span>
+                <div class="stat-label">Bonus Code</div>
+                <div style="margin-top: 10px;">
+                    <input type="text" id="redeem-input" placeholder="CODE123"
+                        style="width:100%; padding:8px; border-radius:10px; border:1px solid #ddd; text-align:center; text-transform:uppercase; margin-bottom:5px;">
+                    <button class="btn-action" style="background:#FFD700; color:#5D4037;"
+                        onclick="redeemBonus()">Redeem</button>
+                </div>
+            </div>
+        </div>
 
-                    else {
-                        window.location.href = 'login.html';
-                    }
+        <!-- ADMIN PANEL -->
+        <div id="admin-panel" class="admin-panel">
+            <h3 style="color:#c62828; margin-top:0;">🛡️ Parent Control Panel</h3>
+            <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:15px;">
+                <div style="background:white; padding:15px; border-radius:15px; flex:1; min-width:200px;">
+                    <h4 style="margin:0 0 10px 0;">Play Time Limit</h4>
+                    <label style="font-size:0.8rem; color:#666;">Active Hours:</label>
+                    <div style="display:flex; align-items:center; gap:5px; margin-top:5px;">
+                        <input type="number" id="setting-start-hour" value="8" style="width:50px; padding:5px;"> to
+                        <input type="number" id="setting-end-hour" value="20" style="width:50px; padding:5px;">
+                    </div>
+                    <button class="btn-action" style="background:#4CAF50; color:white; margin-top:10px;"
+                        onclick="saveParentSettings()">Save Settings</button>
+                </div>
+                <div style="background:white; padding:15px; border-radius:15px; flex:1; min-width:200px;">
+                    <h4 style="margin:0 0 10px 0;">Admin Tools</h4>
+                    <button class="btn-action" style="background:#2196F3; color:white;" onclick="addAdminCoins()">+100
+                        Coins</button>
+                </div>
+            </div>
+        </div>
 
-                    // Admin/Parent Check for Panel Visibility
-                    if (localStorage.getItem('kdh_admin_mode') === 'true') {
-                        const adminPanel = document.getElementById('admin-panel');
-                        if (adminPanel) adminPanel.style.display = 'block';
-                        document.body.classList.add('admin-active');
-                    }
+        <!-- TEASERS -->
+        <div class="premium-teaser" onclick="location.href='messenger.html'" style="cursor:pointer;">
+            <div style="font-size:3rem;">👫</div>
+            <h2>Safe Messenger</h2>
+            <p>Connect with friends and share your art in our moderated chat!</p>
+            <button class="btn-action"
+                style="max-width:200px; background:white; color:#AB47BC; border:2px solid #AB47BC;">Open
+                Messenger</button>
+        </div>
 
-                    // --- DASHBOARD SYNC LOGIC (LocalStorage) ---
-                    function updateDashboardStats() {
-                        // Read from LocalStorage (set by the gallery pages)
-                        const cntDrawings = localStorage.getItem('kdh_cnt_drawings') || 0;
-                        const cntGames = localStorage.getItem('kdh_cnt_games') || 0;
-                        const cntStories = localStorage.getItem('kdh_cnt_stories') || 0;
+        <div class="premium-teaser" style="background: white; border: 3px solid #FF8F00; cursor:pointer;"
+            onclick="location.href='payment.html'">
+            <div style="font-size:3rem;">👑</div>
+            <h2>Upgrade to Premium</h2>
+            <p>Get unlimited storage, exclusive games, and monthly digital gifts!</p>
+            <button class="btn-action" style="max-width:200px; background:#FF8F00; color:white;">Upgrade Now</button>
+        </div>
+    </section>
 
-                        // Update UI: Drawings
-                        const drawCard = document.querySelector('.card-drawings');
+    <!-- SCRIPTS -->
+    <script src="js/auth.js"></script>
+    <script src="js/time_manager.js"></script>
+    <script src="js/economy.js"></script>
 
-                        if (drawCard) {
-                            drawCard.querySelector('.stat-count').textContent = `$ {
-                                cntDrawings
-                            }
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.TimeManager) TimeManager.init();
+            if (window.EconomyManager) EconomyManager.init();
 
-                            /10`;
-                            drawCard.querySelector('.progress-fill').style.width = `$ {
-                                cntDrawings * 10
-                            }
+            const auth = new AuthManager();
+            const user = auth.getUser();
 
-                            %`;
-                        }
+            if (user) {
+                // User is recognized
+                document.getElementById('user-name-display').textContent = user.username;
+                document.getElementById('welcome-message').textContent = `Welcome back, ${user.username}!`;
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('profile-section').style.display = 'block';
+                document.getElementById('btn-logout').style.display = 'block';
 
-                        // Update UI: Games
-                        const gameCard = document.querySelector('.card-games');
-
-                        if (gameCard) {
-                            gameCard.querySelector('.stat-count').textContent = `$ {
-                                cntGames
-                            }
-
-                            /10`;
-                            gameCard.querySelector('.progress-fill').style.width = `$ {
-                                cntGames * 10
-                            }
-
-                            %`;
-                        }
-
-                        // Update UI: Stories
-                        const storyCard = document.querySelector('.card-stories');
-
-                        if (storyCard) {
-                            storyCard.querySelector('.stat-count').textContent = `$ {
-                                cntStories
-                            }
-
-                            /10`;
-                            storyCard.querySelector('.progress-fill').style.width = `$ {
-                                cntStories * 10
-                            }
-
-                            %`;
-                        }
-                    }
-
-                    // Run on load
-                    updateDashboardStats();
-
-                    // Optional: Listen for storage changes in other tabs
-                    window.addEventListener('storage', updateDashboardStats);
-
-                    // --- LIVE MONITORING SYSTEM (JSON BASED) ---
-                    // Efficiently reads the lightweight stats.json file
-                    function updateStats() {
-                        fetch('data/stats.json?t=' + Date.now()).then(response => response.json()).then(data => {
-                            // Update Drawings
-                            const drawingsCard = document.querySelector('.card-drawings');
-
-                            if (drawingsCard) {
-                                drawingsCard.querySelector('.stat-count').textContent = `$ {
-                                        data.drawings
-                                    }
-
-                                    /10`;
-                                drawingsCard.querySelector('.progress-fill').style.width = `$ {
-                                        data.drawings * 10
-                                    }
-
-                                    %`;
-                            }
-
-                            // Update Games
-                            const gamesCard = document.querySelector('.card-games');
-
-                            if (gamesCard) {
-                                gamesCard.querySelector('.stat-count').textContent = `$ {
-                                        data.games
-                                    }
-
-                                    /10`;
-                                gamesCard.querySelector('.progress-fill').style.width = `$ {
-                                        data.games * 10
-                                    }
-
-                                    %`;
-                            }
-
-                            // Update Stories
-                            const storiesCard = document.querySelector('.card-stories');
-
-                            if (storiesCard) {
-                                storiesCard.querySelector('.stat-count').textContent = `$ {
-                                        data.stories
-                                    }
-
-                                    /10`;
-                                storiesCard.querySelector('.progress-fill').style.width = `$ {
-                                        data.stories * 10
-                                    }
-
-                                    %`;
-                            }
-                        }).catch(err => console.log('Stats sync error:', err));
-                    }
-
-                    // Run immediately and then every 2 seconds
-                    updateStats();
-                    setInterval(updateStats, 2000);
-                });
-
-                // Admin Functions
-                function saveParentSettings() {
-                    const start = parseInt(document.getElementById('setting-start-hour').value);
-                    const end = parseInt(document.getElementById('setting-end-hour').value);
-                    TimeManager.setParentSettings(start, end, true);
-                    alert('Settings Saved! Child access restricted to ' + start + ':00 - ' + end + ':00');
+                // Admin mode?
+                if (localStorage.getItem('kdh_admin_mode') === 'true') {
+                    document.getElementById('admin-panel').style.display = 'block';
                 }
 
-                function addAdminCoins() {
-                    EconomyManager.addCoins(100);
-                    alert("100 Coins Added (Admin Override)");
+                updateDashboardStats();
+                updateStats(); // Live fetch
+                setInterval(updateStats, 5000);
+            } else {
+                // Just show login form
+                document.getElementById('login-section').style.display = 'block';
+                document.getElementById('profile-section').style.display = 'none';
+            }
+        });
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('login-pass').value;
+            if (pass === 'parent') { // Demo logic
+                localStorage.setItem('kdh_user', JSON.stringify({ username: 'Parent', avatar: '🦖' }));
+                localStorage.setItem('kdh_admin_mode', 'true');
+                window.location.reload();
+            } else {
+                alert('Invalid Password! (Try: parent)');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('kdh_user');
+            localStorage.removeItem('kdh_admin_mode');
+            window.location.href = 'index.html';
+        }
+
+        function updateDashboardStats() {
+            const cntDrawings = localStorage.getItem('kdh_cnt_drawings') || 0;
+            const cntGames = localStorage.getItem('kdh_cnt_games') || 0;
+            const cntStories = localStorage.getItem('kdh_cnt_stories') || 0;
+
+            updateStatCard('.card-drawings', cntDrawings);
+            updateStatCard('.card-games', cntGames);
+            updateStatCard('.card-stories', cntStories);
+        }
+
+        function updateStatCard(selector, count) {
+            const card = document.querySelector(selector);
+            if (!card) return;
+            card.querySelector('.stat-count').textContent = `${count}/10`;
+            card.querySelector('.progress-fill').style.width = `${Math.min(count * 10, 100)}%`;
+        }
+
+        function updateStats() {
+            fetch('data/stats.json?t=' + Date.now())
+                .then(res => res.json())
+                .then(data => {
+                    updateStatCard('.card-drawings', data.drawings || 0);
+                    updateStatCard('.card-games', data.games || 0);
+                    updateStatCard('.card-stories', data.stories || 0);
+                })
+                .catch(() => console.log('Stats update skipped (Offline/Missing)'));
+        }
+
+        function saveParentSettings() {
+            const start = parseInt(document.getElementById('setting-start-hour').value);
+            const end = parseInt(document.getElementById('setting-end-hour').value);
+            if (window.TimeManager) {
+                TimeManager.setParentSettings(start, end, true);
+                alert(`Settings Saved! Child access set to ${start}:00 - ${end}:00`);
+            }
+        }
+
+        function addAdminCoins() {
+            if (window.EconomyManager) {
+                EconomyManager.addCoins(100);
+                alert("100 Coins Added (Parent Bonus)");
+                location.reload();
+            }
+        }
+
+        function redeemBonus() {
+            const input = document.getElementById('redeem-input');
+            const code = input.value.trim().toUpperCase();
+            if (!code) return;
+
+            if (window.EconomyManager) {
+                const result = EconomyManager.redeemCode(code);
+                alert(result.message);
+                if (result.success) {
+                    input.value = '';
+                    location.reload();
                 }
-
-                function redeemBonus() {
-                    const code = document.getElementById('redeem-input').value.trim().toUpperCase();
-
-                    if (!code) {
-                        alert("Please enter a code!");
-                        return;
-                    }
-
-                    const result = EconomyManager.redeemCode(code);
-                    alert(result.message);
-
-                    if (result.success) {
-                        document.getElementById('redeem-input').value = '';
-                    }
-                }
-
-            </script>
-</body>
-
-</html>
-}
-
-function addAdminCoins() {
-EconomyManager.addCoins(100);
-alert("100 Coins Added (Admin Override)");
-}
-
-</script>
+            }
+        }
+    </script>
 </body>
 
 </html>
