@@ -265,6 +265,9 @@
                 if (game.premium && !isAdmin) return; // Hide premium if not admin/premium (simulated)
                 if (ageGroup !== 'all' && game.age !== ageGroup) return;
 
+                const lang = localStorage.getItem('kdh_lang') || 'en';
+                const playNowText = translations[lang]?.play_now || 'Play Now ►';
+
                 const card = document.createElement('div');
                 card.className = game.premium ? 'game-card premium' : 'game-card';
                 card.onclick = () => launchGame(game);
@@ -276,7 +279,7 @@
                     </div>
                     <div class="game-info">
                         <div class="game-title">${game.premium ? '🔒 ' : ''}${game.title}</div>
-                        <div style="color:#666; font-size:0.9rem;">Play Now ►</div>
+                        <div style="color:#666; font-size:0.9rem;">${playNowText}</div>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -310,6 +313,12 @@
                         <p>(This is a placeholder for the actual game iframe/canvas)</p>
                     </div>
                 `;
+            }
+
+            // FORCE TRANSLATION OF DYNAMIC BUTTONS
+            const lang = localStorage.getItem('kdh_lang') || 'en';
+            if (typeof changeLanguage === 'function') {
+                changeLanguage(lang);
             }
         }
 

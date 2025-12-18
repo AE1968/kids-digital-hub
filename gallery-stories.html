@@ -430,6 +430,11 @@
             document.getElementById('readContent').innerHTML = content.text;
 
             setReaderMode('read');
+
+            // FORCE TRANSLATION OF DYNAMIC BUTTONS
+            if (typeof changeLanguage === 'function') {
+                changeLanguage(lang);
+            }
         }
 
         function setReaderMode(mode) {

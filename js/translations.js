@@ -117,7 +117,8 @@ const translations = {
         "art_gallery": "My Art Gallery",
         "btn_close_game": "❌ Close Game",
         "btn_i_won": "🏆 I Won! (Claim 10 Coins)",
-        "loading_game": "Loading Game..."
+        "loading_game": "Loading Game...",
+        "play_now": "Play Now ►"
     },
     "ro": {
         "nav_coloring": "Colorat",
@@ -237,7 +238,8 @@ const translations = {
         "art_gallery": "Galeria Mea de Artă",
         "btn_close_game": "❌ Închide Jocul",
         "btn_i_won": "🏆 Am Câștigat! (Revendică 10 Monede)",
-        "loading_game": "Se încarcă jocul..."
+        "loading_game": "Se încarcă jocul...",
+        "play_now": "Joacă Acum ►"
     },
     "fr": {
         "nav_coloring": "Coloriage",
