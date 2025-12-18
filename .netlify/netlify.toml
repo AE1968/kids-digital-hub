@@ -43,7 +43,7 @@ force = true
 [redirects.headers]
 
 [[redirects]]
-from = "https://www.kidsdigitalhub.com/*"
+from = "http://www.kidsdigitalhub.com/*"
 to = "https://kidsdigitalhub.com/:splat"
 status = 301.0
 force = true
@@ -55,8 +55,20 @@ force = true
 [redirects.headers]
 
 [[redirects]]
-from = "http://www.kidsdigitalhub.com/*"
-to = "https://kidsdigitalhub.com/:splat"
+from = "https://kidsdigitalhub.com/*"
+to = "https://www.kidsdigitalhub.com/:splat"
+status = 301.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "http://kidsdigitalhub.com/*"
+to = "https://www.kidsdigitalhub.com/:splat"
 status = 301.0
 force = true
 
