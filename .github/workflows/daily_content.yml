@@ -28,6 +28,9 @@ jobs:
 
       - name: 🎨 Generate Daily Content
         run: python daily_content_manager.py
+
+      - name: 🤖 Generate New AI Products
+        run: python generate_ai_products.py
         
       - name: 🛡️ Verify & Optimize Site
         run: python utils/site_health.py
