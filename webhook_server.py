@@ -46,7 +46,162 @@ def rate_limit():
 # pillow
 # flask-cors
 WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'your-secret-key-change-this')
+WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'your-secret-key-change-this')
 PORT = int(os.getenv('PORT', 8080))
+
+# Nexus AI Dashboard HTML
+NEXUS_DASHBOARD = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS AI CORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { 
+            background: #0d0d0d; 
+            color: #00ff41; 
+            font-family: 'Share Tech Mono', monospace; 
+            overflow: hidden;
+            height: 100vh;
+        }
+        .container { display: flex; height: 100%; }
+        .sidebar { 
+            width: 300px; 
+            border-right: 1px solid #004411; 
+            padding: 20px; 
+            background: rgba(0,20,0,0.5);
+        }
+        .main { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+        h1 { color: #00ff41; text-shadow: 0 0 10px #00ff41; margin-bottom: 20px; text-transform: uppercase; }
+        .card { 
+            border: 1px solid #004411; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            background: rgba(0,10,0,0.8);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+        }
+        .log-window { 
+            flex: 1; 
+            border: 1px solid #00ff41; 
+            padding: 15px; 
+            overflow-y: auto; 
+            font-size: 0.9em;
+            background: black;
+            box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+        .log-entry { margin-bottom: 5px; opacity: 0; animation: fadeIn 0.5s forwards; }
+        .blink { animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes fadeIn { to { opacity: 1; } }
+        
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn-nexus { 
+            background: transparent; 
+            border: 1px solid #00ff41; 
+            color: #00ff41; 
+            padding: 10px; 
+            cursor: pointer; 
+            width: 100%; 
+            margin-top: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+        }
+        .btn-nexus:hover { background: #00ff41; color: black; box-shadow: 0 0 15px #00ff41; }
+        
+        /* Scanline effect */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="container">
+        <div class="sidebar">
+            <h1>🤖 NEXUS CORE</h1>
+            <div class="card">
+                <h3>// SYSTEM IDENTITY</h3>
+                <p>> AGENT: NEXUS</p>
+                <p>> ROLE: Autonomous CTO</p>
+                <p>> OWNER: Adrian (CEO)</p>
+                <p>> STATUS: <span class="blink">ONLINE</span></p>
+            </div>
+             <div class="card">
+                <h3>// DIRECTIVES</h3>
+                <p>> 1. Protect Core</p>
+                <p>> 2. Maximize Revenue</p>
+                <p>> 3. Ensure Uptime</p>
+            </div>
+            <button class="btn-nexus" onclick="location.href='/admin'"> < BACK TO ADMIN</button>
+        </div>
+        <div class="main">
+            <div class="status-grid">
+                <div class="card">
+                    <h3>// MEMORY INTEGRITY</h3>
+                    <div id="memory-vis">LOADING...</div>
+                </div>
+                <div class="card">
+                    <h3>// ACTIVE TASKS</h3>
+                    <p>> Email Sentinel: ACTIVE</p>
+                    <p>> Auto-Product Gen: STANDBY</p>
+                </div>
+            </div>
+            <h3>// NEURAL LOGS</h3>
+            <div class="log-window" id="nexus-logs">
+                <div class="log-entry">> Initializing connection... OK</div>
+                <div class="log-entry">> Reading SYSTEM_CORE_MEMORY.json... OK</div>
+                <div class="log-entry">> Handshaking with Adrian... SECURE</div>
+                <div class="log-entry">> Nexus is ready.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fetch Core Memory
+        fetch('/api/nexus/memory')
+            .then(r => r.json())
+            .then(data => {
+                const vis = document.getElementById('memory-vis');
+                vis.innerHTML = `
+                    Phase: ${data.OPERATIONAL_STATUS.Phase}<br>
+                    Monitor: ${data.OPERATIONAL_STATUS.Monitoring}<br>
+                    Auth: ROOT_ACCESS
+                `;
+            });
+
+        // Simulate Logs
+        const logs = document.getElementById('nexus-logs');
+        function addLog(msg) {
+            const div = document.createElement('div');
+            div.className = 'log-entry';
+            div.textContent = `> ${new Date().toLocaleTimeString()} :: ${msg}`;
+            logs.appendChild(div);
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        setInterval(() => {
+            const msgs = [
+                "Scanning traffic patterns...",
+                "Optimizing database queries...",
+                "Checking email gateway...",
+                "Analyzing user suggestions...",
+                "System heartbeat stable."
+            ];
+            if(Math.random() > 0.7) {
+                addLog(msgs[Math.floor(Math.random() * msgs.length)]);
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
+"""
 
 # Admin Dashboard HTML
 ADMIN_DASHBOARD = """
@@ -263,8 +418,10 @@ ADMIN_DASHBOARD = """
             <p><strong>🌐 Webhook URL:</strong> <code>{{ webhook_url }}</code></p>
             <p><strong>📅 Last Update:</strong> {{ last_update }}</p>
             <br>
+            <br>
             <button class="btn" onclick="testWebhook()">🧪 Test Webhook</button>
             <button class="btn" onclick="generateProducts()">🎨 Generate New Products</button>
+            <button class="btn" style="background:black; border: 2px solid #00ff41; color: #00ff41;" onclick="location.href='/admin/nexus'">🤖 ENTER NEXUS CORE</button>
         </div>
     </div>
 
@@ -344,6 +501,22 @@ def home():
     </body>
     </html>
     """
+
+@app.route('/admin/nexus')
+def nexus_core():
+    """Renders the Nexus AI Interface"""
+    return render_template_string(NEXUS_DASHBOARD)
+
+@app.route('/api/nexus/memory')
+def get_nexus_memory():
+    """Returns the core memory for the interface"""
+    try:
+        if os.path.exists('SYSTEM_CORE_MEMORY.json'):
+            with open('SYSTEM_CORE_MEMORY.json', 'r') as f:
+                return jsonify(json.load(f))
+    except:
+        pass
+    return jsonify({"error": "Memory not found"})
 
 @app.route('/admin')
 def admin_dashboard():
