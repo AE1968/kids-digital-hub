@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>The Brave Little Star - Interactive Story</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Crimson+Text:ital@0;1&display=swap"
+        rel="stylesheet">
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background: linear-gradient(180deg, #0a0a2a 0%, #1a1a4a 50%, #2a2a6a 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, white, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, white, transparent),
+                radial-gradient(2px 2px at 130px 80px, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(1px 1px at 160px 120px, white, transparent);
+            background-size: 200px 150px;
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .story-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .story-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .story-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+
+        .page-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .illustration {
+            font-size: 8rem;
+            text-align: center;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .story-text {
+            font-size: 1.4rem;
+            line-height: 2;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .choice-btn {
+            padding: 20px 30px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 165, 0, 0.3));
+            border: 2px solid #FFD700;
+            border-radius: 20px;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .choice-btn:hover {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            transform: scale(1.02);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-family: 'Fredoka', sans-serif;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+        }
+
+        .the-end {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .the-end h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        .stars-earned {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stars-bg"></div>
+    <a href="gallery-stories.html" class="back-link">← Back to Stories</a>
+
+    <div class="story-container">
+        <div class="story-header">
+            <h1 class="story-title">⭐ The Brave Little Star</h1>
+            <p>An Interactive Adventure</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="page-card" id="storyPage">
+            <!-- Content loaded by JS -->
+        </div>
+    </div>
+
+    <script>
+        const story = {
+            pages: [
+                {
+                    illustration: '🌟',
+                    text: 'Once upon a time, high up in the night sky, there lived a tiny star named Twinkle. Twinkle was the smallest star in the entire galaxy, but she had the biggest dreams.',
+                    choices: null
+                },
+                {
+                    illustration: '😢',
+                    text: 'One night, Twinkle noticed that the Moon looked sad. "What\'s wrong, dear Moon?" she asked.',
+                    choices: null
+                },
+                {
+                    illustration: '🌙',
+                    text: '"I\'ve lost my glow," sighed the Moon. "Without it, the children on Earth won\'t be able to see in the dark. Can you help me find it?"',
+                    choices: [
+                        { text: '"Yes, I\'ll help you!" ✨', next: 3 },
+                        { text: '"But I\'m too small..." 😟', next: 4 }
+                    ]
+                },
+                {
+                    illustration: '💪',
+                    text: 'Twinkle bravely said, "I may be small, but I have a big heart! I\'ll find your glow!" The Moon smiled hopefully.',
+                    choices: null,
+                    nextPage: 5
+                },
+                {
+                    illustration: '🤔',
+                    text: 'The Moon gently said, "Little Twinkle, size doesn\'t matter. It\'s courage that counts. Will you try?" Twinkle thought for a moment...',
+                    choices: [
+                        { text: '"You\'re right! I\'ll be brave!" 💫', next: 5 }
+                    ]
+                },
+                {
+                    illustration: '🗺️',
+                    text: 'Twinkle set off on her adventure. She flew past comets and around planets. Soon, she reached a crossroads in space.',
+                    choices: [
+                        { text: 'Go to the Asteroid Field 🪨', next: 6 },
+                        { text: 'Visit the Wise Comet 🌠', next: 7 }
+                    ]
+                },
+                {
+                    illustration: '🪨',
+                    text: 'In the asteroid field, Twinkle found a grumpy rock named Rocky. "Have you seen the Moon\'s glow?" she asked. "Maybe... if you help me spin!" said Rocky.',
+                    choices: [
+                        { text: 'Help Rocky spin! 🔄', next: 8 }
+                    ]
+                },
+                {
+                    illustration: '🌠',
+                    text: 'The Wise Comet listened to Twinkle\'s quest. "The Moon\'s glow was stolen by the Shadow Cloud. You need three things: courage, kindness, and a friend."',
+                    choices: [
+                        { text: 'Continue the search 🔍', next: 8 }
+                    ]
+                },
+                {
+                    illustration: '☁️',
+                    text: 'Twinkle finally found the Shadow Cloud. It was dark and scary, but Twinkle remembered: courage, kindness, and she had made friends along the way!',
+                    choices: [
+                        { text: 'Face the Shadow! ⚡', next: 9 }
+                    ]
+                },
+                {
+                    illustration: '✨',
+                    text: 'Twinkle shone as bright as she could! Her light, combined with the love of her new friends, pushed away the Shadow Cloud. There was the Moon\'s glow!',
+                    choices: null
+                },
+                {
+                    illustration: '🌙',
+                    text: 'Twinkle returned the glow to the Moon. "Thank you, brave little star!" said the Moon, shining brighter than ever. "You proved that heroes come in all sizes!"',
+                    choices: null
+                },
+                {
+                    illustration: '🌟🌙',
+                    text: 'From that night on, Twinkle and the Moon became the best of friends. And whenever children look up at the sky, they can see the little star twinkling next to the Moon.',
+                    choices: null,
+                    isEnd: true
+                }
+            ],
+            currentPage: 0
+        };
+
+        function renderPage() {
+            const page = story.pages[story.currentPage];
+            const container = document.getElementById('storyPage');
+            const totalPages = story.pages.length;
+            const progress = ((story.currentPage + 1) / totalPages) * 100;
+
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            if (page.isEnd) {
+                container.innerHTML = `
+                    <div class="the-end">
+                        <div class="illustration">${page.illustration}</div>
+                        <div class="story-text">${page.text}</div>
+                        <h2>The End</h2>
+                        <div class="stars-earned">⭐⭐⭐</div>
+                        <p style="opacity: 0.8; margin-bottom: 30px;">You completed the story!</p>
+                        <button class="choice-btn" onclick="restartStory()">🔄 Read Again</button>
+                        <br><br>
+                        <a href="gallery-stories.html" class="choice-btn" style="display: inline-block; text-decoration: none;">📚 More Stories</a>
+                    </div>
+                `;
+
+                // Award achievement
+                if (window.KDH_Achievements) {
+                    KDH_Achievements.addProgress('stories');
+                }
+                return;
+            }
+
+            let choicesHTML = '';
+            if (page.choices) {
+                choicesHTML = `
+                    <div class="choices">
+                        ${page.choices.map(c => `
+                            <button class="choice-btn" onclick="goToPage(${c.next})">${c.text}</button>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                choicesHTML = `
+                    <div class="nav-buttons">
+                        <button class="nav-btn" onclick="prevPage()" ${story.currentPage === 0 ? 'disabled' : ''}>← Back</button>
+                        <button class="nav-btn" onclick="nextPage()">Continue →</button>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div class="illustration">${page.illustration}</div>
+                <div class="story-text">${page.text}</div>
+                ${choicesHTML}
+            `;
+        }
+
+        function goToPage(pageNum) {
+            story.currentPage = pageNum;
+            renderPage();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextPage() {
+            const page = story.pages[story.currentPage];
+            if (page.nextPage !== undefined) {
+                story.currentPage = page.nextPage;
+            } else {
+                story.currentPage = Math.min(story.currentPage + 1, story.pages.length - 1);
+            }
+            renderPage();
+        }
+
+        function prevPage() {
+            story.currentPage = Math.max(0, story.currentPage - 1);
+            renderPage();
+        }
+
+        function restartStory() {
+            story.currentPage = 0;
+            renderPage();
+        }
+
+        // Initialize
+        renderPage();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Settings - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: var(--theme-background, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .settings-card {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .settings-card h2 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .setting-description {
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 3px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 32px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            border-radius: 32px;
+            transition: 0.4s;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.4s;
+        }
+
+        input:checked+.toggle-slider {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(28px);
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .theme-btn {
+            padding: 15px;
+            border: 3px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.9rem;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-btn.active {
+            border-color: #333;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-btn .icon {
+            font-size: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-item .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-item .label {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .btn-danger {
+            width: 100%;
+            padding: 15px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .version {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 30px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back-btn">← Back</a>
+
+    <div class="header">
+        <h1>⚙️ Settings</h1>
+        <p>Customize your experience!</p>
+    </div>
+
+    <div class="container">
+        <!-- Theme Selection -->
+        <div class="settings-card">
+            <h2>🎨 Choose Your Theme</h2>
+            <div class="themes-grid" id="themesGrid"></div>
+        </div>
+
+        <!-- Sound Settings -->
+        <div class="settings-card">
+            <h2>🔊 Sound & Effects</h2>
+            <div class="setting-row">
+                <div>
+                    <div class="setting-label">Sound Effects</div>
+                    <div class="setting-description">Fun sounds when you play</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="soundToggle" checked onchange="toggleSounds()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <div>
+                    <div class="setting-label">Animations</div>
+                    <div class="setting-description">Moving effects on the screen</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="animToggle" checked onchange="toggleAnimations()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Your Stats -->
+        <div class="settings-card">
+            <h2>📊 Your Stats</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="value" id="totalCoins">0</div>
+                    <div class="label">Total Coins</div>
+                </div>
+                <div class="stat-item">
+                    <div class="value" id="totalAchievements">0</div>
+                    <div class="label">Achievements</div>
+                </div>
+                <div class="stat-item">
+                    <div class="value" id="totalChallenges">0</div>
+                    <div class="label">Challenges Done</div>
+                </div>
+                <div class="stat-item">
+                    <div class="value" id="totalTime">0m</div>
+                    <div class="label">Time Played</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reset Data -->
+        <div class="settings-card">
+            <h2>🗑️ Reset Data</h2>
+            <p style="color: #888; margin-bottom: 10px;">This will delete all your progress, coins, and achievements.
+                This cannot be undone!</p>
+            <button class="btn-danger" onclick="resetData()">Reset All Data</button>
+        </div>
+
+        <div class="version">
+            Kids Digital Hub v2.0 | Made with ❤️ by AE & NEXUS
+        </div>
+    </div>
+
+    <script src="js/themes.js"></script>
+    <script src="js/sounds.js"></script>
+    <script src="js/achievements.js"></script>
+    <script src="js/challenges.js"></script>
+    <script>
+        // Render themes
+        function renderThemes() {
+            const grid = document.getElementById('themesGrid');
+            const current = KDH_Themes.getCurrent();
+
+            grid.innerHTML = Object.entries(KDH_Themes.themes).map(([id, theme]) => `
+                <button class="theme-btn ${id === current ? 'active' : ''}" 
+                        style="background: ${theme.colors.background}"
+                        onclick="selectTheme('${id}')">
+                    <span class="icon">${theme.icon}</span>
+                    ${theme.name}
+                </button>
+            `).join('');
+        }
+
+        function selectTheme(id) {
+            KDH_Themes.set(id);
+            renderThemes();
+        }
+
+        function toggleSounds() {
+            if (window.KDH_Sounds) {
+                KDH_Sounds.toggle();
+            }
+        }
+
+        function toggleAnimations() {
+            const enabled = document.getElementById('animToggle').checked;
+            localStorage.setItem('kdh_animations', enabled ? 'on' : 'off');
+            document.body.style.setProperty('--animation-duration', enabled ? '1' : '0');
+        }
+
+        function loadSettings() {
+            // Sounds
+            const soundsEnabled = localStorage.getItem('kdh_sounds') !== 'off';
+            document.getElementById('soundToggle').checked = soundsEnabled;
+
+            // Animations
+            const animEnabled = localStorage.getItem('kdh_animations') !== 'off';
+            document.getElementById('animToggle').checked = animEnabled;
+
+            // Stats
+            document.getElementById('totalCoins').textContent = localStorage.getItem('kdh_coins') || '0';
+
+            if (window.KDH_Achievements) {
+                document.getElementById('totalAchievements').textContent = KDH_Achievements.getUnlockedCount();
+            }
+
+            if (window.KDH_Challenges) {
+                document.getElementById('totalChallenges').textContent = KDH_Challenges.getStats().totalCompleted;
+            }
+
+            const seconds = parseInt(localStorage.getItem('kdh_today_seconds') || '0');
+            const mins = Math.floor(seconds / 60);
+            document.getElementById('totalTime').textContent = mins + 'm';
+        }
+
+        function resetData() {
+            if (confirm('Are you sure? This will delete ALL your progress!')) {
+                if (confirm('Really? This CANNOT be undone!')) {
+                    // Clear all KDH data
+                    const keys = Object.keys(localStorage).filter(k => k.startsWith('kdh_'));
+                    keys.forEach(k => localStorage.removeItem(k));
+
+                    alert('All data has been reset!');
+                    location.reload();
+                }
+            }
+        }
+
+        // Initialize
+        renderThemes();
+        loadSettings();
+    </script>
+</body>
+
+</html>
