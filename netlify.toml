@@ -1,16 +1,16 @@
 [build]
   publish = "."
 
-# Redirect WWW to Apex (kidsdigitalhub.com)
+# Redirect non-WWW to WWW (www.kidsdigitalhub.com is primary)
 [[redirects]]
-  from = "https://www.kidsdigitalhub.com/*"
-  to = "https://kidsdigitalhub.com/:splat"
+  from = "https://kidsdigitalhub.com/*"
+  to = "https://www.kidsdigitalhub.com/:splat"
   status = 301
   force = true
 
 [[redirects]]
-  from = "http://www.kidsdigitalhub.com/*"
-  to = "https://kidsdigitalhub.com/:splat"
+  from = "http://kidsdigitalhub.com/*"
+  to = "https://www.kidsdigitalhub.com/:splat"
   status = 301
   force = true
 
