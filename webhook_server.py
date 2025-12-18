@@ -12,8 +12,21 @@ import hashlib
 from datetime import datetime
 from webhook_order_handler import process_new_order
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 CORS(app) # Enable CORS for all routes
+
+# ... (rest of the file) ...
+
+@app.route('/api/products', methods=['GET'])
+def api_get_products():
+    """Returns the list of generated products for the frontend"""
+    try:
+        if os.path.exists('data/products.json'):
+            with open('data/products.json', 'r') as f:
+                return jsonify(json.load(f))
+        return jsonify([])
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 # Simple in-memory rate limiting
 from collections import defaultdict
