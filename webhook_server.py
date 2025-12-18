@@ -398,6 +398,42 @@ def api_generate_products():
             'message': str(e)
         }), 500
 
+@app.route('/api/suggestion', methods=['POST'])
+def receive_suggestion():
+    """Receives suggestions from the frontend and saves them for the AI."""
+    try:
+        data = request.json
+        name = data.get('name', 'Anonymous')
+        category = data.get('category', 'Other')
+        suggestion = data.get('suggestion', '')
+        
+        # Save to suggestions.txt for the AI to read
+        with open('data/suggestions.txt', 'a', encoding='utf-8') as f:
+            f.write(f"\n{name} | {category} | {suggestion}")
+            
+        # Log for the admin dashboard
+        log_entry = {
+            'type': 'suggestion',
+            'name': name,
+            'category': category,
+            'suggestion': suggestion,
+            'timestamp': datetime.now().isoformat()
+        }
+        
+        # Also store in a JSON for the admin to view
+        suggestions_log = []
+        if os.path.exists('data/suggestions_log.json'):
+            with open('data/suggestions_log.json', 'r') as f:
+                suggestions_log = json.load(f)
+        
+        suggestions_log.insert(0, log_entry)
+        with open('data/suggestions_log.json', 'w') as f:
+            json.dump(suggestions_log[:100], f, indent=2)
+            
+        return jsonify({'status': 'success', 'message': 'Suggestion received!'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 @app.route('/health')
 def health():
     """Health check for monitoring"""

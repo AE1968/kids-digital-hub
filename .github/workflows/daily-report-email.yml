@@ -33,6 +33,6 @@ jobs:
           SMTP_PORT: '587'
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
-          TO_EMAIL: 'adrianenc11@gmail.com'
+          TO_EMAIL: 'adrianenc11@gmail.com' # Your official admin email
         run: |
           python send_daily_report.py
