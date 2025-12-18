@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Parent Dashboard - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card .icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-card .label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .chart-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-card h3 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .activity-list {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .activity-list h3 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .activity-icon.game {
+            background: #e3f2fd;
+        }
+
+        .activity-icon.drawing {
+            background: #fce4ec;
+        }
+
+        .activity-icon.story {
+            background: #fff3e0;
+        }
+
+        .activity-icon.achievement {
+            background: #e8f5e9;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .activity-time {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .controls-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .control-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .control-card h3 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .control-item:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            border-radius: 30px;
+            transition: 0.4s;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.4s;
+        }
+
+        input:checked+.toggle-slider {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .time-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .time-selector input {
+            width: 70px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .achievement {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .achievement.locked {
+            opacity: 0.4;
+            filter: grayscale(1);
+        }
+
+        .achievement .badge {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        .achievement .name {
+            font-size: 0.8rem;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-header">
+        <h1>👨‍👩‍👧‍👦 Parent Dashboard</h1>
+        <p>Monitor your child's activity and set controls</p>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    <div class="container">
+        <!-- Quick Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon">⏱️</div>
+                <div class="value" id="totalTime">0h 0m</div>
+                <div class="label">Time Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🎮</div>
+                <div class="value" id="gamesPlayed">0</div>
+                <div class="label">Games Played</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🎨</div>
+                <div class="value" id="drawingsCreated">0</div>
+                <div class="label">Drawings Created</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">📚</div>
+                <div class="value" id="storiesRead">0</div>
+                <div class="label">Stories Read</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🏆</div>
+                <div class="value" id="achievements">0</div>
+                <div class="label">Achievements</div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-section">
+            <div class="chart-card">
+                <h3>📊 Activity This Week</h3>
+                <canvas id="weeklyChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>🎯 Activity Breakdown</h3>
+                <canvas id="activityChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-list">
+            <h3>📋 Recent Activity</h3>
+            <div class="activity-item">
+                <div class="activity-icon game">🎮</div>
+                <div class="activity-content">
+                    <div class="activity-title">Played Memory Match</div>
+                    <div class="activity-time">2 minutes ago • Score: 850</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon drawing">🎨</div>
+                <div class="activity-content">
+                    <div class="activity-title">Created a Drawing</div>
+                    <div class="activity-time">15 minutes ago • Saved</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon story">📖</div>
+                <div class="activity-content">
+                    <div class="activity-title">Read "The Shy Dinosaur"</div>
+                    <div class="activity-time">1 hour ago • Completed</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon achievement">🏆</div>
+                <div class="activity-content">
+                    <div class="activity-title">Earned "Math Wizard" Badge</div>
+                    <div class="activity-time">Today • Level 3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parental Controls -->
+        <div class="controls-section">
+            <div class="control-card">
+                <h3>⏰ Time Controls</h3>
+                <div class="control-item">
+                    <span>Daily Time Limit</span>
+                    <div class="time-selector">
+                        <input type="number" id="timeLimit" value="120" min="15" max="480"> min
+                    </div>
+                </div>
+                <div class="control-item">
+                    <span>Bedtime Mode</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="bedtimeMode" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="control-item">
+                    <span>Bedtime Start</span>
+                    <input type="time" id="bedtimeStart" value="20:00"
+                        style="padding:10px;border:2px solid #ddd;border-radius:10px;">
+                </div>
+                <div class="control-item">
+                    <span>Bedtime End</span>
+                    <input type="time" id="bedtimeEnd" value="07:00"
+                        style="padding:10px;border:2px solid #ddd;border-radius:10px;">
+                </div>
+            </div>
+
+            <div class="control-card">
+                <h3>🔒 Content Controls</h3>
+                <div class="control-item">
+                    <span>Premium Content</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="premiumEnabled" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="control-item">
+                    <span>Allow Game Downloads</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="downloadsEnabled">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="control-item">
+                    <span>Weekly Email Reports</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="emailReports" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div style="margin-top:20px;">
+                    <button class="btn" onclick="saveSettings()">💾 Save Settings</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="activity-list">
+            <h3>🏆 Achievements Earned</h3>
+            <div class="achievements-grid">
+                <div class="achievement">
+                    <div class="badge">⭐</div>
+                    <div class="name">First Steps</div>
+                </div>
+                <div class="achievement">
+                    <div class="badge">🎨</div>
+                    <div class="name">Artist</div>
+                </div>
+                <div class="achievement">
+                    <div class="badge">📚</div>
+                    <div class="name">Bookworm</div>
+                </div>
+                <div class="achievement">
+                    <div class="badge">🧠</div>
+                    <div class="name">Memory Master</div>
+                </div>
+                <div class="achievement locked">
+                    <div class="badge">🏆</div>
+                    <div class="name">Champion</div>
+                </div>
+                <div class="achievement locked">
+                    <div class="badge">🚀</div>
+                    <div class="name">Explorer</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved stats
+        function loadStats() {
+            const seconds = parseInt(localStorage.getItem('kdh_today_seconds') || '0');
+            const hours = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            document.getElementById('totalTime').textContent = `${hours}h ${mins}m`;
+
+            // Demo stats
+            document.getElementById('gamesPlayed').textContent = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('drawingsCreated').textContent = Math.floor(Math.random() * 5);
+            document.getElementById('storiesRead').textContent = Math.floor(Math.random() * 3);
+            document.getElementById('achievements').textContent = 4;
+        }
+
+        // Weekly Activity Chart
+        const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+        new Chart(weeklyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Minutes',
+                    data: [45, 60, 30, 75, 45, 90, 60],
+                    backgroundColor: 'rgba(102, 126, 234, 0.7)',
+                    borderRadius: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Activity Breakdown Chart
+        const activityCtx = document.getElementById('activityChart').getContext('2d');
+        new Chart(activityCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Games', 'Drawing', 'Stories', 'Learning'],
+                datasets: [{
+                    data: [40, 25, 20, 15],
+                    backgroundColor: [
+                        '#667eea',
+                        '#f093fb',
+                        '#f5576c',
+                        '#4facfe'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        function saveSettings() {
+            const settings = {
+                timeLimit: document.getElementById('timeLimit').value,
+                bedtimeMode: document.getElementById('bedtimeMode').checked,
+                bedtimeStart: document.getElementById('bedtimeStart').value,
+                bedtimeEnd: document.getElementById('bedtimeEnd').value,
+                premiumEnabled: document.getElementById('premiumEnabled').checked,
+                downloadsEnabled: document.getElementById('downloadsEnabled').checked,
+                emailReports: document.getElementById('emailReports').checked
+            };
+
+            localStorage.setItem('kdh_parent_settings', JSON.stringify(settings));
+            alert('✅ Settings saved successfully!');
+        }
+
+        // Load settings
+        function loadSettings() {
+            const saved = localStorage.getItem('kdh_parent_settings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                document.getElementById('timeLimit').value = settings.timeLimit || 120;
+                document.getElementById('bedtimeMode').checked = settings.bedtimeMode !== false;
+                document.getElementById('bedtimeStart').value = settings.bedtimeStart || '20:00';
+                document.getElementById('bedtimeEnd').value = settings.bedtimeEnd || '07:00';
+                document.getElementById('premiumEnabled').checked = settings.premiumEnabled !== false;
+                document.getElementById('downloadsEnabled').checked = settings.downloadsEnabled || false;
+                document.getElementById('emailReports').checked = settings.emailReports !== false;
+            }
+        }
+
+        loadStats();
+        loadSettings();
+    </script>
+</body>
+
+</html>
