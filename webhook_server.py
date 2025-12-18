@@ -15,6 +15,32 @@ from webhook_order_handler import process_new_order
 app = Flask(__name__)
 CORS(app) # Enable CORS for all routes
 
+# Simple in-memory rate limiting
+from collections import defaultdict
+import time
+
+request_history = defaultdict(list)
+RATE_LIMIT_DURATION = 60 # seconds
+RATE_LIMIT_MAX_REQUESTS = 5 # max requests per minute per IP
+
+@app.before_request
+def rate_limit():
+    ip = request.remote_addr
+    now = time.time()
+    
+    # Filter out requests older than the duration
+    request_history[ip] = [req_time for req_time in request_history[ip] if now - req_time < RATE_LIMIT_DURATION]
+    
+    # Check if limit exceeded
+    if len(request_history[ip]) >= RATE_LIMIT_MAX_REQUESTS:
+        return jsonify({
+            'status': 'error',
+            'message': 'Rate limit exceeded. Please try again later.'
+        }), 429
+        
+    # Add current request
+    request_history[ip].append(now)
+
 # Configuration
 # Dependencies:
 # pillow
