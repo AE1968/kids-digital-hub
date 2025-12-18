@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS HUB | Kids Digital Command</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Nexus Core Script -->
+    <script src="js/achievements.js" defer></script>
+</head>
+
+<body>
+
+    <!-- TOP HEADER -->
+    <header class="nexus-header glass-panel">
+        <div class="logo-container">
+            <div class="logo-icon"></div>
+            <div>
+                <h2 class="holo-text glow" style="line-height: 1;">NEXUS HUB</h2>
+                <span style="font-size: 0.7rem; color: var(--nexus-blue); letter-spacing: 3px;">SYSTEM ONLINE</span>
+            </div>
+        </div>
+        <nav>
+            <a href="#" class="nav-link active"><i class="fas fa-home"></i> HUB</a>
+            <a href="shop.html" class="nav-link"><i class="fas fa-shopping-cart"></i> STORE</a>
+            <a href="profile.html" class="nav-link"><i class="fas fa-user-astronaut"></i> PILOT</a>
+            <a href="settings.html" class="nav-link"><i class="fas fa-cog"></i> SYSTEM</a>
+        </nav>
+        <div class="user-status glass-panel" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+            <i class="fas fa-coins" style="color: gold;"></i> <span id="coin-balance">1250</span> CR
+        </div>
+    </header>
+
+    <!-- MAIN GRID LAYOUT -->
+    <div class="nexus-grid">
+
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="sidebar glass-panel" style="padding: 1.5rem;">
+            <div style="margin-bottom: 2rem;">
+                <h4 class="holo-text" style="color: var(--text-secondary); margin-bottom: 1rem;">Navigation</h4>
+                <a href="games/coloring.html" class="menu-item">
+                    <i class="fas fa-paint-brush"></i> <span>Creative Lab</span>
+                </a>
+                <a href="games/index.html" class="menu-item">
+                    <i class="fas fa-gamepad"></i> <span>Game Sector</span>
+                </a>
+                <a href="stories/index.html" class="menu-item">
+                    <i class="fas fa-book-open"></i> <span>Story Archives</span>
+                </a>
+                <a href="nexus_core.html" class="menu-item active">
+                    <i class="fas fa-robot"></i> <span>Nexus AI Core</span>
+                </a>
+            </div>
+
+            <div>
+                <h4 class="holo-text" style="color: var(--text-secondary); margin-bottom: 1rem;">Admin Override</h4>
+                <a href="admin/dashboard.html" class="menu-item" style="color: var(--danger);">
+                    <i class="fas fa-lock"></i> <span>Command Deck</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- CORE DISPLAY (CENTER) -->
+        <main class="core-display">
+            <!-- Hero Section -->
+            <div class="glass-panel hero-banner" style="position: relative; overflow: hidden;">
+                <div style="z-index: 2;">
+                    <h1 class="holo-text glow" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Welcome back,
+                        Commander.</h1>
+                    <p style="color: var(--text-secondary); max-width: 600px;">Nexus Systems are fully operational. All
+                        servers running at 99.9% efficiency. Ready for input.</p>
+                </div>
+                <!-- Background decorative elements -->
+                <div
+                    style="position: absolute; right: -50px; top: -50px; width: 300px; height: 300px; background: radial-gradient(var(--nexus-purple), transparent 70%); opacity: 0.2;">
+                </div>
+            </div>
+
+            <!-- Modules Grid -->
+            <div class="core-modules">
+                <div class="module-card glass-panel" onclick="window.location.href='games/index.html'">
+                    <i class="fas fa-rocket icon-large" style="color: var(--nexus-blue);"></i>
+                    <h3 class="holo-text">Games</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Logic & Action</p>
+                </div>
+                <div class="module-card glass-panel" onclick="window.location.href='stories/index.html'">
+                    <i class="fas fa-book-reader icon-large" style="color: var(--nexus-purple);"></i>
+                    <h3 class="holo-text">Stories</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Interactive Tales</p>
+                </div>
+                <div class="module-card glass-panel" onclick="window.location.href='shop.html'">
+                    <i class="fas fa-store icon-large" style="color: var(--success);"></i>
+                    <h3 class="holo-text">Market</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Acquire Assets</p>
+                </div>
+                <div class="module-card glass-panel" onclick="window.location.href='nexus_core.html'">
+                    <i class="fas fa-microchip icon-large" style="color: #ff2a6d;"></i>
+                    <h3 class="holo-text">AI Core</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Neural Interface</p>
+                </div>
+            </div>
+
+            <!-- Recent Activity / News -->
+            <div class="glass-panel" style="padding: 1.5rem;">
+                <h3 class="holo-text"
+                    style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    System Updates</h3>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <span style="color: var(--nexus-blue); font-size: 0.8rem;">:: LATEST DEPLOYMENT</span>
+                        <p>Nexus Genesis Live. Version 3.1 Stable.</p>
+                    </div>
+                    <div style="flex: 1; min-width: 250px;">
+                        <span style="color: var(--success); font-size: 0.8rem;">:: SERVER STATUS</span>
+                        <p>Railway Backend: <span style="color: var(--success);">CONNECTED</span></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- RIGHT PANEL - NEXUS AI MONITOR -->
+        <aside class="ai-panel glass-panel" style="padding: 1.5rem;">
+            <div class="nexus-avatar-container">
+                <div class="orbital-ring"></div>
+                <div class="nexus-orb">
+                    <i class="fas fa-eye"></i>
+                </div>
+            </div>
+
+            <h3 class="holo-text" style="text-align: center; color: var(--nexus-blue);">NEXUS AI</h3>
+
+            <div class="status-log" id="ai-log">
+                <div class="log-entry">Initializing Core...</div>
+                <div class="log-entry">Loading User Profile...</div>
+                <div class="log-entry" style="color: var(--nexus-blue);">[SECURE] Connection Established.</div>
+                <div class="log-entry">Scanning for creative input...</div>
+            </div>
+
+            <button
+                style="background: var(--nexus-blue); color: #000; border: none; padding: 0.8rem; font-weight: bold; border-radius: 8px; cursor: pointer; text-transform: uppercase;">
+                INITIATE CHAT
+            </button>
+        </aside>
+
+    </div>
+
+    <script>
+        // Simple script to animate the log
+        const log = document.getElementById('ai-log');
+        const messages = [
+            "Monitoring server latency...",
+            "Optimizing graphical assets...",
+            "Checking payment gateways...",
+            " syncing user data...",
+            "All systems nominal."
+           
+        let msgIndex = 0;
+        setInterval(() => {
+             if(msgIndex < messages.length) {
+                const div = document.createElement('div');
+                div.className = 'log-entry';
+                div.innerHTML = `> ${messages[msgIndex]}`;
+                log.appendChild(div);
+                log.scrollTop = log.scrollHeight;
+                msgIndex++;
+            }
+        }, 2000);
+    </script>
+</body>
+
+</html>
