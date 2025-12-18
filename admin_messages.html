@@ -355,21 +355,24 @@
         </div>
 
         <div class="stats-grid">
+            <!-- LIVE SYSTEM HEALTH -->
+            <div class="stat-card" style="border-top: 5px solid #4CAF50;">
+                <div class="label" style="margin-bottom: 5px;">🧠 AI SERVER STATUS</div>
+                <div id="railway-status" style="font-weight: bold; color: #4CAF50;">📡 CONNECTING...</div>
+                <button class="btn-action" style="margin-top: 10px; font-size: 0.7rem; padding: 5px;"
+                    onclick="checkSystemHealth()">RE-SCAN SYSTEM</button>
+            </div>
             <div class="stat-card">
                 <div class="number" id="totalMessages">0</div>
                 <div class="label">Total Messages</div>
             </div>
+            <div class="stat-card" style="background: #FFF9C4;">
+                <div class="number" id="robotFixesCount">0</div>
+                <div class="label">Auto-Fixes Done</div>
+            </div>
             <div class="stat-card">
                 <div class="number" id="unreadMessages">0</div>
-                <div class="label">Unread</div>
-            </div>
-            <div class="stat-card">
-                <div class="number" id="contactMessages">0</div>
-                <div class="label">Contact</div>
-            </div>
-            <div class="stat-card">
-                <div class="number" id="suggestionMessages">0</div>
-                <div class="label">Suggestions</div>
+                <div class="label">Priority Unread</div>
             </div>
         </div>
 
@@ -442,8 +445,31 @@
         function updateStats() {
             document.getElementById('totalMessages').textContent = allMessages.length;
             document.getElementById('unreadMessages').textContent = allMessages.filter(m => m.status === 'unread').length;
-            document.getElementById('contactMessages').textContent = allMessages.filter(m => m.type === 'contact').length;
-            document.getElementById('suggestionMessages').textContent = allMessages.filter(m => m.type === 'suggestion').length;
+
+            // Count Robot Fixes
+            fetch('data/resolutions.json?t=' + Date.now())
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('robotFixesCount').textContent = data.length || 0;
+                }).catch(() => { });
+        }
+
+        async function checkSystemHealth() {
+            const statusEl = document.getElementById('railway-status');
+            statusEl.textContent = '🔍 PINGING SERVER...';
+            statusEl.style.color = '#FF9800';
+
+            try {
+                const response = await fetch('https://web-production-b215.up.railway.app/', { mode: 'no-cors' });
+                // Since this might be a cross-origin request without CORS, 
+                // no-cors will allow it but we won't see the response body.
+                // The fact it doesn't fail the catch is enough for a 'reachable' check.
+                statusEl.textContent = '✅ ONLINE & STABLE';
+                statusEl.style.color = '#4CAF50';
+            } catch (error) {
+                statusEl.textContent = '⚠️ SERVER SLEEPING';
+                statusEl.style.color = '#f44336';
+            }
         }
 
         // Display messages
@@ -702,6 +728,7 @@
 
         // Initialize
         loadMessages();
+        checkSystemHealth();
     </script>
     <script>
         // 📊 Live Traffic Stats Logic
