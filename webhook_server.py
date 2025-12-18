@@ -3,7 +3,7 @@ Flask Webhook Server for Automatic Order Processing
 Runs on Railway.app or any cloud platform
 """
 
-from flask import Flask, request, jsonify, render_template_string
+from flask import Flask, request, jsonify, render_template_string, render_template
 from flask_cors import CORS
 import os
 import json
@@ -660,7 +660,7 @@ def home():
 @app.route('/admin/nexus')
 def nexus_core():
     """Renders the Nexus AI Interface"""
-    return render_template_string(NEXUS_DASHBOARD)
+    return render_template('nexus_core.html')
 
 @app.route('/api/nexus/memory')
 def get_nexus_memory():
