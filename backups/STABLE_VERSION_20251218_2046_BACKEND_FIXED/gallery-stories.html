@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Story Library - Kids Digital Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Georgia&display=swap"
+        rel="stylesheet">
+    <style>
+        .stories-header {
+            background: #9C27B0;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            border-bottom: 5px solid #7B1FA2;
+        }
+
+        /* --- FILTERS --- */
+        .age-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid #E1BEE7;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: bold;
+            color: #7B1FA2;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #F3E5F5;
+        }
+
+        .filter-btn.active {
+            background: #9C27B0;
+            color: white;
+            border-color: #9C27B0;
+        }
+
+        .gallery-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-left: 8px solid #ddd;
+            position: relative;
+        }
+
+        .story-card:hover {
+            transform: translateY(-8px) rotate(-1deg);
+        }
+
+        .story-card.premium {
+            border-left-color: gold;
+            background: #fff8e1;
+        }
+
+        .book-cover {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .age-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        .slot-number {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 20;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .story-info {
+            padding: 15px;
+        }
+
+        .story-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #4A148C;
+            margin-bottom: 5px;
+        }
+
+        .story-author {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .btn-back-dash {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid white;
+        }
+
+        /* READER OVERLAY */
+        #storyOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            z-index: 5000;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .reader-header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            background: white;
+        }
+
+        .mode-switch {
+            display: flex;
+            background: #E1BEE7;
+            padding: 5px;
+            border-radius: 30px;
+            gap: 5px;
+        }
+
+        .mode-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #4A148C;
+        }
+
+        .mode-btn.active {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .reader-body {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .text-view {
+            max-width: 700px;
+            line-height: 1.8;
+            font-family: 'Georgia', serif;
+            font-size: 1.3rem;
+            color: #333;
+            display: none;
+            /* Hidden by default */
+        }
+
+        .audio-view {
+            display: none;
+            /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .audio-icon {
+            font-size: 5rem;
+            color: #9C27B0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .reader-close {
+            background: #D32F2F;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+    </style>
+    <!-- GoatCounter Analytics -->
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+
+<body>
+
+    <header class="stories-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:2rem;">📚</span>
+            <h2 style="margin:0;" data-i18n="nav_stories">Story Library</h2>
+        </div>
+        <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
+    </header>
+
+    <!-- AGE FILTERS -->
+    <div class="age-filters">
+        <button class="filter-btn active" onclick="filterStories('all')" data-i18n="all_ages">All Ages</button>
+        <button class="filter-btn" onclick="filterStories('3-5')" data-i18n="years_3_5">3-5 Years</button>
+        <button class="filter-btn" onclick="filterStories('6-9')" data-i18n="years_6_9">6-9 Years</button>
+        <button class="filter-btn" onclick="filterStories('10+')" data-i18n="years_12_plus">10+ Years</button>
+    </div>
+
+    <main>
+        <div class="gallery-grid" id="storiesContainer">
+            <!-- Dynamic Stories Here -->
+        </div>
+    </main>
+
+    <!-- READER OVERLAY -->
+    <div id="storyOverlay">
+        <div class="reader-header">
+            <h3 id="readerTitle" style="margin:0; color:#4A148C;">Title</h3>
+
+            <!-- MODE SWITCH -->
+            <div class="mode-switch">
+                <button class="mode-btn active" id="btnModeRead" onclick="setReaderMode('read')" data-i18n="btn_read">📖
+                    Read</button>
+                <button class="mode-btn" id="btnModeAudio" onclick="setReaderMode('audio')" data-i18n="btn_listen">🎧
+                    Listen</button>
+            </div>
+
+            <button class="reader-close" onclick="closeReader()">❌ Exit</button>
+        </div>
+
+        <div class="reader-body">
+            <!-- COMMON IMAGE -->
+            <img id="readerImage" src="" style="max-width:200px; border-radius:10px; margin-bottom:20px;">
+
+            <!-- READ MODE CONTENT -->
+            <div id="readContent" class="text-view" style="display:block;">
+                <!-- Text Injected Here -->
+            </div>
+
+            <!-- AUDIO MODE CONTENT -->
+            <div id="audioContent" class="audio-view">
+                <div class="audio-icon">🔊</div>
+                <p data-i18n="narrator_reading">The Narrator is reading...</p>
+                <div
+                    style="margin-top:20px; width:300px; height:10px; background:#eee; border-radius:5px; overflow:hidden;">
+                    <div style="width:40%; height:100%; background:#9C27B0;"></div>
+                </div>
+                <button onclick="toggleSpeech()"
+                    style="margin-top:20px; padding:10px 20px; font-size:1.2rem; cursor:pointer;">⏯️ Play/Pause</button>
+            </div>
+
+            <!-- COIN REWARD ACTION -->
+            <div style="text-align:center; padding: 20px;">
+                <button onclick="finishStory()"
+                    style="background: #FFD700; color: #3E2723; border: 2px solid #FFAB00; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #FFAB00;"
+                    data-i18n="btn_finish_story">
+                    ✅ Finish & Collect 5 Coins
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/translations.js"></script>
+    <script src="js/storiesConfig.js"></script> <!-- Dynamic Content Source -->
+    <script src="js/time_manager.js"></script>
+    <script src="js/economy.js"></script>
+    <script>
+        // --- MULTI-LANGUAGE STORIES LOADED EXTERNALLY ---
+        // Content is 100% Original & AI Generated (Safe for Copyright)
+
+        let currentStory = null;
+        let isSpeaking = false;
+        const synth = window.speechSynthesis;
+        let utterance = null;
+
+        function finishStory() {
+            if (window.EconomyManager) {
+                // In a real app, this would verify time spent reading
+                EconomyManager.addCoins(5);
+                alert("🎉 Great Job! You earned 5 Coins!");
+                closeReader();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize TimeManager (will not redirect from here, but enforces logic)
+            if (window.TimeManager) TimeManager.init();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+
+            if (mode === 'sleep' || mode === 'quiet') {
+                const banner = document.createElement('div');
+                banner.style.position = 'fixed';
+                banner.style.top = '0';
+                banner.style.left = '0';
+                banner.style.width = '100%';
+                banner.style.background = mode === 'sleep' ? '#1a237e' : '#4a148c';
+                banner.style.color = 'white';
+                banner.style.padding = '15px';
+                banner.style.textAlign = 'center';
+                banner.style.zIndex = '9999';
+                banner.style.fontSize = '1.2rem';
+                banner.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)';
+                banner.innerHTML = mode === 'sleep'
+                    ? '🌙 <b>Time for Bed!</b> It\'s past 9 PM. Let\'s listen to a calm story before sleep. 💤'
+                    : '🤫 <b>Quiet Time!</b> Active games are paused. Enjoy some reading!';
+
+                document.body.appendChild(banner);
+                document.querySelector('.stories-header').style.marginTop = '60px'; // Push down header
+            }
+
+            // Language handled by translations.js DOMContentLoaded
+            auth.applyProtection();
+
+            filterStories('all');
+        });
+
+        function getCurrentLang() {
+            return localStorage.getItem('selectedLanguage') || 'en';
+        }
+
+        function filterStories(ageGroup) {
+            const isAdmin = localStorage.getItem('kdh_admin_mode') === 'true';
+            const container = document.getElementById('storiesContainer');
+            container.innerHTML = '';
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('onclick').includes(`'${ageGroup}'`)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            storiesConfig.forEach(story => {
+                if (story.premium && !isAdmin) return;
+                if (ageGroup !== 'all' && story.age !== ageGroup) return;
+
+                const content = story.content['en'];
+
+                const card = document.createElement('div');
+                card.className = story.premium ? 'story-card premium' : 'story-card';
+                card.innerHTML = `
+                    <div style="position:relative;">
+                        <span class="slot-number">${story.id}</span>
+                        <img src="${story.img}" class="book-cover">
+                        <span class="age-badge">${story.age} +</span>
+                    </div>
+                    <div class="story-info">
+                        <div class="story-title">${story.premium ? '🔒 ' : ''}${stringToSafe(content.title)}</div>
+                        <div style="font-size:12px; color:#555;" data-i18n="audio_available">Audio Available 🎧</div>
+                    </div>
+                `;
+                card.onclick = () => openReader(story);
+                container.appendChild(card);
+            });
+        }
+
+        function openReader(story) {
+            currentStory = story;
+            const content = story.content['en'];
+
+            document.getElementById('storyOverlay').style.display = 'flex';
+            document.getElementById('readerTitle').textContent = content.title;
+            document.getElementById('readerImage').src = story.img;
+            document.getElementById('readContent').innerHTML = content.text;
+
+            setReaderMode('read');
+
+
+        }
+
+        function setReaderMode(mode) {
+            stopSpeech();
+            document.getElementById('btnModeRead').classList.remove('active');
+            document.getElementById('btnModeAudio').classList.remove('active');
+
+            document.getElementById('readContent').style.display = 'none';
+            document.getElementById('audioContent').style.display = 'none';
+
+            if (mode === 'read') {
+                document.getElementById('btnModeRead').classList.add('active');
+                document.getElementById('readContent').style.display = 'block';
+            } else {
+                document.getElementById('btnModeAudio').classList.add('active');
+                document.getElementById('audioContent').style.display = 'flex';
+
+                if (currentStory.premium) {
+                    alert("Audiobook Player requires Premium files.");
+                } else {
+                    const lang = getCurrentLang();
+                    const content = currentStory.content[lang] || currentStory.content['en'];
+                    startSpeech(content.text);
+                }
+            }
+        }
+
+        function startSpeech(text) {
+            if (synth.speaking) { return; }
+            if (text !== '') {
+                utterance = new SpeechSynthesisUtterance(text);
+                const lang = getCurrentLang();
+                utterance.lang = lang === 'ro' ? 'ro-RO' : 'en-US';
+
+                // --- WARM STORYTELLER VOICE (For Kids 3-5) ---
+                if (currentStory && (currentStory.age === '3-5' || currentStory.age.includes('3-5'))) {
+                    utterance.rate = 0.85;  // Slower, clearer
+                    utterance.pitch = 0.95; // Slightly deeper, warmer
+                } else {
+                    utterance.rate = 1.0;   // Normal speed
+                    utterance.pitch = 1.0;  // Normal pitch
+                }
+
+                utterance.onend = function (event) { isSpeaking = false; }
+                synth.speak(utterance);
+                isSpeaking = true;
+            }
+        }
+
+        function stopSpeech() {
+            if (synth.speaking) { synth.cancel(); }
+            isSpeaking = false;
+        }
+
+        function toggleSpeech() {
+            if (synth.paused) {
+                synth.resume();
+            } else if (synth.speaking) {
+                synth.pause();
+            } else {
+                const lang = getCurrentLang();
+                const content = currentStory.content[lang] || currentStory.content['en'];
+                startSpeech(content.text);
+            }
+        }
+
+        function closeReader() {
+            stopSpeech();
+            document.getElementById('storyOverlay').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

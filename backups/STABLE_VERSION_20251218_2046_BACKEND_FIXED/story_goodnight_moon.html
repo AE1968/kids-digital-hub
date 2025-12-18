@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goodnight Moon Bear - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Patrick+Hand&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Patrick Hand', cursive;
+            overflow-x: hidden;
+        }
+
+        .book-container {
+            width: 90%;
+            max-width: 800px;
+            background: #fdf6e3;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 90vh;
+        }
+
+        .page {
+            flex: 1;
+            padding: 40px;
+            display: none;
+            /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        p {
+            font-size: 1.8rem;
+            line-height: 1.6;
+            color: #5d6d7e;
+            max-width: 600px;
+        }
+
+        .illustration {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            margin: 20px 0;
+            object-fit: cover;
+            border: 5px solid #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.8);
+            position: absolute;
+            bottom: 0;
+        }
+
+        button {
+            background: #e67e22;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            background: #d35400;
+        }
+
+        button:disabled {
+            background: #bdc3c7;
+            cursor: default;
+            transform: none;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+            color: #95a5a6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="book-container">
+
+        <!-- COVER PAGE -->
+        <div class="page active" id="p1">
+            <h1>Goodnight Moon Bear</h1>
+            <img src="assets/images/products/story_moon.png" class="illustration" alt="Sleeping Bear">
+            <p>A soothing bedtime story regarding a little bear and the magical night sky.</p>
+            <p style="font-size: 1rem; color: #999;">Written & Illustrated by Kids Digital Hub (AI)</p>
+        </div>
+
+        <!-- PAGE 2 -->
+        <div class="page" id="p2">
+            <div class="illustration"
+                style="background: #1a252f; display: flex; align-items: center; justify-content: center;">
+                <div style="font-size: 5rem;">🌙</div>
+            </div>
+            <p>Barnaby Bear was very, very sleepy.<br>He rubbed his eyes and looked out of his window.</p>
+            <p>"The sun has gone to bed," he whispered.</p>
+        </div>
+
+        <!-- PAGE 3 -->
+        <div class="page" id="p3">
+            <div class="illustration"
+                style="background: #2c3e50; display: flex; align-items: center; justify-content: center;">
+                <div style="font-size: 5rem;">🦉</div>
+            </div>
+            <p>Outside, the stars were beginning to twinkle.<br><i>Twinkle, twinkle, little light...</i></p>
+            <p>"Goodnight, Mr. Owl in the tree," said Barnaby softly.</p>
+        </div>
+
+        <!-- PAGE 4 -->
+        <div class="page" id="p4">
+            <div class="illustration"
+                style="background: #34495e; display: flex; align-items: center; justify-content: center;">
+                <div style="font-size: 5rem;">💤</div>
+            </div>
+            <p>Barnaby climbed into his warm, cozy bed.<br>He pulled the fluffiest blanket up to his nose.</p>
+            <p>"Goodnight, Moon," he yawned.</p>
+        </div>
+
+        <!-- FINAL PAGE -->
+        <div class="page" id="p5">
+            <h1>Sweet Dreams!</h1>
+            <div class="illustration"
+                style="background: #2ecc71; display: flex; align-items: center; justify-content: center;">
+                <div style="font-size: 5rem;">🐻❤️</div>
+            </div>
+            <p>And just like that, Barnaby was fast asleep.</p>
+            <button onclick="window.location.href='index.html#stories'"
+                style="margin-top: 20px; background: #27ae60;">Back to Library 📚</button>
+        </div>
+
+        <div class="nav-buttons">
+            <button id="btn-prev" onclick="changePage(-1)" disabled>⬅️ Previous</button>
+            <span class="page-number">Page 1 / 5</span>
+            <button id="btn-next" onclick="changePage(1)">Next ➡️</button>
+        </div>
+    </div>
+
+    <script>
+        let maxPages = 5;
+        let currentPage = 1;
+
+        function changePage(dir) {
+            // Hide current
+            document.getElementById('p' + currentPage).classList.remove('active');
+
+            // Update index
+            currentPage += dir;
+
+            // Show new
+            document.getElementById('p' + currentPage).classList.add('active');
+
+            // Update Buttons
+            document.getElementById('btn-prev').disabled = (currentPage === 1);
+            document.getElementById('btn-next').disabled = (currentPage === maxPages);
+
+            // Update Number
+            document.querySelector('.page-number').innerText = `Page ${currentPage} / ${maxPages}`;
+        }
+    </script>
+</body>
+
+</html>

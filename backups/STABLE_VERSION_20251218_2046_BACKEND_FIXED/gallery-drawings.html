@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>My Drawings - Kids Digital Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .gallery-header {
+            background: #FF7043;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            border-bottom: 5px solid #D84315;
+        }
+
+        /* --- FILTERS --- */
+        .age-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid #FFAB91;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: bold;
+            color: #D84315;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #FBE9E7;
+        }
+
+        .filter-btn.active {
+            background: #FF7043;
+            color: white;
+            border-color: #FF7043;
+        }
+
+        .gallery-grid {
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .art-card {
+            background: white;
+            border: 3px solid #ddd;
+            border-radius: 15px;
+            aspect-ratio: 1;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .art-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            /* Combined transforms */
+            border-color: #FF7043;
+        }
+
+        .art-card.premium {
+            border-color: #FFD700;
+            background-color: #FFFDE7;
+        }
+
+        .art-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(150%);
+            /* Forces a "coloring book" look */
+        }
+
+        .slot-number {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .premium-lock {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 215, 0, 0.9);
+            color: #5D4037;
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .admin-delete-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+            /* Hidden by default */
+            z-index: 10;
+        }
+
+        .art-card:hover .admin-delete-btn {
+            opacity: 1;
+        }
+
+        body.admin-active .art-card:hover .admin-delete-btn {
+            display: block;
+        }
+
+        .btn-back-dash {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid white;
+        }
+    </style>
+    <!-- GoatCounter Analytics -->
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+
+<body>
+
+    <header class="gallery-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:2rem;">🎨</span>
+            <h2 style="margin:0;" data-i18n="nav_coloring">My Art Gallery</h2>
+        </div>
+        <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
+    </header>
+
+    <!-- AGE FILTERS -->
+    <div class="age-filters">
+        <button class="filter-btn active" onclick="filterDrawings('all')" data-i18n="all_ages">All Ages</button>
+        <button class="filter-btn" onclick="filterDrawings('3-5')" data-i18n="years_3_5">3-5 Years</button>
+        <button class="filter-btn" onclick="filterDrawings('6-9')" data-i18n="years_6_9">6-9 Years</button>
+        <button class="filter-btn" onclick="filterDrawings('10+')" data-i18n="years_12_plus">10+ Years</button>
+    </div>
+
+    <main>
+        <div class="gallery-grid" id="drawingGrid">
+            <!-- Dynamic Slots -->
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/translations.js"></script>
+    <!-- External Config -->
+    <script src="js/drawingsConfig.js"></script>
+    <script src="js/time_manager.js"></script>
+
+    <!-- App Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize TimeManager (will redirect if outside active hours)
+            if (window.TimeManager) TimeManager.init();
+
+            // Language is handled officially by translations.js DOMContentLoaded
+            auth.applyProtection();
+
+            // Admin check for CSS
+            if (localStorage.getItem('kdh_admin_mode') === 'true') {
+                document.body.classList.add('admin-active');
+            }
+
+            // Defaults
+            filterDrawings('all');
+        });
+
+        // 10 Slots System
+        const TOTAL_SLOTS = 10;
+
+        function filterDrawings(ageGroup) {
+            const grid = document.getElementById('drawingGrid');
+            grid.innerHTML = '';
+
+            const isAdmin = localStorage.getItem('kdh_admin_mode') === 'true';
+
+            // Filter logic
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('onclick').includes(`'${ageGroup}'`)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Count only valid drawings for this filter
+            let filteredDrawings = drawingsConfig.filter(d => {
+                if (d.premium && !isAdmin) return false;
+                if (ageGroup === 'all') return true;
+                return d.age === ageGroup;
+            });
+
+            // We still want to show 10 slots visually? 
+            // Or just the filtered items? Usually gallery implies slots for *saving*, but here we are *viewing* templates.
+            // Let's list the filtered templates.
+
+            filteredDrawings.forEach((drawing, index) => {
+                const card = document.createElement('div');
+                card.className = drawing.premium ? 'art-card premium' : 'art-card';
+                card.innerHTML = `
+                    <span class="slot-number">${index + 1}</span>
+                    ${drawing.premium ? '<span class="premium-lock" data-i18n="premium_badge">👑 Premium</span>' : ''}
+                    <img src="${drawing.img}" class="art-thumb" alt="Drawing">
+                    <button class="admin-delete-btn" onclick="deleteDrawing('${drawing.id}')" data-i18n="btn_delete">🗑️ Delete</button>
+                `;
+
+                // Clicking opens drawing tool (Placeholder)
+                card.onclick = (e) => {
+                    if (e.target.tagName !== 'BUTTON') {
+                        // In a real app, this would open the painting canvas with this image
+                        alert('Starting Coloring Session: ' + drawing.id);
+                    }
+                };
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Mock Delete for Admin
+        window.deleteDrawing = function (id) {
+            if (confirm("Admin: Are you sure you want to remove this item?")) {
+                alert("Item " + id + " removed (Database update simulated).");
+                // In real app, call API to remove from config
+            }
+        }
+    </script>
+</body>
+
+</html>

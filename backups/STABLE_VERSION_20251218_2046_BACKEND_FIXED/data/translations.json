@@ -1,0 +1,467 @@
+{
+    "en": {
+        "nav": {
+            "home": "Home",
+            "products": "Products",
+            "ageGroups": "Age Groups",
+            "about": "About",
+            "contact": "Contact"
+        },
+        "hero": {
+            "title": "Welcome to Kids Digital Hub",
+            "subtitle": "Discover amazing digital products designed for children of all ages",
+            "cta": "Explore Products",
+            "ctaDemo": "Try Free Demos"
+        },
+        "ageGroups": {
+            "title": "Browse by Age Group",
+            "toddlers": "Toddlers (2-4)",
+            "preschool": "Preschool (4-6)",
+            "earlyElementary": "Early Elementary (6-8)",
+            "elementary": "Elementary (8-10)",
+            "preteens": "Preteens (10-12)"
+        },
+        "categories": {
+            "title": "Product Categories",
+            "coloring": "Coloring Books",
+            "games": "Educational Games",
+            "stories": "Interactive Stories",
+            "printables": "Printable Activities",
+            "creative": "Creative Tools"
+        },
+        "featured": {
+            "title": "Featured Products",
+            "subtitle": "Our most popular digital products for kids"
+        },
+        "howItWorks": {
+            "title": "How It Works",
+            "step1Title": "Choose a Product",
+            "step1Desc": "Browse our collection by age or category",
+            "step2Title": "Try the Demo",
+            "step2Desc": "Test it for free before downloading",
+            "step3Title": "Download & Enjoy",
+            "step3Desc": "Get instant access to your digital product"
+        },
+        "products": {
+            "animalColoringBook": {
+                "name": "Animal Coloring Book",
+                "description": "Interactive digital coloring book featuring adorable animals. Perfect for developing creativity and fine motor skills.",
+                "features": {
+                    "0": "20+ animal illustrations",
+                    "1": "Interactive color palette",
+                    "2": "Save & share creations",
+                    "3": "Undo/redo functionality"
+                }
+            },
+            "memoryGameAnimals": {
+                "name": "Memory Game: Animals",
+                "description": "Fun memory matching game with cute animal cards. Improves concentration and memory skills.",
+                "features": {
+                    "0": "Multiple difficulty levels",
+                    "1": "Colorful animal cards",
+                    "2": "Score tracking",
+                    "3": "Sound effects"
+                }
+            },
+            "forestAdventure": {
+                "name": "Forest Adventure Story",
+                "description": "Interactive animated story about a magical forest adventure. Engaging narration and beautiful illustrations.",
+                "features": {
+                    "0": "Animated characters",
+                    "1": "Interactive elements",
+                    "2": "Audio narration",
+                    "3": "Beautiful illustrations"
+                }
+            },
+            "alphabetTracing": {
+                "name": "Alphabet Tracing Sheets",
+                "description": "Printable worksheets for learning to write letters. Includes uppercase and lowercase practice.",
+                "features": {
+                    "0": "A-Z complete alphabet",
+                    "1": "Tracing guidelines",
+                    "2": "Print-ready PDF format"
+                }
+            },
+            "mathPuzzles": {
+                "name": "Math Puzzle Adventures",
+                "description": "Engaging math puzzles and challenges. Makes learning arithmetic fun and interactive.",
+                "features": {
+                    "0": "Addition & subtraction",
+                    "1": "Progressive difficulty",
+                    "2": "Instant feedback"
+                }
+            },
+            "dinosaurColoring": {
+                "name": "Dinosaur Coloring Pack",
+                "description": "Exciting dinosaur-themed coloring pages. Learn about prehistoric creatures while coloring.",
+                "features": {
+                    "0": "15+ dinosaur species",
+                    "1": "Educational facts",
+                    "2": "High-quality illustrations"
+                }
+            },
+            "avatarCreator": {
+                "name": "Avatar Creator Studio",
+                "description": "Create your own unique character avatar. Customize features, clothes, and accessories.",
+                "features": {
+                    "0": "Hundreds of options",
+                    "1": "Save & export avatars",
+                    "2": "Easy drag-and-drop"
+                }
+            },
+            "spaceAdventure": {
+                "name": "Space Adventure Quest",
+                "description": "Interactive space exploration story. Learn about planets and stars on an exciting journey.",
+                "features": {
+                    "0": "Educational space facts",
+                    "1": "Choose-your-path story",
+                    "2": "Stunning space visuals"
+                }
+            },
+            "mazeCollection": {
+                "name": "Maze Master Collection",
+                "description": "Printable maze puzzles of varying difficulty. Develops problem-solving and spatial skills.",
+                "features": {
+                    "0": "50+ unique mazes",
+                    "1": "Easy to challenging",
+                    "2": "Themed designs"
+                }
+            },
+            "simpleShapes": {
+                "name": "Simple Shapes Coloring",
+                "description": "Basic shapes coloring for toddlers. Learn colors and shapes while having fun.",
+                "features": {
+                    "0": "Large, simple shapes",
+                    "1": "Bright colors",
+                    "2": "Touch-friendly"
+                }
+            },
+            "codingBasics": {
+                "name": "Coding Basics Game",
+                "description": "Introduction to programming concepts through fun puzzles. Learn logic and sequencing.",
+                "features": {
+                    "0": "Block-based coding",
+                    "1": "Progressive challenges",
+                    "2": "No prior experience needed"
+                }
+            },
+            "storyBuilder": {
+                "name": "Story Builder Tool",
+                "description": "Create your own stories with customizable characters and settings. Unleash creativity!",
+                "features": {
+                    "0": "Character creator",
+                    "1": "Scene builder",
+                    "2": "Export as PDF"
+                }
+            }
+        },
+        "buttons": {
+            "tryDemo": "Try Demo",
+            "learnMore": "Learn More",
+            "download": "Download",
+            "viewAll": "View All Products",
+            "filter": "Filter",
+            "sort": "Sort"
+        },
+        "filters": {
+            "allAges": "All Ages",
+            "allCategories": "All Categories",
+            "sortNewest": "Newest First",
+            "sortPopular": "Most Popular",
+            "sortAZ": "A-Z"
+        },
+        "footer": {
+            "about": "Kids Digital Hub provides high-quality digital products designed to educate, entertain, and inspire children.",
+            "quickLinks": "Quick Links",
+            "categories": "Categories",
+            "support": "Support",
+            "faq": "FAQ",
+            "privacy": "Privacy Policy",
+            "terms": "Terms of Service",
+            "copyright": "© 2024 Kids Digital Hub. All rights reserved."
+        }
+    },
+    "ro": {
+        "nav": {
+            "home": "Acasă",
+            "products": "Produse",
+            "ageGroups": "Grupe de Vârstă",
+            "about": "Despre",
+            "contact": "Contact"
+        },
+        "hero": {
+            "title": "Bine ai venit la Kids Digital Hub",
+            "subtitle": "Descoperă produse digitale uimitoare create pentru copii de toate vârstele",
+            "cta": "Explorează Produsele",
+            "ctaDemo": "Încearcă Demo-uri Gratuite"
+        },
+        "ageGroups": {
+            "title": "Caută după Vârstă",
+            "toddlers": "Mici (2-4 ani)",
+            "preschool": "Preșcolari (4-6 ani)",
+            "earlyElementary": "Ciclul Primar Mic (6-8 ani)",
+            "elementary": "Ciclul Primar (8-10 ani)",
+            "preteens": "Preadolescenți (10-12 ani)"
+        },
+        "categories": {
+            "title": "Categorii de Produse",
+            "coloring": "Cărți de Colorat",
+            "games": "Jocuri Educaționale",
+            "stories": "Povești Interactive",
+            "printables": "Activități de Tipărit",
+            "creative": "Instrumente Creative"
+        },
+        "featured": {
+            "title": "Produse Recomandate",
+            "subtitle": "Cele mai populare produse digitale pentru copii"
+        },
+        "howItWorks": {
+            "title": "Cum Funcționează",
+            "step1Title": "Alege un Produs",
+            "step1Desc": "Navighează colecția noastră după vârstă sau categorie",
+            "step2Title": "Încearcă Demo-ul",
+            "step2Desc": "Testează gratuit înainte de a descărca",
+            "step3Title": "Descarcă & Bucură-te",
+            "step3Desc": "Obține acces instant la produsul tău digital"
+        },
+        "products": {
+            "animalColoringBook": {
+                "name": "Carte de Colorat cu Animale",
+                "description": "Carte de colorat digitală interactivă cu animale adorabile. Perfectă pentru dezvoltarea creativității și a abilităților motorii fine.",
+                "features": {
+                    "0": "20+ ilustrații cu animale",
+                    "1": "Paletă de culori interactivă",
+                    "2": "Salvează și distribuie creațiile",
+                    "3": "Funcționalitate undo/redo"
+                }
+            },
+            "memoryGameAnimals": {
+                "name": "Joc de Memorie: Animale",
+                "description": "Joc distractiv de potrivire a memoriei cu cărți cu animale drăguțe. Îmbunătățește concentrarea și abilitățile de memorie.",
+                "features": {
+                    "0": "Niveluri multiple de dificultate",
+                    "1": "Cărți colorate cu animale",
+                    "2": "Urmărire scor",
+                    "3": "Efecte sonore"
+                }
+            },
+            "forestAdventure": {
+                "name": "Aventura în Pădure",
+                "description": "Poveste animată interactivă despre o aventură magică în pădure. Narațiune captivantă și ilustrații frumoase.",
+                "features": {
+                    "0": "Personaje animate",
+                    "1": "Elemente interactive",
+                    "2": "Narațiune audio",
+                    "3": "Ilustrații frumoase"
+                }
+            },
+            "alphabetTracing": {
+                "name": "Fișe de Trasare Alfabet",
+                "description": "Fișe de lucru printabile pentru învățarea scrisului literelor. Include exerciții cu litere mari și mici.",
+                "features": {
+                    "0": "Alfabet complet A-Z",
+                    "1": "Ghiduri de trasare",
+                    "2": "Format PDF gata de tipărit"
+                }
+            },
+            "mathPuzzles": {
+                "name": "Aventuri cu Puzzle-uri Matematice",
+                "description": "Puzzle-uri și provocări matematice captivante. Face învățarea aritmeticii distractivă și interactivă.",
+                "features": {
+                    "0": "Adunare și scădere",
+                    "1": "Dificultate progresivă",
+                    "2": "Feedback instant"
+                }
+            },
+            "dinosaurColoring": {
+                "name": "Pachet Colorat cu Dinozauri",
+                "description": "Pagini de colorat cu tematică de dinozauri. Învață despre creaturi preistorice în timp ce colorezi.",
+                "features": {
+                    "0": "15+ specii de dinozauri",
+                    "1": "Fapte educaționale",
+                    "2": "Ilustrații de înaltă calitate"
+                }
+            },
+            "avatarCreator": {
+                "name": "Studio Creator Avatar",
+                "description": "Creează-ți propriul avatar unic. Personalizează trăsături, haine și accesorii.",
+                "features": {
+                    "0": "Sute de opțiuni",
+                    "1": "Salvează și exportă avatare",
+                    "2": "Drag-and-drop ușor"
+                }
+            },
+            "spaceAdventure": {
+                "name": "Aventura Spațială",
+                "description": "Poveste interactivă de explorare spațială. Învață despre planete și stele într-o călătorie captivantă.",
+                "features": {
+                    "0": "Fapte educaționale despre spațiu",
+                    "1": "Poveste cu alegeri multiple",
+                    "2": "Imagini spațiale uimitoare"
+                }
+            },
+            "mazeCollection": {
+                "name": "Colecția Maestru Labirint",
+                "description": "Puzzle-uri labirint printabile cu dificultate variată. Dezvoltă abilitățile de rezolvare a problemelor și spațiale.",
+                "features": {
+                    "0": "50+ labirinturi unice",
+                    "1": "De la ușor la provocator",
+                    "2": "Design-uri tematice"
+                }
+            },
+            "simpleShapes": {
+                "name": "Colorat Forme Simple",
+                "description": "Forme de bază de colorat pentru copii mici. Învață culorile și formele distrându-te.",
+                "features": {
+                    "0": "Forme mari și simple",
+                    "1": "Culori vii",
+                    "2": "Prietenos cu atingerea"
+                }
+            },
+            "codingBasics": {
+                "name": "Joc Bazele Programării",
+                "description": "Introducere în conceptele de programare prin puzzle-uri distractive. Învață logică și secvențiere.",
+                "features": {
+                    "0": "Programare bazată pe blocuri",
+                    "1": "Provocări progresive",
+                    "2": "Nu necesită experiență prealabilă"
+                }
+            },
+            "storyBuilder": {
+                "name": "Instrument Constructor Povești",
+                "description": "Creează-ți propriile povești cu personaje și setări personalizabile. Eliberează creativitatea!",
+                "features": {
+                    "0": "Creator de personaje",
+                    "1": "Constructor de scene",
+                    "2": "Export ca PDF"
+                }
+            }
+        },
+        "buttons": {
+            "tryDemo": "Încearcă Demo",
+            "learnMore": "Află Mai Mult",
+            "download": "Descarcă",
+            "viewAll": "Vezi Toate Produsele",
+            "filter": "Filtrează",
+            "sort": "Sortează"
+        },
+        "filters": {
+            "allAges": "Toate Vârstele",
+            "allCategories": "Toate Categoriile",
+            "sortNewest": "Cele Mai Noi",
+            "sortPopular": "Cele Mai Populare",
+            "sortAZ": "A-Z"
+        },
+        "footer": {
+            "about": "Kids Digital Hub oferă produse digitale de înaltă calitate concepute pentru a educa, distra și inspira copiii.",
+            "quickLinks": "Link-uri Rapide",
+            "categories": "Categorii",
+            "support": "Suport",
+            "faq": "Întrebări Frecvente",
+            "privacy": "Politica de Confidențialitate",
+            "terms": "Termeni și Condiții",
+            "copyright": "© 2024 Kids Digital Hub. Toate drepturile rezervate."
+        }
+    },
+    "es": {
+        "nav": {
+            "home": "Inicio",
+            "products": "Productos",
+            "ageGroups": "Grupos de Edad",
+            "about": "Acerca de",
+            "contact": "Contacto"
+        },
+        "hero": {
+            "title": "Bienvenido a Kids Digital Hub",
+            "subtitle": "Descubre increíbles productos digitales diseñados para niños de todas las edades",
+            "cta": "Explorar Productos",
+            "ctaDemo": "Probar Demos Gratis"
+        },
+        "ageGroups": {
+            "title": "Buscar por Edad",
+            "toddlers": "Pequeños (2-4)",
+            "preschool": "Preescolar (4-6)",
+            "earlyElementary": "Primaria Temprana (6-8)",
+            "elementary": "Primaria (8-10)",
+            "preteens": "Preadolescentes (10-12)"
+        },
+        "categories": {
+            "title": "Categorías de Productos",
+            "coloring": "Libros para Colorear",
+            "games": "Juegos Educativos",
+            "stories": "Historias Interactivas",
+            "printables": "Actividades Imprimibles",
+            "creative": "Herramientas Creativas"
+        },
+        "buttons": {
+            "tryDemo": "Probar Demo",
+            "learnMore": "Saber Más",
+            "download": "Descargar",
+            "viewAll": "Ver Todos",
+            "filter": "Filtrar",
+            "sort": "Ordenar"
+        }
+    },
+    "fr": {
+        "nav": {
+            "home": "Accueil",
+            "products": "Produits",
+            "ageGroups": "Groupes d'Âge",
+            "about": "À Propos",
+            "contact": "Contact"
+        },
+        "hero": {
+            "title": "Bienvenue à Kids Digital Hub",
+            "subtitle": "Découvrez des produits numériques incroyables conçus pour les enfants de tous âges",
+            "cta": "Explorer les Produits",
+            "ctaDemo": "Essayer les Démos Gratuites"
+        },
+        "ageGroups": {
+            "title": "Parcourir par Âge",
+            "toddlers": "Tout-Petits (2-4)",
+            "preschool": "Préscolaire (4-6)",
+            "earlyElementary": "Primaire Précoce (6-8)",
+            "elementary": "Primaire (8-10)",
+            "preteens": "Préadolescents (10-12)"
+        },
+        "buttons": {
+            "tryDemo": "Essayer la Démo",
+            "learnMore": "En Savoir Plus",
+            "download": "Télécharger",
+            "viewAll": "Voir Tout",
+            "filter": "Filtrer",
+            "sort": "Trier"
+        }
+    },
+    "de": {
+        "nav": {
+            "home": "Startseite",
+            "products": "Produkte",
+            "ageGroups": "Altersgruppen",
+            "about": "Über Uns",
+            "contact": "Kontakt"
+        },
+        "hero": {
+            "title": "Willkommen bei Kids Digital Hub",
+            "subtitle": "Entdecken Sie erstaunliche digitale Produkte für Kinder jeden Alters",
+            "cta": "Produkte Erkunden",
+            "ctaDemo": "Kostenlose Demos Testen"
+        },
+        "ageGroups": {
+            "title": "Nach Alter Durchsuchen",
+            "toddlers": "Kleinkinder (2-4)",
+            "preschool": "Vorschule (4-6)",
+            "earlyElementary": "Frühe Grundschule (6-8)",
+            "elementary": "Grundschule (8-10)",
+            "preteens": "Vorjugendliche (10-12)"
+        },
+        "buttons": {
+            "tryDemo": "Demo Testen",
+            "learnMore": "Mehr Erfahren",
+            "download": "Herunterladen",
+            "viewAll": "Alle Anzeigen",
+            "filter": "Filtern",
+            "sort": "Sortieren"
+        }
+    }
+}

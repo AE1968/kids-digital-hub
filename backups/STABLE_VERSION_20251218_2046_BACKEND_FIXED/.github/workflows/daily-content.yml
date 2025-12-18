@@ -1,0 +1,52 @@
+name: 🚀 Daily Content Generator
+
+on:
+  schedule:
+    # Rulează în fiecare zi la 4:00 AM UTC (6:00 AM România, 4:00 AM UK)
+    - cron: '0 4 * * *'
+  workflow_dispatch: # Permite rulare manuală din GitHub UI
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          pip install requests pillow
+
+      - name: 🎨 Generate daily content
+        run: |
+          echo "🚀 Starting daily content generation..."
+          python daily_content_manager.py
+          echo "✅ Content generation complete!"
+
+      - name: 📊 Check for changes
+        id: check_changes
+        run: |
+          git diff --quiet || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: 💾 Commit and push changes
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git config --local user.email "nexus@kidsdigitalhub.com"
+          git config --local user.name "NEXUS AI Bot"
+          git add -A
+          git commit -m "🤖 Auto-generated daily content - $(date +'%Y-%m-%d')"
+          git push
+
+      - name: 🎉 Success notification
+        run: |
+          echo "✨ Daily content sync completed successfully!"
+          echo "📅 Date: $(date)"
+          echo "🌐 Site will auto-deploy via Netlify"

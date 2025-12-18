@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>My Hub - Kids Digital Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #F5F7FA;
+        }
+
+        .dashboard-header {
+            background: #00897B;
+            padding: 15px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 5px solid #00695C;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar-circle {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 3px solid #00695C;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-bottom: 5px solid #ddd;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-count {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .btn-action:active {
+            transform: translateY(2px);
+        }
+
+        .premium-teaser {
+            background: linear-gradient(135deg, #FFF9C4 0%, #FFF176 100%);
+            margin: 20px;
+            padding: 30px;
+            border-radius: 30px;
+            text-align: center;
+            border: 3px dashed #FBC02D;
+        }
+
+        .btn-logout {
+            background: white;
+            color: #00897B;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .admin-panel {
+            background: #ffebee;
+            border: 2px solid #ef5350;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 20px;
+            display: none;
+        }
+    </style>
+    <!-- GoatCounter Analytics -->
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+
+<body>
+
+    <header class="dashboard-header">
+        <div class="user-profile">
+            <div class="avatar-circle">🦖</div>
+            <div>
+                <h2 style="margin:0;" id="user-name-display">Guest</h2>
+                <span style="font-size:0.9rem; opacity:0.9;" id="storage-display">0% Storage Used</span>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div class="coin-badge"
+                style="background: rgba(255,215,0,0.2); border: 2px solid #FFD700; padding: 0.5rem 1rem; border-radius: 20px; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.2rem;">🪙</span>
+                <span id="coin-balance-display" style="font-weight: bold; color: #ffd700;">0</span>
+            </div>
+            <a href="index.html" class="btn-logout">Back</a>
+            <button id="btn-logout" class="btn-logout" onclick="logout()" style="display:none;">Logout</button>
+        </div>
+    </header>
+
+    <!-- PARENT LOGIN SECTION -->
+    <section id="login-section" style="padding: 50px 20px; text-align: center;">
+        <div
+            style="background: white; max-width: 400px; margin: 0 auto; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <h2 style="color: #00897B; margin-bottom: 20px;">Parent Dashboard</h2>
+            <p style="color: #666; margin-bottom: 20px;">Please enter your password to access settings and stats.</p>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <input type="password" id="login-pass"
+                    style="width: 100%; padding: 12px; border-radius: 15px; border: 2px solid #eee; margin-bottom: 20px; text-align: center; font-size: 1.2rem;"
+                    placeholder="••••••••">
+                <button type="submit" class="btn-action" style="background: #00897B; color: white;">Access Hub</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- PROFILE SECTION -->
+    <section id="profile-section" style="display:none;">
+        <div style="text-align: center; padding: 30px 20px;">
+            <h1 id="welcome-message" style="color: #333;">Welcome back!</h1>
+            <p style="color: #777;">Here is what's happening in your creative world.</p>
+        </div>
+
+        <div class="stats-container">
+            <!-- DRAWINGS -->
+            <div class="stat-card card-drawings">
+                <span class="stat-icon">🎨</span>
+                <div class="stat-label">Drawings</div>
+                <div class="stat-count">0/10</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%; background: #FF7043;"></div>
+                </div>
+                <button class="btn-action" style="background:#FFCCBC; color:#BF360C;"
+                    onclick="location.href='gallery-drawings.html'">View Gallery</button>
+            </div>
+
+            <!-- GAMES -->
+            <div class="stat-card card-games">
+                <span class="stat-icon">🎮</span>
+                <div class="stat-label">Games Played</div>
+                <div class="stat-count">0/10</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%; background: #42A5F5;"></div>
+                </div>
+                <button class="btn-action" style="background:#BBDEFB; color:#0D47A1;"
+                    onclick="location.href='gallery-games.html'">Play Games</button>
+            </div>
+
+            <!-- STORIES -->
+            <div class="stat-card card-stories">
+                <span class="stat-icon">📚</span>
+                <div class="stat-label">Stories Read</div>
+                <div class="stat-count">0/10</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%; background: #66BB6A;"></div>
+                </div>
+                <button class="btn-action" style="background:#C8E6C9; color:#1B5E20;"
+                    onclick="location.href='gallery-stories.html'">Read Library</button>
+            </div>
+
+            <!-- BONUS -->
+            <div class="stat-card" style="border-color: #FFD700;">
+                <span class="stat-icon">🎁</span>
+                <div class="stat-label">Bonus Code</div>
+                <div style="margin-top: 10px;">
+                    <input type="text" id="redeem-input" placeholder="CODE123"
+                        style="width:100%; padding:8px; border-radius:10px; border:1px solid #ddd; text-align:center; text-transform:uppercase; margin-bottom:5px;">
+                    <button class="btn-action" style="background:#FFD700; color:#5D4037;"
+                        onclick="redeemBonus()">Redeem</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACHIEVEMENT BADGES -->
+        <div style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+            <h3 style="color: #444; margin-bottom: 20px;">🏆 My Achievements</h3>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                <div class="badge" title="First Coloring" style="opacity: 0.3; text-align: center; width: 100px;">
+                    <div
+                        style="font-size: 3rem; background: #eee; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                        🖍️</div>
+                    <p style="font-size: 0.75rem; font-weight: bold; margin-top: 5px;">Creative Star</p>
+                </div>
+                <div class="badge" title="Bookworm" style="opacity: 0.3; text-align: center; width: 100px;">
+                    <div
+                        style="font-size: 3rem; background: #eee; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                        🦉</div>
+                    <p style="font-size: 0.75rem; font-weight: bold; margin-top: 5px;">Bookworm</p>
+                </div>
+                <div class="badge" title="Game Master" style="opacity: 0.3; text-align: center; width: 100px;">
+                    <div
+                        style="font-size: 3rem; background: #eee; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                        🕹️</div>
+                    <p style="font-size: 0.75rem; font-weight: bold; margin-top: 5px;">Game Master</p>
+                </div>
+                <div class="badge" title="Nexus Friend" style="opacity: 0.3; text-align: center; width: 100px;">
+                    <div
+                        style="font-size: 3rem; background: #eee; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                        🤖</div>
+                    <p style="font-size: 0.75rem; font-weight: bold; margin-top: 5px;">Nexus Friend</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- HUB STATS -->
+        <div style="background: #e0f2f1; padding: 40px 20px; margin-top: 30px; border-radius: 50px 50px 0 0;">
+            <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+                <h3 style="color: #00796b; margin-bottom: 20px;">🌍 World Impact</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+                    <div>
+                        <div style="font-size: 2rem; font-weight: bold; color: #00897b;">1,240+</div>
+                        <p style="font-size: 0.8rem; color: #666;">Total Creations</p>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: bold; color: #00897b;">450+</div>
+                        <p style="font-size: 0.8rem; color: #666;">Safe Messages</p>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: bold; color: #00897b;">5,000+</div>
+                        <p style="font-size: 0.8rem; color: #666;">Smiles Generated</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN PANEL -->
+        <div id="admin-panel" class="admin-panel"
+            style="margin-top: 40px; border-radius: 0 0 30px 30px; background: #fff;">
+            <h3 style="color:#c62828; margin-top:0; border-bottom: 2px solid #ffcdd2; padding-bottom: 10px;">🛡️
+                Parental Control Center</h3>
+            <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:15px;">
+                <div
+                    style="background:#f9f9f9; padding:20px; border-radius:20px; flex:1; min-width:280px; border: 1px solid #eee;">
+                    <h4 style="margin:0 0 10px 0;">⏳ Screen Time Management</h4>
+                    <p style="font-size: 0.8rem; color: #888; margin-bottom: 15px;">Restrict access to specific hours
+                        for a healthy balance.</p>
+                    <label style="font-size:0.8rem; color:#666; font-weight: bold;">Daily Active Window:</label>
+                    <div style="display:flex; align-items:center; gap:10px; margin-top:5px;">
+                        <input type="number" id="setting-start-hour" value="8"
+                            style="width:60px; padding:8px; border-radius: 10px; border: 1px solid #ddd;">
+                        <span style="font-weight: bold;">to</span>
+                        <input type="number" id="setting-end-hour" value="20"
+                            style="width:60px; padding:8px; border-radius: 10px; border: 1px solid #ddd;">
+                    </div>
+                    <button class="btn-action"
+                        style="background:#4CAF50; color:white; margin-top:15px; box-shadow: 0 4px 0 #388e3c;"
+                        onclick="saveParentSettings()">Save Restrictions</button>
+                </div>
+                <div
+                    style="background:#f9f9f9; padding:20px; border-radius:20px; flex:1; min-width:280px; border: 1px solid #eee;">
+                    <h4 style="margin:0 0 10px 0;">💼 Hub Administration</h4>
+                    <p style="font-size: 0.8rem; color: #888; margin-bottom: 15px;">Direct access to fulfillment,
+                        backend logs, and stats.</p>
+                    <div style="display: grid; gap: 10px;">
+                        <button class="btn-action"
+                            style="background:#2196F3; color:white; display: flex; align-items: center; justify-content: center; gap: 8px;"
+                            onclick="window.open('https://web-production-b215.up.railway.app/admin', '_blank')"><span>📦</span>
+                            Production Dashboard</button>
+                        <button class="btn-action"
+                            style="background:#66BB6A; color:white; display: flex; align-items: center; justify-content: center; gap: 8px;"
+                            onclick="location.href='admin_messages.html'"><span>📬</span> Nexus Inbox (Live
+                            Traffic)</button>
+                        <button class="btn-action"
+                            style="background:#9C27B0; color:white; display: flex; align-items: center; justify-content: center; gap: 8px;"
+                            onclick="location.href='nexus_story.html'"><span>📖</span> The Genesis of Nexus</button>
+                        <button class="btn-action"
+                            style="background:#FF9800; color:white; display: flex; align-items: center; justify-content: center; gap: 8px;"
+                            onclick="addAdminCoins()"><span>🪙</span> Inject 100 Reward Coins</button>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="margin-top:20px; text-align:center; font-size:0.8rem; color:#999; border-top: 1px solid #eee; padding-top: 15px;">
+                NEXUS AI STATUS: <span style="color:#4CAF50; font-weight:bold;">● STABLE & LEARNING</span> | Last Sync:
+                <span id="sync-time">Just now</span>
+            </div>
+        </div>
+
+        <!-- TEASERS -->
+        <div class="premium-teaser" onclick="location.href='messenger.html'"
+            style="cursor:pointer; background: #f3e5f5; border-color: #ce93d8;">
+            <div style="font-size:3rem;">👫</div>
+            <h2>Safe Kids Messenger</h2>
+            <p>Connect with friends and share your art in our 100% moderated environment!</p>
+            <button class="btn-action"
+                style="max-width:200px; background:white; color:#AB47BC; border:2px solid #AB47BC;">Join the
+                Chat</button>
+        </div>
+
+        <div class="premium-teaser" style="background: #fff8e1; border: 3px solid #ffcc80; cursor:pointer;"
+            onclick="location.href='payment.html'">
+            <div style="font-size:3rem;">👑</div>
+            <h2 style="color: #ff8f00;">Elite Member Status</h2>
+            <p>Get priority fulfillment, 50GB cloud storage, and early access to new AI games!</p>
+            <button class="btn-action"
+                style="max-width:200px; background:#FF8F00; color:white; box-shadow: 0 4px 0 #cc7000;">Unlock
+                Everything</button>
+        </div>
+    </section>
+
+    <!-- SCRIPTS -->
+    <script src="js/auth.js"></script>
+    <script src="js/time_manager.js"></script>
+    <script src="js/economy.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.TimeManager) TimeManager.init();
+            if (window.EconomyManager) EconomyManager.init();
+
+            // auth is already initialized in js/auth.js
+            const user = auth.getUser();
+
+            if (user) {
+                // User is recognized
+                document.getElementById('user-name-display').textContent = user.username;
+                document.getElementById('welcome-message').textContent = `Welcome back, ${user.username}!`;
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('profile-section').style.display = 'block';
+                document.getElementById('btn-logout').style.display = 'block';
+
+                // Admin mode?
+                if (localStorage.getItem('kdh_admin_mode') === 'true') {
+                    document.getElementById('admin-panel').style.display = 'block';
+                }
+
+                updateDashboardStats();
+                updateStats(); // Live fetch
+                setInterval(updateStats, 5000);
+            } else {
+                // Just show login form
+                document.getElementById('login-section').style.display = 'block';
+                document.getElementById('profile-section').style.display = 'none';
+            }
+        });
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('login-pass').value;
+            // OFFICIAL ADMIN CREDENTIALS
+            if (pass === 'Andrada_1968!') {
+                localStorage.setItem('kdh_user', JSON.stringify({ username: 'Admin', avatar: '🏰' }));
+                localStorage.setItem('kdh_admin_mode', 'true');
+                window.location.reload();
+            } else {
+                alert('Access Denied: Invalid Password!');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('kdh_user');
+            localStorage.removeItem('kdh_admin_mode');
+            window.location.href = 'index.html';
+        }
+
+        function updateDashboardStats() {
+            const cntDrawings = localStorage.getItem('kdh_cnt_drawings') || 0;
+            const cntGames = localStorage.getItem('kdh_cnt_games') || 0;
+            const cntStories = localStorage.getItem('kdh_cnt_stories') || 0;
+
+            updateStatCard('.card-drawings', cntDrawings);
+            updateStatCard('.card-games', cntGames);
+            updateStatCard('.card-stories', cntStories);
+        }
+
+        function updateStatCard(selector, count) {
+            const card = document.querySelector(selector);
+            if (!card) return;
+            card.querySelector('.stat-count').textContent = `${count}/10`;
+            card.querySelector('.progress-fill').style.width = `${Math.min(count * 10, 100)}%`;
+        }
+
+        function updateStats() {
+            fetch('data/stats.json?t=' + Date.now())
+                .then(res => res.json())
+                .then(data => {
+                    updateStatCard('.card-drawings', data.drawings || 0);
+                    updateStatCard('.card-games', data.games || 0);
+                    updateStatCard('.card-stories', data.stories || 0);
+                })
+                .catch(() => console.log('Stats update skipped (Offline/Missing)'));
+        }
+
+        function saveParentSettings() {
+            const start = parseInt(document.getElementById('setting-start-hour').value);
+            const end = parseInt(document.getElementById('setting-end-hour').value);
+            if (window.TimeManager) {
+                TimeManager.setParentSettings(start, end, true);
+                alert(`Settings Saved! Child access set to ${start}:00 - ${end}:00`);
+            }
+        }
+
+        function addAdminCoins() {
+            if (window.EconomyManager) {
+                EconomyManager.addCoins(100);
+                alert("100 Coins Added (Parent Bonus)");
+                location.reload();
+            }
+        }
+
+        function redeemBonus() {
+            const input = document.getElementById('redeem-input');
+            const code = input.value.trim().toUpperCase();
+            if (!code) return;
+
+            if (window.EconomyManager) {
+                const result = EconomyManager.redeemCode(code);
+                alert(result.message);
+                if (result.success) {
+                    input.value = '';
+                    location.reload();
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

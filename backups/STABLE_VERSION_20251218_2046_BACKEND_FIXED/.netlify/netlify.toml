@@ -1,0 +1,55 @@
+functionsDirectory = "C:\\Users\\adria\\.gemini\\antigravity\\scratch\\kids-digital-hub\\netlify\\functions"
+functionsDirectoryOrigin = "config-v1"
+redirectsOrigin = "config"
+plugins = []
+headers = []
+
+[build]
+edge_functions = "C:\\Users\\adria\\.gemini\\antigravity\\scratch\\kids-digital-hub\\netlify\\edge-functions"
+publish = "C:\\Users\\adria\\.gemini\\antigravity\\scratch\\kids-digital-hub"
+publishOrigin = "config"
+commandOrigin = "ui"
+command = "echo 'No build command needed for static site'"
+functions = "C:\\Users\\adria\\.gemini\\antigravity\\scratch\\kids-digital-hub\\netlify\\functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[functions]
+
+[functions."*"]
+
+[[redirects]]
+from = "/api/*"
+to = "https://web-production-b215.up.railway.app/api/:splat"
+status = 200.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "https://kidsdigitalhub.com/*"
+to = "https://www.kidsdigitalhub.com/:splat"
+status = 301.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

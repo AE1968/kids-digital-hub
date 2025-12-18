@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Parent Dashboard - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card .icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-card .label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .chart-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-card h3 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .activity-list {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .activity-list h3 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .activity-icon.game {
+            background: #e3f2fd;
+        }
+
+        .activity-icon.drawing {
+            background: #fce4ec;
+        }
+
+        .activity-icon.story {
+            background: #fff3e0;
+        }
+
+        .activity-icon.achievement {
+            background: #e8f5e9;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .activity-time {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .controls-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .control-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .control-card h3 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .control-item:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            border-radius: 30px;
+            transition: 0.4s;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.4s;
+        }
+
+        input:checked+.toggle-slider {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .time-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .time-selector input {
+            width: 70px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .achievement {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .achievement.locked {
+            opacity: 0.4;
+            filter: grayscale(1);
+        }
+
+        .achievement .badge {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        .achievement .name {
+            font-size: 0.8rem;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-header">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 10px;">
+            <img src="assets/images/logo_ae.png" alt="AE" style="width: 50px; height: 50px;">
+            <h3 data-i18n="parent_dash_title">Parent Dashboard</h3>
+        </div>
+        <p data-i18n="parent_dash_subtitle">Monitor your child's activity and set controls</p>
+        <a href="index.html" class="back-link" data-i18n="btn_back">← Back to Home</a>
+    </div>
+
+    <div class="container">
+        <!-- Quick Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon">⏱️</div>
+                <div class="value" id="totalTime">0h 0m</div>
+                <div class="label" data-i18n="stat_time">Time Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🎮</div>
+                <div class="value" id="gamesPlayed">0</div>
+                <div class="label" data-i18n="stat_games">Games Played</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🎨</div>
+                <div class="value" id="drawingsCreated">0</div>
+                <div class="label" data-i18n="stat_drawings">Drawings Created</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">📚</div>
+                <div class="value" id="storiesRead">0</div>
+                <div class="label" data-i18n="stat_stories">Stories Read</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🏆</div>
+                <div class="value" id="achievements">0</div>
+                <div class="label" data-i18n="stat_achievements">Achievements</div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-section">
+            <div class="chart-card">
+                <h3 data-i18n="chart_weekly">📊 Activity This Week</h3>
+                <canvas id="weeklyChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3 data-i18n="chart_breakdown">🎯 Activity Breakdown</h3>
+                <canvas id="activityChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-list">
+            <h3>📋 Recent Activity</h3>
+            <div class="activity-item">
+                <div class="activity-icon game">🎮</div>
+                <div class="activity-content">
+                    <div class="activity-title">Played Memory Match</div>
+                    <div class="activity-time">2 minutes ago • Score: 850</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon drawing">🎨</div>
+                <div class="activity-content">
+                    <div class="activity-title">Created a Drawing</div>
+                    <div class="activity-time">15 minutes ago • Saved</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon story">📖</div>
+                <div class="activity-content">
+                    <div class="activity-title">Read "The Shy Dinosaur"</div>
+                    <div class="activity-time">1 hour ago • Completed</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon achievement">🏆</div>
+                <div class="activity-content">
+                    <div class="activity-title">Earned "Math Wizard" Badge</div>
+                    <div class="activity-time">Today • Level 3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parental Controls -->
+        <div class="controls-section">
+            <div class="control-card">
+                <h3 data-i18n="time_controls">⏰ Time Controls</h3>
+                <div class="control-item">
+                    <span>Daily Time Limit</span>
+                    <div class="time-selector">
+                        <input type="number" id="timeLimit" value="120" min="15" max="480"> min
+                    </div>
+                </div>
+                <div class="control-item">
+                    <span>Bedtime Mode</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="bedtimeMode" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- ADMIN TOOLS INTEGRATION -->
+            <div class="control-card" id="adminToolsSection"
+                style="display:none; border: 2px solid #bc13fe; background: #faf5ff;">
+                <h3 style="color: #bc13fe; display: flex; align-items: center; gap: 10px;">
+                    <span>🤖</span> NEXUS Intelligence Center
+                </h3>
+                <div class="control-item">
+                    <span data-i18n="nexus_status">Nexus Server Status</span>
+                    <span id="railway-status" style="font-weight:bold; color:#FF9800;">🔍 PINGING...</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                    <button class="btn" style="background: #2196F3; font-size: 0.8rem; padding: 10px;"
+                        onclick="window.open('https://web-production-b215.up.railway.app/admin', '_blank')">📦 Prod
+                        Dashboard</button>
+                    <button class="btn" style="background: #66BB6A; font-size: 0.8rem; padding: 10px;"
+                        onclick="location.href='admin_messages.html'">📬 Inbox</button>
+                    <button class="btn" style="background: #9C27B0; font-size: 0.8rem; padding: 10px;"
+                        onclick="injectCoins()">🪙 +100 Coins</button>
+                    <button class="btn" style="background: #000; font-size: 0.8rem; padding: 10px;"
+                        onclick="location.href='nexus_core.html'">🧬 Core</button>
+                </div>
+
+                <!-- VIRTUAL AUDITOR REPORT -->
+                <div id="audit-report-container"
+                    style="margin-top: 20px; padding: 15px; background: #fff; border-radius: 15px; border: 1px solid #bc13fe; font-size: 0.85rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-weight: bold; color: #bc13fe;">🛡️ Virtual Auditor</span>
+                        <span id="audit-health-badge"
+                            style="padding: 2px 8px; border-radius: 10px; background: #e8f5e9; color: #2e7d32; font-weight: bold;">Score:
+                            --%</span>
+                    </div>
+                    <div id="audit-timestamp" style="font-size: 0.75rem; color: #666; margin-bottom: 8px;">Last Scan: --
+                    </div>
+                    <div id="audit-issues" style="color: #666;">Scanning system branches...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-card">
+            <h3 data-i18n="content_controls">🔒 Content Controls</h3>
+            <div class="control-item">
+                <span>Premium Content</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="premiumEnabled" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div style="margin-top:20px;">
+                <button class="btn" onclick="saveSettings()" data-i18n="btn_save_settings">💾 Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievements -->
+    <div class="activity-list">
+        <h3>🏆 Achievements Earned</h3>
+        <div class="achievements-grid">
+            <div class="achievement">
+                <div class="badge">⭐</div>
+                <div class="name">First Steps</div>
+            </div>
+            <div class="achievement">
+                <div class="badge">🎨</div>
+                <div class="name">Artist</div>
+            </div>
+            <div class="achievement">
+                <div class="badge">📚</div>
+                <div class="name">Bookworm</div>
+            </div>
+            <div class="achievement">
+                <div class="badge">🧠</div>
+                <div class="name">Memory Master</div>
+            </div>
+            <div class="achievement locked">
+                <div class="badge">🏆</div>
+                <div class="name">Champion</div>
+            </div>
+            <div class="achievement locked">
+                <div class="badge">🚀</div>
+                <div class="name">Explorer</div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="js/translations.js"></script>
+    <script>
+        // Load saved stats
+        function loadStats() {
+            // Check for Admin Mode
+            if (localStorage.getItem('kdh_admin_mode') === 'true') {
+                document.getElementById('adminToolsSection').style.display = 'block';
+                checkSystemHealth();
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => changeLanguage('en'), 100);
+                // Assuming updateSystemStatus and startUptimeTimer are defined elsewhere or will be added
+                // updateSystemStatus();
+                // startUptimeTimer();
+            });
+            const seconds = parseInt(localStorage.getItem('kdh_today_seconds') || '0');
+            const hours = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            document.getElementById('totalTime').textContent = `${hours}h ${mins}m`;
+
+            // Demo stats
+            document.getElementById('gamesPlayed').textContent = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('drawingsCreated').textContent = Math.floor(Math.random() * 5);
+            document.getElementById('storiesRead').textContent = Math.floor(Math.random() * 3);
+            document.getElementById('achievements').textContent = 4;
+        }
+
+        // Weekly Activity Chart
+        const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+        new Chart(weeklyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Minutes',
+                    data: [45, 60, 30, 75, 45, 90, 60],
+                    backgroundColor: 'rgba(102, 126, 234, 0.7)',
+                    borderRadius: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Activity Breakdown Chart
+        const activityCtx = document.getElementById('activityChart').getContext('2d');
+        new Chart(activityCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Games', 'Drawing', 'Stories', 'Learning'],
+                datasets: [{
+                    data: [40, 25, 20, 15],
+                    backgroundColor: [
+                        '#667eea',
+                        '#f093fb',
+                        '#f5576c',
+                        '#4facfe'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        function saveSettings() {
+            const settings = {
+                timeLimit: document.getElementById('timeLimit').value,
+                bedtimeMode: document.getElementById('bedtimeMode').checked,
+                bedtimeStart: document.getElementById('bedtimeStart').value,
+                bedtimeEnd: document.getElementById('bedtimeEnd').value,
+                premiumEnabled: document.getElementById('premiumEnabled').checked,
+                downloadsEnabled: document.getElementById('downloadsEnabled').checked,
+                emailReports: document.getElementById('emailReports').checked
+            };
+
+            localStorage.setItem('kdh_parent_settings', JSON.stringify(settings));
+            alert('✅ Settings saved successfully!');
+        }
+
+        // Load settings
+        function loadSettings() {
+            const saved = localStorage.getItem('kdh_parent_settings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                document.getElementById('timeLimit').value = settings.timeLimit || 120;
+                document.getElementById('bedtimeMode').checked = settings.bedtimeMode !== false;
+                document.getElementById('bedtimeStart').value = settings.bedtimeStart || '22:00';
+                document.getElementById('bedtimeEnd').value = settings.bedtimeEnd || '07:00';
+                document.getElementById('premiumEnabled').checked = settings.premiumEnabled !== false;
+                document.getElementById('downloadsEnabled').checked = settings.downloadsEnabled || false;
+                document.getElementById('emailReports').checked = settings.emailReports !== false;
+            }
+        }
+
+        async function loadAuditReport() {
+            try {
+                const response = await fetch('data/audit_report.json?t=' + Date.now());
+                const data = await response.json();
+
+                const scoreEl = document.getElementById('audit-health-badge');
+                scoreEl.textContent = `Score: ${data.health_score}%`;
+
+                if (data.health_score < 90) {
+                    scoreEl.style.background = '#ffebee';
+                    scoreEl.style.color = '#c62828';
+                }
+
+                document.getElementById('audit-timestamp').textContent = `Last Scan: ${data.timestamp}`;
+
+                const issuesEl = document.getElementById('audit-issues');
+                const errors = (data.js_errors || []).length + (data.broken_links || []).length;
+
+                if (errors === 0) {
+                    issuesEl.innerHTML = '<span style="color:#4CAF50;">✅ No critical vulnerabilities detected.</span>';
+                } else {
+                    issuesEl.innerHTML = `<span style="color:#f44336;">⚠️ Found ${errors} potential issues. Check logs.</span>`;
+                }
+            } catch (e) {
+                console.log("Audit report not found yet.");
+            }
+        }
+
+        function injectCoins() {
+            if (confirm("Admin: Inject 100 Premium Coins?")) {
+                let coins = parseInt(localStorage.getItem('kdh_coins') || '0');
+                localStorage.setItem('kdh_coins', coins + 100);
+                alert("🪙 100 Coins Injected!");
+                location.reload();
+            }
+        }
+
+        async function checkSystemHealth() {
+            const statusEl = document.getElementById('railway-status');
+            try {
+                const response = await fetch('https://web-production-b215.up.railway.app/health', { mode: 'cors' });
+                if (response.ok) {
+                    statusEl.textContent = '✅ ONLINE';
+                    statusEl.style.color = '#4CAF50';
+                } else {
+                    throw new Error();
+                }
+            } catch (error) {
+                statusEl.textContent = '⚠️ SLEEPING';
+                statusEl.style.color = '#f44336';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => changeLanguage('en'), 100);
+            loadStats();
+            loadSettings();
+            checkSystemHealth();
+            loadAuditReport();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Suggestions - Kids Digital Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .suggestions-container {
+            max-width: 800px;
+            margin: 100px auto 50px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .suggestions-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .suggestions-header h1 {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestions-header p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .suggestion-form {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .suggestions-list {
+            margin-top: 40px;
+        }
+
+        .suggestions-list h2 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .suggestion-item {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestion-item .category {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .suggestion-item .author {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .suggestion-item .content {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="suggestions-container">
+        <div class="suggestions-header">
+            <h1>💡 Your Ideas Matter!</h1>
+            <p>Tell us what you'd love to see on Kids Digital Hub</p>
+        </div>
+
+        <div class="suggestion-form">
+            <form id="suggestionForm" onsubmit="submitSuggestion(event)">
+                <div class="form-group">
+                    <label for="name">Your Name (or Nickname) 👤</label>
+                    <input type="text" id="name" name="name" placeholder="e.g., SuperKid123" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">What type of content? 🎨</label>
+                    <select id="category" name="category" required>
+                        <option value="">-- Choose a category --</option>
+                        <option value="Coloring">🖍️ Coloring Pages</option>
+                        <option value="Games">🧩 Games & Puzzles</option>
+                        <option value="Stories">📚 Stories & Tales</option>
+                        <option value="Activities">✂️ Activities & Crafts</option>
+                        <option value="Videos">🎥 Videos & Animations</option>
+                        <option value="Other">✨ Other Ideas</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="suggestion">Your Suggestion 💭</label>
+                    <textarea id="suggestion" name="suggestion"
+                        placeholder="Tell us your idea! What would you like to see? Be creative! 🌟"
+                        required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">🚀 Submit My Idea!</button>
+            </form>
+        </div>
+
+        <div class="suggestions-list">
+            <h2>✨ Recent Suggestions</h2>
+            <div id="suggestionsList">
+                <!-- Sample suggestions -->
+                <div class="suggestion-item">
+                    <span class="category">🧩 Games</span>
+                    <div class="author">By: MagicPanda - 2 days ago</div>
+                    <div class="content">
+                        I would love to see a memory matching game with animals from around the world! 🐼🦁🐨
+                    </div>
+                </div>
+
+                <div class="suggestion-item">
+                    <span class="category">📚 Stories</span>
+                    <div class="author">By: StarReader - 1 week ago</div>
+                    <div class="content">
+                        Can we have bedtime stories about space adventures? Stories about astronauts and friendly
+                        aliens! 🚀👽
+                    </div>
+                </div>
+
+                <div class="suggestion-item">
+                    <span class="category">🖍️ Coloring</span>
+                    <div class="author">By: ArtKid - 1 week ago</div>
+                    <div class="content">
+                        More dinosaur coloring pages please! Especially T-Rex and Triceratops! 🦕🦖
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <a href="index.html" class="back-btn">🏠 Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        function submitSuggestion(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const category = document.getElementById('category').value;
+            const suggestion = document.getElementById('suggestion').value;
+
+            // Get category emoji
+            const categoryEmojis = {
+                'Coloring': '🖍️',
+                'Games': '🧩',
+                'Stories': '📚',
+                'Activities': '✂️',
+                'Videos': '🎥',
+                'Other': '✨'
+            };
+
+            // Create new suggestion element
+            const suggestionItem = document.createElement('div');
+            suggestionItem.className = 'suggestion-item';
+            suggestionItem.style.animation = 'fadeIn 0.5s';
+            suggestionItem.innerHTML = `
+        <span class="category">${categoryEmojis[category]} ${category}</span>
+        <div class="author">By: ${name} - Just now</div>
+        <div class="content">${suggestion}</div>
+      `;
+
+            // Add to list (at the top)
+            const list = document.getElementById('suggestionsList');
+            list.insertBefore(suggestionItem, list.firstChild);
+
+            // Show success message
+            alert('🎉 Thank you for your suggestion! We love hearing from you! 💖');
+
+            // Reset form
+            document.getElementById('suggestionForm').reset();
+
+            // In a real application, you would send this data to a server
+            // Get User Role for Smart Logic
+            const userJson = localStorage.getItem('kdh_user');
+            let userRole = 'guest';
+            if (userJson) {
+                try {
+                    const user = JSON.parse(userJson);
+                    userRole = user.role || 'guest';
+                } catch (e) {
+                    console.log('Error parsing user:', e);
+                }
+            }
+
+            // Sending to Railway AI Server with Role
+            fetch('https://web-production-b215.up.railway.app/api/suggestion', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, category, suggestion, role: userRole })
+            })
+                .then(res => res.json())
+                .then(data => console.log('Server response:', data))
+                .catch(err => console.error('Error sending to server:', err));
+
+            // For now, we'll also store it in localStorage for immediate UI update
+            const suggestions = JSON.parse(localStorage.getItem('suggestions') || '[]');
+            suggestions.unshift({
+                name,
+                category,
+                suggestion,
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('suggestions', JSON.stringify(suggestions));
+        }
+
+        // Load suggestions from localStorage on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const suggestions = JSON.parse(localStorage.getItem('suggestions') || '[]');
+            const list = document.getElementById('suggestionsList');
+
+            suggestions.forEach(item => {
+                const categoryEmojis = {
+                    'Coloring': '🖍️',
+                    'Games': '🧩',
+                    'Stories': '📚',
+                    'Activities': '✂️',
+                    'Videos': '🎥',
+                    'Other': '✨'
+                };
+
+                const timeAgo = getTimeAgo(new Date(item.timestamp));
+
+                const suggestionItem = document.createElement('div');
+                suggestionItem.className = 'suggestion-item';
+                suggestionItem.innerHTML = `
+          <span class="category">${categoryEmojis[item.category]} ${item.category}</span>
+          <div class="author">By: ${item.name} - ${timeAgo}</div>
+          <div class="content">${item.suggestion}</div>
+        `;
+
+                list.insertBefore(suggestionItem, list.firstChild);
+            });
+        });
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            const intervals = {
+                year: 31536000,
+                month: 2592000,
+                week: 604800,
+                day: 86400,
+                hour: 3600,
+                minute: 60
+            };
+
+            for (const [unit, secondsInUnit] of Object.entries(intervals)) {
+                const interval = Math.floor(seconds / secondsInUnit);
+                if (interval >= 1) {
+                    return `${interval} ${unit}${interval > 1 ? 's' : ''} ago`;
+                }
+            }
+            return 'Just now';
+        }
+
+        // Add fade-in animation
+        const style = document.createElement('style');
+        style.textContent = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
