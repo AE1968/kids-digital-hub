@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
     <title>Admin - Messages & Suggestions</title>
+    <script src="js/auth.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <style>
@@ -22,9 +23,38 @@
             padding: 20px;
         }
 
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
         .admin-container {
             max-width: 1400px;
             margin: 0 auto;
+            filter: blur(20px);
+            pointer-events: none;
+        }
+
+        .admin-container.unlocked {
+            filter: none;
+            pointer-events: auto;
         }
 
         .admin-header {
@@ -353,52 +383,87 @@
             <h1>📬 Admin Panel - Messages & Suggestions</h1>
             <p>Manage all messages received from users</p>
         </div>
+    </div>
 
-        <div class="stats-grid">
-            <!-- LIVE SYSTEM HEALTH -->
-            <div class="stat-card" style="border-top: 5px solid #4CAF50;">
-                <div class="label" style="margin-bottom: 5px;">🧠 AI SERVER STATUS</div>
-                <div id="railway-status" style="font-weight: bold; color: #4CAF50;">📡 CONNECTING...</div>
-                <button class="btn-action" style="margin-top: 10px; font-size: 0.7rem; padding: 5px;"
-                    onclick="checkSystemHealth()">RE-SCAN SYSTEM</button>
-            </div>
-            <div class="stat-card">
-                <div class="number" id="totalMessages">0</div>
-                <div class="label">Total Messages</div>
-            </div>
-            <div class="stat-card" style="background: #FFF9C4;">
-                <div class="number" id="robotFixesCount">0</div>
-                <div class="label">Auto-Fixes Done</div>
-            </div>
-            <div class="stat-card">
-                <div class="number" id="unreadMessages">0</div>
-                <div class="label">Priority Unread</div>
-            </div>
-        </div>
-
-        <div class="filters">
-            <button class="filter-btn active" onclick="filterMessages('all')">All</button>
-            <button class="filter-btn" onclick="filterMessages('unread')">Unread</button>
-            <button class="filter-btn" onclick="filterMessages('contact')">Contact</button>
-            <button class="filter-btn" onclick="filterMessages('suggestion')">Suggestions</button>
-            <button class="filter-btn" style="border-color: #4CAF50; color: #4CAF50;"
-                onclick="filterMessages('resolutions')">🤖 Robot Fixes</button>
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="🔍 Search messages..." onkeyup="searchMessages()">
-            </div>
-        </div>
-
-        <div class="messages-container">
-            <div id="messagesList"></div>
-            <div id="resolutionsList" style="display:none;"></div>
-        </div>
-
-        <div style="text-align: center;">
-            <a href="index.html" class="back-link">🏠 Back to Site</a>
+    <!-- Login Overlay -->
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2 style="color:#1e3c72; margin-bottom: 20px;">Restricted Access</h2>
+            <p style="margin-bottom:20px; color:#666;">Please enter the Master Password to continue.</p>
+            <input type="password" id="admin-pass"
+                style="width: 100%; padding: 15px; border-radius: 10px; border: 2px solid #ddd; margin-bottom: 20px; text-align: center; font-size: 1.2rem;"
+                placeholder="••••••••">
+            <button onclick="checkAdminPass()"
+                style="width: 100%; padding: 15px; background: #1e3c72; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">Access
+                Control Center</button>
         </div>
     </div>
 
+    <div class="stats-grid">
+        <!-- LIVE SYSTEM HEALTH -->
+        <div class="stat-card" style="border-top: 5px solid #4CAF50;">
+            <div class="label" style="margin-bottom: 5px;">🧠 AI SERVER STATUS</div>
+            <div id="railway-status" style="font-weight: bold; color: #4CAF50;">📡 CONNECTING...</div>
+            <button class="btn-action" style="margin-top: 10px; font-size: 0.7rem; padding: 5px;"
+                onclick="checkSystemHealth()">RE-SCAN SYSTEM</button>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="totalMessages">0</div>
+            <div class="label">Total Messages</div>
+        </div>
+        <div class="stat-card" style="background: #FFF9C4;">
+            <div class="number" id="robotFixesCount">0</div>
+            <div class="label">Auto-Fixes Done</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="unreadMessages">0</div>
+            <div class="label">Priority Unread</div>
+        </div>
+    </div>
+
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterMessages('all')">All</button>
+        <button class="filter-btn" onclick="filterMessages('unread')">Unread</button>
+        <button class="filter-btn" onclick="filterMessages('contact')">Contact</button>
+        <button class="filter-btn" onclick="filterMessages('suggestion')">Suggestions</button>
+        <button class="filter-btn" style="border-color: #4CAF50; color: #4CAF50;"
+            onclick="filterMessages('resolutions')">🤖 Robot Fixes</button>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search messages..." onkeyup="searchMessages()">
+        </div>
+    </div>
+
+    <div class="messages-container">
+        <div id="messagesList"></div>
+        <div id="resolutionsList" style="display:none;"></div>
+    </div>
+
+    <a href="index.html" class="back-link">🏠 Back to Site</a>
+    </div>
+    </div>
+
     <script>
+        function checkAdminPass() {
+            const pass = document.getElementById('admin-pass').value;
+            if (pass === 'Andrada_1968!') {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.querySelector('.admin-container').classList.add('unlocked');
+                localStorage.setItem('kdh_admin_mode', 'true');
+                loadMessages();
+            } else {
+                alert('Invalid Password!');
+            }
+        }
+
+        // Auto-unlock if already in admin mode
+        window.addEventListener('load', () => {
+            if (localStorage.getItem('kdh_admin_mode') === 'true') {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.querySelector('.admin-container').classList.add('unlocked');
+                loadMessages();
+            }
+        });
+
         let allMessages = [];
         let currentFilter = 'all';
 

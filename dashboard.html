@@ -289,7 +289,7 @@
             if (window.TimeManager) TimeManager.init();
             if (window.EconomyManager) EconomyManager.init();
 
-            const auth = new AuthManager();
+            // auth is already initialized in js/auth.js
             const user = auth.getUser();
 
             if (user) {
