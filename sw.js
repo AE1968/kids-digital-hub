@@ -1,7 +1,7 @@
 // Kids Digital Hub - Service Worker
 // Enables offline access and caching for PWA
 
-const CACHE_NAME = 'kids-hub-v1';
+const CACHE_NAME = 'nexus-genesis-v1';
 const OFFLINE_URL = '/offline.html';
 
 // Files to cache immediately

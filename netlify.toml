@@ -1,12 +1,7 @@
 [build]
+  command = "echo 'Forcing Nexus Rebuild'"
   publish = "."
   functions = "netlify/functions"
-
-[[redirects]]
-  from = "https://kidsdigitalhub.com/*"
-  to = "https://www.kidsdigitalhub.com/:splat"
-  status = 301
-  force = true
 
 [[redirects]]
   from = "/*"
