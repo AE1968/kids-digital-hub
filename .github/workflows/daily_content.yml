@@ -32,8 +32,8 @@ jobs:
       - name: 🤖 Generate New AI Products
         run: python generate_ai_products.py
         
-      - name: 🛡️ Verify & Optimize Site
-        run: python utils/site_health.py
+      - name: 🩺 Robot Doctor - Auto-Fix & Verify
+        run: python utils/robot_doctor.py
 
       - name: Commit & Push Updates
         run: |
