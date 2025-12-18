@@ -1,6 +1,6 @@
 """
-Flask Webhook Server pentru procesare automată comenzi
-Rulează pe Railway.app sau orice platformă cloud
+Flask Webhook Server for Automatic Order Processing
+Runs on Railway.app or any cloud platform
 """
 
 from flask import Flask, request, jsonify, render_template_string
@@ -13,22 +13,23 @@ from webhook_order_handler import process_new_order
 
 app = Flask(__name__)
 
-# Configurare
+# Configuration
 WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'your-secret-key-change-this')
 PORT = int(os.getenv('PORT', 8080))
 
 # Admin Dashboard HTML
 ADMIN_DASHBOARD = """
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
     <title>Kids Digital Hub - Admin Dashboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Fredoka', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
@@ -146,42 +147,42 @@ ADMIN_DASHBOARD = """
     <div class="container">
         <div class="header">
             <h1>🎨 Kids Digital Hub - Admin Dashboard</h1>
-            <p class="subtitle">Sistem automat de generare și livrare produse</p>
+            <p class="subtitle">Automatic product generation & delivery system</p>
         </div>
 
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-label">📦 Total Comenzi</div>
+                <div class="stat-label">📦 Total Orders</div>
                 <div class="stat-number">{{ total_orders }}</div>
-                <span class="status active">Activ</span>
+                <span class="status active">Active</span>
             </div>
             <div class="stat-card">
-                <div class="stat-label">🎨 Produse Generate</div>
+                <div class="stat-label">🎨 Generated Products</div>
                 <div class="stat-number">{{ total_products }}</div>
                 <span class="status active">AI Enabled</span>
             </div>
             <div class="stat-card">
-                <div class="stat-label">💰 Vânzări Totale</div>
-                <div class="stat-number">${{ total_revenue }}</div>
+                <div class="stat-label">💰 Total Sales</div>
+                <div class="stat-number">£{{ total_revenue }}</div>
                 <span class="status active">Live</span>
             </div>
             <div class="stat-card">
-                <div class="stat-label">🚀 Status Server</div>
+                <div class="stat-label">🚀 Server Status</div>
                 <div class="stat-number">✓</div>
                 <span class="status active">Online</span>
             </div>
         </div>
 
         <div class="section">
-            <h2>📊 Comenzi Recente</h2>
+            <h2>📊 Recent Orders</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>ID Comandă</th>
-                        <th>Client</th>
-                        <th>Produs</th>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Product</th>
                         <th>Status</th>
-                        <th>Data</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -199,37 +200,37 @@ ADMIN_DASHBOARD = """
         </div>
 
         <div class="section">
-            <h2>⚙️ Configurare Sistem</h2>
-            <p><strong>🔑 Printful API:</strong> <span class="status active">Configurat</span></p>
-            <p><strong>🤖 Google AI API:</strong> <span class="status active">Configurat</span></p>
+            <h2>⚙️ System Configuration</h2>
+            <p><strong>🔑 Printful API:</strong> <span class="status active">Configured</span></p>
+            <p><strong>🤖 Google AI API:</strong> <span class="status active">Configured</span></p>
             <p><strong>🌐 Webhook URL:</strong> <code>{{ webhook_url }}</code></p>
-            <p><strong>📅 Ultima actualizare:</strong> {{ last_update }}</p>
+            <p><strong>📅 Last Update:</strong> {{ last_update }}</p>
             <br>
-            <button class="btn" onclick="testWebhook()">🧪 Testează Webhook</button>
-            <button class="btn" onclick="generateProducts()">🎨 Generează Produse Noi</button>
+            <button class="btn" onclick="testWebhook()">🧪 Test Webhook</button>
+            <button class="btn" onclick="generateProducts()">🎨 Generate New Products</button>
         </div>
     </div>
 
     <script>
         function testWebhook() {
-            alert('🧪 Testare webhook în curs...');
+            alert('🧪 Testing webhook...');
             fetch('/api/test-webhook', { method: 'POST' })
                 .then(r => r.json())
                 .then(data => alert('✅ ' + data.message))
-                .catch(e => alert('❌ Eroare: ' + e));
+                .catch(e => alert('❌ Error: ' + e));
         }
 
         function generateProducts() {
-            if(confirm('Generezi 5 produse noi cu AI?')) {
-                alert('🎨 Generare în curs... Verifică în câteva minute!');
+            if(confirm('Generate 5 new products with AI?')) {
+                alert('🎨 Generation in progress... Check back in a few minutes!');
                 fetch('/api/generate-products', { method: 'POST' })
                     .then(r => r.json())
                     .then(data => alert('✅ ' + data.message))
-                    .catch(e => alert('❌ Eroare: ' + e));
+                    .catch(e => alert('❌ Error: ' + e));
             }
         }
 
-        // Auto-refresh la fiecare 30 secunde
+        // Auto-refresh every 30 seconds
         setTimeout(() => location.reload(), 30000);
     </script>
 </body>
@@ -237,7 +238,7 @@ ADMIN_DASHBOARD = """
 """
 
 def verify_webhook_signature(request_data, signature):
-    """Verifică semnătura webhook-ului Printful"""
+    """Verifies Printful webhook signature"""
     computed = hmac.new(
         WEBHOOK_SECRET.encode(),
         request_data,
@@ -247,10 +248,11 @@ def verify_webhook_signature(request_data, signature):
 
 @app.route('/')
 def home():
-    """Pagina principală - redirecționează la admin"""
+    """Main page - redirects to admin"""
     return """
     <html>
     <head>
+        <title>Kids Digital Hub - Webhook Server</title>
         <style>
             body {
                 font-family: Arial;
@@ -288,8 +290,8 @@ def home():
 
 @app.route('/admin')
 def admin_dashboard():
-    """Dashboard admin"""
-    # Încarcă statistici
+    """Admin Dashboard"""
+    # Load statistics
     try:
         with open('orders_log.json', 'r') as f:
             orders = json.load(f)
@@ -302,9 +304,9 @@ def admin_dashboard():
     except:
         stats = {'total_products': 0, 'total_views': 0, 'total_sales': 0}
     
-    # Pregătește date pentru template
+    # Prepare data for template
     recent_orders = []
-    for order in orders[-10:]:  # Ultimele 10 comenzi
+    for order in orders[-10:]:  # Last 10 orders
         recent_orders.append({
             'id': order.get('order_id', 'N/A'),
             'customer': order.get('customer', 'N/A'),
@@ -318,7 +320,7 @@ def admin_dashboard():
         ADMIN_DASHBOARD,
         total_orders=len(orders),
         total_products=stats.get('total_products', 0),
-        total_revenue=stats.get('total_sales', 0) * 7.5,  # Estimare profit
+        total_revenue=stats.get('total_sales', 0) * 7.5,  # Estimated profit
         recent_orders=reversed(recent_orders),
         webhook_url=request.host_url + 'webhook/order',
         last_update=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -326,20 +328,20 @@ def admin_dashboard():
 
 @app.route('/webhook/order', methods=['POST'])
 def webhook_order():
-    """Primește webhook-uri de la Printful când apare o comandă nouă"""
+    """Receives webhooks from Printful for new orders"""
     try:
-        # Verifică semnătura (dacă e configurată)
+        # Verify signature
         signature = request.headers.get('X-Printful-Signature', '')
         if WEBHOOK_SECRET != 'your-secret-key-change-this':
             if not verify_webhook_signature(request.data, signature):
                 return jsonify({'error': 'Invalid signature'}), 403
         
-        # Parsează datele comenzii
+        # Parse order data
         order_data = request.json
         
-        print(f"📦 Comandă nouă primită: {order_data.get('id', 'N/A')}")
+        print(f"📦 New order received: {order_data.get('id', 'N/A')}")
         
-        # Procesează comanda automat
+        # Process order automatically
         process_new_order(order_data)
         
         return jsonify({
@@ -348,7 +350,7 @@ def webhook_order():
         }), 200
         
     except Exception as e:
-        print(f"❌ Eroare procesare comandă: {e}")
+        print(f"❌ Order processing error: {e}")
         return jsonify({
             'status': 'error',
             'message': str(e)
@@ -356,7 +358,7 @@ def webhook_order():
 
 @app.route('/api/test-webhook', methods=['POST'])
 def test_webhook():
-    """Testează webhook-ul cu o comandă fake"""
+    """Tests the webhook with a fake order"""
     test_order = {
         "id": f"TEST-{datetime.now().strftime('%Y%m%d%H%M%S')}",
         "recipient": {
@@ -382,13 +384,13 @@ def test_webhook():
 
 @app.route('/api/generate-products', methods=['POST'])
 def api_generate_products():
-    """Generează produse noi manual"""
+    """Manually triggers product generation"""
     try:
         import subprocess
         subprocess.run(['python', 'generate_ai_products.py'], check=True)
         return jsonify({
             'status': 'success',
-            'message': '5 produse noi generate cu succes!'
+            'message': '5 new products successfully generated!'
         })
     except Exception as e:
         return jsonify({
@@ -398,7 +400,7 @@ def api_generate_products():
 
 @app.route('/health')
 def health():
-    """Health check pentru monitoring"""
+    """Health check for monitoring"""
     return jsonify({
         'status': 'healthy',
         'timestamp': datetime.now().isoformat(),
@@ -409,7 +411,7 @@ if __name__ == '__main__':
     print("=" * 70)
     print("🚀 KIDS DIGITAL HUB - WEBHOOK SERVER")
     print("=" * 70)
-    print(f"📡 Server pornit pe port {PORT}")
+    print(f"📡 Server running on port {PORT}")
     print(f"🌐 Admin Dashboard: http://localhost:{PORT}/admin")
     print(f"📦 Webhook URL: http://localhost:{PORT}/webhook/order")
     print("=" * 70)

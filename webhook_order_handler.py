@@ -1,9 +1,9 @@
 """
-Webhook handler pentru comenzi Printful
-Când apare o comandă nouă:
-1. Generează imaginea produsului cu AI (dacă nu există)
-2. Creează produsul în Printful
-3. Confirmă comanda pentru livrare automată
+Webhook handler for Printful orders
+When a new order appears:
+1. Generate product image with AI (if it doesn't exist)
+2. Create the product in Printful
+3. Confirm the order for automatic fulfillment
 """
 
 import os
@@ -19,43 +19,43 @@ PRINTFUL_API_BASE = "https://api.printful.com"
 
 def generate_product_image_ai(product_name, theme):
     """
-    Generează imaginea produsului folosind Google AI
-    În funcție de tema produsului
+    Generates product image using Google AI
+    Based on the product theme
     """
-    print(f"🎨 Generare imagine AI pentru: {product_name}")
+    print(f"🎨 Generating AI image for: {product_name}")
     
-    # Prompt personalizat bazat pe numele produsului
+    # Custom prompt based on product name
     prompt = f"""Create a cute, colorful children's illustration for '{product_name}' with theme '{theme}'.
     Style: Cartoon, friendly, vibrant colors, suitable for kids aged 3-10.
     Format: High resolution, suitable for printing on t-shirts, mugs, and posters.
     Background: Clean, simple, with main character/element in center."""
     
     if not GOOGLE_AI_API_KEY:
-        print("⚠️  Google AI API key nu este configurat. Se va folosi placeholder.")
+        print("⚠️  Google AI API key is not configured. Using placeholder.")
         return None
     
     try:
-        # TODO: Implementează generarea reală cu Google AI API
-        # Aici vei integra Imagen sau alt serviciu de generare imagini
-        print(f"✅ Imagine generată pentru {product_name}")
+        # TODO: Implement real generation with Google AI API
+        # Here you would integrate Imagen or another image generation service
+        print(f"✅ Image generated for {product_name}")
         return f"generated_{product_name.lower().replace(' ', '_')}.png"
     except Exception as e:
-        print(f"❌ Eroare la generare imagine: {e}")
+        print(f"❌ Error generating image: {e}")
         return None
 
 def create_printful_product(product_data, image_path):
     """
-    Creează produsul în Printful cu imaginea generată
+    Creates the product in Printful with the generated image
     """
-    print(f"📦 Creare produs în Printful: {product_data['name']}")
+    print(f"📦 Creating product in Printful: {product_data['name']}")
     
     headers = {
         "Authorization": f"Bearer {PRINTFUL_API_KEY}",
         "Content-Type": "application/json"
     }
     
-    # Configurare produs pentru Printful
-    # Exemplu: Tricou pentru copii
+    # Product configuration for Printful
+    # Example: Kids T-Shirt
     product_config = {
         "sync_product": {
             "name": product_data['name'],
@@ -84,52 +84,52 @@ def create_printful_product(product_data, image_path):
         
         if response.status_code == 200:
             result = response.json()
-            print(f"✅ Produs creat în Printful: ID {result['result']['id']}")
+            print(f"✅ Product created in Printful: ID {result['result']['id']}")
             return result['result']
         else:
-            print(f"❌ Eroare Printful: {response.status_code} - {response.text}")
+            print(f"❌ Printful Error: {response.status_code} - {response.text}")
             return None
             
     except Exception as e:
-        print(f"❌ Eroare la creare produs: {e}")
+        print(f"❌ Error creating product: {e}")
         return None
 
 def process_new_order(order_data):
     """
-    Procesează o comandă nouă
+    Processes a new order
     """
     print("=" * 70)
-    print("🛒 COMANDĂ NOUĂ PRIMITĂ!")
+    print("🛒 NEW ORDER RECEIVED!")
     print("=" * 70)
-    print(f"📅 Data: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"📅 Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"🆔 Order ID: {order_data.get('id', 'N/A')}")
-    print(f"👤 Client: {order_data.get('recipient', {}).get('name', 'N/A')}")
+    print(f"👤 Customer: {order_data.get('recipient', {}).get('name', 'N/A')}")
     print("-" * 70)
     
-    # Extrage informații despre produs
+    # Extract product info
     items = order_data.get('items', [])
     
     for item in items:
         product_name = item.get('name', 'Unknown Product')
         product_id = item.get('sync_variant_id')
         
-        print(f"\n📦 Produs comandat: {product_name}")
-        print(f"🔢 Cantitate: {item.get('quantity', 1)}")
+        print(f"\n📦 Ordered Product: {product_name}")
+        print(f"🔢 Quantity: {item.get('quantity', 1)}")
         
-        # Verifică dacă produsul există deja în Printful
+        # Check if product already exists in Printful
         existing_product = check_product_exists(product_id)
         
         if not existing_product:
-            print("🤖 Produsul nu există - se generează automat...")
+            print("🤖 Product does not exist - generating automatically...")
             
-            # 1. Generează imaginea cu AI
+            # 1. Generate image with AI
             image_path = generate_product_image_ai(
                 product_name,
                 item.get('theme', 'general')
             )
             
             if image_path:
-                # 2. Creează produsul în Printful
+                # 2. Create product in Printful
                 printful_product = create_printful_product(
                     {
                         'name': product_name,
@@ -139,26 +139,26 @@ def process_new_order(order_data):
                 )
                 
                 if printful_product:
-                    print("✅ Produs creat și gata pentru livrare!")
+                    print("✅ Product created and ready for delivery!")
                 else:
-                    print("❌ Eroare la creare produs în Printful")
+                    print("❌ Error creating product in Printful")
             else:
-                print("❌ Nu s-a putut genera imaginea")
+                print("❌ Could not generate image")
         else:
-            print("✅ Produsul există deja în Printful")
+            print("✅ Product already exists in Printful")
     
-    # 3. Confirmă comanda pentru procesare automată
+    # 3. Confirm order for automatic fulfillment
     confirm_order_for_fulfillment(order_data.get('id'))
     
     print("\n" + "=" * 70)
-    print("✅ COMANDĂ PROCESATĂ - Printful va livra automat!")
+    print("✅ ORDER PROCESSED - Printful will ship automatically!")
     print("=" * 70)
     
-    # Salvează log
+    # Save log
     save_order_log(order_data)
 
 def check_product_exists(product_id):
-    """Verifică dacă produsul există deja în Printful"""
+    """Checks if product already exists in Printful"""
     if not product_id or not PRINTFUL_API_KEY:
         return False
     
@@ -176,7 +176,7 @@ def check_product_exists(product_id):
         return False
 
 def confirm_order_for_fulfillment(order_id):
-    """Confirmă comanda pentru a fi procesată de Printful"""
+    """Confirms the order to be processed by Printful"""
     if not order_id or not PRINTFUL_API_KEY:
         return False
     
@@ -186,25 +186,25 @@ def confirm_order_for_fulfillment(order_id):
     }
     
     try:
-        # Confirmă comanda
+        # Confirm order
         response = requests.post(
             f"{PRINTFUL_API_BASE}/orders/{order_id}/confirm",
             headers=headers
         )
         
         if response.status_code == 200:
-            print(f"✅ Comanda {order_id} confirmată pentru livrare!")
+            print(f"✅ Order {order_id} confirmed for delivery!")
             return True
         else:
-            print(f"⚠️  Eroare la confirmare comandă: {response.status_code}")
+            print(f"⚠️  Error confirming order: {response.status_code}")
             return False
             
     except Exception as e:
-        print(f"❌ Eroare la confirmare: {e}")
+        print(f"❌ Error confirming: {e}")
         return False
 
 def save_order_log(order_data):
-    """Salvează log-ul comenzii"""
+    """Saves order log"""
     log_entry = {
         "timestamp": datetime.now().isoformat(),
         "order_id": order_data.get('id'),
@@ -230,9 +230,9 @@ def save_order_log(order_data):
     with open("orders_log.json", "w") as f:
         json.dump(logs, f, indent=2)
 
-# Exemplu de utilizare
+# Usage example
 if __name__ == "__main__":
-    # Simulare comandă pentru testare
+    # Simulated order for testing
     test_order = {
         "id": "TEST123",
         "recipient": {
@@ -250,6 +250,6 @@ if __name__ == "__main__":
         ]
     }
     
-    print("🧪 TESTARE SISTEM COMENZI AUTOMATE")
+    print("🧪 TESTING AUTOMATIC ORDER SYSTEM")
     print("=" * 70)
     process_new_order(test_order)
