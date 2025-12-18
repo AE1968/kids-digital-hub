@@ -123,16 +123,17 @@ def generate_real_ai_image(product_id, theme_name, prompt):
         print(f"❌ AI Image Generation Error: {e}")
         return None
 
-def save_product_image(product_id, theme_name, prompt, output_dir="assets/images/products"):
+def save_product_image(product_id, theme_name, prompt, output_dir="static/products"):
     """Saves the generated product image (AI or placeholder)"""
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     
-    filename = f"{output_dir}/product_{product_id}.jpg"
+    filename = f"product_{product_id}.jpg"
+    filepath = f"{output_dir}/{filename}"
     
     image_content = generate_real_ai_image(product_id, theme_name, prompt)
     
     if image_content:
-        with open(filename, 'wb') as f:
+        with open(filepath, 'wb') as f:
             f.write(image_content)
     else:
         # SVG Fallback
@@ -142,21 +143,20 @@ def save_product_image(product_id, theme_name, prompt, output_dir="assets/images
                 {theme_name}
             </text>
         </svg>'''
-        filename = f"{output_dir}/product_{product_id}.svg"
-        with open(filename, 'w', encoding='utf-8') as f:
+        filename = f"product_{product_id}.svg"
+        filepath = f"{output_dir}/{filename}"
+        with open(filepath, 'w', encoding='utf-8') as f:
             f.write(svg_content)
     
-    return filename
+    # Return the PUBLIC URL for the frontend to access
+    return f"https://web-production-b215.up.railway.app/static/products/{filename}"
 
 def load_existing_products():
-    """Loads existing products from js/products_data.js"""
+    """Loads existing products from data/products.json"""
     try:
-        if os.path.exists("js/products_data.js"):
-            with open("js/products_data.js", "r", encoding="utf-8") as f:
-                content = f.read()
-                json_str = content.replace("var allProducts = ", "").rstrip(";").strip()
-                if json_str:
-                    return json.loads(json_str)
+        if os.path.exists("data/products.json"):
+            with open("data/products.json", "r", encoding="utf-8") as f:
+                return json.load(f)
     except Exception as e:
         print(f"⚠️ Error loading products: {e}")
     return []
@@ -164,10 +164,9 @@ def load_existing_products():
 def generate_new_products(count):
     """Generates new products using suggestions and default themes"""
     existing_products = load_existing_products()
-    next_id = max([p.get('id', 0) for p in existing_products], default=0) + 1
+    next_id = max([p.get('id', 0) for p in existing_products], default=1000) + 1
     
     suggestions = read_suggestions()
-    # Combine suggestions with default themes, prioritizing suggestions
     available_themes = suggestions + PRODUCT_THEMES
     
     new_products = []
@@ -176,18 +175,18 @@ def generate_new_products(count):
         theme = available_themes[i % len(available_themes)]
         product_id = next_id + i
         
-        image_path = save_product_image(product_id, theme['name'], theme['prompt'])
+        image_url = save_product_image(product_id, theme['name'], theme['prompt'])
         
         is_free = random.random() < 0.2
         
         product = {
             "id": product_id,
-            "name": f"{theme['name']} #{product_id}",
+            "name": f"{theme['name']}",
             "category": theme['category'],
             "price": "FREE" if is_free else f"£{theme['price']}",
-            "image": image_path,
-            "views": random.randint(10, 100),
-            "sales": random.randint(1, 10) if not is_free else 0,
+            "image": image_url,
+            "views": 0,
+            "sales": 0,
             "is_free": is_free,
             "generated_at": datetime.now().isoformat(),
             "theme": theme['name']
@@ -197,12 +196,11 @@ def generate_new_products(count):
     
     return existing_products + new_products
 
-def save_products_to_js(products):
-    """Updates the JS data file"""
-    js_content = f"var allProducts = {json.dumps(products, indent=2)};"
-    Path("js").mkdir(exist_ok=True)
-    with open("js/products_data.js", "w", encoding="utf-8") as f:
-        f.write(js_content)
+def save_products_json(products):
+    """Updates the JSON data file"""
+    Path("data").mkdir(exist_ok=True)
+    with open("data/products.json", "w", encoding="utf-8") as f:
+        json.dump(products, f, indent=2)
 
 def update_statistics(products):
     """Updates global site statistics"""
@@ -223,7 +221,7 @@ def main():
     print(f"📅 Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     all_products = generate_new_products(PRODUCT_COUNT)
-    save_products_to_js(all_products)
+    save_products_json(all_products)
     update_statistics(all_products)
     
     print("\n✅ GENERATION COMPLETE!")
