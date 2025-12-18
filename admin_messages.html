@@ -378,6 +378,8 @@
             <button class="filter-btn" onclick="filterMessages('unread')">Unread</button>
             <button class="filter-btn" onclick="filterMessages('contact')">Contact</button>
             <button class="filter-btn" onclick="filterMessages('suggestion')">Suggestions</button>
+            <button class="filter-btn" style="border-color: #4CAF50; color: #4CAF50;"
+                onclick="filterMessages('resolutions')">🤖 Robot Fixes</button>
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="🔍 Search messages..." onkeyup="searchMessages()">
             </div>
@@ -385,6 +387,7 @@
 
         <div class="messages-container">
             <div id="messagesList"></div>
+            <div id="resolutionsList" style="display:none;"></div>
         </div>
 
         <div style="text-align: center;">
@@ -530,15 +533,65 @@
             }).join('');
         }
 
+
         // Filter messages
         function filterMessages(filter) {
             currentFilter = filter;
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             if (event) event.target.classList.add('active');
-            displayMessages();
+
+            if (filter === 'resolutions') {
+                document.getElementById('messagesList').style.display = 'none';
+                document.getElementById('resolutionsList').style.display = 'block';
+                loadResolutions();
+            } else {
+                document.getElementById('messagesList').style.display = 'block';
+                document.getElementById('resolutionsList').style.display = 'none';
+                displayMessages();
+            }
         }
 
-        // Search messages
+        async function loadResolutions() {
+            try {
+                const response = await fetch('data/resolutions.json?t=' + Date.now());
+                const data = await response.json();
+                displayResolutions(data);
+            } catch (e) {
+                document.getElementById('resolutionsList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🤖</div>
+                        <h3>Robot Doctor is Sleeping</h3>
+                        <p>No issues have been detected or resolved today. System is healthy!</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayResolutions(fixes) {
+            const container = document.getElementById('resolutionsList');
+            if (!fixes || fixes.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>No fixes reported yet.</h3></div>';
+                return;
+            }
+
+            container.innerHTML = fixes.map(fix => `
+                <div class="message-item" style="border-left-color: #4CAF50;">
+                    <div class="message-header">
+                        <div class="message-meta">
+                            <span class="message-type" style="background: #4CAF50; color: white;">✅ RESOLVED</span>
+                            <div class="message-from">${fix.problem}</div>
+                            <div class="message-time">⏰ ${fix.time}</div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <div class="romanian-translation">
+                            <div class="label">Auto-Fix Solution:</div>
+                            <div class="text">${fix.solution}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
         function searchMessages() {
             displayMessages();
         }
