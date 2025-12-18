@@ -1,0 +1,36 @@
+name: 📧 Daily Report Email
+
+on:
+  schedule:
+    # Rulează în fiecare zi la 7:00 AM UTC (după generarea conținutului)
+    - cron: '0 7 * * *'
+  workflow_dispatch: # Permite rulare manuală
+
+jobs:
+  send-report:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          pip install requests
+
+      - name: 📧 Send daily report email
+        env:
+          SMTP_HOST: smtp.gmail.com
+          SMTP_PORT: 587
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          TO_EMAIL: adrianenc11@gmail.com
+        run: |
+          echo "📧 Sending daily report..."
+          python send_daily_report.py
+          echo "✅ Report sent!"
