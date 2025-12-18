@@ -318,12 +318,13 @@
         function handleLogin(e) {
             e.preventDefault();
             const pass = document.getElementById('login-pass').value;
-            if (pass === 'parent') { // Demo logic
-                localStorage.setItem('kdh_user', JSON.stringify({ username: 'Parent', avatar: '🦖' }));
+            // OFFICIAL ADMIN CREDENTIALS
+            if (pass === 'Andrada_1968!') {
+                localStorage.setItem('kdh_user', JSON.stringify({ username: 'Admin', avatar: '🏰' }));
                 localStorage.setItem('kdh_admin_mode', 'true');
                 window.location.reload();
             } else {
-                alert('Invalid Password! (Try: parent)');
+                alert('Access Denied: Invalid Password!');
             }
         }
 
