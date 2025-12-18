@@ -231,6 +231,32 @@ ADMIN_DASHBOARD = """
         </div>
 
         <div class="section">
+            <h2>💡 Recent Suggestions & AI Requests</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Type</th>
+                        <th>Suggestion</th>
+                        <th>Source Analysis</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sugg in recent_suggestions %}
+                    <tr>
+                        <td>{{ sugg.name }}</td>
+                        <td>{{ sugg.category }}</td>
+                        <td>{{ sugg.suggestion }}</td>
+                        <td><span class="status {{ sugg.source_class }}">{{ sugg.source_label }}</span></td>
+                        <td>{{ sugg.timestamp }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
             <h2>⚙️ System Configuration</h2>
             <p><strong>🔑 Printful API:</strong> <span class="status active">Configured</span></p>
             <p><strong>🤖 Google AI API:</strong> <span class="status active">Configured</span></p>
@@ -347,12 +373,31 @@ def admin_dashboard():
             'date': order.get('timestamp', '')[:10]
         })
     
+    # Load suggestions
+    try:
+        with open('data/suggestions_log.json', 'r') as f:
+            suggestions_data = json.load(f)
+    except:
+        suggestions_data = []
+
+    recent_suggestions = []
+    for sugg in suggestions_data[:10]:
+        recent_suggestions.append({
+            'name': sugg.get('name', 'N/A'),
+            'category': sugg.get('category', 'N/A'),
+            'suggestion': sugg.get('suggestion', ''),
+            'source_label': sugg.get('source_label', 'Guest'),
+            'source_class': sugg.get('source_class', 'pending'),
+            'timestamp': sugg.get('timestamp', '')[:16].replace('T', ' ')
+        })
+
     return render_template_string(
         ADMIN_DASHBOARD,
         total_orders=len(orders),
         total_products=stats.get('total_products', 0),
-        total_revenue=stats.get('total_sales', 0) * 7.5,  # Estimated profit
+        total_revenue=stats.get('total_sales', 0) * 7.5,
         recent_orders=reversed(recent_orders),
+        recent_suggestions=recent_suggestions,
         webhook_url=request.host_url + 'webhook/order',
         last_update=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     )
@@ -431,27 +476,54 @@ def api_generate_products():
 
 @app.route('/api/suggestion', methods=['POST'])
 def receive_suggestion():
-    """Receives suggestions from the frontend and saves them for the AI."""
+    """Receives suggestions, analyzes user tier, and triggers AI for paid users."""
     try:
         data = request.json
         name = data.get('name', 'Anonymous')
         category = data.get('category', 'Other')
         suggestion = data.get('suggestion', '')
+        role = data.get('role', 'guest')
         
-        # Save to suggestions.txt for the AI to read
-        os.makedirs('data', exist_ok=True)
-        with open('data/suggestions.txt', 'a', encoding='utf-8') as f:
-            f.write(f"\n{name} | {category} | {suggestion}")
+        # Analyze Source
+        source_label = 'Guest'
+        source_class = 'pending' # Default check color
+        
+        if role in ['premium', 'gold', 'titan']:
+            source_label = '✨ VIP'
+            source_class = 'active' # Green/Special
+        elif role in ['standard', 'monthly', 'subscriber']:
+            source_label = '🛒 Subscriber'
+            source_class = 'pending' # Orange
             
-        # Log for the admin dashboard
+        # Log Logic
         log_entry = {
             'type': 'suggestion',
             'name': name,
             'category': category,
             'suggestion': suggestion,
+            'role': role,
+            'source_label': source_label,
+            'source_class': source_class,
             'timestamp': datetime.now().isoformat(),
             'status': 'unread'
         }
+        
+        # Save to suggestions.txt for the AI to read (Legacy Support)
+        os.makedirs('data', exist_ok=True)
+        with open('data/suggestions.txt', 'a', encoding='utf-8') as f:
+            f.write(f"\n{name} | {category} | {suggestion} | {source_label}")
+            
+        # Smart Trigger: If Paid User, Generate Automatically
+        if role != 'guest':
+            print(f"🚀 Triggering AI Generation for {source_label}: {name}")
+            import subprocess
+            # We run it in background effectively by not waiting or by just firing standard gen
+            # For now, we trigger the standard batch. In future, we can pass args.
+            try:
+                subprocess.Popen(['python', 'generate_ai_products.py']) 
+            except Exception as sub_e:
+                print(f"AI Trigger Error: {sub_e}")
+
         
         # Also store in a JSON for the admin to view
         suggestions_log = []
