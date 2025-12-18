@@ -197,11 +197,11 @@
     localStorage.removeItem('kdh_lang');
 
     // 📊 GLOBAL TRAFFIC TRACKER - RAW HITS
-    // Hits the public counter API to increment visits on EVERY page load
-    // Added timestamp to bypass browser cache
-    fetch('https://api.counterapi.dev/v1/kidsdigitalhub/view/up?' + new Date().getTime())
+    // 📊 REAL TRAFFIC TRACKER - Send Ping to Nexus Core
+    // Hits the backend API to increment internal stats on EVERY page load
+    fetch('https://web-production-b215.up.railway.app/api/stats/track?t=' + new Date().getTime(), { method: 'POST' })
       .then(res => res.json())
-      .then(data => console.log('👀 Visitor Count:', data.count))
+      .then(data => console.log('📡 Nexus Tracker:', data.status))
       .catch(err => console.log('Tracking Error:', err));
   </script>
   <script src="js/products_data.js"></script>

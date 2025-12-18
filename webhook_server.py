@@ -764,11 +764,59 @@ def receive_contact():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+@app.route('/api/stats/track', methods=['POST'])
+def track_visit():
+    """Tracks real visitor hits"""
+    try:
+        ip = request.remote_addr
+        today = datetime.now().strftime('%Y-%m-%d')
+        
+        # Load Stats
+        if os.path.exists('site_statistics.json'):
+            with open('site_statistics.json', 'r') as f:
+                stats = json.load(f)
+        else:
+            stats = {'total_views': 0, 'daily_unique': {}, 'total_products': 0, 'total_sales': 0}
+            
+        # Update Total Views (Page Hits)
+        stats['total_views'] = stats.get('total_views', 0) + 1
+        
+        # Update Daily Unique Visitors
+        daily_data = stats.get('daily_unique', {})
+        if today not in daily_data:
+            daily_data[today] = []
+        
+        if ip not in daily_data[today]:
+            daily_data[today].append(ip)
+            
+        # Clean up old days (keep last 7 days)
+        keys = sorted(daily_data.keys())
+        if len(keys) > 7:
+            for k in keys[:-7]:
+                del daily_data[k]
+                
+        stats['daily_unique'] = daily_data
+        
+        # Save
+        with open('site_statistics.json', 'w') as f:
+            json.dump(stats, f, indent=2)
+            
+        return jsonify({'status': 'tracked'})
+    except:
+        return jsonify({'status': 'error'}), 500
+
+@app.route('/api/stats/view', methods=['GET'])
+def get_stats():
+    """Returns real stats"""
+    if os.path.exists('site_statistics.json'):
+        with open('site_statistics.json', 'r') as f:
+            return jsonify(json.load(f))
+    return jsonify({'total_views': 0})
+
 @app.route('/api/admin/messages', methods=['GET'])
 def get_admin_messages():
     """Returns all suggestions and contact messages for the admin dashboard."""
-    # Note: In a real app, this would require authentication.
-    # For now, we'll keep it simple as it's a centralized hub.
+    # (Existing code...)
     all_messages = []
     
     try:
@@ -779,11 +827,13 @@ def get_admin_messages():
         if os.path.exists('data/contacts_log.json'):
             with open('data/contacts_log.json', 'r') as f:
                 all_messages.extend(json.load(f))
-                
+        
         # Sort by timestamp
         all_messages.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
         
         return jsonify(all_messages)
+    except:
+        return jsonify([])
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
