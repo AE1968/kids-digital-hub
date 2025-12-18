@@ -1,35 +1,33 @@
-# 🗓️ PLAN DE LUCRU: SESIUNEA URMĂTOARE (KDH 2.0)
+# Plan Sesiunea Următoare - Kids Digital Hub
 
-Acest document servește ca "foaie de parcurs" pentru următoarea dată când lucrăm împreună.
+## 🚀 Status Curent (Final Sesiune 18 Dec 2025)
+*   **Site Live:** Actualizat și funcțional la [kidsdigitalhub.com](https://kidsdigitalhub.com).
+*   **Secret Admin Button:** ✅ Activ (iconița 🎨 din header).
+*   **Secțiuni Noi:** ✅ Parteneri Oficiali și Bonus Policy adăugate pe pagina principală.
+*   **Fix Tehnice:** 
+    *   Rezolvat eroarea de deploy Netlify (funcția `payment_webhook.js`).
+    *   Curățat repository-ul de fișiere ZIP mari pentru a permite sincronizarea Git.
+*   **Promo Video:** ✅ Versiunea statica (webm) este integrată pentru descărcare rapidă.
 
-## 🔴 PRIORITATE MAXIMĂ (CRITIC PENTRU BANII TĂI)
-1.  **Activare PayPal Live:**
-    *   Înlocuirea `client-id` și `plan_id` în `payment.html` cu cele reale din contul tău PayPal Business.
-    *   Testarea unei tranzacții reale de 1 GBP.
+## 📝 De Făcut (Sesiunea Viitoare)
 
-2.  **Activare Cloud Storage (10TB):**
-    *   Configurarea Backblaze B2 (sau AWS S3 / Netlify Blob).
-    *   Adăugarea cheilor secrete în Netlify Environment Variables (nu în cod!).
-    *   Conectarea `js/storage_manager.js` la acest backend real.
+### 1. Funcționalitate Admin & Dashboard
+*   **Mesaje Admin:** Finalizarea paginii `admin_messages.html` pentru a vizualiza feedback-ul/sugestiile primite.
+*   **Sistem de Login:** Securizarea accesului la Dashboard și My Hub.
+*   **Management Produse:** Implementarea interfeței pentru ca adminul să poată adăuga/șterge produse direct din site.
 
-## 🟠 ÎMBUNĂTĂȚIRI FUNCȚIONALE (URGENT PENTRU USERI)
-3.  **Bază de Date Reală (Fără LocalStorage):**
-    *   Migrarea datelor utilizatorilor (monede, progres) din browser în **Supabase** (gratuit, SQL real).
-    *   Asta va preveni ca un copil să șteargă istoricul browserului și să piardă tot progresul.
+### 2. Sisteme de Plată & Premium
+*   **Integrare PayPal:** Finalizarea fluxului de subscripție (£2.49/lună oferta de sărbători).
+*   **Acces Conținut:** Restricționarea accesului la fișierele de colorat/povești premium pentru utilizatorii non-plătitori.
 
-4.  **Notificări Părinți:**
-    *   Implementarea unui serviciu de email real (SendGrid / EmailJS) pentru a trimite raportul săptămânal părinților.
+### 3. Automatizare & Conținut
+*   **Webhook Handler:** Testarea scriptului `webhook_order_handler.py` cu date reale.
+*   **Generare AI:** Continuarea populării galeriilor cu imagini generate prin AI pentru Coloring, Games și Stories.
+*   **Daily Content:** Verificarea funcționării automatizării pentru "Produsul Zilei".
 
-## 🟡 MARKETING & RELAȚII (PENTRU CREȘTERE)
-5.  **SEO & Analytics:**
-    *   Adăugarea Google Analytics 4 pentru a vedea câți copii intră zilnic.
-    *   Optimizare meta-tags pentru cuvinte cheie: "jocuri educative", "safe kids chat".
-
-6.  **Video Promoțional:**
-    *   Finalizarea și integrarea videoului de prezentare pe prima pagină (acum e un placeholder).
-
-## ✅ GATA DE LANSARE?
-*   Dacă rezolvăm Punctele 1 și 2, site-ul poate fi considerat **PRODUS FINAL** și lansat oficial către publicul larg.
+### 4. Mentenanță & SEO
+*   **Optimizare Imagini:** Verificarea tuturor asset-urilor pentru timp de încărcare minim.
+*   **Finalizare Ghid:** Completarea documentului `GHID_COMPLET_KIDS_DIGITAL_HUB.txt` cu ultimele schimbări de infrastructură.
 
 ---
-*Acest fișier a fost generat automat la finalul sesiunii de dezvoltare.*
+**Notă:** Repository-ul este acum curat și sincronizat cu GitHub. Toate ZIP-urile de backup au fost eliminate din Git pentru a evita depășirea limitelor de mărime, dar fișierele sursă sunt protejate.
