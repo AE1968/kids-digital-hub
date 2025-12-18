@@ -196,9 +196,10 @@
     // 🧹 CLEAR OLD LANGUAGE SETTINGS (Site is now English-only)
     localStorage.removeItem('kdh_lang');
 
-    // 📊 GLOBAL TRAFFIC TRACKER
-    // Hits the public counter API to increment visits
-    fetch('https://api.counterapi.dev/v1/kidsdigitalhub/view/up')
+    // 📊 GLOBAL TRAFFIC TRACKER - RAW HITS
+    // Hits the public counter API to increment visits on EVERY page load
+    // Added timestamp to bypass browser cache
+    fetch('https://api.counterapi.dev/v1/kidsdigitalhub/view/up?' + new Date().getTime())
       .then(res => res.json())
       .then(data => console.log('👀 Visitor Count:', data.count))
       .catch(err => console.log('Tracking Error:', err));
