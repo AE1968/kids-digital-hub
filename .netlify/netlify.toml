@@ -41,3 +41,15 @@ force = true
 [redirects.conditions]
 
 [redirects.headers]
+
+[[redirects]]
+from = "https://kidsdigitalhub.com/*"
+to = "https://www.kidsdigitalhub.com/:splat"
+status = 301.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
