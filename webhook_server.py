@@ -65,152 +65,294 @@ PORT = int(os.getenv('PORT', 8080))
 # Nexus AI Dashboard HTML
 NEXUS_DASHBOARD = """
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS AI CORE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>NEXUS CORE | AI SYSTEM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { 
-            background: #0d0d0d; 
-            color: #00ff41; 
-            font-family: 'Share Tech Mono', monospace; 
-            overflow: hidden;
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --matrix-green: #00ff41;
+            --deep-black: #050505;
+            --hud-bg: rgba(10, 20, 30, 0.85);
+        }
+        body {
+            background-color: var(--deep-black);
+            color: var(--neon-cyan);
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            overflow: hidden; /* App-like feel */
             height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,20,30,1) 100%);
         }
-        .container { display: flex; height: 100%; }
-        .sidebar { 
-            width: 300px; 
-            border-right: 1px solid #004411; 
-            padding: 20px; 
-            background: rgba(0,20,0,0.5);
-        }
-        .main { flex: 1; padding: 20px; display: flex; flex-direction: column; }
-        h1 { color: #00ff41; text-shadow: 0 0 10px #00ff41; margin-bottom: 20px; text-transform: uppercase; }
-        .card { 
-            border: 1px solid #004411; 
-            padding: 15px; 
-            margin-bottom: 20px; 
-            background: rgba(0,10,0,0.8);
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
-        }
-        .log-window { 
-            flex: 1; 
-            border: 1px solid #00ff41; 
-            padding: 15px; 
-            overflow-y: auto; 
-            font-size: 0.9em;
-            background: black;
-            box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.2);
-        }
-        .log-entry { margin-bottom: 5px; opacity: 0; animation: fadeIn 0.5s forwards; }
-        .blink { animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-        @keyframes fadeIn { to { opacity: 1; } }
         
-        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn-nexus { 
-            background: transparent; 
-            border: 1px solid #00ff41; 
-            color: #00ff41; 
-            padding: 10px; 
-            cursor: pointer; 
-            width: 100%; 
-            margin-top: 10px;
-            font-family: 'Share Tech Mono', monospace;
+        /* --- VISUALIZATION CORE --- */
+        .visor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .robot-head {
+            width: 300px;
+            height: 350px;
+            position: relative;
+            filter: drop-shadow(0 0 20px var(--neon-cyan));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .brain-core {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            width: 200px;
+            height: 180px;
+            background: radial-gradient(circle, var(--neon-purple), transparent);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: pulse-brain 3s infinite alternate;
+            mix-blend-mode: screen;
+        }
+
+        .circuit-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 40px 40px 100px 100px;
+            box-shadow: inset 0 0 30px var(--neon-cyan);
+            background: rgba(0, 243, 255, 0.05);
+            clip-path: polygon(10% 0, 90% 0, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0 80%, 0 20%);
+        }
+        
+        .eye-scanner {
+            position: absolute;
+            top: 40%;
+            left: 10%;
+            width: 80%;
+            height: 4px;
+            background: var(--matrix-green);
+            box-shadow: 0 0 10px var(--matrix-green);
+            animation: scan 2s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
+        @keyframes pulse-brain { 0% { transform: scale(0.9); opacity: 0.3; } 100% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 50px var(--neon-purple); } }
+        @keyframes scan { 0% { top: 30%; opacity: 0; } 50% { opacity: 1; } 100% { top: 70%; opacity: 0; } }
+
+        /* --- HUD ELEMENTS --- */
+        .hud-top {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+        .nexus-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px var(--neon-cyan);
+            margin: 0;
+        }
+        .status-badge {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--matrix-green);
+            color: var(--matrix-green);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
             text-transform: uppercase;
+            letter-spacing: 2px;
         }
-        .btn-nexus:hover { background: #00ff41; color: black; box-shadow: 0 0 15px #00ff41; }
+
+        /* --- COMMUNICATION TAB --- */
+        .comm-panel {
+            height: 250px;
+            background: var(--hud-bg);
+            border-top: 2px solid var(--neon-purple);
+            box-shadow: 0 -10px 50px rgba(188, 19, 254, 0.2);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
         
-        /* Scanline effect */
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 1000;
+        .comm-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--neon-purple);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(188, 19, 254, 0.3);
+            padding-bottom: 5px;
         }
+
+        .chat-log {
+            flex: 1;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #ddd;
+            margin-bottom: 10px;
+        }
+        
+        .chat-entry {
+            margin-bottom: 5px;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+        .chat-nexus { color: var(--neon-cyan); }
+        .chat-user { color: var(--matrix-green); text-align: right; }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .neural-input {
+            flex: 1;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--neon-cyan);
+            color: white;
+            padding: 12px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        .neural-input:focus { box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); }
+
+        .send-btn {
+            background: var(--neon-purple);
+            color: white;
+            border: none;
+            padding: 0 30px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+            transition: all 0.2s;
+        }
+        .send-btn:hover { transform: translateX(5px); box-shadow: -5px 0 15px var(--neon-purple); }
+
+        .btn-exit {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: transparent;
+            border: 1px solid red;
+            color: red;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn { to { opacity: 1; } }
     </style>
 </head>
 <body>
-    <div class="scanlines"></div>
-    <div class="container">
-        <div class="sidebar">
-            <h1>🤖 NEXUS CORE</h1>
-            <div class="card">
-                <h3>// SYSTEM IDENTITY</h3>
-                <p>> AGENT: NEXUS</p>
-                <p>> ROLE: Autonomous CTO</p>
-                <p>> OWNER: Adrian (CEO)</p>
-                <p>> STATUS: <span class="blink">ONLINE</span></p>
-            </div>
-             <div class="card">
-                <h3>// DIRECTIVES</h3>
-                <p>> 1. Protect Core</p>
-                <p>> 2. Maximize Revenue</p>
-                <p>> 3. Ensure Uptime</p>
-            </div>
-            <button class="btn-nexus" onclick="location.href='/admin'"> < BACK TO ADMIN</button>
+
+    <button class="btn-exit" onclick="location.href='/admin'"> < BACK </button>
+
+    <div class="hud-top">
+        <h1 class="nexus-title">NEXUS CORE</h1>
+        <span class="status-badge">SYSTEM OPTIMAL • CONNECTED</span>
+    </div>
+
+    <div class="visor-container">
+        <!-- THE ROBOT BRAIN VISUALIZATION -->
+        <div class="robot-head">
+            <div class="circuit-lines"></div>
+            <div class="brain-core"></div>
+            <div class="eye-scanner"></div>
+            
+            <!-- SVG ICON OVERLAY -->
+            <svg viewBox="0 0 100 100" style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0.3; fill:none; stroke:var(--neon-cyan); stroke-width:0.5;">
+                <path d="M20,20 L80,20 L90,40 L90,80 L80,90 L20,90 L10,80 L10,40 Z" />
+                <path d="M30,30 L70,30 M30,40 L70,40 M30,50 L70,50" stroke-dasharray="2,2" />
+                <circle cx="50" cy="50" r="10" stroke="var(--neon-purple)" />
+            </svg>
         </div>
-        <div class="main">
-            <div class="status-grid">
-                <div class="card">
-                    <h3>// MEMORY INTEGRITY</h3>
-                    <div id="memory-vis">LOADING...</div>
-                </div>
-                <div class="card">
-                    <h3>// ACTIVE TASKS</h3>
-                    <p>> Email Sentinel: ACTIVE</p>
-                    <p>> Auto-Product Gen: STANDBY</p>
-                </div>
-            </div>
-            <h3>// NEURAL LOGS</h3>
-            <div class="log-window" id="nexus-logs">
-                <div class="log-entry">> Initializing connection... OK</div>
-                <div class="log-entry">> Reading SYSTEM_CORE_MEMORY.json... OK</div>
-                <div class="log-entry">> Handshaking with Adrian... SECURE</div>
-                <div class="log-entry">> Nexus is ready.</div>
-            </div>
+        
+        <div style="margin-top: 30px; font-family: 'Courier New'; color: var(--neon-cyan); opacity: 0.8;">
+            >_ PROCESSING NEURAL STREAMS... <span id="stream-cursor">▋</span>
         </div>
     </div>
 
-    <script>
-        // Fetch Core Memory
-        fetch('/api/nexus/memory')
-            .then(r => r.json())
-            .then(data => {
-                const vis = document.getElementById('memory-vis');
-                vis.innerHTML = `
-                    Phase: ${data.OPERATIONAL_STATUS.Phase}<br>
-                    Monitor: ${data.OPERATIONAL_STATUS.Monitoring}<br>
-                    Auth: ROOT_ACCESS
-                `;
-            });
+    <!-- COMMUNICATION TAB -->
+    <div class="comm-panel">
+        <div class="comm-header">
+            <span>● NEURAL LINK ACTIVE</span>
+            <span style="flex:1"></span>
+            <span style="font-size:0.8em; opacity:0.6;">ENCRYPTION: QUANTUM-256</span>
+        </div>
+        
+        <div class="chat-log" id="chatLog">
+            <div class="chat-entry chat-nexus">[NEXUS]: Welcome, Adrian. I am online and listening.</div>
+            <div class="chat-entry chat-nexus">[NEXUS]: Systems are functioning within normal parameters.</div>
+        </div>
+        
+        <form class="input-area" onsubmit="sendNeuralMessage(event)">
+            <input type="text" id="neuralMsg" class="neural-input" placeholder="Transmit direct command..." autocomplete="off">
+            <button type="submit" class="send-btn">TRANSMIT</button>
+        </form>
+    </div>
 
-        // Simulate Logs
-        const logs = document.getElementById('nexus-logs');
-        function addLog(msg) {
-            const div = document.createElement('div');
-            div.className = 'log-entry';
-            div.textContent = `> ${new Date().toLocaleTimeString()} :: ${msg}`;
-            logs.appendChild(div);
-            logs.scrollTop = logs.scrollHeight;
+    <script>
+        // Blinking Cursor
+        setInterval(() => {
+            const c = document.getElementById('stream-cursor');
+            c.style.opacity = c.style.opacity === '0' ? '1' : '0';
+        }, 500);
+
+        function sendNeuralMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('neuralMsg');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            // Add User Message
+            addLog(msg, 'user');
+            input.value = '';
+
+            // Simulate Nexus processing (In real version, fetch API)
+            setTimeout(() => {
+                const responses = [
+                    "Command received. Processing...",
+                    "Analyzing data streams...",
+                    "Optimization protocols engaged.",
+                    "I am monitoring the traffic flows.",
+                    "The VIP Club is currently active."
+                ];
+                const reply = responses[Math.floor(Math.random() * responses.length)];
+                addLog(reply, 'nexus');
+            }, 800);
         }
 
-        setInterval(() => {
-            const msgs = [
-                "Scanning traffic patterns...",
-                "Optimizing database queries...",
-                "Checking email gateway...",
-                "Analyzing user suggestions...",
-                "System heartbeat stable."
-            ];
-            if(Math.random() > 0.7) {
-                addLog(msgs[Math.floor(Math.random() * msgs.length)]);
-            }
-        }, 3000);
+        function addLog(text, sender) {
+            const log = document.getElementById('chatLog');
+            const div = document.createElement('div');
+            div.className = `chat-entry chat-${sender}`;
+            div.innerHTML = `[${sender.toUpperCase()}]: ${text}`;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+        }
     </script>
 </body>
 </html>
