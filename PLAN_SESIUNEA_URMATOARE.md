@@ -1,33 +1,24 @@
-# Plan Sesiunea Următoare - Kids Digital Hub
+# 📋 PLAN SESIUNEA URMATOARE: Kids Digital Hub - Arhitect Strategy
 
-## 🚀 Status Curent (Final Sesiune 18 Dec 2025)
-*   **Site Live:** Actualizat și funcțional la [kidsdigitalhub.com](https://kidsdigitalhub.com).
-*   **Secret Admin Button:** ✅ Activ (iconița 🎨 din header).
-*   **Secțiuni Noi:** ✅ Parteneri Oficiali și Bonus Policy adăugate pe pagina principală.
-*   **Fix Tehnice:** 
-    *   Rezolvat eroarea de deploy Netlify (funcția `payment_webhook.js`).
-    *   Curățat repository-ul de fișiere ZIP mari pentru a permite sincronizarea Git.
-*   **Promo Video:** ✅ Versiunea statica (webm) este integrată pentru descărcare rapidă.
+## 1. Verificarea "Dosarului de Sănătate" (Robot Doctor)
+- Primul lucru: Verificăm `resolutions.json` (în Dashboard-ul de pe WWW) pentru a vedea ce a lucrat robotul cât timp am fost în pauză.
+- Reparăm imediat orice eroare "Dosariată" (din Error Queue) care necesită intervenția mea manuală.
 
-## 📝 De Făcut (Sesiunea Viitoare)
+## 2. Optimizare Flux Sugestii -> Produse
+- Verificăm dacă sugestiile noi trimise de copii au fost preluate corect de serverul Railway.
+- Facem un test de generare "Live" bazat pe o sugestie specifică introduse de tine.
 
-### 1. Funcționalitate Admin & Dashboard
-*   **Mesaje Admin:** Finalizarea paginii `admin_messages.html` pentru a vizualiza feedback-ul/sugestiile primite.
-*   **Sistem de Login:** Securizarea accesului la Dashboard și My Hub.
-*   **Management Produse:** Implementarea interfeței pentru ca adminul să poată adăuga/șterge produse direct din site.
+## 3. Rafinare Premium & Messenger
+- Verificăm fluxul de plată (£2.49 Promo) și dacă se actualizează corect statusul în Dashboard-ul Admin după o comandă simulată.
+- Testăm "Safe Messenger" pentru a ne asigura că este securizat și urmează viziunea ta.
 
-### 2. Sisteme de Plată & Premium
-*   **Integrare PayPal:** Finalizarea fluxului de subscripție (£2.49/lună oferta de sărbători).
-*   **Acces Conținut:** Restricționarea accesului la fișierele de colorat/povești premium pentru utilizatorii non-plătitori.
+## 4. Marketing & Promo Viral
+- Verificăm pagina `promo_video.html` și sistemul de download pentru TikTok/Social Media.
+- Ne asigurăm că butonul AE din centru funcționează perfect pentru a atrage atenția vizitatorilor noi.
 
-### 3. Automatizare & Conținut
-*   **Webhook Handler:** Testarea scriptului `webhook_order_handler.py` cu date reale.
-*   **Generare AI:** Continuarea populării galeriilor cu imagini generate prin AI pentru Coloring, Games și Stories.
-*   **Daily Content:** Verificarea funcționării automatizării pentru "Produsul Zilei".
-
-### 4. Mentenanță & SEO
-*   **Optimizare Imagini:** Verificarea tuturor asset-urilor pentru timp de încărcare minim.
-*   **Finalizare Ghid:** Completarea documentului `GHID_COMPLET_KIDS_DIGITAL_HUB.txt` cu ultimele schimbări de infrastructură.
+## 5. Audit Final SEO & English-Only
+- O ultimă trece prin toate paginile pentru a ne asigura că nicio "urmă" de română sau auto-traducere nu mai poate apărea.
 
 ---
-**Notă:** Repository-ul este acum curat și sincronizat cu GitHub. Toate ZIP-urile de backup au fost eliminate din Git pentru a evita depășirea limitelor de mărime, dar fișierele sursă sunt protejate.
+**Status:** Sistemul este pe Auto-Pilot (Robot Doctor activat la fiecare oră).
+**Ready for Session:** Da. Te aștept după pauză pentru a analiza rezultatele monitorizării! 🚀🦾

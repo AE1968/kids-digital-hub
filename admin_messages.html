@@ -426,16 +426,52 @@
             }
         }
 
-        // Load messages from localStorage
-        function loadMessages() {
-            const contacts = JSON.parse(localStorage.getItem('contacts') || '[]');
-            const suggestions = JSON.parse(localStorage.getItem('suggestions') || '[]');
+        // Load messages from Central Server (Railway) and local cache
+        async function loadMessages() {
+            const statusEl = document.getElementById('railway-status');
 
-            // Combine and sort by timestamp
-            allMessages = [
-                ...contacts.map(m => ({ ...m, type: 'contact' })),
-                ...suggestions.map(m => ({ ...m, type: 'suggestion' }))
-            ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            try {
+                // 1. Fetch from Central Server
+                const response = await fetch('https://web-production-b215.up.railway.app/api/admin/messages');
+                const serverMessages = await response.json();
+
+                // 2. Load from localStorage (legacy/local backup)
+                const localContacts = JSON.parse(localStorage.getItem('contacts') || '[]');
+                const localSuggestions = JSON.parse(localStorage.getItem('suggestions') || '[]');
+                const localMessages = [
+                    ...localContacts.map(m => ({ ...m, type: 'contact' })),
+                    ...localSuggestions.map(m => ({ ...m, type: 'suggestion' }))
+                ];
+
+                // 3. Merge and deduplicate (by timestamp/content)
+                const seen = new Set();
+                allMessages = [...serverMessages];
+
+                // Mark server messages as seen
+                allMessages.forEach(m => seen.add(m.timestamp + m.message || m.suggestion));
+
+                // Add local messages if not already on server
+                localMessages.forEach(m => {
+                    const key = m.timestamp + m.message || m.suggestion;
+                    if (!seen.has(key)) {
+                        allMessages.push(m);
+                        seen.add(key);
+                    }
+                });
+
+                // 4. Sort by timestamp
+                allMessages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            } catch (error) {
+                console.error('Error fetching server messages:', error);
+                // Fallback to local only if server fails
+                const localContacts = JSON.parse(localStorage.getItem('contacts') || '[]');
+                const localSuggestions = JSON.parse(localStorage.getItem('suggestions') || '[]');
+                allMessages = [
+                    ...localContacts.map(m => ({ ...m, type: 'contact' })),
+                    ...localSuggestions.map(m => ({ ...m, type: 'suggestion' }))
+                ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            }
 
             updateStats();
             displayMessages();
@@ -660,7 +696,14 @@
 
                 alert(`✅ Reply sent successfully!`);
 
-                // Mark as read
+                // Mark as read on server
+                await fetch('https://web-production-b215.up.railway.app/api/admin/message/read', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ timestamp: message.timestamp, type: message.type })
+                });
+
+                // Update local state
                 message.status = 'read';
                 saveMessages();
 
@@ -678,18 +721,48 @@
         }
 
         // Toggle read/unread
-        function toggleRead(index) {
+        async function toggleRead(index) {
             const message = allMessages[index];
-            message.status = message.status === 'unread' ? 'read' : 'unread';
-            saveMessages();
-            loadMessages();
+            const newStatus = message.status === 'unread' ? 'read' : 'unread';
+
+            try {
+                if (newStatus === 'read') {
+                    await fetch('https://web-production-b215.up.railway.app/api/admin/message/read', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ timestamp: message.timestamp, type: message.type })
+                    });
+                }
+
+                message.status = newStatus;
+                saveMessages();
+                loadMessages();
+            } catch (e) {
+                console.error("Failed to update status on server:", e);
+                // Fallback local update
+                message.status = newStatus;
+                saveMessages();
+                loadMessages();
+            }
         }
 
         // Delete message
-        function deleteMessage(index) {
+        async function deleteMessage(index) {
             if (!confirm('Are you sure you want to delete this message?')) return;
 
             const message = allMessages[index];
+
+            try {
+                await fetch('https://web-production-b215.up.railway.app/api/admin/message/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ timestamp: message.timestamp, type: message.type })
+                });
+            } catch (e) {
+                console.error("Failed to delete from server:", e);
+            }
+
+            // Remove from local regardless (it might be legacy local data)
             if (message.type === 'contact') {
                 const contacts = JSON.parse(localStorage.getItem('contacts') || '[]');
                 const filtered = contacts.filter(c => c.timestamp !== message.timestamp);

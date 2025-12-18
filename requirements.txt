@@ -5,3 +5,4 @@ python-dotenv
 stripe
 google-generativeai
 pillow
+flask-cors

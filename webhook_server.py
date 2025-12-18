@@ -4,6 +4,7 @@ Runs on Railway.app or any cloud platform
 """
 
 from flask import Flask, request, jsonify, render_template_string
+from flask_cors import CORS
 import os
 import json
 import hmac
@@ -12,8 +13,12 @@ from datetime import datetime
 from webhook_order_handler import process_new_order
 
 app = Flask(__name__)
+CORS(app) # Enable CORS for all routes
 
 # Configuration
+# Dependencies:
+# pillow
+# flask-cors
 WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'your-secret-key-change-this')
 PORT = int(os.getenv('PORT', 8080))
 
@@ -408,6 +413,7 @@ def receive_suggestion():
         suggestion = data.get('suggestion', '')
         
         # Save to suggestions.txt for the AI to read
+        os.makedirs('data', exist_ok=True)
         with open('data/suggestions.txt', 'a', encoding='utf-8') as f:
             f.write(f"\n{name} | {category} | {suggestion}")
             
@@ -417,7 +423,8 @@ def receive_suggestion():
             'name': name,
             'category': category,
             'suggestion': suggestion,
-            'timestamp': datetime.now().isoformat()
+            'timestamp': datetime.now().isoformat(),
+            'status': 'unread'
         }
         
         # Also store in a JSON for the admin to view
@@ -431,6 +438,130 @@ def receive_suggestion():
             json.dump(suggestions_log[:100], f, indent=2)
             
         return jsonify({'status': 'success', 'message': 'Suggestion received!'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/api/contact', methods=['POST'])
+def receive_contact():
+    """Receives contact messages from the frontend."""
+    try:
+        data = request.json
+        name = data.get('name', 'Anonymous')
+        email = data.get('email', 'N/A')
+        subject = data.get('subject', 'General Inquiry')
+        message = data.get('message', '')
+        user_lang = data.get('userLanguage', 'en')
+        romanian_message = data.get('romanianMessage', '')
+        
+        log_entry = {
+            'type': 'contact',
+            'name': name,
+            'email': email,
+            'subject': subject,
+            'message': message,
+            'messageLang': user_lang,
+            'romanianMessage': romanian_message,
+            'timestamp': datetime.now().isoformat(),
+            'status': 'unread'
+        }
+        
+        # Store in contacts_log.json
+        os.makedirs('data', exist_ok=True)
+        contacts_log = []
+        if os.path.exists('data/contacts_log.json'):
+            with open('data/contacts_log.json', 'r') as f:
+                contacts_log = json.load(f)
+        
+        contacts_log.insert(0, log_entry)
+        with open('data/contacts_log.json', 'w') as f:
+            json.dump(contacts_log[:100], f, indent=2)
+            
+        return jsonify({'status': 'success', 'message': 'Message received!'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/api/admin/messages', methods=['GET'])
+def get_admin_messages():
+    """Returns all suggestions and contact messages for the admin dashboard."""
+    # Note: In a real app, this would require authentication.
+    # For now, we'll keep it simple as it's a centralized hub.
+    all_messages = []
+    
+    try:
+        if os.path.exists('data/suggestions_log.json'):
+            with open('data/suggestions_log.json', 'r') as f:
+                all_messages.extend(json.load(f))
+        
+        if os.path.exists('data/contacts_log.json'):
+            with open('data/contacts_log.json', 'r') as f:
+                all_messages.extend(json.load(f))
+                
+        # Sort by timestamp
+        all_messages.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
+        
+        return jsonify(all_messages)
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/api/admin/suggestions/text', methods=['GET'])
+def get_suggestions_text():
+    """Returns the raw text of user suggestions for the AI generation scripts."""
+    try:
+        if os.path.exists('data/suggestions.txt'):
+            with open('data/suggestions.txt', 'r', encoding='utf-8') as f:
+                return f.read()
+        return ""
+    except Exception as e:
+        return str(e), 500
+
+@app.route('/api/admin/message/read', methods=['POST'])
+def mark_message_read():
+    """Marks a message as read in the server logs."""
+    try:
+        data = request.json
+        timestamp = data.get('timestamp')
+        msg_type = data.get('type') # 'contact' or 'suggestion'
+        
+        file_path = f"data/{msg_type}s_log.json"
+        if not os.path.exists(file_path):
+            return jsonify({'status': 'error', 'message': 'Log not found'}), 404
+            
+        with open(file_path, 'r') as f:
+            logs = json.load(f)
+            
+        for log in logs:
+            if log.get('timestamp') == timestamp:
+                log['status'] = 'read'
+                break
+                
+        with open(file_path, 'w') as f:
+            json.dump(logs, f, indent=2)
+            
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/api/admin/message/delete', methods=['POST'])
+def delete_message():
+    """Deletes a message from the server logs."""
+    try:
+        data = request.json
+        timestamp = data.get('timestamp')
+        msg_type = data.get('type')
+        
+        file_path = f"data/{msg_type}s_log.json"
+        if not os.path.exists(file_path):
+            return jsonify({'status': 'error', 'message': 'Log not found'}), 404
+            
+        with open(file_path, 'r') as f:
+            logs = json.load(f)
+            
+        logs = [log for log in logs if log.get('timestamp') != timestamp]
+                
+        with open(file_path, 'w') as f:
+            json.dump(logs, f, indent=2)
+            
+        return jsonify({'status': 'success'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 

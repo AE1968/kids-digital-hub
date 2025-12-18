@@ -51,26 +51,54 @@ PRODUCT_THEMES = [
 ]
 
 def read_suggestions():
-    """Reads keywords from suggestions file and converts them to product themes."""
-    if not os.path.exists(SUGGESTIONS_FILE):
-        return []
+    """Reads keywords from suggestions from Railway API and local file."""
+    suggestions_data = ""
+    
+    # 1. Try to fetch from Railway (Central Server)
     try:
-        with open(SUGGESTIONS_FILE, "r") as f:
-            content = f.read().lower()
-            keywords = [w.strip() for w in content.replace('\n', ',').split(',') if w.strip()]
-            
-            suggested_themes = []
-            for kw in keywords:
-                # Create a dynamic theme based on the keyword
-                suggested_themes.append({
-                    "name": f"Magic {kw.title()}",
-                    "category": random.choice(["Coloring", "Stories", "Games"]),
-                    "prompt": f"A cute cartoon {kw} in a magical setting. Simple black and white line art for children's coloring book. Clean lines, no shading, white background.",
-                    "price": random.choice([4.99, 5.99, 6.99])
-                })
-            return suggested_themes
+        response = requests.get("https://web-production-b215.up.railway.app/api/admin/suggestions/text", timeout=10)
+        if response.status_code == 200:
+            suggestions_data = response.text
     except Exception as e:
-        print(f"⚠️ Error reading suggestions: {e}")
+        print(f"⚠️ Could not fetch suggestions from Railway: {e}")
+
+    # 2. Try to read from local file as fallback/additional
+    if os.path.exists(SUGGESTIONS_FILE):
+        try:
+            with open(SUGGESTIONS_FILE, "r") as f:
+                suggestions_data += "\n" + f.read()
+        except:
+            pass
+
+    if not suggestions_data.strip():
+        return []
+
+    try:
+        content = suggestions_data.lower()
+        # Parse the structured format: Name | Category | Suggestion
+        keywords = []
+        for line in content.split('\n'):
+            if '|' in line:
+                parts = line.split('|')
+                if len(parts) >= 3:
+                    suggestion_text = parts[2].strip()
+                    if suggestion_text:
+                        keywords.append(suggestion_text)
+            elif line.strip():
+                keywords.append(line.strip())
+        
+        suggested_themes = []
+        for kw in keywords:
+            # Create a dynamic theme based on the keyword
+            suggested_themes.append({
+                "name": f"Magic {kw.title()[:20]}",
+                "category": random.choice(["Coloring", "Stories", "Games"]),
+                "prompt": f"A cute cartoon {kw} in a magical setting. Simple black and white line art for children's coloring book. Clean lines, no shading, white background.",
+                "price": random.choice([4.99, 5.99, 6.99])
+            })
+        return suggested_themes
+    except Exception as e:
+        print(f"⚠️ Error parsing suggestions: {e}")
         return []
 
 def generate_real_ai_image(product_id, theme_name, prompt):

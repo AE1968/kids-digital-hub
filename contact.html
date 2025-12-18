@@ -256,10 +256,21 @@
                     messageLang: userLanguage,
                     romanianMessage: romanianMessage,
                     timestamp: new Date().toISOString(),
+                    userLanguage: userLanguage,
                     status: 'unread'
                 };
 
-                // Save to localStorage (in production, send to server)
+                // 🚀 Send to Railway Server
+                fetch('https://web-production-b215.up.railway.app/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(contactData)
+                })
+                    .then(res => res.json())
+                    .then(data => console.log('Central Server Response:', data))
+                    .catch(err => console.error('Error sending to Central Server:', err));
+
+                // Save to localStorage (as backup)
                 const contacts = JSON.parse(localStorage.getItem('contacts') || '[]');
                 contacts.unshift(contactData);
                 localStorage.setItem('contacts', JSON.stringify(contacts));

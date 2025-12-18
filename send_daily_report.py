@@ -32,13 +32,29 @@ def load_stats():
 
 def load_suggestions():
     suggestions = []
+    
+    # 1. Try to fetch from Railway (Central Server)
+    try:
+        response = requests.get("https://web-production-b215.up.railway.app/api/admin/suggestions/text", timeout=10)
+        if response.status_code == 200:
+            lines = response.text.strip().split('\n')
+            for line in lines[-5:]:
+                if line.strip():
+                    suggestions.append(line.strip())
+            if suggestions:
+                return suggestions
+    except Exception as e:
+        print(f"⚠️ Could not fetch suggestions from Railway for report: {e}")
+
+    # 2. Local Fallback
     try:
         if os.path.exists("data/suggestions.txt"):
             with open("data/suggestions.txt", "r", encoding="utf-8") as f:
                 lines = f.readlines()
                 # Get last 5 suggestions
                 for line in lines[-5:]:
-                    suggestions.append(line.strip())
+                    if line.strip():
+                        suggestions.append(line.strip())
     except:
         pass
     return suggestions
