@@ -14,6 +14,7 @@ from webhook_order_handler import process_new_order
 import google.generativeai as genai
 from nexus_memory import save_conversation, get_context_for_prompt, update_user_profile, get_user_profile
 from nexus_package import create_nexus_package, import_nexus_package, list_available_packages, get_package_info
+from nexus_tasks import get_current_context, get_all_lists, save_task_list, mark_task_complete
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 CORS(app) # Enable CORS for all routes

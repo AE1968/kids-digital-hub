@@ -5,3 +5,4 @@ flask-cors
 google-generativeai
 typing-extensions
 pillow
+cryptography>=41.0.0
