@@ -272,7 +272,8 @@
                                             style="padding:8px; border-radius:10px; border:2px solid #FFECB3; text-align:center; text-transform:uppercase;">
                                         <button class="btn-action"
                                             style="background:#FFF8E1; color:#FF8F00; margin-top:5px;"
-                                            onclick="redeemBonus()">Redeem</button> </div>
+                                            onclick="redeemBonus()">Redeem</button>
+                                    </div>
                                 </div>
             </div>
             <section class="premium-teaser" style="cursor: pointer; margin-top:20px;"
@@ -335,7 +336,6 @@
                         Policy will appear in the specific ad region when enabled. </div>
             </div>
             </main>
-            <script src="js/translations.js"></script>
             <script src="js/auth.js"></script>
             <script src="js/time_manager.js"></script>
             <script src="js/economy.js"></script>
@@ -365,12 +365,6 @@
                         const adminPanel = document.getElementById('admin-panel');
                         if (adminPanel) adminPanel.style.display = 'block';
                         document.body.classList.add('admin-active');
-                    }
-
-                    const lang = localStorage.getItem('kdh_lang') || 'en';
-
-                    if (typeof changeLanguage === 'function') {
-                        changeLanguage(lang);
                     }
 
                     // --- DASHBOARD SYNC LOGIC (LocalStorage) ---

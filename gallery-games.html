@@ -175,28 +175,17 @@
     <header class="games-header">
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:2rem;">🎮</span>
-            <h2 style="margin:0;" data-i18n="game_zone">Game Zone</h2>
-            <select class="lang-select" onchange="changeLanguage(this.value)"
-                style="margin-left:15px; padding:5px 10px; border-radius:15px; border:2px solid #1976D2; background:#E3F2FD; color:#1565C0; font-weight:bold; cursor:pointer;">
-                <option value="en">🇬🇧 English</option>
-                <option value="fr">🇫🇷 Français</option>
-                <option value="de">🇩🇪 Deutsch</option>
-                <option value="ro">🇷🇴 Română</option>
-                <option value="es">🇪🇸 Español</option>
-                <option value="zh">🇨🇳 中文</option>
-                <option value="ja">🇯🇵 日本語</option>
-                <option value="ko">🇰🇷 한국어</option>
-            </select>
+            <h2 style="margin:0;">Game Zone</h2>
         </div>
-        <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
+        <a href="index.html" class="btn-back-dash">⬅️ Back</a>
     </header>
 
     <!-- AGE FILTERS -->
     <div class="age-filters">
-        <button class="filter-btn active" onclick="filterGames('all')" data-i18n="filter_all">All Ages</button>
-        <button class="filter-btn" onclick="filterGames('3-5')" data-i18n="filter_3_5">3-5 Years</button>
-        <button class="filter-btn" onclick="filterGames('6-9')" data-i18n="filter_6_9">6-9 Years</button>
-        <button class="filter-btn" onclick="filterGames('10+')" data-i18n="filter_10_plus">10+ Years</button>
+        <button class="filter-btn active" onclick="filterGames('all')">All Ages</button>
+        <button class="filter-btn" onclick="filterGames('3-5')">3-5 Years</button>
+        <button class="filter-btn" onclick="filterGames('6-9')">6-9 Years</button>
+        <button class="filter-btn" onclick="filterGames('10+')">10+ Years</button>
     </div>
 
     <main>
@@ -207,7 +196,7 @@
 
     <!-- PLAY OVERLAY -->
     <div id="playOverlay" class="game-overlay">
-        <button class="btn-close-game" onclick="closeGame()" data-i18n="btn_close_game">❌ Close Game</button>
+        <button class="btn-close-game" onclick="closeGame()">❌ Close Game</button>
         <div class="game-container">
             <div style="background:#ddd; padding:10px; text-align:center; font-weight:bold;" id="activeGameTitle">Game
                 Title</div>
@@ -218,7 +207,7 @@
 
             <!-- COIN REWARD ACTION -->
             <div style="padding: 10px; text-align: center; border-top: 1px solid #ddd;">
-                <button onclick="claimGameWin()" data-i18n="btn_i_won"
+                <button onclick="claimGameWin()"
                     style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer;">
                     🏆 I Won! (Claim 10 Coins)
                 </button>
@@ -226,7 +215,6 @@
         </div>
     </div>
 
-    <script src="js/translations.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/gamesConfig.js"></script>
     <script src="js/time_manager.js"></script>
@@ -276,8 +264,7 @@
                 if (game.premium && !isAdmin) return; // Hide premium if not admin/premium (simulated)
                 if (ageGroup !== 'all' && game.age !== ageGroup) return;
 
-                const lang = localStorage.getItem('kdh_lang') || 'en';
-                const playNowText = translations[lang]?.play_now || 'Play Now ►';
+                const playNowText = 'Play Now ►';
 
                 const card = document.createElement('div');
                 card.className = game.premium ? 'game-card premium' : 'game-card';
@@ -326,11 +313,7 @@
                 `;
             }
 
-            // FORCE TRANSLATION OF DYNAMIC BUTTONS
-            const lang = localStorage.getItem('kdh_lang') || 'en';
-            if (typeof changeLanguage === 'function') {
-                changeLanguage(lang);
-            }
+
         }
 
         function closeGame() {

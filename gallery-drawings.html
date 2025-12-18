@@ -156,28 +156,17 @@
     <header class="gallery-header">
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:2rem;">🎨</span>
-            <h2 style="margin:0;" data-i18n="art_gallery">My Art Gallery</h2>
-            <select class="lang-select" onchange="changeLanguage(this.value)"
-                style="margin-left:15px; padding:5px 10px; border-radius:15px; border:2px solid #D84315; background:#FBE9E7; color:#BF360C; font-weight:bold; cursor:pointer;">
-                <option value="en">🇬🇧 English</option>
-                <option value="fr">🇫🇷 Français</option>
-                <option value="de">🇩🇪 Deutsch</option>
-                <option value="ro">🇷🇴 Română</option>
-                <option value="es">🇪🇸 Español</option>
-                <option value="zh">🇨🇳 中文</option>
-                <option value="ja">🇯🇵 日本語</option>
-                <option value="ko">🇰🇷 한국어</option>
-            </select>
+            <h2 style="margin:0;">My Art Gallery</h2>
         </div>
-        <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
+        <a href="index.html" class="btn-back-dash">⬅️ Back</a>
     </header>
 
     <!-- AGE FILTERS -->
     <div class="age-filters">
-        <button class="filter-btn active" onclick="filterDrawings('all')" data-i18n="filter_all">All Ages</button>
-        <button class="filter-btn" onclick="filterDrawings('3-5')" data-i18n="filter_3_5">3-5 Years</button>
-        <button class="filter-btn" onclick="filterDrawings('6-9')" data-i18n="filter_6_9">6-9 Years</button>
-        <button class="filter-btn" onclick="filterDrawings('10+')" data-i18n="filter_10_plus">10+ Years</button>
+        <button class="filter-btn active" onclick="filterDrawings('all')">All Ages</button>
+        <button class="filter-btn" onclick="filterDrawings('3-5')">3-5 Years</button>
+        <button class="filter-btn" onclick="filterDrawings('6-9')">6-9 Years</button>
+        <button class="filter-btn" onclick="filterDrawings('10+')">10+ Years</button>
     </div>
 
     <main>
@@ -186,7 +175,6 @@
         </div>
     </main>
 
-    <script src="js/translations.js"></script>
     <script src="js/auth.js"></script>
     <!-- External Config -->
     <script src="js/drawingsConfig.js"></script>

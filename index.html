@@ -14,22 +14,7 @@
   <link rel="stylesheet" href="/css/responsive-footer.css">
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
-  <script src="/js/translations.js"></script>
   <style>
-    .lang-select {
-      padding: 5px 10px;
-      border-radius: 15px;
-      border: 2px solid #E64A19;
-      background: #FFCCBC;
-      color: #D84315;
-      font-weight: bold;
-      font-family: 'Fredoka', sans-serif;
-      cursor: pointer;
-      margin-left: 10px;
-      outline: none;
-      font-size: 0.9rem;
-    }
-
     .header-left {
       display: flex;
       align-items: center;
@@ -110,16 +95,6 @@
           style="text-decoration:none; cursor:default; font-size: 1.6rem; margin-right: 5px; display: inline-flex; align-items: center; justify-content: center; height: 100%;"
           title="">🎨</a>
         <a href="#" class="logo" style="display: inline-flex; align-items: center;">Kids Hub</a>
-        <select class="lang-select" onchange="changeLanguage(this.value)">
-          <option value="en">🇬🇧 English</option>
-          <option value="fr">🇫🇷 Français</option>
-          <option value="de">🇩🇪 Deutsch</option>
-          <option value="ro">🇷🇴 Română</option>
-          <option value="es">🇪🇸 Español</option>
-          <option value="zh">🇨🇳 中文</option>
-          <option value="ja">🇯🇵 日本語</option>
-          <option value="ko">🇰🇷 한국어</option>
-        </select>
       </div>
 
       <nav class="main-nav">
@@ -127,26 +102,26 @@
           <li>
             <a href="gallery-drawings.html" class="nav-btn">
               <span class="nav-icon">🖍️</span>
-              <span class="nav-text" data-i18n="nav_coloring">Coloring</span>
+              <span class="nav-text">Coloring</span>
             </a>
           </li>
           <li>
             <a href="gallery-games.html" class="nav-btn">
               <span class="nav-icon">🧩</span>
-              <span class="nav-text" data-i18n="nav_games">Games</span>
+              <span class="nav-text">Games</span>
             </a>
           </li>
           <li>
             <a href="gallery-stories.html" class="nav-btn">
               <span class="nav-icon">📚</span>
-              <span class="nav-text" data-i18n="nav_stories">Stories</span>
+              <span class="nav-text">Stories</span>
             </a>
           </li>
           <li>
             <a href="dashboard.html" class="nav-btn">
               <span class="nav-icon"><img src="assets/images/logo_ae.png" alt="AE"
                   style="width: 30px; height: 30px; object-fit: contain; vertical-align: middle;"></span>
-              <span class="nav-text" data-i18n="nav_myhub">My Hub</span>
+              <span class="nav-text">My Hub</span>
             </a>
           </li>
           <li>
@@ -154,7 +129,7 @@
               style="display: flex; flex-direction: column; align-items: center; padding: 8px 12px;">
               <img src="assets/images/hero_kids_flags.png" alt="Kids"
                 style="width: 40px; height: 30px; object-fit: cover; border-radius: 5px; margin-bottom: 4px;">
-              <span class="nav-text" data-i18n="nav_suggestions" style="font-size: 0.85rem;">Suggestions</span>
+              <span class="nav-text" style="font-size: 0.85rem;">Suggestions</span>
             </a>
           </li>
         </ul>
@@ -163,13 +138,13 @@
   </header>
 
   <section class="hero hero-section" style="text-align:center; padding: 60px 20px; position: relative;">
-    <h1 data-i18n="hero_title" style="margin-bottom:20px;">Welcome to the Creative Universe! ✨</h1>
+    <h1 style="margin-bottom:20px;">Welcome to the Creative Universe! ✨</h1>
 
     <!-- SEASONAL CLOCKS CONTAINER -->
     <div id="hero-clock-container" style="min-height: 100px; margin-bottom: 20px;"></div>
 
     <!-- THE CENTRAL AE BUTTON -->
-    <a href="promo_video.html" class="ae-hero-btn" data-i18n-title="ae_promo_tooltip" title="Watch Promo & Share"
+    <a href="promo_video.html" class="ae-hero-btn" title="Watch Promo & Share"
       style="margin-top: 80px; display: inline-block;">
       <div class="ae-pulse"></div> <!-- PULSE CIRCLES -->
       <img src="assets/images/logo_ae.png" alt="AE - Promo Video">
@@ -180,7 +155,7 @@
 
 
   <footer style="position: relative;">
-    <p data-i18n="footer_rights">© 2025 Kids Digital Hub • Made with ❤️ for Kids</p>
+    <p>© 2025 Kids Digital Hub • Made with ❤️ for Kids</p>
     <br>
     <p style="font-size: 0.8rem; opacity: 0.8">Terms & Conditions | Privacy Policy</p>
 
@@ -190,7 +165,7 @@
       onmouseover="this.style.transform='translateY(-50%) translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(76, 175, 80, 0.6)';"
       onmouseout="this.style.transform='translateY(-50%)'; this.style.boxShadow='0 4px 15px rgba(76, 175, 80, 0.4)';">
       <span style="font-size: 1.5rem;">📧</span>
-      <span data-i18n="btn_contact">Contact</span>
+      <span>Contact</span>
     </a>
   </footer>
 
@@ -205,7 +180,6 @@
   </script>
   <script src="js/products_data.js"></script>
   <script src="js/admin.js"></script>
-  <script src="js/translations.js"></script>
   <script src="js/seasonal.js"></script>
   <script src="js/mini-calendar.js"></script>
   <script src="js/countdowns.js"></script> <!-- 🎄🎆 QUANTUM & CHRONO CLOCKS ACTIVATED -->
