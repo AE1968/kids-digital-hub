@@ -977,8 +977,6 @@ def get_admin_messages():
         all_messages.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
         
         return jsonify(all_messages)
-    except:
-        return jsonify([])
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 

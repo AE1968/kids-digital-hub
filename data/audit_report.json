@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-18 20:20:24",
+  "timestamp": "2025-12-18 20:33:47",
   "health_score": 100,
   "checked_urls": [],
   "broken_links": [],
@@ -10,12 +10,12 @@
     "meta_desc": "Verified"
   },
   "security_scan": {
-    "protection_active": true
+    "protection_active": false
   },
   "features_verified": {
-    "Homepage": "\u2705 OPERATIONAL",
-    "Coloring": "\u2705 OPERATIONAL",
-    "Games": "\u2705 OPERATIONAL",
+    "Homepage": "\u2705 OPERATIONAL (Local)",
+    "Coloring": "\u2705 OPERATIONAL (Local)",
+    "Games": "\u2705 OPERATIONAL (Local)",
     "Stories": "\u2705 OPERATIONAL",
     "Shop": "\u2705 OPERATIONAL",
     "Profile": "\u2705 OPERATIONAL",
