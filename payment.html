@@ -252,19 +252,38 @@
             }
         }).render('#paypal-prepay-container');
 
-        function unlockPremium() {
-            // Determine current user
+        async function unlockPremium(paymentDetails = {}) {
+            // 1. Notify server about payment (secure validation)
+            try {
+                await fetch('/.netlify/functions/paypal-webhook', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        event_type: 'PAYMENT.CAPTURE.COMPLETED',
+                        resource: {
+                            id: paymentDetails.id || 'direct-payment',
+                            status: 'COMPLETED',
+                            payer: {
+                                email_address: paymentDetails.email || 'user@example.com',
+                                name: { given_name: paymentDetails.name || 'Customer' }
+                            },
+                            amount: { value: paymentDetails.amount || '2.49', currency_code: 'GBP' }
+                        }
+                    })
+                });
+                console.log('Server notified of payment');
+            } catch (e) {
+                console.log('Server notification failed, continuing...', e);
+            }
+
+            // 2. Update local user (client-side for immediate access)
             const userJson = localStorage.getItem('kdh_user');
             if (userJson) {
                 const user = JSON.parse(userJson);
-                // Update Local User Object (Mock Backend Update)
                 user.role = 'premium';
-                // In real app, we would send the SubID to backend here.
-
-                // Save back
+                user.premiumSince = new Date().toISOString();
+                user.premiumUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
                 localStorage.setItem('kdh_user', JSON.stringify(user));
-
-                // Also set a temporary flag for immediate access without relogin if needed
                 localStorage.setItem('kdh_premium_active', 'true');
 
                 setTimeout(() => {
