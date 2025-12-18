@@ -41,6 +41,11 @@ def rate_limit():
     ip = request.remote_addr
     now = time.time()
     
+    # List of paths that are NOT rate limited (monitoring, static, webhooks)
+    excluded_paths = ['/health', '/api/ping', '/api/uptime/detailed', '/webhook/', '/static/']
+    if any(request.path.startswith(p) for p in excluded_paths):
+        return
+
     # Filter out requests older than the duration
     request_history[ip] = [req_time for req_time in request_history[ip] if now - req_time < RATE_LIMIT_DURATION]
     
@@ -48,19 +53,17 @@ def rate_limit():
     if len(request_history[ip]) >= RATE_LIMIT_MAX_REQUESTS:
         return jsonify({
             'status': 'error',
-            'message': 'Rate limit exceeded. Please try again later.'
+            'message': 'Rate limit exceeded for health safety. Please try again later.'
         }), 429
         
     # Add current request
     request_history[ip].append(now)
 
 # Configuration
-# Dependencies:
-# pillow
-# flask-cors
-WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'your-secret-key-change-this')
+# Dependencies: pillow, flask-cors, google-generativeai, requests
 WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'your-secret-key-change-this')
 PORT = int(os.getenv('PORT', 8080))
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY', '') # For Gemini AI if needed
 
 # Nexus AI Dashboard HTML
 NEXUS_DASHBOARD = """
@@ -1043,12 +1046,50 @@ def delete_message():
 
 @app.route('/health')
 def health():
-    """Health check for monitoring"""
+    """Simple health check for monitoring"""
     return jsonify({
         'status': 'healthy',
         'timestamp': datetime.now().isoformat(),
         'service': 'kids-digital-hub-webhook'
     })
+
+@app.route('/api/ping')
+def ping():
+    """Keep-alive endpoint"""
+    return "pong"
+
+@app.route('/api/uptime/detailed')
+def uptime_detailed():
+    """Detailed health check including partner services"""
+    import requests
+    results = {
+        'status': 'online',
+        'timestamp': datetime.now().isoformat(),
+        'partners': {},
+        'internal': {}
+    }
+    
+    # Check Partners
+    partners = {
+        'Netlify': 'https://www.kidsdigitalhub.com',
+        'GoatCounter': 'https://adrian.goatcounter.com',
+        'Cloudinary': 'https://cloudinary.com'
+    }
+    
+    for name, url in partners.items():
+        try:
+            resp = requests.get(url, timeout=5)
+            results['partners'][name] = 'online' if resp.status_code < 400 else f'error_{resp.status_code}'
+        except:
+            results['partners'][name] = 'unreachable'
+            results['status'] = 'degraded'
+            
+    # Check Internal Storage
+    paths_to_check = ['data/products.json', 'data/suggestions_log.json', 'site_statistics.json']
+    for p in paths_to_check:
+        results['internal'][p] = 'exists' if os.path.exists(p) else 'missing'
+        
+    return jsonify(results)
 
 if __name__ == '__main__':
     print("=" * 70)

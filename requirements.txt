@@ -1,11 +1,7 @@
-```
 flask
 gunicorn
 requests
-gunicorn
 flask-cors
 google-generativeai
 typing-extensions
 pillow
-flask-cors
-```
