@@ -175,7 +175,7 @@
     <header class="games-header">
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:2rem;">🎮</span>
-            <h2 style="margin:0;" data-i18n="nav_games">Game Zone</h2>
+            <h2 style="margin:0;" data-i18n="game_zone">Game Zone</h2>
         </div>
         <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
@@ -196,7 +196,7 @@
 
     <!-- PLAY OVERLAY -->
     <div id="playOverlay" class="game-overlay">
-        <button class="btn-close-game" onclick="closeGame()">❌ Close Game</button>
+        <button class="btn-close-game" onclick="closeGame()" data-i18n="btn_close_game">❌ Close Game</button>
         <div class="game-container">
             <div style="background:#ddd; padding:10px; text-align:center; font-weight:bold;" id="activeGameTitle">Game
                 Title</div>
@@ -207,7 +207,7 @@
 
             <!-- COIN REWARD ACTION -->
             <div style="padding: 10px; text-align: center; border-top: 1px solid #ddd;">
-                <button onclick="claimGameWin()"
+                <button onclick="claimGameWin()" data-i18n="btn_i_won"
                     style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer;">
                     🏆 I Won! (Claim 10 Coins)
                 </button>

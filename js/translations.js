@@ -105,7 +105,19 @@ const translations = {
         "countdown_target": "TARGET ACQUIRED",
         "countdown_xmas": "CHRISTMAS",
         "countdown_ny_seq": "INIT_SEQ: NY26",
-        "ae_promo_tooltip": "Watch Promo & Share"
+        "ae_promo_tooltip": "Watch Promo & Share",
+        "btn_mode_read": "📖 Read",
+        "btn_mode_audio": "🎧 Listen",
+        "btn_exit": "❌ Exit",
+        "btn_finish_collect": "✅ Finish & Collect 5 Coins",
+        "btn_play_pause": "⏯️ Play/Pause",
+        "audio_narrator_reading": "The Narrator is reading...",
+        "story_library": "Story Library",
+        "game_zone": "Game Zone",
+        "art_gallery": "My Art Gallery",
+        "btn_close_game": "❌ Close Game",
+        "btn_i_won": "🏆 I Won! (Claim 10 Coins)",
+        "loading_game": "Loading Game..."
     },
     "ro": {
         "nav_coloring": "Colorat",
@@ -213,7 +225,19 @@ const translations = {
         "countdown_target": "ȚINTĂ ATINSĂ",
         "countdown_xmas": "CRĂCIUN",
         "countdown_ny_seq": "SECV_INIT: AN26",
-        "ae_promo_tooltip": "Vezi Promo & Distribuie"
+        "ae_promo_tooltip": "Vezi Promo & Distribuie",
+        "btn_mode_read": "📖 Citește",
+        "btn_mode_audio": "🎧 Ascultă",
+        "btn_exit": "❌ Ieșire",
+        "btn_finish_collect": "✅ Termină & Colectează 5 Monede",
+        "btn_play_pause": "⏯️ Redare/Pauză",
+        "audio_narrator_reading": "Naratorul citește...",
+        "story_library": "Biblioteca de Povești",
+        "game_zone": "Zona de Jocuri",
+        "art_gallery": "Galeria Mea de Artă",
+        "btn_close_game": "❌ Închide Jocul",
+        "btn_i_won": "🏆 Am Câștigat! (Revendică 10 Monede)",
+        "loading_game": "Se încarcă jocul..."
     },
     "fr": {
         "nav_coloring": "Coloriage",
@@ -296,10 +320,14 @@ const translations = {
 };
 
 function changeLanguage(lang) {
+    console.log(`🌍 Changing language to: ${lang}`);
+
     const selectedLang = translations[lang] || translations['en'];
 
     // Update elements with data-i18n attribute
     const elements = document.querySelectorAll('[data-i18n]');
+    console.log(`📝 Found ${elements.length} elements to translate`);
+
     elements.forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (selectedLang[key]) {
@@ -329,25 +357,29 @@ function changeLanguage(lang) {
     localStorage.setItem('kdh_lang', lang);
     document.cookie = `nf_lang=${lang}; Path=/; SameSite=Lax`;
 
-    // Sync Dropdown if exists
-    const select = document.querySelector('.lang-select');
-    if (select && select.value !== lang) {
-        select.value = lang;
-    }
+    // Sync ALL language selectors on the page
+    const selects = document.querySelectorAll('.lang-select');
+    selects.forEach(select => {
+        if (select.value !== lang) {
+            select.value = lang;
+        }
+    });
 
     // Dispatch event for other components
-    window.dispatchEvent(new Event('languageChanged'));
+    window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 
     // Support for seasonal.js update function if it exists
     if (typeof updateSeasonalBackground === 'function') {
         updateSeasonalBackground();
     }
 
-    console.log(`Language changed to: ${lang}`);
+    console.log(`✅ Language changed successfully to: ${lang}`);
 }
 
 // AUTO-INITIALIZE LANGUAGE ON LOAD
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Initializing translation system...');
+
     // Priority: Saved > Browser > Default
     const savedLang = localStorage.getItem('kdh_lang');
     const browserLang = navigator.language.split('-')[0];
@@ -355,5 +387,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const lang = savedLang || defaultLang;
 
+    console.log(`📌 Selected language: ${lang} (saved: ${savedLang}, browser: ${browserLang})`);
+
+    // Apply language immediately
     changeLanguage(lang);
+
+    // Add event listeners to all language selectors
+    const selects = document.querySelectorAll('.lang-select');
+    selects.forEach(select => {
+        select.addEventListener('change', function () {
+            changeLanguage(this.value);
+        });
+    });
+
+    console.log('✅ Translation system initialized');
 });
