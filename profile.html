@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>My Profile - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .avatar-section {
+            margin-bottom: 30px;
+        }
+
+        .avatar-display {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.4);
+        }
+
+        .username {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .title-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .stat-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .stat-box .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-box .label {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .edit-section {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .edit-section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .avatar-picker {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .avatar-option {
+            aspect-ratio: 1;
+            background: #f8f9fa;
+            border: 3px solid transparent;
+            border-radius: 15px;
+            font-size: 2.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .avatar-option:hover {
+            background: #e8f0fe;
+        }
+
+        .avatar-option.selected {
+            border-color: #667eea;
+            background: #e8f0fe;
+        }
+
+        .avatar-option.locked {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .achievements-preview {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .achievement-badge {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .achievement-badge.locked {
+            background: #ddd;
+            filter: grayscale(1);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .shop-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back-btn">← Back</a>
+
+    <div class="container">
+        <div class="profile-card">
+            <div class="avatar-section">
+                <div class="avatar-display" id="avatarDisplay">😊</div>
+                <div class="username" id="usernameDisplay">Player</div>
+                <div class="title-badge" id="titleDisplay">⭐ Explorer</div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="value" id="statCoins">0</div>
+                    <div class="label">Coins</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="statAchievements">0</div>
+                    <div class="label">Badges</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="statLevel">1</div>
+                    <div class="label">Level</div>
+                </div>
+            </div>
+
+            <div class="achievements-preview" id="achievementsPreview"></div>
+        </div>
+
+        <div class="edit-section">
+            <h3>✏️ Edit Profile</h3>
+
+            <div class="input-group">
+                <label>Your Name</label>
+                <input type="text" id="nameInput" placeholder="Enter your name" maxlength="20">
+            </div>
+
+            <div class="input-group">
+                <label>Choose Avatar</label>
+                <div class="avatar-picker" id="avatarPicker"></div>
+                <a href="shop.html" class="shop-link">🛍️ Get more avatars in the Shop!</a>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" onclick="saveProfile()">💾 Save Profile</button>
+            </div>
+        </div>
+
+        <div class="edit-section" style="text-align: center;">
+            <h3>🔗 Quick Links</h3>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
+                <a href="shop.html" class="btn">🛍️ Shop</a>
+                <a href="challenges.html" class="btn">⭐ Challenges</a>
+                <a href="settings.html" class="btn btn-secondary">⚙️ Settings</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const defaultAvatars = ['😊', '😎', '🤩', '🥳', '😇', '🤗', '😺', '🐶'];
+        const premiumAvatars = ['⭐', '🚀', '🦄', '🐉', '🤖', '🧙'];
+
+        function getProfile() {
+            return JSON.parse(localStorage.getItem('kdh_profile') || '{}');
+        }
+
+        function saveProfileData(data) {
+            localStorage.setItem('kdh_profile', JSON.stringify(data));
+        }
+
+        function getOwned() {
+            return JSON.parse(localStorage.getItem('kdh_owned_items') || '[]');
+        }
+
+        function renderAvatarPicker() {
+            const picker = document.getElementById('avatarPicker');
+            const profile = getProfile();
+            const owned = getOwned();
+
+            const allAvatars = [...defaultAvatars];
+
+            // Add premium avatars if owned
+            premiumAvatars.forEach((av, i) => {
+                const itemId = `avatar_${['star', 'rocket', 'unicorn', 'dragon', 'robot', 'wizard'][i]}`;
+                if (owned.includes(itemId)) {
+                    allAvatars.push(av);
+                }
+            });
+
+            picker.innerHTML = allAvatars.map(av => `
+                <div class="avatar-option ${profile.avatar === av ? 'selected' : ''}" 
+                     onclick="selectAvatar('${av}')">
+                    ${av}
+                </div>
+            `).join('');
+
+            // Add locked preview
+            premiumAvatars.forEach((av, i) => {
+                const itemId = `avatar_${['star', 'rocket', 'unicorn', 'dragon', 'robot', 'wizard'][i]}`;
+                if (!owned.includes(itemId)) {
+                    picker.innerHTML += `
+                        <div class="avatar-option locked" title="Get from Shop!">
+                            ${av}
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function selectAvatar(avatar) {
+            const profile = getProfile();
+            profile.avatar = avatar;
+            saveProfileData(profile);
+            renderAvatarPicker();
+            document.getElementById('avatarDisplay').textContent = avatar;
+        }
+
+        function saveProfile() {
+            const profile = getProfile();
+            profile.name = document.getElementById('nameInput').value || 'Player';
+            saveProfileData(profile);
+
+            document.getElementById('usernameDisplay').textContent = profile.name;
+
+            if (window.KDH_Sounds) {
+                KDH_Sounds.playSuccess();
+            }
+
+            alert('✅ Profile saved!');
+        }
+
+        function loadProfile() {
+            const profile = getProfile();
+
+            // Display
+            document.getElementById('avatarDisplay').textContent = profile.avatar || '😊';
+            document.getElementById('usernameDisplay').textContent = profile.name || 'Player';
+            document.getElementById('nameInput').value = profile.name || '';
+
+            // Stats
+            document.getElementById('statCoins').textContent = localStorage.getItem('kdh_coins') || '0';
+
+            const achievements = JSON.parse(localStorage.getItem('kdh_achievements') || '{}');
+            const achievementCount = (achievements.unlocked || []).length;
+            document.getElementById('statAchievements').textContent = achievementCount;
+
+            // Level based on total activity
+            const totalPoints = achievements.totalPoints || 0;
+            const level = Math.floor(totalPoints / 100) + 1;
+            document.getElementById('statLevel').textContent = level;
+
+            // Achievement preview
+            const badges = ['⭐', '🎨', '📚', '🧠', '🔢', '🏆'];
+            document.getElementById('achievementsPreview').innerHTML = badges.map((b, i) => `
+                <div class="achievement-badge ${i < achievementCount ? '' : 'locked'}">${b}</div>
+            `).join('');
+
+            // Title
+            const ownedItems = getOwned();
+            let title = 'Explorer';
+            if (ownedItems.includes('title_legend')) title = 'Legend';
+            else if (ownedItems.includes('title_master')) title = 'Master';
+            else if (ownedItems.includes('title_champion')) title = 'Champion';
+            else if (ownedItems.includes('title_explorer')) title = 'Explorer';
+            document.getElementById('titleDisplay').textContent = `⭐ ${title}`;
+        }
+
+        // Initialize
+        loadProfile();
+        renderAvatarPicker();
+    </script>
+</body>
+
+</html>
