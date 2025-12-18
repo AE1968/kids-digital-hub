@@ -1,8 +1,11 @@
+```
 flask
 gunicorn
 requests
-python-dotenv
-stripe
+gunicorn
+flask-cors
 google-generativeai
+typing-extensions
 pillow
 flask-cors
+```
