@@ -313,9 +313,12 @@
 
 <body>
     <div class="dashboard-header">
-        <h1>👨‍👩‍👧‍👦 Parent Dashboard</h1>
-        <p>Monitor your child's activity and set controls</p>
-        <a href="index.html" class="back-link">← Back to Home</a>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 10px;">
+            <img src="assets/images/logo_ae.png" alt="AE" style="width: 50px; height: 50px;">
+            <h3 data-i18n="parent_dash_title">Parent Dashboard</h3>
+        </div>
+        <p data-i18n="parent_dash_subtitle">Monitor your child's activity and set controls</p>
+        <a href="index.html" class="back-link" data-i18n="btn_back">← Back to Home</a>
     </div>
 
     <div class="container">
@@ -324,38 +327,38 @@
             <div class="stat-card">
                 <div class="icon">⏱️</div>
                 <div class="value" id="totalTime">0h 0m</div>
-                <div class="label">Time Today</div>
+                <div class="label" data-i18n="stat_time">Time Today</div>
             </div>
             <div class="stat-card">
                 <div class="icon">🎮</div>
                 <div class="value" id="gamesPlayed">0</div>
-                <div class="label">Games Played</div>
+                <div class="label" data-i18n="stat_games">Games Played</div>
             </div>
             <div class="stat-card">
                 <div class="icon">🎨</div>
                 <div class="value" id="drawingsCreated">0</div>
-                <div class="label">Drawings Created</div>
+                <div class="label" data-i18n="stat_drawings">Drawings Created</div>
             </div>
             <div class="stat-card">
                 <div class="icon">📚</div>
                 <div class="value" id="storiesRead">0</div>
-                <div class="label">Stories Read</div>
+                <div class="label" data-i18n="stat_stories">Stories Read</div>
             </div>
             <div class="stat-card">
                 <div class="icon">🏆</div>
                 <div class="value" id="achievements">0</div>
-                <div class="label">Achievements</div>
+                <div class="label" data-i18n="stat_achievements">Achievements</div>
             </div>
         </div>
 
         <!-- Charts -->
         <div class="chart-section">
             <div class="chart-card">
-                <h3>📊 Activity This Week</h3>
+                <h3 data-i18n="chart_weekly">📊 Activity This Week</h3>
                 <canvas id="weeklyChart"></canvas>
             </div>
             <div class="chart-card">
-                <h3>🎯 Activity Breakdown</h3>
+                <h3 data-i18n="chart_breakdown">🎯 Activity Breakdown</h3>
                 <canvas id="activityChart"></canvas>
             </div>
         </div>
@@ -396,7 +399,7 @@
         <!-- Parental Controls -->
         <div class="controls-section">
             <div class="control-card">
-                <h3>⏰ Time Controls</h3>
+                <h3 data-i18n="time_controls">⏰ Time Controls</h3>
                 <div class="control-item">
                     <span>Daily Time Limit</span>
                     <div class="time-selector">
@@ -410,82 +413,109 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-                <div class="control-item">
-                    <span>Bedtime Start</span>
-                    <input type="time" id="bedtimeStart" value="20:00"
-                        style="padding:10px;border:2px solid #ddd;border-radius:10px;">
-                </div>
-                <div class="control-item">
-                    <span>Bedtime End</span>
-                    <input type="time" id="bedtimeEnd" value="07:00"
-                        style="padding:10px;border:2px solid #ddd;border-radius:10px;">
-                </div>
             </div>
 
-            <div class="control-card">
-                <h3>🔒 Content Controls</h3>
+            <!-- ADMIN TOOLS INTEGRATION -->
+            <div class="control-card" id="adminToolsSection"
+                style="display:none; border: 2px solid #bc13fe; background: #faf5ff;">
+                <h3 style="color: #bc13fe; display: flex; align-items: center; gap: 10px;">
+                    <span>🤖</span> NEXUS Intelligence Center
+                </h3>
                 <div class="control-item">
-                    <span>Premium Content</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="premiumEnabled" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
+                    <span data-i18n="nexus_status">Nexus Server Status</span>
+                    <span id="railway-status" style="font-weight:bold; color:#FF9800;">🔍 PINGING...</span>
                 </div>
-                <div class="control-item">
-                    <span>Allow Game Downloads</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="downloadsEnabled">
-                        <span class="toggle-slider"></span>
-                    </label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                    <button class="btn" style="background: #2196F3; font-size: 0.8rem; padding: 10px;"
+                        onclick="window.open('https://web-production-b215.up.railway.app/admin', '_blank')">📦 Prod
+                        Dashboard</button>
+                    <button class="btn" style="background: #66BB6A; font-size: 0.8rem; padding: 10px;"
+                        onclick="location.href='admin_messages.html'">📬 Inbox</button>
+                    <button class="btn" style="background: #9C27B0; font-size: 0.8rem; padding: 10px;"
+                        onclick="injectCoins()">🪙 +100 Coins</button>
+                    <button class="btn" style="background: #000; font-size: 0.8rem; padding: 10px;"
+                        onclick="location.href='nexus_core.html'">🧬 Core</button>
                 </div>
-                <div class="control-item">
-                    <span>Weekly Email Reports</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="emailReports" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div style="margin-top:20px;">
-                    <button class="btn" onclick="saveSettings()">💾 Save Settings</button>
+
+                <!-- VIRTUAL AUDITOR REPORT -->
+                <div id="audit-report-container"
+                    style="margin-top: 20px; padding: 15px; background: #fff; border-radius: 15px; border: 1px solid #bc13fe; font-size: 0.85rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-weight: bold; color: #bc13fe;">🛡️ Virtual Auditor</span>
+                        <span id="audit-health-badge"
+                            style="padding: 2px 8px; border-radius: 10px; background: #e8f5e9; color: #2e7d32; font-weight: bold;">Score:
+                            --%</span>
+                    </div>
+                    <div id="audit-timestamp" style="font-size: 0.75rem; color: #666; margin-bottom: 8px;">Last Scan: --
+                    </div>
+                    <div id="audit-issues" style="color: #666;">Scanning system branches...</div>
                 </div>
             </div>
         </div>
 
-        <!-- Achievements -->
-        <div class="activity-list">
-            <h3>🏆 Achievements Earned</h3>
-            <div class="achievements-grid">
-                <div class="achievement">
-                    <div class="badge">⭐</div>
-                    <div class="name">First Steps</div>
-                </div>
-                <div class="achievement">
-                    <div class="badge">🎨</div>
-                    <div class="name">Artist</div>
-                </div>
-                <div class="achievement">
-                    <div class="badge">📚</div>
-                    <div class="name">Bookworm</div>
-                </div>
-                <div class="achievement">
-                    <div class="badge">🧠</div>
-                    <div class="name">Memory Master</div>
-                </div>
-                <div class="achievement locked">
-                    <div class="badge">🏆</div>
-                    <div class="name">Champion</div>
-                </div>
-                <div class="achievement locked">
-                    <div class="badge">🚀</div>
-                    <div class="name">Explorer</div>
-                </div>
+        <div class="control-card">
+            <h3 data-i18n="content_controls">🔒 Content Controls</h3>
+            <div class="control-item">
+                <span>Premium Content</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="premiumEnabled" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div style="margin-top:20px;">
+                <button class="btn" onclick="saveSettings()" data-i18n="btn_save_settings">💾 Save Settings</button>
             </div>
         </div>
     </div>
 
+    <!-- Achievements -->
+    <div class="activity-list">
+        <h3>🏆 Achievements Earned</h3>
+        <div class="achievements-grid">
+            <div class="achievement">
+                <div class="badge">⭐</div>
+                <div class="name">First Steps</div>
+            </div>
+            <div class="achievement">
+                <div class="badge">🎨</div>
+                <div class="name">Artist</div>
+            </div>
+            <div class="achievement">
+                <div class="badge">📚</div>
+                <div class="name">Bookworm</div>
+            </div>
+            <div class="achievement">
+                <div class="badge">🧠</div>
+                <div class="name">Memory Master</div>
+            </div>
+            <div class="achievement locked">
+                <div class="badge">🏆</div>
+                <div class="name">Champion</div>
+            </div>
+            <div class="achievement locked">
+                <div class="badge">🚀</div>
+                <div class="name">Explorer</div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="js/translations.js"></script>
     <script>
         // Load saved stats
         function loadStats() {
+            // Check for Admin Mode
+            if (localStorage.getItem('kdh_admin_mode') === 'true') {
+                document.getElementById('adminToolsSection').style.display = 'block';
+                checkSystemHealth();
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => changeLanguage('en'), 100);
+                // Assuming updateSystemStatus and startUptimeTimer are defined elsewhere or will be added
+                // updateSystemStatus();
+                // startUptimeTimer();
+            });
             const seconds = parseInt(localStorage.getItem('kdh_today_seconds') || '0');
             const hours = Math.floor(seconds / 3600);
             const mins = Math.floor((seconds % 3600) / 60);
@@ -578,8 +608,66 @@
             }
         }
 
-        loadStats();
-        loadSettings();
+        async function loadAuditReport() {
+            try {
+                const response = await fetch('data/audit_report.json?t=' + Date.now());
+                const data = await response.json();
+
+                const scoreEl = document.getElementById('audit-health-badge');
+                scoreEl.textContent = `Score: ${data.health_score}%`;
+
+                if (data.health_score < 90) {
+                    scoreEl.style.background = '#ffebee';
+                    scoreEl.style.color = '#c62828';
+                }
+
+                document.getElementById('audit-timestamp').textContent = `Last Scan: ${data.timestamp}`;
+
+                const issuesEl = document.getElementById('audit-issues');
+                const errors = (data.js_errors || []).length + (data.broken_links || []).length;
+
+                if (errors === 0) {
+                    issuesEl.innerHTML = '<span style="color:#4CAF50;">✅ No critical vulnerabilities detected.</span>';
+                } else {
+                    issuesEl.innerHTML = `<span style="color:#f44336;">⚠️ Found ${errors} potential issues. Check logs.</span>`;
+                }
+            } catch (e) {
+                console.log("Audit report not found yet.");
+            }
+        }
+
+        function injectCoins() {
+            if (confirm("Admin: Inject 100 Premium Coins?")) {
+                let coins = parseInt(localStorage.getItem('kdh_coins') || '0');
+                localStorage.setItem('kdh_coins', coins + 100);
+                alert("🪙 100 Coins Injected!");
+                location.reload();
+            }
+        }
+
+        async function checkSystemHealth() {
+            const statusEl = document.getElementById('railway-status');
+            try {
+                const response = await fetch('https://web-production-b215.up.railway.app/health', { mode: 'cors' });
+                if (response.ok) {
+                    statusEl.textContent = '✅ ONLINE';
+                    statusEl.style.color = '#4CAF50';
+                } else {
+                    throw new Error();
+                }
+            } catch (error) {
+                statusEl.textContent = '⚠️ SLEEPING';
+                statusEl.style.color = '#f44336';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => changeLanguage('en'), 100);
+            loadStats();
+            loadSettings();
+            checkSystemHealth();
+            loadAuditReport();
+        });
     </script>
 </body>
 

@@ -233,51 +233,130 @@
             </div>
         </div>
 
-        <!-- ADMIN PANEL -->
-        <div id="admin-panel" class="admin-panel">
-            <h3 style="color:#c62828; margin-top:0;">🛡️ Parent Control Panel</h3>
-            <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:15px;">
-                <div style="background:white; padding:15px; border-radius:15px; flex:1; min-width:200px;">
-                    <h4 style="margin:0 0 10px 0;">Play Time Limit</h4>
-                    <label style="font-size:0.8rem; color:#666;">Active Hours:</label>
-                    <div style="display:flex; align-items:center; gap:5px; margin-top:5px;">
-                        <input type="number" id="setting-start-hour" value="8" style="width:50px; padding:5px;"> to
-                        <input type="number" id="setting-end-hour" value="20" style="width:50px; padding:5px;">
-                    </div>
-                    <button class="btn-action" style="background:#4CAF50; color:white; margin-top:10px;"
-                        onclick="saveParentSettings()">Save Settings</button>
+        <!-- ACHIEVEMENT BADGES -->
+        <div style="padding: 20px; max-width: 1200px; margin: 0 auto;">
+            <h3 style="color: #444; margin-bottom: 20px;">🏆 My Achievements</h3>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                <div class="badge" title="First Coloring" style="opacity: 0.3; text-align: center; width: 100px;">
+                    <div
+                        style="font-size: 3rem; background: #eee; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                        🖍️</div>
+                    <p style="font-size: 0.75rem; font-weight: bold; margin-top: 5px;">Creative Star</p>
                 </div>
-                <div style="background:white; padding:15px; border-radius:15px; flex:1; min-width:200px;">
-                    <h4 style="margin:0 0 10px 0;">Admin & Business Tools</h4>
-                    <div style="display: grid; gap: 10px;">
-                        <button class="btn-action" style="background:#2196F3; color:white;"
-                            onclick="window.open('https://web-production-b215.up.railway.app/admin', '_blank')">📦 Order
-                            & AI Dashboard</button>
-                        <button class="btn-action" style="background:#66BB6A; color:white;"
-                            onclick="location.href='admin_messages.html'">📬 Message & Traffic Center</button>
-                        <button class="btn-action" style="background:#FF9800; color:white;"
-                            onclick="addAdminCoins()">+100 Parent Coins</button>
+                <div class="badge" title="Bookworm" style="opacity: 0.3; text-align: center; width: 100px;">
+                    <div
+                        style="font-size: 3rem; background: #eee; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                        🦉</div>
+                    <p style="font-size: 0.75rem; font-weight: bold; margin-top: 5px;">Bookworm</p>
+                </div>
+                <div class="badge" title="Game Master" style="opacity: 0.3; text-align: center; width: 100px;">
+                    <div
+                        style="font-size: 3rem; background: #eee; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                        🕹️</div>
+                    <p style="font-size: 0.75rem; font-weight: bold; margin-top: 5px;">Game Master</p>
+                </div>
+                <div class="badge" title="Nexus Friend" style="opacity: 0.3; text-align: center; width: 100px;">
+                    <div
+                        style="font-size: 3rem; background: #eee; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                        🤖</div>
+                    <p style="font-size: 0.75rem; font-weight: bold; margin-top: 5px;">Nexus Friend</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- HUB STATS -->
+        <div style="background: #e0f2f1; padding: 40px 20px; margin-top: 30px; border-radius: 50px 50px 0 0;">
+            <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+                <h3 style="color: #00796b; margin-bottom: 20px;">🌍 World Impact</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+                    <div>
+                        <div style="font-size: 2rem; font-weight: bold; color: #00897b;">1,240+</div>
+                        <p style="font-size: 0.8rem; color: #666;">Total Creations</p>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: bold; color: #00897b;">450+</div>
+                        <p style="font-size: 0.8rem; color: #666;">Safe Messages</p>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: bold; color: #00897b;">5,000+</div>
+                        <p style="font-size: 0.8rem; color: #666;">Smiles Generated</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- TEASERS -->
-        <div class="premium-teaser" onclick="location.href='messenger.html'" style="cursor:pointer;">
-            <div style="font-size:3rem;">👫</div>
-            <h2>Safe Messenger</h2>
-            <p>Connect with friends and share your art in our moderated chat!</p>
-            <button class="btn-action"
-                style="max-width:200px; background:white; color:#AB47BC; border:2px solid #AB47BC;">Open
-                Messenger</button>
+        <!-- ADMIN PANEL -->
+        <div id="admin-panel" class="admin-panel"
+            style="margin-top: 40px; border-radius: 0 0 30px 30px; background: #fff;">
+            <h3 style="color:#c62828; margin-top:0; border-bottom: 2px solid #ffcdd2; padding-bottom: 10px;">🛡️
+                Parental Control Center</h3>
+            <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:15px;">
+                <div
+                    style="background:#f9f9f9; padding:20px; border-radius:20px; flex:1; min-width:280px; border: 1px solid #eee;">
+                    <h4 style="margin:0 0 10px 0;">⏳ Screen Time Management</h4>
+                    <p style="font-size: 0.8rem; color: #888; margin-bottom: 15px;">Restrict access to specific hours
+                        for a healthy balance.</p>
+                    <label style="font-size:0.8rem; color:#666; font-weight: bold;">Daily Active Window:</label>
+                    <div style="display:flex; align-items:center; gap:10px; margin-top:5px;">
+                        <input type="number" id="setting-start-hour" value="8"
+                            style="width:60px; padding:8px; border-radius: 10px; border: 1px solid #ddd;">
+                        <span style="font-weight: bold;">to</span>
+                        <input type="number" id="setting-end-hour" value="20"
+                            style="width:60px; padding:8px; border-radius: 10px; border: 1px solid #ddd;">
+                    </div>
+                    <button class="btn-action"
+                        style="background:#4CAF50; color:white; margin-top:15px; box-shadow: 0 4px 0 #388e3c;"
+                        onclick="saveParentSettings()">Save Restrictions</button>
+                </div>
+                <div
+                    style="background:#f9f9f9; padding:20px; border-radius:20px; flex:1; min-width:280px; border: 1px solid #eee;">
+                    <h4 style="margin:0 0 10px 0;">💼 Hub Administration</h4>
+                    <p style="font-size: 0.8rem; color: #888; margin-bottom: 15px;">Direct access to fulfillment,
+                        backend logs, and stats.</p>
+                    <div style="display: grid; gap: 10px;">
+                        <button class="btn-action"
+                            style="background:#2196F3; color:white; display: flex; align-items: center; justify-content: center; gap: 8px;"
+                            onclick="window.open('https://web-production-b215.up.railway.app/admin', '_blank')"><span>📦</span>
+                            Production Dashboard</button>
+                        <button class="btn-action"
+                            style="background:#66BB6A; color:white; display: flex; align-items: center; justify-content: center; gap: 8px;"
+                            onclick="location.href='admin_messages.html'"><span>📬</span> Nexus Inbox (Live
+                            Traffic)</button>
+                        <button class="btn-action"
+                            style="background:#9C27B0; color:white; display: flex; align-items: center; justify-content: center; gap: 8px;"
+                            onclick="location.href='nexus_story.html'"><span>📖</span> The Genesis of Nexus</button>
+                        <button class="btn-action"
+                            style="background:#FF9800; color:white; display: flex; align-items: center; justify-content: center; gap: 8px;"
+                            onclick="addAdminCoins()"><span>🪙</span> Inject 100 Reward Coins</button>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="margin-top:20px; text-align:center; font-size:0.8rem; color:#999; border-top: 1px solid #eee; padding-top: 15px;">
+                NEXUS AI STATUS: <span style="color:#4CAF50; font-weight:bold;">● STABLE & LEARNING</span> | Last Sync:
+                <span id="sync-time">Just now</span>
+            </div>
         </div>
 
-        <div class="premium-teaser" style="background: white; border: 3px solid #FF8F00; cursor:pointer;"
+        <!-- TEASERS -->
+        <div class="premium-teaser" onclick="location.href='messenger.html'"
+            style="cursor:pointer; background: #f3e5f5; border-color: #ce93d8;">
+            <div style="font-size:3rem;">👫</div>
+            <h2>Safe Kids Messenger</h2>
+            <p>Connect with friends and share your art in our 100% moderated environment!</p>
+            <button class="btn-action"
+                style="max-width:200px; background:white; color:#AB47BC; border:2px solid #AB47BC;">Join the
+                Chat</button>
+        </div>
+
+        <div class="premium-teaser" style="background: #fff8e1; border: 3px solid #ffcc80; cursor:pointer;"
             onclick="location.href='payment.html'">
             <div style="font-size:3rem;">👑</div>
-            <h2>Upgrade to Premium</h2>
-            <p>Get unlimited storage, exclusive games, and monthly digital gifts!</p>
-            <button class="btn-action" style="max-width:200px; background:#FF8F00; color:white;">Upgrade Now</button>
+            <h2 style="color: #ff8f00;">Elite Member Status</h2>
+            <p>Get priority fulfillment, 50GB cloud storage, and early access to new AI games!</p>
+            <button class="btn-action"
+                style="max-width:200px; background:#FF8F00; color:white; box-shadow: 0 4px 0 #cc7000;">Unlock
+                Everything</button>
         </div>
     </section>
 

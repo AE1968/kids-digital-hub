@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the Elite - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Orbitron:wght@700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a0a2a;
+            color: #fff;
+            font-family: 'Fredoka', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        .crown-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            filter: drop-shadow(0 0 20px #FFD700);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #FFD700, #FF5722);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #B3E5FC;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .benefit-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(0, 243, 255, 0.1);
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: bold;
+            color: #00f3ff;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .btn-hub {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            transition: all 0.3s;
+        }
+
+        .btn-hub:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
+        }
+
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stars-bg" id="stars"></div>
+
+    <div class="container">
+        <div class="crown-icon">👑</div>
+        <h1>YOU ARE ELITE!</h1>
+        <p>Welcome to the highest tier of Kids Digital Hub. Your account has been upgraded with the Power of Nexus!</p>
+
+        <div style="margin-bottom: 30px;">
+            <div class="benefit-badge">✨ All Stories Unlocked</div>
+            <div class="benefit-badge">🚀 Priority Printing</div>
+            <div class="benefit-badge">🎨 Unlimited AI Art</div>
+            <div class="benefit-badge">♾️ 50GB Cloud Space</div>
+        </div>
+
+        <p style="font-style: italic; font-size: 1rem; color: #888;">"I have prepared your digital room, Adrian Jr.
+            Let's create something amazing!" - <span style="color: #bc13fe; font-weight: bold;">NEXUS</span></p>
+
+        <a href="dashboard.html" class="btn-hub">Enter My Hub →</a>
+    </div>
+
+    <script>
+        // Confetti Celebration
+        function celebrate() {
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function () {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                // since particles fall down, start a bit higher than random
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        function createStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'absolute';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.background = '#fff';
+                star.style.borderRadius = '50%';
+                star.style.opacity = Math.random();
+                star.style.animation = `pulse ${Math.random() * 3 + 2}s infinite alternate`;
+                container.appendChild(star);
+            }
+        }
+
+        createStars();
+        celebrate();
+
+        // Ensure user is marked as premium in sessions if they aren't already
+        localStorage.setItem('kdh_premium_active', 'true');
+    </script>
+    <style>
+        @keyframes pulse {
+            from {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+        }
+    </style>
+</body>
+
+</html>

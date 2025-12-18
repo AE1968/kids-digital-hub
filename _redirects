@@ -1,3 +1,0 @@
-# Redirect non-WWW to WWW (www.kidsdigitalhub.com is PRIMARY)
-https://kidsdigitalhub.com/* https://www.kidsdigitalhub.com/:splat 301!
-http://kidsdigitalhub.com/* https://www.kidsdigitalhub.com/:splat 301!

@@ -127,7 +127,7 @@
         <a href="javascript:void(0)" onclick="toggleMasterConsole()"
           style="text-decoration:none; cursor:default; font-size: 1.6rem; margin-right: 5px; display: inline-flex; align-items: center; justify-content: center; height: 100%; position: relative; z-index: 1001;"
           title="Admin Hub">🎨</a>
-        <a href="#" class="logo" style="display: inline-flex; align-items: center;">Kids Hub</a>
+        <a href="#" class="logo" style="display: inline-flex; align-items: center;" data-i18n="logo">Kids Hub</a>
       </div>
 
       <nav class="main-nav">
@@ -135,32 +135,32 @@
           <li>
             <a href="gallery-drawings.html" class="nav-btn">
               <span class="nav-icon">🖍️</span>
-              <span class="nav-text">Coloring</span>
+              <span class="nav-text" data-i18n="nav_coloring">Coloring</span>
             </a>
           </li>
           <li>
             <a href="gallery-games.html" class="nav-btn">
               <span class="nav-icon">🧩</span>
-              <span class="nav-text">Games</span>
+              <span class="nav-text" data-i18n="nav_games">Games</span>
             </a>
           </li>
           <li>
             <a href="gallery-stories.html" class="nav-btn">
               <span class="nav-icon">📚</span>
-              <span class="nav-text">Stories</span>
+              <span class="nav-text" data-i18n="nav_stories">Stories</span>
             </a>
           </li>
           <li>
             <a href="challenges.html" class="nav-btn" style="background: linear-gradient(135deg, #FFD700, #FFA500);">
               <span class="nav-icon">⭐</span>
-              <span class="nav-text">Challenges</span>
+              <span class="nav-text" data-i18n="daily_challenges">Challenges</span>
             </a>
           </li>
           <li>
             <a href="dashboard.html" class="nav-btn">
               <span class="nav-icon"><img src="assets/images/logo_ae.png" alt="AE"
                   style="width: 30px; height: 30px; object-fit: contain; vertical-align: middle;"></span>
-              <span class="nav-text">My Hub</span>
+              <span class="nav-text" data-i18n="nav_myhub">My Hub</span>
             </a>
           </li>
           <li>
@@ -168,7 +168,7 @@
               style="display: flex; flex-direction: column; align-items: center; padding: 8px 12px;">
               <img src="assets/images/hero_kids_flags.png" alt="Kids"
                 style="width: 40px; height: 30px; object-fit: cover; border-radius: 5px; margin-bottom: 4px;">
-              <span class="nav-text" style="font-size: 0.85rem;">Suggestions</span>
+              <span class="nav-text" data-i18n="nav_suggestions" style="font-size: 0.85rem;">Suggestions</span>
             </a>
           </li>
           <li>
@@ -189,24 +189,57 @@
   </header>
 
   <section class="hero hero-section" style="text-align:center; padding: 60px 20px; position: relative;">
-    <h1 style="margin-bottom:20px;">Welcome to the Creative Universe! ✨</h1>
+    <h1 data-i18n="hero_title" style="margin-bottom:20px;">Welcome to the Creative Universe! ✨</h1>
 
     <!-- SEASONAL CLOCKS CONTAINER -->
     <div id="hero-clock-container" style="min-height: 100px; margin-bottom: 20px;"></div>
 
     <!-- THE CENTRAL AE BUTTON -->
-    <a href="promo_video.html" class="ae-hero-btn" title="Watch Promo & Share"
-      style="margin-top: 80px; display: inline-block;">
-      <div class="ae-pulse"></div> <!-- PULSE CIRCLES -->
-      <img src="assets/images/logo_ae.png" alt="AE - Promo Video">
-    </a>
-    </a>
-
+    <div style="display: flex; justify-content: center; width: 100%;">
+      <a href="promo_video.html" class="ae-hero-btn" title="Watch Promo & Share" style="margin-top: 80px;">
+        <div class="ae-pulse"></div> <!-- PULSE CIRCLES -->
+        <img src="assets/images/logo_ae.png" alt="AE - Promo Video">
+      </a>
+    </div>
   </section>
 
 
+  <section class="featured-section"
+    style="padding: 40px 20px; background: white; border-radius: 50px 50px 0 0; margin-top: 40px;">
+    <div class="container"
+      style="max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; align-items: center;">
+      <!-- Drawing of the Day -->
+      <div class="featured-card"
+        style="background: #fef9e7; padding: 20px; border-radius: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center;">
+        <h3 data-i18n="drawing_of_day" style="color: #f1c40f; margin-bottom: 15px;">🌟 Drawing of the Day</h3>
+        <img src="assets/images/drawing_of_the_day.png" alt="Drawing of the Day"
+          style="width: 100%; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 15px;">
+        <p style="color: #666; font-size: 0.9rem;">By <b>Leo, Age 7</b></p>
+        <a href="gallery-drawings.html" class="btn" data-i18n="btn_draw"
+          style="display: inline-block; margin-top: 10px; background: #f1c40f; color: white; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold;">I
+          want to draw! 🖍️</a>
+      </div>
+
+      <!-- Interactive Stories -->
+      <div class="featured-card"
+        style="background: #ebf5fb; padding: 20px; border-radius: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center;">
+        <div
+          style="background: #3498db; color: white; display: inline-block; padding: 5px 15px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; margin-bottom: 15px;">
+          NEW!</div>
+        <h3 data-i18n="interactive_library" style="color: #3498db; margin-bottom: 15px;">📖 Interactive Library</h3>
+        <div style="font-size: 4rem; margin-bottom: 15px;">🦄</div>
+        <p style="color: #333; font-weight: 600; margin-bottom: 10px;">The Magic Unicorn</p>
+        <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">Join Sparkle on her first day at the Rainbow
+          Academy!</p>
+        <a href="story-library.html" class="btn" data-i18n="btn_start"
+          style="display: inline-block; background: #3498db; color: white; padding: 10px 25px; border-radius: 20px; text-decoration: none; font-weight: bold;">Start
+          Reading →</a>
+      </div>
+    </div>
+  </section>
+
   <footer style="position: relative;">
-    <p>© 2025 Kids Digital Hub • Made with ❤️ for Kids</p>
+    <p data-i18n="footer_rights">© 2025 Kids Digital Hub • Made with ❤️ for Kids</p>
     <br>
     <p style="font-size: 0.8rem; opacity: 0.8">Terms & Conditions | Privacy Policy</p>
 
@@ -221,13 +254,12 @@
   </footer>
 
   <!-- Scriptul cu datele reale (Generat de Python) -->
+  <script src="js/translations.js"></script>
   <script>
-    // 🧹 CLEAR OLD LANGUAGE SETTINGS (Site is now English-only)
-    localStorage.removeItem('kdh_lang');
+    // Force English Hub initialization
+    setTimeout(() => changeLanguage('en'), 100);
 
     // 📊 GLOBAL TRAFFIC TRACKER - RAW HITS
-    // 📊 REAL TRAFFIC TRACKER - Send Ping to Nexus Core
-    // Hits the backend API to increment internal stats on EVERY page load
     fetch('https://web-production-b215.up.railway.app/api/stats/track?t=' + new Date().getTime(), { method: 'POST' })
       .then(res => res.json())
       .then(data => console.log('📡 Nexus Tracker:', data.status))

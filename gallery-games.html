@@ -178,18 +178,18 @@
     <header class="gallery-header">
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:2rem;">🎮</span>
-            <h2 style="margin:0;">Game Zone</h2>
+            <h2 style="margin:0;" data-i18n="nav_games">Game Zone</h2>
         </div>
-        <a href="index.html" class="btn-back-dash">⬅️ Back</a>
+        <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
 
     <!-- AGE FILTERS -->
     <div class="age-filters">
-        <button class="filter-btn active" onclick="filterGames('all')">All Ages</button>
-        <button class="filter-btn" onclick="filterGames('3-5')">3-5 Years</button>
-        <button class="filter-btn" onclick="filterGames('6-9')">6-9 Years</button>
-        <button class="filter-btn" onclick="filterGames('9-12')">9-12 Years</button>
-        <button class="filter-btn" onclick="filterGames('12+')">12+ Years</button>
+        <button class="filter-btn active" onclick="filterGames('all')" data-i18n="all_ages">All Ages</button>
+        <button class="filter-btn" onclick="filterGames('3-5')" data-i18n="years_3_5">3-5 Years</button>
+        <button class="filter-btn" onclick="filterGames('6-9')" data-i18n="years_6_9">6-9 Years</button>
+        <button class="filter-btn" onclick="filterGames('9-12')" data-i18n="years_9_12">9-12 Years</button>
+        <button class="filter-btn" onclick="filterGames('12+')" data-i18n="years_12_plus">12+ Years</button>
     </div>
 
     <main>
@@ -220,6 +220,7 @@
     </div>
 
     <script src="js/auth.js"></script>
+    <script src="js/translations.js"></script>
     <script src="js/gamesConfig.js"></script>
     <script src="js/time_manager.js"></script>
     <script src="js/economy.js"></script>
@@ -256,10 +257,11 @@
             const grid = document.getElementById('gamesGrid');
             grid.innerHTML = '';
             const isAdmin = localStorage.getItem('kdh_admin_mode') === 'true';
+            const currentLang = localStorage.getItem('selectedLanguage') || 'en';
 
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
-                if (btn.innerText.toLowerCase().includes(ageGroup) || (ageGroup === 'all' && btn.innerText.includes('All'))) {
+                if (btn.getAttribute('onclick').includes(`'${ageGroup}'`)) {
                     btn.classList.add('active');
                 }
             });
@@ -275,6 +277,7 @@
                 if (game.premium && !isAdmin) return; // Hide premium if not admin/premium (simulated)
                 if (ageGroup !== 'all' && game.age !== ageGroup) return;
 
+                const displayTitle = game.title;
                 const playNowText = 'Play Now ►';
 
                 const card = document.createElement('div');
@@ -287,7 +290,7 @@
                         <span class="age-badge">${game.age}</span>
                     </div>
                     <div class="game-info" style="background: white;">
-                        <div class="game-title">${game.premium ? '🔒 ' : ''}${game.title}</div>
+                        <div class="game-title">${game.premium ? '🔒 ' : ''}${displayTitle}</div>
                         <div style="color:#666; font-size:0.9rem; font-weight:bold;">${playNowText}</div>
                     </div>
                 `;
@@ -296,8 +299,12 @@
         }
 
         function launchGame(game, opponentName = null) {
+            const currentLang = localStorage.getItem('selectedLanguage') || 'en';
+            const displayTitle = (currentLang === 'ro' && game.title_ro) ? game.title_ro : game.title;
+            const displayDesc = (currentLang === 'ro' && game.description_ro) ? game.description_ro : game.description;
+
             document.getElementById('playOverlay').style.display = 'flex';
-            document.getElementById('activeGameTitle').textContent = game.title;
+            document.getElementById('activeGameTitle').textContent = displayTitle;
 
             const canvas = document.getElementById('activeGameCanvas');
             canvas.innerHTML = '';

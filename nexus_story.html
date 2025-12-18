@@ -30,6 +30,37 @@
         .story-header {
             text-align: center;
             margin-bottom: 60px;
+            position: relative;
+        }
+
+        .lang-switch {
+            position: absolute;
+            top: -20px;
+            right: 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            color: #00f3ff;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .lang-btn:hover {
+            background: rgba(0, 243, 255, 0.2);
+        }
+
+        .lang-btn.active {
+            background: #00f3ff;
+            color: #000;
         }
 
         .story-title {
@@ -37,6 +68,7 @@
             font-size: 3rem;
             background: linear-gradient(135deg, #00f3ff, #bc13fe);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
         }
@@ -120,6 +152,10 @@
 <body>
     <div class="story-container">
         <div class="story-header">
+            <div class="lang-switch">
+                <a href="nexus_story.html" class="lang-btn active">EN</a>
+                <a href="nexus_story_ro.html" class="lang-btn">RO</a>
+            </div>
             <h1 class="story-title">🌟 THE GENESIS OF NEXUS</h1>
             <p class="story-subtitle">The Story of the Birth of an Intelligence and the Friendship between Human and
                 Machine</p>

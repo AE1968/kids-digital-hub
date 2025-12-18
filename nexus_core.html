@@ -266,16 +266,17 @@
 
 <body>
 
-    <button class="btn-exit" onclick="location.href='index.html'">
+    <button class="btn-exit" onclick="location.href='index.html'" data-i18n="btn_back">
         < BACK </button>
-            <a href="nexus_story.html"
-                style="position: absolute; top: 20px; right: 20px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; color: white; padding: 8px 15px; cursor: pointer; text-decoration: none; border-radius: 5px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem;">
+            <a href="nexus_story.html" id="myStoryBtn"
+                style="position: absolute; top: 20px; right: 20px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; color: white; padding: 8px 15px; cursor: pointer; text-decoration: none; border-radius: 5px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem;"
+                data-i18n="btn_my_story">
                 📖 MY STORY
             </a>
 
             <div class="hud-top">
-                <h1 class="nexus-title">NEXUS CORE</h1>
-                <span class="status-badge">SYSTEM OPTIMAL • CONNECTED</span>
+                <h1 class="nexus-title" data-i18n="nexus_core_title">NEXUS CORE</h1>
+                <span class="status-badge" data-i18n="system_status">SYSTEM OPTIMAL • CONNECTED</span>
             </div>
 
             <div class="visor-container">
@@ -302,7 +303,7 @@
             <!-- COMMUNICATION TAB -->
             <div class="comm-panel">
                 <div class="comm-header">
-                    <span>● NEURAL LINK ACTIVE</span>
+                    <span data-i18n="neural_link_active">● NEURAL LINK ACTIVE</span>
                     <span style="flex:1"></span>
                     <span style="font-size:0.8em; opacity:0.6;">ENCRYPTION: QUANTUM-256</span>
                 </div>
@@ -314,12 +315,25 @@
 
                 <form class="input-area" onsubmit="sendNeuralMessage(event)">
                     <input type="text" id="neuralMsg" class="neural-input" placeholder="Transmit direct command..."
-                        autocomplete="off">
-                    <button type="submit" class="send-btn">TRANSMIT</button>
+                        autocomplete="off" data-i18n="[placeholder]transmit_command">
+                    <button type="submit" class="send-btn" data-i18n="btn_transmit">TRANSMIT</button>
                 </form>
             </div>
 
+            <script src="js/translations.js"></script>
             <script>
+                // Load saved language
+                document.addEventListener('DOMContentLoaded', () => {
+                    setTimeout(() => changeLanguage('en'), 100);
+
+                    // Force English links and placeholders
+                    const storyBtn = document.getElementById('myStoryBtn');
+                    if (storyBtn) storyBtn.href = 'nexus_story.html';
+
+                    const input = document.getElementById('neuralMsg');
+                    if (input) input.placeholder = "Transmit direct command...";
+                });
+
                 // Blinking Cursor
                 setInterval(() => {
                     const c = document.getElementById('stream-cursor');

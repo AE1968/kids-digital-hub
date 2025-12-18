@@ -88,6 +88,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            filter: grayscale(100%) contrast(150%);
+            /* Forces a "coloring book" look */
         }
 
         .slot-number {
@@ -134,7 +136,7 @@
         }
 
         .art-card:hover .admin-delete-btn {
-            /* Logic controlled by JS class 'admin-active' on body */
+            opacity: 1;
         }
 
         body.admin-active .art-card:hover .admin-delete-btn {
@@ -160,17 +162,17 @@
     <header class="gallery-header">
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:2rem;">🎨</span>
-            <h2 style="margin:0;">My Art Gallery</h2>
+            <h2 style="margin:0;" data-i18n="nav_coloring">My Art Gallery</h2>
         </div>
-        <a href="index.html" class="btn-back-dash">⬅️ Back</a>
+        <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
 
     <!-- AGE FILTERS -->
     <div class="age-filters">
-        <button class="filter-btn active" onclick="filterDrawings('all')">All Ages</button>
-        <button class="filter-btn" onclick="filterDrawings('3-5')">3-5 Years</button>
-        <button class="filter-btn" onclick="filterDrawings('6-9')">6-9 Years</button>
-        <button class="filter-btn" onclick="filterDrawings('10+')">10+ Years</button>
+        <button class="filter-btn active" onclick="filterDrawings('all')" data-i18n="all_ages">All Ages</button>
+        <button class="filter-btn" onclick="filterDrawings('3-5')" data-i18n="years_3_5">3-5 Years</button>
+        <button class="filter-btn" onclick="filterDrawings('6-9')" data-i18n="years_6_9">6-9 Years</button>
+        <button class="filter-btn" onclick="filterDrawings('10+')" data-i18n="years_12_plus">10+ Years</button>
     </div>
 
     <main>
@@ -180,6 +182,7 @@
     </main>
 
     <script src="js/auth.js"></script>
+    <script src="js/translations.js"></script>
     <!-- External Config -->
     <script src="js/drawingsConfig.js"></script>
     <script src="js/time_manager.js"></script>
@@ -214,7 +217,7 @@
             // Filter logic
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
-                if (btn.innerText.includes(ageGroup) || (ageGroup === 'all' && btn.innerText.includes('All'))) {
+                if (btn.getAttribute('onclick').includes(`'${ageGroup}'`)) {
                     btn.classList.add('active');
                 }
             });
@@ -235,16 +238,16 @@
                 card.className = drawing.premium ? 'art-card premium' : 'art-card';
                 card.innerHTML = `
                     <span class="slot-number">${index + 1}</span>
-                    ${drawing.premium ? '<span class="premium-lock">👑 Premium</span>' : ''}
+                    ${drawing.premium ? '<span class="premium-lock" data-i18n="premium_badge">👑 Premium</span>' : ''}
                     <img src="${drawing.img}" class="art-thumb" alt="Drawing">
-                    <button class="admin-delete-btn" onclick="deleteDrawing('${drawing.id}')">🗑️ Delete</button>
+                    <button class="admin-delete-btn" onclick="deleteDrawing('${drawing.id}')" data-i18n="btn_delete">🗑️ Delete</button>
                 `;
 
                 // Clicking opens drawing tool (Placeholder)
                 card.onclick = (e) => {
                     if (e.target.tagName !== 'BUTTON') {
                         // In a real app, this would open the painting canvas with this image
-                        alert("Starting Coloring Session: " + drawing.id);
+                        alert('Starting Coloring Session: ' + drawing.id);
                     }
                 };
 

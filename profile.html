@@ -235,7 +235,7 @@
 </head>
 
 <body>
-    <a href="index.html" class="back-btn">← Back</a>
+    <a href="index.html" class="back-btn" data-i18n="btn_back">← Back</a>
 
     <div class="container">
         <div class="profile-card">
@@ -248,15 +248,15 @@
             <div class="stats-row">
                 <div class="stat-box">
                     <div class="value" id="statCoins">0</div>
-                    <div class="label">Coins</div>
+                    <div class="label" data-i18n="stat_coins">Coins</div>
                 </div>
                 <div class="stat-box">
                     <div class="value" id="statAchievements">0</div>
-                    <div class="label">Badges</div>
+                    <div class="label" data-i18n="stat_badges">Badges</div>
                 </div>
                 <div class="stat-box">
                     <div class="value" id="statLevel">1</div>
-                    <div class="label">Level</div>
+                    <div class="label" data-i18n="stat_level">Level</div>
                 </div>
             </div>
 
@@ -264,35 +264,43 @@
         </div>
 
         <div class="edit-section">
-            <h3>✏️ Edit Profile</h3>
+            <h3 data-i18n="edit_profile">✏️ Edit Profile</h3>
 
             <div class="input-group">
-                <label>Your Name</label>
-                <input type="text" id="nameInput" placeholder="Enter your name" maxlength="20">
+                <label data-i18n="label_name">Your Name</label>
+                <input type="text" id="nameInput" placeholder="Enter your name" maxlength="20"
+                    data-i18n-placeholder="placeholder_name">
             </div>
 
             <div class="input-group">
-                <label>Choose Avatar</label>
+                <label data-i18n="label_avatar">Choose Avatar</label>
                 <div class="avatar-picker" id="avatarPicker"></div>
-                <a href="shop.html" class="shop-link">🛍️ Get more avatars in the Shop!</a>
+                <a href="shop.html" class="shop-link" data-i18n="shop_promo">🛍️ Get more avatars in the Shop!</a>
             </div>
 
             <div style="text-align: center; margin-top: 30px;">
-                <button class="btn" onclick="saveProfile()">💾 Save Profile</button>
+                <button class="btn" onclick="saveProfile()" data-i18n="btn_save_profile">💾 Save Profile</button>
             </div>
         </div>
 
         <div class="edit-section" style="text-align: center;">
-            <h3>🔗 Quick Links</h3>
+            <h3 data-i18n="quick_links">🔗 Quick Links</h3>
             <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
-                <a href="shop.html" class="btn">🛍️ Shop</a>
-                <a href="challenges.html" class="btn">⭐ Challenges</a>
-                <a href="settings.html" class="btn btn-secondary">⚙️ Settings</a>
+                <a href="shop.html" class="btn" data-i18n="nav_shop">🛍️ Shop</a>
+                <a href="challenges.html" class="btn" data-i18n="daily_challenges">⭐ Challenges</a>
+                <a href="settings.html" class="btn btn-secondary" data-i18n="nav_settings">⚙️ Settings</a>
             </div>
         </div>
     </div>
 
+    <script src="js/translations.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Language officially handled by translations.js
+            const savedLang = localStorage.getItem('selectedLanguage') || 'en';
+            setTimeout(() => changeLanguage(savedLang), 100);
+        });
+
         const defaultAvatars = ['😊', '😎', '🤩', '🥳', '😇', '🤗', '😺', '🐶'];
         const premiumAvatars = ['⭐', '🚀', '🦄', '🐉', '🤖', '🧙'];
 
@@ -362,7 +370,9 @@
                 KDH_Sounds.playSuccess();
             }
 
-            alert('✅ Profile saved!');
+            const currentLang = localStorage.getItem('selectedLanguage') || 'en';
+            const msg = currentLang === 'ro' ? '✅ Profil salvat!' : '✅ Profile saved!';
+            alert(msg);
         }
 
         function loadProfile() {

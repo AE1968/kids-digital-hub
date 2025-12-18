@@ -2,11 +2,8 @@
   publish = "."
   functions = "netlify/functions"
 
-# Netlify Identity Settings
-[identity]
-  # Enable Identity widget
-  
-# Redirect non-WWW to WWW (www.kidsdigitalhub.com is primary)
+# 🚀 Canonical Redirect: Force WWW and HTTPS
+# This avoids loops by only matching the apex domain.
 [[redirects]]
   from = "https://kidsdigitalhub.com/*"
   to = "https://www.kidsdigitalhub.com/:splat"
@@ -19,15 +16,11 @@
   status = 301
   force = true
 
-# API redirects to Railway backend
+# 📡 Backend API proxy
 [[redirects]]
   from = "/api/*"
   to = "https://web-production-b215.up.railway.app/api/:splat"
   status = 200
   force = true
 
-# Standard SPA redirect
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# NOTE: SPA redirect (/* to /index.html) removed for Multi-Page Site stability.

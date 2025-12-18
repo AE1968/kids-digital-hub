@@ -257,17 +257,17 @@
     <header class="stories-header">
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:2rem;">📚</span>
-            <h2 style="margin:0;">Story Library</h2>
+            <h2 style="margin:0;" data-i18n="nav_stories">Story Library</h2>
         </div>
-        <a href="index.html" class="btn-back-dash">⬅️ Back</a>
+        <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
 
     <!-- AGE FILTERS -->
     <div class="age-filters">
-        <button class="filter-btn active" onclick="filterStories('all')">All Ages</button>
-        <button class="filter-btn" onclick="filterStories('3-5')">3-5 Years</button>
-        <button class="filter-btn" onclick="filterStories('6-9')">6-9 Years</button>
-        <button class="filter-btn" onclick="filterStories('10+')">10+ Years</button>
+        <button class="filter-btn active" onclick="filterStories('all')" data-i18n="all_ages">All Ages</button>
+        <button class="filter-btn" onclick="filterStories('3-5')" data-i18n="years_3_5">3-5 Years</button>
+        <button class="filter-btn" onclick="filterStories('6-9')" data-i18n="years_6_9">6-9 Years</button>
+        <button class="filter-btn" onclick="filterStories('10+')" data-i18n="years_12_plus">10+ Years</button>
     </div>
 
     <main>
@@ -283,8 +283,10 @@
 
             <!-- MODE SWITCH -->
             <div class="mode-switch">
-                <button class="mode-btn active" id="btnModeRead" onclick="setReaderMode('read')">📖 Read</button>
-                <button class="mode-btn" id="btnModeAudio" onclick="setReaderMode('audio')">🎧 Listen</button>
+                <button class="mode-btn active" id="btnModeRead" onclick="setReaderMode('read')" data-i18n="btn_read">📖
+                    Read</button>
+                <button class="mode-btn" id="btnModeAudio" onclick="setReaderMode('audio')" data-i18n="btn_listen">🎧
+                    Listen</button>
             </div>
 
             <button class="reader-close" onclick="closeReader()">❌ Exit</button>
@@ -302,7 +304,7 @@
             <!-- AUDIO MODE CONTENT -->
             <div id="audioContent" class="audio-view">
                 <div class="audio-icon">🔊</div>
-                <p>The Narrator is reading...</p>
+                <p data-i18n="narrator_reading">The Narrator is reading...</p>
                 <div
                     style="margin-top:20px; width:300px; height:10px; background:#eee; border-radius:5px; overflow:hidden;">
                     <div style="width:40%; height:100%; background:#9C27B0;"></div>
@@ -314,7 +316,8 @@
             <!-- COIN REWARD ACTION -->
             <div style="text-align:center; padding: 20px;">
                 <button onclick="finishStory()"
-                    style="background: #FFD700; color: #3E2723; border: 2px solid #FFAB00; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #FFAB00;">
+                    style="background: #FFD700; color: #3E2723; border: 2px solid #FFAB00; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #FFAB00;"
+                    data-i18n="btn_finish_story">
                     ✅ Finish & Collect 5 Coins
                 </button>
             </div>
@@ -323,6 +326,7 @@
     </div>
 
     <script src="js/auth.js"></script>
+    <script src="js/translations.js"></script>
     <script src="js/storiesConfig.js"></script> <!-- Dynamic Content Source -->
     <script src="js/time_manager.js"></script>
     <script src="js/economy.js"></script>
@@ -379,18 +383,17 @@
         });
 
         function getCurrentLang() {
-            return 'en';
+            return localStorage.getItem('selectedLanguage') || 'en';
         }
 
         function filterStories(ageGroup) {
             const isAdmin = localStorage.getItem('kdh_admin_mode') === 'true';
-            const lang = getCurrentLang();
             const container = document.getElementById('storiesContainer');
             container.innerHTML = '';
 
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
-                if (btn.innerText.toLowerCase().includes(ageGroup) || (ageGroup === 'all' && btn.innerText.includes('All'))) {
+                if (btn.getAttribute('onclick').includes(`'${ageGroup}'`)) {
                     btn.classList.add('active');
                 }
             });
@@ -410,8 +413,8 @@
                         <span class="age-badge">${story.age} +</span>
                     </div>
                     <div class="story-info">
-                        <div class="story-title">${story.premium ? '🔒 ' : ''}${content.title}</div>
-                        <div style="font-size:12px; color:#555;">EN Audio Available 🎧</div>
+                        <div class="story-title">${story.premium ? '🔒 ' : ''}${stringToSafe(content.title)}</div>
+                        <div style="font-size:12px; color:#555;" data-i18n="audio_available">Audio Available 🎧</div>
                     </div>
                 `;
                 card.onclick = () => openReader(story);
@@ -451,7 +454,8 @@
                 if (currentStory.premium) {
                     alert("Audiobook Player requires Premium files.");
                 } else {
-                    const content = currentStory.content['en'];
+                    const lang = getCurrentLang();
+                    const content = currentStory.content[lang] || currentStory.content['en'];
                     startSpeech(content.text);
                 }
             }
@@ -461,8 +465,8 @@
             if (synth.speaking) { return; }
             if (text !== '') {
                 utterance = new SpeechSynthesisUtterance(text);
-
-                utterance.lang = 'en-US';
+                const lang = getCurrentLang();
+                utterance.lang = lang === 'ro' ? 'ro-RO' : 'en-US';
 
                 // --- WARM STORYTELLER VOICE (For Kids 3-5) ---
                 if (currentStory && (currentStory.age === '3-5' || currentStory.age.includes('3-5'))) {
@@ -490,7 +494,8 @@
             } else if (synth.speaking) {
                 synth.pause();
             } else {
-                const content = currentStory.content['en'];
+                const lang = getCurrentLang();
+                const content = currentStory.content[lang] || currentStory.content['en'];
                 startSpeech(content.text);
             }
         }

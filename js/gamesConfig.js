@@ -60,5 +60,35 @@ const gamesConfig = [
         "url": "games/puzzle.html",
         "age": "4-8",
         "description": "Slide the pieces to complete the picture!"
+    },
+    {
+        "id": 7,
+        "title": "Typing Adventure",
+        "img": "assets/images/coloring_robot_space.png",
+        "type": "Educational",
+        "premium": false,
+        "url": "games/typing.html",
+        "age": "7-12",
+        "description": "Master the keyboard while saving the galaxy!"
+    },
+    {
+        "id": 8,
+        "title": "Word Scramble",
+        "img": "assets/images/coloring_rainbow_unicorn.png",
+        "type": "Spelling",
+        "premium": false,
+        "url": "games/scramble.html",
+        "age": "5-10",
+        "description": "Unscramble letters to find hidden words!"
+    },
+    {
+        "id": 9,
+        "title": "Sudoku Kids",
+        "img": "assets/images/game_maze_rocket.png",
+        "type": "Logic",
+        "premium": false,
+        "url": "games/sudoku.html",
+        "age": "6-12",
+        "description_ro": "Un puzzle magic cu emoji pentru micii exploratori!"
     }
 ];

@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-12-18 19:52:50",
+  "health_score": 0,
+  "checked_urls": [],
+  "broken_links": [],
+  "js_errors": [],
+  "missing_images": [],
+  "features_verified": {
+    "Homepage": "\ud83d\udea8 CRASHED: Page.goto: net::ERR_TOO_MANY_REDIRECTS at https://www.kidsdigitalhub.com/\nCall log:\n  - navigating to \"https://www.kidsdigitalhub.com/\", waiting until \"networkidle\"\n",
+    "Coloring": "\ud83d\udea8 CRASHED: Page.goto: net::ERR_TOO_MANY_REDIRECTS at https://www.kidsdigitalhub.com/gallery-drawings.html\nCall log:\n  - navigating to \"https://www.kidsdigitalhub.com/gallery-drawings.html\", waiting until \"networkidle\"\n",
+    "Games": "\ud83d\udea8 CRASHED: Page.goto: net::ERR_TOO_MANY_REDIRECTS at https://www.kidsdigitalhub.com/gallery-games.html\nCall log:\n  - navigating to \"https://www.kidsdigitalhub.com/gallery-games.html\", waiting until \"networkidle\"\n",
+    "Stories": "\ud83d\udea8 CRASHED: Page.goto: net::ERR_TOO_MANY_REDIRECTS at https://www.kidsdigitalhub.com/gallery-stories.html\nCall log:\n  - navigating to \"https://www.kidsdigitalhub.com/gallery-stories.html\", waiting until \"networkidle\"\n",
+    "Story Reader": "\ud83d\udea8 NO STORIES FOUND",
+    "Shop": "\ud83d\udea8 CRASHED: Page.goto: net::ERR_TOO_MANY_REDIRECTS at https://www.kidsdigitalhub.com/shop.html\nCall log:\n  - navigating to \"https://www.kidsdigitalhub.com/shop.html\", waiting until \"networkidle\"\n",
+    "Shop Items": "\ud83d\udea8 SHOP EMPTY",
+    "Profile": "\ud83d\udea8 CRASHED: Page.goto: net::ERR_TOO_MANY_REDIRECTS at https://www.kidsdigitalhub.com/profile.html\nCall log:\n  - navigating to \"https://www.kidsdigitalhub.com/profile.html\", waiting until \"networkidle\"\n",
+    "Dashboard": "\ud83d\udea8 CRASHED: Page.goto: net::ERR_TOO_MANY_REDIRECTS at https://www.kidsdigitalhub.com/dashboard.html\nCall log:\n  - navigating to \"https://www.kidsdigitalhub.com/dashboard.html\", waiting until \"networkidle\"\n"
+  }
+}
