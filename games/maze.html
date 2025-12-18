@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Space Maze - Kids Digital Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, white, transparent),
+                radial-gradient(2px 2px at 40px 70px, white, transparent),
+                radial-gradient(1px 1px at 90px 40px, white, transparent),
+                radial-gradient(2px 2px at 160px 120px, white, transparent);
+            background-size: 200px 200px;
+            animation: twinkle 5s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .game-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .game-header h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 20px #00f3ff;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .maze-wrapper {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #00f3ff;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+        }
+
+        #mazeCanvas {
+            display: block;
+            border-radius: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s;
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        .d-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            grid-template-rows: repeat(3, 60px);
+            gap: 5px;
+        }
+
+        .d-pad .control-btn:nth-child(1) {
+            grid-column: 2;
+        }
+
+        .d-pad .control-btn:nth-child(2) {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .d-pad .control-btn:nth-child(3) {
+            grid-column: 3;
+            grid-row: 2;
+        }
+
+        .d-pad .control-btn:nth-child(4) {
+            grid-column: 2;
+            grid-row: 3;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 20px;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 100;
+        }
+
+        .win-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .win-overlay.show {
+            display: flex;
+        }
+
+        .win-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            color: white;
+            animation: popIn 0.5s;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .win-box h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .instructions {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stars"></div>
+    <a href="../gallery-games.html" class="back-btn">← Back</a>
+
+    <div class="game-header">
+        <h1>🚀 Space Maze</h1>
+        <p class="instructions">Use arrow keys or D-pad to guide the rocket to the planet!</p>
+    </div>
+
+    <div class="game-container">
+        <div class="stats">
+            <div class="stat">🎯 Level: <span id="level">1</span></div>
+            <div class="stat">⏱️ Time: <span id="timer">0:00</span></div>
+            <div class="stat">🏆 Moves: <span id="moves">0</span></div>
+        </div>
+
+        <div class="maze-wrapper">
+            <canvas id="mazeCanvas" width="320" height="320"></canvas>
+        </div>
+
+        <div class="d-pad">
+            <button class="control-btn" onclick="move('up')">⬆️</button>
+            <button class="control-btn" onclick="move('left')">⬅️</button>
+            <button class="control-btn" onclick="move('right')">➡️</button>
+            <button class="control-btn" onclick="move('down')">⬇️</button>
+        </div>
+    </div>
+
+    <div class="win-overlay" id="winOverlay">
+        <div class="win-box">
+            <h2>🎉 Level Complete!</h2>
+            <p>You guided the rocket home!</p>
+            <p>Moves: <span id="finalMoves">0</span> | Time: <span id="finalTime">0:00</span></p>
+            <button class="btn" onclick="nextLevel()">🚀 Next Level</button>
+            <a href="../gallery-games.html" class="btn">🎮 More Games</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('mazeCanvas');
+        const ctx = canvas.getContext('2d');
+        const cellSize = 40;
+        const gridSize = 8;
+
+        let player = { x: 0, y: 0 };
+        let goal = { x: 7, y: 7 };
+        let moves = 0;
+        let seconds = 0;
+        let timerInterval = null;
+        let level = 1;
+        let maze = [];
+
+        // Simple maze generator
+        function generateMaze() {
+            maze = [];
+            for (let y = 0; y < gridSize; y++) {
+                maze[y] = [];
+                for (let x = 0; x < gridSize; x++) {
+                    // Random walls (but ensure path exists)
+                    if ((x === 0 && y === 0) || (x === gridSize - 1 && y === gridSize - 1)) {
+                        maze[y][x] = 0; // Start and end always open
+                    } else if (x === 0 || y === 0 || x === gridSize - 1 || y === gridSize - 1) {
+                        maze[y][x] = Math.random() > 0.3 ? 0 : 1;
+                    } else {
+                        maze[y][x] = Math.random() > (0.7 - level * 0.05) ? 0 : 1;
+                    }
+                }
+            }
+            // Ensure basic path
+            maze[0][1] = 0;
+            maze[1][0] = 0;
+            maze[gridSize - 2][gridSize - 1] = 0;
+            maze[gridSize - 1][gridSize - 2] = 0;
+        }
+
+        function drawMaze() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw cells
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    if (maze[y][x] === 1) {
+                        // Wall
+                        ctx.fillStyle = '#1a1a3a';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                        ctx.strokeStyle = '#302b63';
+                        ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                    } else {
+                        // Path
+                        ctx.fillStyle = '#0f0c29';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                        ctx.strokeStyle = '#302b63';
+                        ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                    }
+                }
+            }
+
+            // Draw goal (planet)
+            ctx.font = '30px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🪐', goal.x * cellSize + cellSize / 2, goal.y * cellSize + cellSize / 2);
+
+            // Draw player (rocket)
+            ctx.fillText('🚀', player.x * cellSize + cellSize / 2, player.y * cellSize + cellSize / 2);
+        }
+
+        function move(direction) {
+            let newX = player.x;
+            let newY = player.y;
+
+            switch (direction) {
+                case 'up': newY--; break;
+                case 'down': newY++; break;
+                case 'left': newX--; break;
+                case 'right': newX++; break;
+            }
+
+            // Check bounds
+            if (newX < 0 || newX >= gridSize || newY < 0 || newY >= gridSize) return;
+
+            // Check wall
+            if (maze[newY][newX] === 1) return;
+
+            // Start timer on first move
+            if (moves === 0) startTimer();
+
+            player.x = newX;
+            player.y = newY;
+            moves++;
+            document.getElementById('moves').textContent = moves;
+
+            drawMaze();
+            checkWin();
+        }
+
+        function checkWin() {
+            if (player.x === goal.x && player.y === goal.y) {
+                clearInterval(timerInterval);
+                document.getElementById('finalMoves').textContent = moves;
+                document.getElementById('finalTime').textContent = document.getElementById('timer').textContent;
+                document.getElementById('winOverlay').classList.add('show');
+            }
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                seconds++;
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                document.getElementById('timer').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function nextLevel() {
+            level++;
+            document.getElementById('level').textContent = level;
+            resetGame();
+        }
+
+        function resetGame() {
+            player = { x: 0, y: 0 };
+            moves = 0;
+            seconds = 0;
+            clearInterval(timerInterval);
+            document.getElementById('moves').textContent = '0';
+            document.getElementById('timer').textContent = '0:00';
+            document.getElementById('winOverlay').classList.remove('show');
+            generateMaze();
+            drawMaze();
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'ArrowUp': move('up'); break;
+                case 'ArrowDown': move('down'); break;
+                case 'ArrowLeft': move('left'); break;
+                case 'ArrowRight': move('right'); break;
+            }
+        });
+
+        // Initialize
+        generateMaze();
+        drawMaze();
+    </script>
+</body>
+
+</html>
