@@ -21,29 +21,25 @@ STORIES_DB = [
     {
         "id": 1, "img": "assets/images/coloring_robot_space.png", "age": "3-5", "premium": False,
         "content": {
-            "en": { "title": "Sparky the Robot", "text": "Once upon a time, there was a little robot named Sparky. He loved to fly among the stars. One day, he landed on a purple planet where the rocks sang happy songs!" },
-            "ro": { "title": "Robotul Sparky", "text": "A fost odată un robot mic pe nume Sparky. Lui îi plăcea să zboare printre stele. Într-o zi, a ajuns pe o planetă mov unde pietrele cântau cântece vesele!" }
+            "en": { "title": "Sparky the Robot", "text": "Once upon a time, there was a little robot named Sparky. He loved to fly among the stars. One day, he landed on a purple planet where the rocks sang happy songs!" }
         }
     },
     {
         "id": 2, "img": "assets/images/coloring_dino.png", "age": "3-5", "premium": False,
         "content": {
-            "en": { "title": "The Shy Dino", "text": "Dino was a big dinosaur with a very small voice. 'Squeak!' he said. His friends laughed, but Dino didn't mind. He talked to the butterflies and ants." },
-            "ro": { "title": "Dino cel Timid", "text": "Dino era un dinozaur mare, dar cu o voce mică. 'Chiț-chiț!' făcea el. Prietenii lui râdeau, dar Dino nu se supăra. El vorbea cu fluturii și furnicile." }
+            "en": { "title": "The Shy Dino", "text": "Dino was a big dinosaur with a very small voice. 'Squeak!' he said. His friends laughed, but Dino didn't mind. He talked to the butterflies and ants." }
         }
     },
     {
         "id": 3, "img": "assets/images/coloring_submarine.png", "age": "6-9", "premium": False,
         "content": {
-            "en": { "title": "Submarine Adventure", "text": "Captain Nemo and the yellow submarine dove deep into the ocean. They saw glowing fish and colorful corals. Suddenly, a friendly octopus waved at them!" },
-            "ro": { "title": "Aventura Submarinului", "text": "Căpitanul Nemo și submarinul galben s-au scufundat adânc în ocean. Au văzut pești luminoși și corali colorați. Deodată, o caracatiță prietenoasă le-a făcut cu mâna!' " }
+            "en": { "title": "Submarine Adventure", "text": "Captain Nemo and the yellow submarine dove deep into the ocean. They saw glowing fish and colorful corals. Suddenly, a friendly octopus waved at them!" }
         }
     },
     {
         "id": 4, "img": "assets/images/coloring_mandala_complex.png", "age": "10+", "premium": True,
         "content": {
-            "en": { "title": "Mandala Mystery", "text": "Premium Content. Subscription required." },
-            "ro": { "title": "Misterul Mandalei", "text": "Conținut Premium. Necesită abonament." }
+            "en": { "title": "Mandala Mystery", "text": "English Content. Subscription required." }
         }
     }
 ]
