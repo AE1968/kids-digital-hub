@@ -2,16 +2,13 @@
   publish = "."
   functions = "netlify/functions"
 
-# 📡 Backend API proxy
-[[redirects]]
-  from = "/api/*"
-  to = "https://web-production-b215.up.railway.app/api/:splat"
-  status = 200
-  force = true
-
-# 🌍 Force WWW Canonical (Code-Side Loop Fix Attempt)
 [[redirects]]
   from = "https://kidsdigitalhub.com/*"
   to = "https://www.kidsdigitalhub.com/:splat"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
