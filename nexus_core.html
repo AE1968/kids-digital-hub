@@ -265,6 +265,29 @@
 </head>
 
 <body>
+    <!-- ACCESSIBILITY BTN -->
+    <button class="btn-access" onclick="toggleAccessibility()" title="Visual Accessibility Mode">👐</button>
+    <style>
+        .btn-access {
+            position: absolute;
+            top: 20px;
+            left: 100px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .btn-access.active {
+            background: var(--neon-cyan);
+            color: black;
+            box-shadow: 0 0 10px var(--neon-cyan);
+        }
+    </style>
 
     <button class="btn-exit" onclick="location.href='index.html'" data-i18n="btn_back">
         < BACK </button>
@@ -575,6 +598,25 @@
                     }
 
                     recognition.start();
+                }
+
+                function toggleAccessibility() {
+                    const btn = document.querySelector('.btn-access');
+                    btn.classList.toggle('active');
+                    const isActive = btn.classList.contains('active');
+
+                    if (isActive) {
+                        addLog('Activating Visual Accessibility Protocols...', 'system');
+                        // Send hidden system message to Nexus
+                        // We construct a fake event to reuse send function logic but override the message
+                        const input = document.getElementById('neuralMsg');
+                        const originalVal = input.value;
+                        input.value = "System Override: Activate Visual Accessibility Mode for hearing impaired user. Use Emojis and Caps.";
+                        sendNeuralMessage(new Event('submit'));
+                        input.value = originalVal; // Restore if user was typing
+                    } else {
+                        addLog('Deactivating Visual Mode...', 'system');
+                    }
                 }
             </script>
 </body>
