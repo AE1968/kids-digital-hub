@@ -24,4 +24,9 @@ Status: PRODUCTION (LIVE)
 
 [DEPLOYMENT]
 Live URL: https://www.kidsdigitalhub.com
-Backup: DEPLOY_PACK_FINAL.zip / BACKUP_FINAL_ZIUA_3.zip
+Backup: DEPLOY_PACK_SECRET_ADMIN.zip
+
+[LATEST UPDATE]
+*   **Secret Admin Button:** ✅ COMPLETED. Located on the '🎨' icon in header.
+*   **Partners & Rewards:** ✅ ADDED. Visible on home page.
+*   **Status:** LIVE.

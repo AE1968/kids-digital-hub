@@ -1,3 +1,5 @@
+functionsDirectory = "C:\\Users\\adria\\.gemini\\antigravity\\scratch\\kids-digital-hub\\netlify\\functions"
+functionsDirectoryOrigin = "default"
 redirectsOrigin = "config"
 plugins = []
 headers = []
@@ -8,6 +10,7 @@ publish = "C:\\Users\\adria\\.gemini\\antigravity\\scratch\\kids-digital-hub"
 publishOrigin = "config"
 commandOrigin = "ui"
 command = "echo 'No build command needed for static site'"
+functions = "C:\\Users\\adria\\.gemini\\antigravity\\scratch\\kids-digital-hub\\netlify\\functions"
 
 [build.environment]
 
@@ -26,30 +29,6 @@ command = "echo 'No build command needed for static site'"
 [functions]
 
 [functions."*"]
-
-[[redirects]]
-from = "/www"
-to = "/"
-status = 301.0
-force = true
-
-[redirects.query]
-
-[redirects.conditions]
-
-[redirects.headers]
-
-[[redirects]]
-from = "/www/*"
-to = "/:splat"
-status = 301.0
-force = true
-
-[redirects.query]
-
-[redirects.conditions]
-
-[redirects.headers]
 
 [[redirects]]
 from = "/*"

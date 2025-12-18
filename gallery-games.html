@@ -9,105 +9,153 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         .games-header {
-            background: #4CAF50;
-            /* Green for Games */
+            background: #42A5F5;
             padding: 15px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             color: white;
-            border-bottom: 5px solid #2E7D32;
+            border-bottom: 5px solid #1E88E5;
+        }
+
+        /* --- FILTERS --- */
+        .age-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid #BBDEFB;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: bold;
+            color: #1976D2;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #E3F2FD;
+        }
+
+        .filter-btn.active {
+            background: #42A5F5;
+            color: white;
+            border-color: #42A5F5;
         }
 
         .gallery-grid {
             max-width: 1000px;
-            margin: 40px auto;
+            margin: 0 auto;
             padding: 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
         }
 
         .game-card {
             background: white;
             border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s;
+            border: 3px solid #E3F2FD;
             cursor: pointer;
-            border: 2px solid transparent;
             position: relative;
         }
 
         .game-card:hover {
             transform: translateY(-5px);
-            border-color: #4CAF50;
+            border-color: #42A5F5;
         }
 
         .game-card.premium {
-            border-color: gold;
-            background: #fffbef;
+            border-color: #FFD700;
+            background: #FFFDE7;
         }
 
-        .slot-number {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            font-weight: bold;
-            z-index: 20;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .card-thumb {
+        .game-thumb {
             width: 100%;
-            height: 150px;
-            background: #eee;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: #ccc;
+            height: 180px;
             object-fit: cover;
+            background: #eee;
         }
 
-        .card-info {
+        .game-info {
             padding: 15px;
             text-align: center;
         }
 
-        .card-title {
+        .game-title {
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            color: #1565C0;
             margin-bottom: 5px;
-            color: #333;
         }
 
-        .card-badge {
-            font-size: 0.8rem;
+        .age-badge {
+            background: #FF7043;
+            color: white;
             padding: 3px 8px;
             border-radius: 10px;
-            background: #e0e0e0;
-            color: #666;
-            display: inline-block;
+            font-size: 0.8rem;
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
 
-        .card-badge.multi {
-            background: #E3F2FD;
-            color: #1565C0;
+        .game-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
 
-        .card-badge.solo {
-            background: #E8F5E9;
-            color: #2E7D32;
+        .game-container {
+            width: 90%;
+            max-width: 800px;
+            height: 80%;
+            /* approximate */
+            background: white;
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .game-canvas {
+            flex: 1;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .btn-close-game {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
         }
 
         .btn-back-dash {
@@ -118,59 +166,6 @@
             text-decoration: none;
             font-weight: bold;
             border: 2px solid white;
-        }
-
-        /* GAME OVERLAY */
-        #gameOverlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #222;
-            z-index: 10000;
-            flex-direction: column;
-            color: white;
-            font-family: 'Fredoka', sans-serif;
-        }
-
-        .game-toolbar {
-            height: 60px;
-            background: #333;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 20px;
-            border-bottom: 1px solid #444;
-        }
-
-        .timer-display {
-            font-family: monospace;
-            font-size: 1.5rem;
-            background: black;
-            color: #0f0;
-            padding: 5px 15px;
-            border-radius: 5px;
-            border: 1px solid #444;
-        }
-
-        .game-btn {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .game-btn.red {
-            background: #f44336;
-        }
-
-        .game-btn:hover {
-            opacity: 0.9;
         }
     </style>
 </head>
@@ -185,210 +180,158 @@
         <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
 
+    <!-- AGE FILTERS -->
+    <div class="age-filters">
+        <button class="filter-btn active" onclick="filterGames('all')">All Ages</button>
+        <button class="filter-btn" onclick="filterGames('3-5')">3-5 Years</button>
+        <button class="filter-btn" onclick="filterGames('6-9')">6-9 Years</button>
+        <button class="filter-btn" onclick="filterGames('10+')">10+ Years</button>
+    </div>
+
     <main>
-        <div class="gallery-grid" id="gamesContainer">
-            <!-- Dynamic Games Here -->
+        <div class="gallery-grid" id="gamesGrid">
+            <!-- Dynamic Content -->
         </div>
     </main>
 
-    <!-- GAME OVERLAY (Labirint & Logic) -->
-    <div id="gameOverlay">
-        <div class="game-toolbar">
-            <div id="gameTitleDisplay" style="font-size:1.2rem; font-weight:bold;">Game Title</div>
-            <div style="flex:1;"></div>
-
-            <div id="timerContainer" style="display:flex; align-items:center; gap:10px;">
-                <span>TIME:</span>
-                <div class="timer-display" id="timerValue">00:00</div>
+    <!-- PLAY OVERLAY -->
+    <div id="playOverlay" class="game-overlay">
+        <button class="btn-close-game" onclick="closeGame()">❌ Close Game</button>
+        <div class="game-container">
+            <div style="background:#ddd; padding:10px; text-align:center; font-weight:bold;" id="activeGameTitle">Game
+                Title</div>
+            <div class="game-canvas" id="activeGameCanvas">
+                <!-- Game Embed / Canvas -->
+                Loading Game...
             </div>
 
-            <button class="game-btn" id="btnStartGame" onclick="startGame()">▶ START</button>
-            <button class="game-btn red" onclick="closeGame()">❌ EXIT</button>
-        </div>
-
-        <!-- Game Area (Canvas) -->
-        <div
-            style="flex:1; display:flex; align-items:center; justify-content:center; background:#1a1a1a; position:relative; overflow:auto;">
-            <div id="gameBoard"
-                style="position:relative; width:600px; height:600px; background:white; border-radius:10px;">
-                <img id="gameBg" src="" style="width:100%; height:100%; object-fit:contain; pointer-events:none;">
-                <canvas id="gameCanvas" width="600" height="600"
-                    style="position:absolute; top:0; left:0; cursor:crosshair;"></canvas>
+            <!-- COIN REWARD ACTION -->
+            <div style="padding: 10px; text-align: center; border-top: 1px solid #ddd;">
+                <button onclick="claimGameWin()"
+                    style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer;">
+                    🏆 I Won! (Claim 10 Coins)
+                </button>
             </div>
         </div>
     </div>
 
     <script src="js/translations.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/gamesConfig.js"></script>
+    <script src="js/time_manager.js"></script>
+    <script src="js/economy.js"></script>
+    <script src="js/multiplayer_adapter.js"></script>
     <script>
-        // --- GAMES CONFIGURATION ---
-        const gamesList = [
-            {
-                id: 1,
-                title: 'Rocket Maze',
-                type: 'worksheet',
-                mode: 'solo',
-                img: 'assets/images/game_maze_rocket.png',
-                description: 'Time yourself!',
-                premium: false
-            },
-            {
-                id: 2,
-                title: 'Chess (Șah)',
-                type: 'board',
-                mode: 'multi',
-                img: '',
-                icon: '♟️',
-                description: 'Classic Chess',
-                premium: true
-            },
-            {
-                id: 3,
-                title: 'Backgammon (Table)',
-                type: 'board',
-                mode: 'multi',
-                img: '',
-                icon: '🎲',
-                description: 'Online Multiplayer',
-                premium: true
-            },
-            {
-                id: 4,
-                title: 'Tic Tac Toe (X și 0)',
-                type: 'board',
-                mode: 'multi',
-                img: '',
-                icon: '❌',
-                description: 'Classic',
-                premium: true
-            }
-        ];
-
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize TimeManager (will redirect if outside active hours)
+            if (window.TimeManager) TimeManager.init();
+
             const lang = localStorage.getItem('kdh_lang') || 'en';
-            changeLanguage(lang);
+            if (typeof changeLanguage === 'function') {
+                changeLanguage(lang);
+            }
+
+            // Check auth
             auth.applyProtection();
 
-            const isAdmin = localStorage.getItem('kdh_admin_mode') === 'true';
-            const container = document.getElementById('gamesContainer');
+            // Check for Multiplayer Mode via URL Params (from Messenger)
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            const gameId = urlParams.get('game');
+            const opponent = urlParams.get('opponent');
 
-            gamesList.forEach(game => {
-                if (game.premium && !isAdmin) return;
+            if (mode === 'multi' && gameId) {
+                // Find game info
+                const game = gamesConfig.find(g => g.id === gameId);
+                if (game) {
+                    launchGame(game, opponent);
+                }
+            }
+
+            // Initial Render
+            filterGames('all');
+        });
+
+        function filterGames(ageGroup) {
+            const grid = document.getElementById('gamesGrid');
+            grid.innerHTML = '';
+            const isAdmin = localStorage.getItem('kdh_admin_mode') === 'true';
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.toLowerCase().includes(ageGroup) || (ageGroup === 'all' && btn.innerText.includes('All'))) {
+                    btn.classList.add('active');
+                }
+            });
+
+            gamesConfig.forEach(game => {
+                if (game.premium && !isAdmin) return; // Hide premium if not admin/premium (simulated)
+                if (ageGroup !== 'all' && game.age !== ageGroup) return;
 
                 const card = document.createElement('div');
                 card.className = game.premium ? 'game-card premium' : 'game-card';
-
-                let thumbContent = '';
-                if (game.img) {
-                    thumbContent = `<img src="${game.img}" class="card-thumb">`;
-                } else {
-                    thumbContent = `<div class="card-thumb">${game.icon || '🎮'}</div>`;
-                }
-
-                const badgeClass = game.mode === 'multi' ? 'multi' : 'solo';
-                const badgeText = game.mode === 'multi' ? 'online multi' : 'solo run';
+                card.onclick = () => launchGame(game);
 
                 card.innerHTML = `
-                    <span class="slot-number">${game.id}</span>
-                    ${thumbContent}
-                    <div class="card-info">
-                        <div class="card-title">${game.premium ? '🔒 ' : ''}${game.title}</div>
-                        <div class="card-badge ${badgeClass}">${badgeText.toUpperCase()}</div>
+                    <div style="position:relative;">
+                        <img src="${game.thumb}" class="game-thumb">
+                        <span class="age-badge">${game.age}+</span>
                     </div>
-                 `;
-
-                card.onclick = () => launchGame(game);
-                container.appendChild(card);
+                    <div class="game-info">
+                        <div class="game-title">${game.premium ? '🔒 ' : ''}${game.title}</div>
+                        <div style="color:#666; font-size:0.9rem;">Play Now ►</div>
+                    </div>
+                `;
+                grid.appendChild(card);
             });
-        });
+        }
 
-        // --- GAME ENGINE ---
-        let gameTimerInterval;
-        let gameSeconds = 0;
-        let isGameRunning = false;
+        function launchGame(game, opponentName = null) {
+            document.getElementById('playOverlay').style.display = 'flex';
+            document.getElementById('activeGameTitle').textContent = game.title;
 
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        let painting = false;
+            const canvas = document.getElementById('activeGameCanvas');
+            canvas.innerHTML = '';
 
-        function launchGame(game) {
-            if (game.premium) {
-                alert("Premium Game Module (Online Multiplayer) - Coming Soon!");
-                return;
+            // Simulate Game Content
+            if (opponentName) {
+                canvas.innerHTML = `
+                    <div style="text-align:center;">
+                        <h2>⚔️ Multiplayer Battle!</h2>
+                        <p>You vs <b>${opponentName}</b></p>
+                        <div style="margin-top:20px; font-size:3rem;">🎮</div>
+                        <p>Connecting to ${opponentName}...</p>
+                        <p style="color:#4CAF50;">Syncing Game State 100%</p>
+                    </div>
+                `;
+            } else {
+                canvas.innerHTML = `
+                    <div style="text-align:center;">
+                        <h2>Starting ${game.title}...</h2>
+                        <p>Enjoy playing!</p>
+                        <hr style="width:50%; border-color:#555;">
+                        <p>(This is a placeholder for the actual game iframe/canvas)</p>
+                    </div>
+                `;
             }
-            document.getElementById('gameOverlay').style.display = 'flex';
-            document.getElementById('gameTitleDisplay').textContent = game.title;
-            document.getElementById('gameBg').src = game.img;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stopTimer();
-            document.getElementById('timerValue').textContent = "00:00";
-
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = '#2196F3';
         }
 
         function closeGame() {
-            document.getElementById('gameOverlay').style.display = 'none';
-            stopTimer();
-        }
-
-        function startGame() {
-            if (isGameRunning) return;
-            isGameRunning = true;
-            gameSeconds = 0;
-            document.getElementById('timerValue').textContent = "00:00";
-            document.getElementById('btnStartGame').style.opacity = '0.5';
-
-            gameTimerInterval = setInterval(() => {
-                gameSeconds++;
-                const mins = Math.floor(gameSeconds / 60).toString().padStart(2, '0');
-                const secs = (gameSeconds % 60).toString().padStart(2, '0');
-                document.getElementById('timerValue').textContent = `${mins}:${secs}`;
-            }, 1000);
-        }
-
-        function stopTimer() {
-            clearInterval(gameTimerInterval);
-            isGameRunning = false;
-            document.getElementById('btnStartGame').style.opacity = '1';
-        }
-
-        // --- DRAWING LOGIC ---
-        function startDraw(e) {
-            if (!isGameRunning) {
-                alert("Please click START to begin the timer!");
-                return;
+            document.getElementById('playOverlay').style.display = 'none';
+            // Stop any audio/game loop here
+            if (urlParams.get('mode') === 'multi') {
+                // Return to messenger if came from there? or just stay in gallery
+                // Optional: history.back();
             }
-            painting = true;
-            draw(e);
         }
 
-        function endDraw() { painting = false; ctx.beginPath(); }
-
-        function draw(e) {
-            if (!painting) return;
-            const rect = canvas.getBoundingClientRect();
-            let clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-            let clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-
-            let x = (clientX - rect.left) * (canvas.width / rect.width);
-            let y = (clientY - rect.top) * (canvas.height / rect.height);
-
-            ctx.lineTo(x, y);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(x, y);
+        function claimGameWin() {
+            if (window.EconomyManager) {
+                EconomyManager.addCoins(10);
+                alert("🏆 Awesome! You earned 10 Coins for playing!");
+                closeGame();
+            }
         }
-
-        canvas.addEventListener('mousedown', startDraw);
-        canvas.addEventListener('mouseup', endDraw);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, { passive: false });
-        canvas.addEventListener('touchend', (e) => { e.preventDefault(); endDraw(); });
-        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, { passive: false });
-
     </script>
 </body>
 

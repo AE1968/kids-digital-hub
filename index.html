@@ -1,4 +1,4 @@
-<!-- Deploy Check FINAL_READY_TO_LAUNCH -->
+<!-- Deploy Check SECRET_ADMIN_READY -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,8 +104,12 @@
 
   <header>
     <div class="nav-container">
-      <div class="header-left">
-        <a href="#" class="logo">🎨 Kids Hub</a>
+      <div class="header-left" style="display: flex; align-items: center;">
+        <!-- SECRET ADMIN BUTTON (Icon Only) -->
+        <a href="admin_messages.html"
+          style="text-decoration:none; cursor:default; font-size: 1.6rem; margin-right: 5px; display: inline-flex; align-items: center; justify-content: center; height: 100%;"
+          title="">🎨</a>
+        <a href="#" class="logo" style="display: inline-flex; align-items: center;">Kids Hub</a>
         <select class="lang-select" onchange="changeLanguage(this.value)">
           <option value="en">🇬🇧 English</option>
           <option value="fr">🇫🇷 Français</option>
@@ -158,23 +162,73 @@
     </div>
   </header>
 
-  <section class="hero hero-section" style="text-align:center; padding: 60px 20px;">
+  <section class="hero hero-section" style="text-align:center; padding: 60px 20px; position: relative;">
     <h1 data-i18n="hero_title" style="margin-bottom:20px;">Welcome to the Creative Universe! ✨</h1>
 
     <!-- SEASONAL CLOCKS CONTAINER -->
     <div id="hero-clock-container" style="min-height: 100px; margin-bottom: 20px;"></div>
 
     <!-- THE CENTRAL AE BUTTON -->
-    <!-- THE CENTRAL AE BUTTON -->
-    <a href="promo_video.html" class="ae-hero-btn" title="Watch Promo & Share">
+    <a href="promo_video.html" class="ae-hero-btn" title="Watch Promo & Share"
+      style="margin-top: 80px; display: inline-block;">
       <div class="ae-pulse"></div> <!-- PULSE CIRCLES -->
       <img src="assets/images/logo_ae.png" alt="AE - Promo Video">
     </a>
+    </a>
+
+    <!-- PARTNERS & REWARDS SECTION -->
+    <section class="partners-section"
+      style="background: linear-gradient(to bottom, #fff, #E3F2FD); padding: 50px 20px; text-align: center; margin-top: 50px; border-top: 4px solid #BBDEFB;">
+
+      <!-- SPONSORS -->
+      <h2 style="color: #0277BD; margin-bottom: 30px; font-size: 2rem;">🏆 Official Partners</h2>
+      <div
+        style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; align-items: center; margin-bottom: 50px;">
+        <!-- Placeholders for future logos -->
+        <div
+          style="font-size: 1.5rem; font-weight: bold; color: #546E7A; border: 3px dashed #B0BEC5; padding: 15px 30px; border-radius: 15px; background: white;">
+          ☁️ CloudHost</div>
+        <div
+          style="font-size: 1.5rem; font-weight: bold; color: #546E7A; border: 3px dashed #B0BEC5; padding: 15px 30px; border-radius: 15px; background: white;">
+          🛡️ SafeNet</div>
+        <div
+          style="font-size: 1.5rem; font-weight: bold; color: #546E7A; border: 3px dashed #B0BEC5; padding: 15px 30px; border-radius: 15px; background: white;">
+          🚀 FutureEd</div>
+      </div>
+
+      <!-- BONUS POLICY DISPLAY -->
+      <div
+        style="max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid #FFD54F;">
+        <h3 style="color: #FF8F00; font-size: 1.8rem; margin-bottom: 20px;">🎁 Official Bonus Policy</h3>
+
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; text-align: left;">
+          <div style="padding: 15px; background: #FFF8E1; border-radius: 10px;">
+            <div style="font-size: 1.5rem; margin-bottom: 5px;">📖 Readers</div>
+            <p style="color: #5D4037; font-size: 0.9rem;">Earn <strong>5 Coins</strong> for every story you finish
+              reading!</p>
+          </div>
+          <div style="padding: 15px; background: #E1F5FE; border-radius: 10px;">
+            <div style="font-size: 1.5rem; margin-bottom: 5px;">🎮 Gamers</div>
+            <p style="color: #01579B; font-size: 0.9rem;">Earn <strong>10 Coins</strong> for winning a multiplayer
+              match!</p>
+          </div>
+          <div style="padding: 15px; background: #FCE4EC; border-radius: 10px;">
+            <div style="font-size: 1.5rem; margin-bottom: 5px;">🎨 Artists</div>
+            <p style="color: #880E4F; font-size: 0.9rem;">Earn <strong>20 Coins</strong> for creating a Gallery
+              Masterpiece!</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed #ddd;">
+          <p style="color: #666;"><em>* Use code <strong>WELCOME</strong> in your dashboard for a starter bonus!</em>
+          </p>
+        </div>
+      </div>
+
+    </section>
+
   </section>
-
-
-
-
 
   <footer style="position: relative;">
     <p data-i18n="footer_rights">© 2025 Kids Digital Hub • Made with ❤️ for Kids</p>

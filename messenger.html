@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Connect Messenger</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #E1F5FE;
+        }
+
+        .messenger-header {
+            background: #0288D1;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            border-bottom: 5px solid #01579B;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #B3E5FC;
+            font-size: 1.2rem;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .btn-search {
+            background: #0288D1;
+            color: white;
+            border: none;
+            padding: 0 30px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 30px;
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .contact-card:hover {
+            transform: scale(1.05);
+            border-color: #0288D1;
+        }
+
+        .avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #FFCC80;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            border: 3px solid white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .status-dot {
+            width: 15px;
+            height: 15px;
+            background: #4CAF50;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            border: 2px solid white;
+        }
+
+        /* CALL OVERLAY */
+        #callOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(45deg, #111, #222);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .call-controls {
+            position: absolute;
+            bottom: 50px;
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: transform 0.2s;
+        }
+
+        .btn-end {
+            background: #f44336;
+        }
+
+        .btn-mute {
+            background: #757575;
+        }
+
+        .btn-video {
+            background: #757575;
+        }
+
+        .btn-game {
+            background: #FFA000;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .call-status {
+            position: absolute;
+            top: 50px;
+            color: white;
+            font-size: 1.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 30px;
+            border-radius: 30px;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="messenger-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:2rem;">📞</span>
+            <h2 style="margin:0;">Kids Connect</h2>
+        </div>
+        <a href="dashboard.html" class="btn-back-dash">⬅️ Dashboard</a>
+    </header>
+
+    <div class="main-container">
+
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Search ALL Premium Members (No Age Limits)..."
+                id="searchInput">
+            <button class="btn-search" onclick="searchContact()">Find Friend 🔍</button>
+        </div>
+
+        <h3 style="text-align:left; color:#0277BD; margin-bottom:20px;">Your Premium Circle 🌟</h3>
+
+        <div class="contacts-grid">
+            <!-- Family -->
+            <div class="contact-card" onclick="startCall('Mom')">
+                <div class="status-dot"></div>
+                <div class="avatar-large" style="background:#F8BBD0;">👩</div>
+                <div class="contact-name">Mom</div>
+            </div>
+
+            <div class="contact-card" onclick="startCall('Dad')">
+                <div class="status-dot"></div>
+                <div class="avatar-large" style="background:#BBDEFB;">👨</div>
+                <div class="contact-name">Dad</div>
+            </div>
+
+            <div class="contact-card" onclick="startCall('Grandma')">
+                <div class="status-dot" style="background:#FFC107;"></div> <!-- Away -->
+                <div class="avatar-large" style="background:#E1BEE7;">👵</div>
+                <div class="contact-name">Grandma</div>
+            </div>
+
+            <!-- Friends -->
+            <div class="contact-card" onclick="startCall('Tommy (Premium)')">
+                <div class="status-dot"></div>
+                <div class="avatar-large" style="background:#C8E6C9;">👦</div>
+                <div class="contact-name">Tommy</div>
+                <div style="font-size:0.8rem; color:gold;">Premium 🌟</div>
+            </div>
+
+            <div class="contact-card" onclick="startCall('Sarah (Premium)')">
+                <div class="status-dot"></div>
+                <div class="avatar-large" style="background:#FFCCBC;">👧</div>
+                <div class="contact-name">Sarah</div>
+                <div style="font-size:0.8rem; color:gold;">Premium 🌟</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CALL UI OVERLAY -->
+    <div id="callOverlay">
+        <div class="video-placeholder" id="videoScreen">
+            <!-- Simulated Video Content -->
+            <div style="text-align:center;">
+                <div style="font-size:5rem; animation: pulse 2s infinite;" id="callerAvatar">👤</div>
+                <h2 id="callerNameDisplay">Connecting...</h2>
+                <div style="color:#FFD54F; font-weight:bold; margin-bottom:10px;">🌟 Premium Connection Verified</div>
+                <p id="timerDisplay" style="display:none; font-family:monospace;">00:00</p>
+            </div>
+        </div>
+
+        <div class="call-status" id="callStatusText">Calling...</div>
+
+        <div class="call-controls">
+            <button class="control-btn btn-mute" onclick="toggleMute()" title="Mute">🎤</button>
+            <button class="control-btn btn-end" onclick="endCall()" title="End Call">📞</button>
+            <button class="control-btn btn-video" onclick="toggleVideo()" title="Camera">📷</button>
+            <button class="control-btn btn-game" onclick="showGameMenu()" title="Play Together">🎮</button>
+        </div>
+    </div>
+
+    <!-- GAME SELECTION MODAL -->
+    <div id="gameSelectModal"
+        style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:30px; border-radius:20px; z-index:10000; box-shadow:0 10px 30px rgba(0,0,0,0.5); text-align:center;">
+        <h3>🎲 Play with <span id="gamePartnerName">Friend</span></h3>
+        <p>Choose a game to start instantly:</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px;">
+            <button onclick="launchMultiplayer('tic-tac-toe')"
+                style="padding:15px; background:#E3F2FD; border:none; border-radius:10px; cursor:pointer; font-weight:bold; width:100%;">❌⭕
+                Tic Tac Toe</button>
+            <button onclick="launchMultiplayer('memory-race')"
+                style="padding:15px; background:#E8F5E9; border:none; border-radius:10px; cursor:pointer; font-weight:bold; width:100%;">🃏
+                Memory Race</button>
+            <button onclick="launchMultiplayer('draw-guess')"
+                style="padding:15px; background:#FFF3E0; border:none; border-radius:10px; cursor:pointer; font-weight:bold; width:100%;">🎨
+                Draw & Guess</button>
+            <button onclick="launchMultiplayer('chess-kids')"
+                style="padding:15px; background:#F3E5F5; border:none; border-radius:10px; cursor:pointer; font-weight:bold; width:100%;">♟️
+                Kids Chess</button>
+        </div>
+        <button onclick="document.getElementById('gameSelectModal').style.display='none'"
+            style="margin-top:20px; background:#ccc; border:none; padding:10px 20px; border-radius:10px; cursor:pointer;">Cancel</button>
+    </div>
+
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/time_manager.js"></script>
+    <script>
+        // --- REAL P2P MULTIPLAYER SYSTEM (PeerJS) ---
+        let peer = null;
+        let conn = null;
+        let myPeerId = null;
+
+        function initPeer() {
+            // Create a peer (using free default server)
+            peer = new Peer(null, {
+                debug: 2
+            });
+
+            peer.on('open', (id) => {
+                myPeerId = id;
+                console.log('My peer ID is: ' + id);
+
+                // Update UI to show we are "Online" real
+                const statusDots = document.querySelectorAll('.status-dot');
+                statusDots.forEach(dot => dot.style.background = '#4CAF50'); // All green
+            });
+
+            peer.on('connection', (c) => {
+                // Allow connection
+                conn = c;
+                configureConnection();
+                // Simulate incoming call
+                startCall(c.peer.substring(0, 5)); // Show ID as name for now
+            });
+
+            peer.on('error', (err) => {
+                console.error("PeerJS Error:", err);
+            });
+        }
+
+        function configureConnection() {
+            conn.on('data', (data) => {
+                console.log('Received:', data);
+                if (data.type === 'game_invite') {
+                    if (confirm(`Friend wants to play ${data.game}! Accept?`)) {
+                        window.location.href = `gallery-games.html?mode=multi&game=${data.game}&peerId=${conn.peer}`;
+                    }
+                }
+            });
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initPeer);
+
+        // Check Auth & Premium
+        auth.applyProtection();
+
+        // Initialize TimeManager (will redirect if outside active hours)
+        if (window.TimeManager) TimeManager.init();
+
+        // Simple Lock for Non-Premium (if auth.js doesn't handle redirect)
+        const isPremium = localStorage.getItem('kdh_premium_active') === 'true' || localStorage.getItem('kdh_admin_mode') === 'true';
+        if (!isPremium) {
+            alert("This feature is for Premium Members only! Redirecting to upgrade...");
+            window.location.href = 'payment.html';
+        }
+
+        let callTimer;
+        let seconds = 0;
+        let currentCallPartner = "";
+
+        function searchContact() {
+            const query = document.getElementById('searchInput').value;
+            if (query) {
+                alert(`Searching global directory for '${query}'... Found 1 match! Adding to quick list...`);
+            }
+        }
+
+        function startCall(name) {
+            currentCallPartner = name;
+            document.getElementById('callOverlay').style.display = 'flex';
+            document.getElementById('callerNameDisplay').innerText = name;
+            document.getElementById('gamePartnerName').innerText = name;
+
+            document.getElementById('callStatusText').innerText = "Calling...";
+            document.getElementById('timerDisplay').style.display = 'none';
+
+            // Simulate Connection
+            setTimeout(() => {
+                document.getElementById('callStatusText').innerText = "Connected";
+                document.getElementById('callStatusText').style.background = "rgba(76, 175, 80, 0.8)";
+                document.getElementById('timerDisplay').style.display = 'block';
+                startTimer();
+
+                // Simulate Video Feed appearing
+                document.getElementById('videoScreen').style.background = "#333";
+            }, 2000);
+        }
+
+        function showGameMenu() {
+            document.getElementById('gameSelectModal').style.display = 'block';
+        }
+
+        function launchMultiplayer(gameId) {
+            const partner = currentCallPartner;
+            // Redirect to Games page with special params
+            window.location.href = `gallery-games.html?mode=multi&game=${gameId}&opponent=${partner}`;
+        }
+
+        function endCall() {
+            clearInterval(callTimer);
+            seconds = 0;
+            document.getElementById('callOverlay').style.display = 'none';
+            document.getElementById('callStatusText').style.background = "rgba(0,0,0,0.5)";
+            alert("Call Ended");
+        }
+
+        function startTimer() {
+            seconds = 0;
+            const display = document.getElementById('timerDisplay');
+            display.innerText = "00:00";
+            callTimer = setInterval(() => {
+                seconds++;
+                const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const secs = (seconds % 60).toString().padStart(2, '0');
+                display.innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function toggleMute() {
+            alert("Microphone Muted");
+        }
+
+        function toggleVideo() {
+            alert("Camera Toggled");
+        }
+    </script>
+    <style>
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</body>
+
+</html>

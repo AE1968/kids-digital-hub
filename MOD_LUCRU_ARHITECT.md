@@ -11,6 +11,7 @@ Acest document definește regulile stricte de colaborare pentru finalizarea proi
 1.  **Definire:** Tu dai Obiectivul Mare (ex: "Vreau acces Admin securizat").
 2.  **Execuție:** Eu scriu TOATE fișierele necesare (HTML, JS, Config) dintr-o singură mișcare.
 3.  **Validare:** Tu verifici rezultatul final. Dacă e bun, rămâne așa.
+4.  **Auto-Login:** În orice verificare (Local/Live), aplicăm obligatoriu **Procedura de Autentificare** (`.agent/workflows/login_procedure.md`) folosind contul `Adrian`. Nu testăm ca Guest decât specificat.
 
 ## 3. STATUS CURENT (PUNCT DE START PENTRU DUPĂ MASĂ)
 *   **Local:** Site-ul funcționează perfect pe `localhost:8080`.

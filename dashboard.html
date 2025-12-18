@@ -219,173 +219,322 @@
                 <span style="font-size:0.9rem; opacity:0.9;" id="storage-display">0GB</span>
             </div>
         </div>
-        <div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div class="coin-badge"
+                style="background: rgba(255,215,0,0.2); border: 2px solid #FFD700; padding: 0.5rem 1rem; border-radius: 20px; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.2rem;">🪙</span>
+                <span id="coin-balance-display" style="font-weight: bold; color: #ffd700;">0</span>
+            </div>
             <a href="index.html" class="btn-logout" data-i18n="btn_back"
                 style="margin-right:10px; border-color:#fff; color:#00897B;">Back</a>
             <button id="btn-logout" class="btn-logout" style="display:none;" data-i18n="nav_myhub">Logout</button>
         </div>
     </header>
-
-    <main>
-        <!-- LOGIN SECTION -->
-        <section id="login-section">
-            <div class="login-box">
-                <div style="font-size:3rem; margin-bottom:10px;">🦖</div>
-                <h2 data-i18n="login_title">Login to Kids Hub</h2>
-                <form id="login-form">
-                    <input type="text" id="username" class="login-input" placeholder="Username" data-i18n="login_user">
-                    <input type="password" id="password" class="login-input" placeholder="Password"
-                        data-i18n="login_pass">
-                    <button type="submit" class="login-btn" data-i18n="btn_login">Login</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- PROFILE SECTION (Initially Hidden) -->
+    data-i18n="login_pass"><button type="submit" class="login-btn" data-i18n="btn_login">Login</button></form>
+    </div>
+    </section>
+    < !-- PROFILE SECTION (Initially Hidden) -->
         <section id="profile-section" style="display:none;">
             <div class="stats-container">
-                <!-- SLOT 1: DRAWINGS -->
-                <div class="stat-card card-drawings">
-                    <span class="stat-icon">🎨</span>
-                    <div class="stat-count">1/10</div>
-                    <div class="stat-label" data-i18n="nav_coloring">Coloring</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 10%; background: #FF7043;"></div>
+                < !-- SLOT 1: DRAWINGS -->
+                    <div class="stat-card card-drawings"> <span class="stat-icon">🎨</span>
+                        <div class="stat-count">1/10</div>
+                        <div class="stat-label" data-i18n="nav_coloring">Coloring</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 10%; background: #FF7043;"></div>
+                        </div> <button class="btn-action" style="background:#FFCCBC; color:#BF360C;"
+                            onclick="location.href='gallery-drawings.html'" data-i18n="nav_coloring">Go</button>
                     </div>
-                    <button class="btn-action" style="background:#FFCCBC; color:#BF360C;"
-                        onclick="location.href='gallery-drawings.html'" data-i18n="nav_coloring">Go</button>
-                </div>
-
-                <!-- SLOT 2: GAMES -->
-                <div class="stat-card card-games">
-                    <span class="stat-icon">🎮</span>
-                    <div class="stat-count">0/10</div>
-                    <div class="stat-label" data-i18n="nav_games">Games</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 0%; background: #42A5F5;"></div>
-                    </div>
-                    <button class="btn-action" style="background:#BBDEFB; color:#0D47A1;"
-                        onclick="location.href='gallery-games.html'" data-i18n="btn_play">Play</button>
-                </div>
-
-                <!-- SLOT 3: STORIES -->
-                <div class="stat-card card-stories">
-                    <span class="stat-icon">📚</span>
-                    <div class="stat-count">0/10</div>
-                    <div class="stat-label" data-i18n="nav_stories">Stories</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 0%; background: #66BB6A;"></div>
-                    </div>
-                    <button class="btn-action" style="background:#C8E6C9; color:#1B5E20;"
-                        onclick="location.href='gallery-stories.html'" data-i18n="btn_read">Read</button>
-                </div>
+                    < !-- SLOT 2: GAMES -->
+                        <div class="stat-card card-games"> <span class="stat-icon">🎮</span>
+                            <div class="stat-count">0/10</div>
+                            <div class="stat-label" data-i18n="nav_games">Games</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%; background: #42A5F5;"></div>
+                            </div> <button class="btn-action" style="background:#BBDEFB; color:#0D47A1;"
+                                onclick="location.href='gallery-games.html'" data-i18n="btn_play">Play</button>
+                        </div>
+                        < !-- SLOT 3: STORIES -->
+                            <div class="stat-card card-stories"> <span class="stat-icon">📚</span>
+                                <div class="stat-count">0/10</div>
+                                <div class="stat-label" data-i18n="nav_stories">Stories</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%; background: #66BB6A;"></div>
+                                </div> <button class="btn-action" style="background:#C8E6C9; color:#1B5E20;"
+                                    onclick="location.href='gallery-stories.html'" data-i18n="btn_read">Read</button>
+                            </div>
+                            < !-- SLOT 4: REDEEM BONUS (REPLACES OLD FRIENDS SLOT FOR BETTER ECONOMY VISIBILITY) -->
+                                <div class="stat-card" style="border-color: #FFD700; color: #FF8F00;"> <span
+                                        class="stat-icon">🎁</span>
+                                    <div class="stat-label" style="font-size:1rem; margin-bottom:5px;">Bonus Code</div>
+                                    <div style="display:flex; flex-direction:column; gap:5px;"> <input type="text"
+                                            id="redeem-input" placeholder="Enter Code..."
+                                            style="padding:8px; border-radius:10px; border:2px solid #FFECB3; text-align:center; text-transform:uppercase;">
+                                        <button class="btn-action"
+                                            style="background:#FFF8E1; color:#FF8F00; margin-top:5px;"
+                                            onclick="redeemBonus()">Redeem</button> </div>
+                                </div>
             </div>
-
-            <section class="premium-teaser">
-                <h2 data-i18n="storage_alloc">Storage Allocation</h2>
-                <div class="plans-grid">
-                    <!-- 2 GBP -->
-                    <div class="plan-card">
-                        <div style="font-size:2rem;">🥉</div>
-                        <div class="plan-price">£2.00 / mo</div>
-                        <div class="plan-storage">500 GB</div>
-                    </div>
-                    <!-- 4 GBP -->
-                    <div class="plan-card">
-                        <div style="font-size:2rem;">🥈</div>
-                        <div class="plan-price">£4.00 / mo</div>
-                        <div class="plan-storage">2 TB</div>
-                    </div>
-                    <!-- 10 GBP -->
-                    <div class="plan-card">
-                        <div style="font-size:2rem;">🥇</div>
-                        <div class="plan-price">£10.00 / mo</div>
-                        <div class="plan-storage">10 TB</div>
-                    </div>
-                </div>
+            <section class="premium-teaser" style="cursor: pointer; margin-top:20px;"
+                onclick="location.href='messenger.html'">
+                <div style="font-size:3rem; margin-bottom:5px;">👫</div>
+                <h2>Connect with Friends !</h2>
+                <p style="font-size:1.1rem; margin:10px 0;">Visit the new Safe Messenger to play & chat.</p> <button
+                    class="btn-action"
+                    style="background:white; color:#AB47BC; font-size:1.1rem; border:2px solid #AB47BC;">Open
+                    Messenger</button>
+            </section>
+            <section class="premium-teaser" style="cursor: pointer;" onclick="location.href='payment.html'">
+                <div style="font-size:3rem; margin-bottom:15px;">🚀</div>
+                <h2>Unlock Unlimited Fun !</h2>
+                <p style="font-size:1.2rem; margin:15px 0;">Get full access to all stories, games, and premium drawings.
+                </p> <button class="btn-action"
+                    style="background:white; color:#FF8F00; font-size:1.2rem; border:2px solid #FF8F00;"> Get Premium
+                    Membership 👑 </button>
             </section>
         </section>
-    </main>
+        < !-- Admin / Parent Control Panel (Hidden by default) -->
+            <div id="admin-panel"
+                style="display: none; background: #2d3748; padding: 2rem; border-radius: 1rem; margin: 2rem auto; max-width: 1000px; border: 2px solid #4fd1c5;">
+                <h2 style="color: #4fd1c5; margin-bottom: 1rem;">🛡️ Parent & Admin Zone</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    < !-- Time Controls -->
+                        <div class="control-card"
+                            style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #4fd1c5;">
+                            <h3 style="color: white; margin-bottom: 1rem;">⏰ Active Hours</h3>
+                            <p style="color: #a0aec0; font-size: 0.9rem; margin-bottom: 1rem;">Define when the child can
+                                engage in active play. Outside these hours, only Stories are available (Sleep Mode).</p>
+                            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;"> <label
+                                    style="color: white;">Start:</label> <input type="number" id="setting-start-hour"
+                                    value="8" min="6" max="20"
+                                    style="padding: 0.3rem; border-radius: 0.2rem; border: none; width: 60px;"> <label
+                                    style="color: white;">End:</label> <input type="number" id="setting-end-hour"
+                                    value="21" min="12" max="21"
+                                    style="padding: 0.3rem; border-radius: 0.2rem; border: none; width: 60px;"> </div>
+                            <button class="btn-primary" onclick="saveParentSettings()"
+                                style="width: 100%; font-size: 0.9rem; padding: 8px; background: #4fd1c5; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: #1a202c;">Save
+                                Interval</button>
+                        </div>
+                        < !-- Economy Controls -->
+                            <div class="control-card"
+                                style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #ecc94b;">
+                                <h3 style="color: white; margin-bottom: 1rem;">💰 Economy Manager</h3>
+                                <p style="color: #a0aec0; font-size: 0.9rem; margin-bottom: 1rem;">Admin has unlimited
+                                    resources. Manage bonus policies here.</p>
+                                <div style="display: flex; gap: 0.5rem;"> <button class="btn-secondary"
+                                        onclick="addAdminCoins()"
+                                        style="flex: 1; font-size: 0.9rem; padding: 8px; background: #ecc94b; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: #1a202c;">Add
+                                        Bonus 100</button> <button class="btn-primary"
+                                        onclick="alert('Bonus Policy will be editable here.')"
+                                        style="flex: 1; font-size: 0.9rem; padding: 8px; background: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Edit
+                                        Policy</button> </div>
+                            </div>
+                </div>
+                < !-- Bonus Policy Placeholder (Public View Logic to be added) -->
+                    <div style="margin-top: 1rem; color: #a0aec0; font-size: 0.8rem; text-align: center;"> * Bonus
+                        Policy will appear in the specific ad region when enabled. </div>
+            </div>
+            </main>
+            <script src="js/translations.js"></script>
+            <script src="js/auth.js"></script>
+            <script src="js/time_manager.js"></script>
+            <script src="js/economy.js"></script>
+            <script> document.addEventListener('DOMContentLoaded', () => {
+                    // Initialize Systems
+                    if (window.TimeManager) TimeManager.init();
+                    if (window.EconomyManager) EconomyManager.init();
 
-    <script src="js/translations.js"></script>
-    <script src="js/auth.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const lang = localStorage.getItem('kdh_lang') || 'en';
-            if (typeof changeLanguage === 'function') {
-                changeLanguage(lang);
-            }
+                    const auth = new AuthManager();
+                    const user = auth.getUser();
 
-            // --- DASHBOARD SYNC LOGIC (LocalStorage) ---
-            function updateDashboardStats() {
-                // Read from LocalStorage (set by the gallery pages)
-                const cntDrawings = localStorage.getItem('kdh_cnt_drawings') || 0;
-                const cntGames = localStorage.getItem('kdh_cnt_games') || 0;
-                const cntStories = localStorage.getItem('kdh_cnt_stories') || 0;
-
-                // Update UI: Drawings
-                const drawCard = document.querySelector('.card-drawings');
-                if (drawCard) {
-                    drawCard.querySelector('.stat-count').textContent = `${cntDrawings}/10`;
-                    drawCard.querySelector('.progress-fill').style.width = `${cntDrawings * 10}%`;
-                }
-
-                // Update UI: Games
-                const gameCard = document.querySelector('.card-games');
-                if (gameCard) {
-                    gameCard.querySelector('.stat-count').textContent = `${cntGames}/10`;
-                    gameCard.querySelector('.progress-fill').style.width = `${cntGames * 10}%`;
-                }
-
-                // Update UI: Stories
-                const storyCard = document.querySelector('.card-stories');
-                if (storyCard) {
-                    storyCard.querySelector('.stat-count').textContent = `${cntStories}/10`;
-                    storyCard.querySelector('.progress-fill').style.width = `${cntStories * 10}%`;
-                }
-            }
-
-            // Run on load
-            updateDashboardStats();
-
-            // Optional: Listen for storage changes in other tabs
-            window.addEventListener('storage', updateDashboardStats);
-
-            // --- LIVE MONITORING SYSTEM (JSON BASED) ---
-            // Efficiently reads the lightweight stats.json file
-            function updateStats() {
-                fetch('data/stats.json?t=' + Date.now())
-                    .then(response => response.json())
-                    .then(data => {
-                        // Update Drawings
-                        const drawingsCard = document.querySelector('.card-drawings');
-                        if (drawingsCard) {
-                            drawingsCard.querySelector('.stat-count').textContent = `${data.drawings}/10`;
-                            drawingsCard.querySelector('.progress-fill').style.width = `${data.drawings * 10}%`;
+                    if (user) {
+                        document.getElementById('welcome-message').textContent = `Welcome, $ {
+                            user.username
                         }
 
-                        // Update Games
-                        const gamesCard = document.querySelector('.card-games');
-                        if (gamesCard) {
-                            gamesCard.querySelector('.stat-count').textContent = `${data.games}/10`;
-                            gamesCard.querySelector('.progress-fill').style.width = `${data.games * 10}%`;
+                        !`;
+                        // document.getElementById('user-avatar').src = user.avatar || 'assets/avatars/default.png'; // Avatar logic if exists
+                    }
+
+                    else {
+                        window.location.href = 'login.html';
+                    }
+
+                    // Admin/Parent Check for Panel Visibility
+                    if (localStorage.getItem('kdh_admin_mode') === 'true') {
+                        const adminPanel = document.getElementById('admin-panel');
+                        if (adminPanel) adminPanel.style.display = 'block';
+                        document.body.classList.add('admin-active');
+                    }
+
+                    const lang = localStorage.getItem('kdh_lang') || 'en';
+
+                    if (typeof changeLanguage === 'function') {
+                        changeLanguage(lang);
+                    }
+
+                    // --- DASHBOARD SYNC LOGIC (LocalStorage) ---
+                    function updateDashboardStats() {
+                        // Read from LocalStorage (set by the gallery pages)
+                        const cntDrawings = localStorage.getItem('kdh_cnt_drawings') || 0;
+                        const cntGames = localStorage.getItem('kdh_cnt_games') || 0;
+                        const cntStories = localStorage.getItem('kdh_cnt_stories') || 0;
+
+                        // Update UI: Drawings
+                        const drawCard = document.querySelector('.card-drawings');
+
+                        if (drawCard) {
+                            drawCard.querySelector('.stat-count').textContent = `$ {
+                                cntDrawings
+                            }
+
+                            /10`;
+                            drawCard.querySelector('.progress-fill').style.width = `$ {
+                                cntDrawings * 10
+                            }
+
+                            %`;
                         }
 
-                        // Update Stories
-                        const storiesCard = document.querySelector('.card-stories');
-                        if (storiesCard) {
-                            storiesCard.querySelector('.stat-count').textContent = `${data.stories}/10`;
-                            storiesCard.querySelector('.progress-fill').style.width = `${data.stories * 10}%`;
-                        }
-                    })
-                    .catch(err => console.log('Stats sync error:', err));
-            }
+                        // Update UI: Games
+                        const gameCard = document.querySelector('.card-games');
 
-            // Run immediately and then every 2 seconds
-            updateStats();
-            setInterval(updateStats, 2000);
-        });
-    </script>
+                        if (gameCard) {
+                            gameCard.querySelector('.stat-count').textContent = `$ {
+                                cntGames
+                            }
+
+                            /10`;
+                            gameCard.querySelector('.progress-fill').style.width = `$ {
+                                cntGames * 10
+                            }
+
+                            %`;
+                        }
+
+                        // Update UI: Stories
+                        const storyCard = document.querySelector('.card-stories');
+
+                        if (storyCard) {
+                            storyCard.querySelector('.stat-count').textContent = `$ {
+                                cntStories
+                            }
+
+                            /10`;
+                            storyCard.querySelector('.progress-fill').style.width = `$ {
+                                cntStories * 10
+                            }
+
+                            %`;
+                        }
+                    }
+
+                    // Run on load
+                    updateDashboardStats();
+
+                    // Optional: Listen for storage changes in other tabs
+                    window.addEventListener('storage', updateDashboardStats);
+
+                    // --- LIVE MONITORING SYSTEM (JSON BASED) ---
+                    // Efficiently reads the lightweight stats.json file
+                    function updateStats() {
+                        fetch('data/stats.json?t=' + Date.now()).then(response => response.json()).then(data => {
+                            // Update Drawings
+                            const drawingsCard = document.querySelector('.card-drawings');
+
+                            if (drawingsCard) {
+                                drawingsCard.querySelector('.stat-count').textContent = `$ {
+                                        data.drawings
+                                    }
+
+                                    /10`;
+                                drawingsCard.querySelector('.progress-fill').style.width = `$ {
+                                        data.drawings * 10
+                                    }
+
+                                    %`;
+                            }
+
+                            // Update Games
+                            const gamesCard = document.querySelector('.card-games');
+
+                            if (gamesCard) {
+                                gamesCard.querySelector('.stat-count').textContent = `$ {
+                                        data.games
+                                    }
+
+                                    /10`;
+                                gamesCard.querySelector('.progress-fill').style.width = `$ {
+                                        data.games * 10
+                                    }
+
+                                    %`;
+                            }
+
+                            // Update Stories
+                            const storiesCard = document.querySelector('.card-stories');
+
+                            if (storiesCard) {
+                                storiesCard.querySelector('.stat-count').textContent = `$ {
+                                        data.stories
+                                    }
+
+                                    /10`;
+                                storiesCard.querySelector('.progress-fill').style.width = `$ {
+                                        data.stories * 10
+                                    }
+
+                                    %`;
+                            }
+                        }).catch(err => console.log('Stats sync error:', err));
+                    }
+
+                    // Run immediately and then every 2 seconds
+                    updateStats();
+                    setInterval(updateStats, 2000);
+                });
+
+                // Admin Functions
+                function saveParentSettings() {
+                    const start = parseInt(document.getElementById('setting-start-hour').value);
+                    const end = parseInt(document.getElementById('setting-end-hour').value);
+                    TimeManager.setParentSettings(start, end, true);
+                    alert('Settings Saved! Child access restricted to ' + start + ':00 - ' + end + ':00');
+                }
+
+                function addAdminCoins() {
+                    EconomyManager.addCoins(100);
+                    alert("100 Coins Added (Admin Override)");
+                }
+
+                function redeemBonus() {
+                    const code = document.getElementById('redeem-input').value.trim().toUpperCase();
+
+                    if (!code) {
+                        alert("Please enter a code!");
+                        return;
+                    }
+
+                    const result = EconomyManager.redeemCode(code);
+                    alert(result.message);
+
+                    if (result.success) {
+                        document.getElementById('redeem-input').value = '';
+                    }
+                }
+
+            </script>
+</body>
+
+</html>
+}
+
+function addAdminCoins() {
+EconomyManager.addCoins(100);
+alert("100 Coins Added (Admin Override)");
+}
+
+</script>
 </body>
 
 </html>

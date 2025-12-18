@@ -15,6 +15,16 @@ Un **sistem complet automatizat de Print-on-Demand** care:
 
 ## 📋 Pași Finali de Setup
 
+### 🚀 DEPLOY RAPID (NOU!)
+Pentru a lansa site-ul live fără comenzi complicate, am creat un script special pentru echipă.
+
+**Pentru a publica ultima versiune:**
+1. Deschideți terminalul în folderul proiectului.
+2. Rulați comanda: `./DEPLOY_NOW.ps1`
+3. Asta este tot! Site-ul va fi live pe `kidsdigitalhub.com` în ~2 minute.
+
+Detaliile complete se află în `GHID_RAPID_COLEGI.md`.
+
 ### 1️⃣ Încarcă codul pe GitHub
 
 ```bash

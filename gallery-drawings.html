@@ -16,114 +16,127 @@
             justify-content: space-between;
             color: white;
             border-bottom: 5px solid #D84315;
-            z-index: 1000;
-            position: relative;
+        }
+
+        /* --- FILTERS --- */
+        .age-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid #FFAB91;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: bold;
+            color: #D84315;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #FBE9E7;
+        }
+
+        .filter-btn.active {
+            background: #FF7043;
+            color: white;
+            border-color: #FF7043;
         }
 
         .gallery-grid {
-            max-width: 1000px;
-            margin: 40px auto;
             padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
         }
 
-        .slot {
-            aspect-ratio: 1;
+        .art-card {
             background: white;
-            border-radius: 20px;
+            border: 3px solid #ddd;
+            border-radius: 15px;
+            aspect-ratio: 1;
             position: relative;
-            overflow: hidden;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.2s;
+            overflow: hidden;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .slot.filled {
-            border: 4px solid #FFAB91;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .slot.filled:hover {
+        .art-card:hover {
             transform: scale(1.05);
+            border-color: #FF7043;
         }
 
-        .slot.empty {
-            border: 4px dashed #CFD8DC;
-            background: #F5F5F5;
+        .art-card.premium {
+            border-color: #FFD700;
+            background-color: #FFFDE7;
         }
 
-        .slot.premium-slot {
-            border-color: gold;
-            background: #fff8e1;
-            /* Light gold tint */
-        }
-
-        .slot-content {
+        .art-thumb {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(100%) contrast(1.5) brightness(1.1) !important;
-        }
-
-        .slot:hover .slot-content {
-            transform: scale(1.02);
-        }
-
-        .empty-label {
-            color: #B0BEC5;
-            font-weight: bold;
-            font-size: 0.9rem;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
         }
 
         .slot-number {
             position: absolute;
             top: 10px;
             left: 10px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             color: white;
-            width: 24px;
-            height: 24px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: bold;
+        }
+
+        .premium-lock {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 215, 0, 0.9);
+            color: #5D4037;
+            padding: 2px 6px;
+            border-radius: 5px;
             font-size: 0.8rem;
             font-weight: bold;
-            z-index: 2;
         }
 
-        .btn-delete {
+        .admin-delete-btn {
             position: absolute;
             bottom: 10px;
-            left: 10px;
-            background: #FFEB3B;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #d32f2f;
+            color: white;
             border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            padding: 5px 10px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 1.2rem;
             display: none;
-            /* Shown by JS for filled slots */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            z-index: 20;
+            /* Hidden by default */
+            z-index: 10;
         }
 
-        /* Ensure delete button is visible on hover for filled slots */
-        .slot.filled:hover .btn-delete {
+        .art-card:hover .admin-delete-btn {
+            /* Logic controlled by JS class 'admin-active' on body */
+        }
+
+        body.admin-active .art-card:hover .admin-delete-btn {
             display: block;
-        }
-
-        .btn-delete:hover {
-            background: #ffebee;
-            transform: scale(1.1);
         }
 
         .btn-back-dash {
@@ -143,534 +156,107 @@
     <header class="gallery-header">
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:2rem;">🎨</span>
-            <h2 style="margin:0;">My Art Gallery</h2>
+            <h2 style="margin:0;" data-i18n="nav_coloring">My Art Gallery</h2>
         </div>
         <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
 
+    <!-- AGE FILTERS -->
+    <div class="age-filters">
+        <button class="filter-btn active" onclick="filterDrawings('all')">All Ages</button>
+        <button class="filter-btn" onclick="filterDrawings('3-5')">3-5 Years</button>
+        <button class="filter-btn" onclick="filterDrawings('6-9')">6-9 Years</button>
+        <button class="filter-btn" onclick="filterDrawings('10+')">10+ Years</button>
+    </div>
+
     <main>
-        <!-- DYNAMIC CONTAINER -->
-        <div class="gallery-grid" id="galleryContainer">
-            <!-- Content generated by JS -->
+        <div class="gallery-grid" id="drawingGrid">
+            <!-- Dynamic Slots -->
         </div>
     </main>
 
     <script src="js/translations.js"></script>
     <script src="js/auth.js"></script>
-    <script>
-        // --- DYNAMIC CONFIGURATION ---
-        const drawingsConfig = [
-            { id: 1, title: 'Space Robot', img: 'assets/images/coloring_robot_space.png', premium: false },
-            { id: 2, title: 'Cute Cat', img: 'assets/images/coloring_cute_cat.png', premium: false },
-            { id: 3, title: 'Dino Fun', img: 'assets/images/coloring_dino.png', premium: false },
-            { id: 4, title: 'Racing Car', img: 'assets/images/coloring_racing_car.png', premium: false },
-            { id: 5, title: 'Princess Castle', img: 'assets/images/coloring_princess_castle.png', premium: false },
-            { id: 6, title: 'Butterfly', img: 'assets/images/coloring_butterfly.png', premium: false },
-            { id: 7, title: 'Submarine', img: 'assets/images/coloring_submarine.png', premium: false },
-            { id: 8, title: 'Magic Unicorn', img: 'assets/images/coloring_unicorn.png', premium: false },
-            { id: 9, title: 'Superhero', img: 'assets/images/coloring_superhero.png', premium: false },
-            { id: 10, title: 'Expert Mandala', img: 'assets/images/coloring_mandala_complex.png', premium: true }
-        ];
+    <!-- External Config -->
+    <script src="js/drawingsConfig.js"></script>
+    <script src="js/time_manager.js"></script>
 
+    <!-- App Logic -->
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Language
+            // Initialize TimeManager (will redirect if outside active hours)
+            if (window.TimeManager) TimeManager.init();
+
             const lang = localStorage.getItem('kdh_lang') || 'en';
             changeLanguage(lang);
-
-            // Auth Protection
             auth.applyProtection();
 
-            // --- ROLE CHECK (PREMIUM VISIBILITY) ---
-            // In a real app, this would verify a token. Here, we check local flag set by admin login.
-            const isAdmin = localStorage.getItem('kdh_admin_mode') === 'true';
+            // Admin check for CSS
+            if (localStorage.getItem('kdh_admin_mode') === 'true') {
+                document.body.classList.add('admin-active');
+            }
 
-            // Load Deleted Slots
-            let deletedSlots = JSON.parse(localStorage.getItem('kdh_deleted_drawings') || '[]');
-
-            const container = document.getElementById('galleryContainer');
-            container.innerHTML = '';
-
-            drawingsConfig.forEach(item => {
-                // RULE: If Premium and NOT Admin -> Do NOT render at all.
-                if (item.premium && !isAdmin) {
-                    return;
-                }
-
-                const isDeleted = deletedSlots.includes(item.id.toString());
-                const slotDiv = document.createElement('div');
-                slotDiv.className = isDeleted ? 'slot empty' : 'slot filled';
-                if (item.premium) slotDiv.classList.add('premium-slot');
-
-                if (isDeleted) {
-                    // Empty State
-                    slotDiv.innerHTML = `
-                        <span class="slot-number">${item.id}</span>
-                        <div class="empty-label"><span>➕</span><span>Empty</span></div>
-                    `;
-                } else {
-                    // Title Label
-                    const titleLabel = `
-                        <span style="position:absolute; top:10px; right:10px; font-weight:bold; color:#555; background:rgba(255,255,255,0.8); padding:2px 5px; border-radius:5px; z-index:10; pointer-events:none;">
-                            ${item.premium ? '🔒 ' + item.title : item.title}
-                        </span>`;
-
-                    // Click Action
-                    let clickAction = '';
-                    if (item.premium) {
-                        // Placeholder for Premium Studio
-                        clickAction = `alert('Premium Studio Loading for: ${item.title} (Requires Separate Module)')`;
-                    } else {
-                        // Standard Paint Pro
-                        clickAction = `openPainter('${item.img}', '${item.title}')`;
-                    }
-
-                    slotDiv.innerHTML = `
-                        <span class="slot-number">${item.id}</span>
-                        ${titleLabel}
-                        <img src="${item.img}" class="slot-content" alt="${item.title}" onclick="${clickAction}" style="cursor: pointer;">
-                        <button class="btn-delete" title="Delete Drawing" onclick="deleteDrawing(${item.id})">🗑️</button>
-                    `;
-                }
-                container.appendChild(slotDiv);
-            });
-
-            updateStats();
+            // Defaults
+            filterDrawings('all');
         });
 
-        function deleteDrawing(id) {
-            const lang = localStorage.getItem('kdh_lang') || 'en';
-            const confirmMsg = lang === 'ro' ? "Sigur vrei să ștergi acest desen?" : "Are you sure you want to delete this drawing?";
+        // 10 Slots System
+        const TOTAL_SLOTS = 10;
 
-            if (confirm(confirmMsg)) {
-                let deletedSlots = JSON.parse(localStorage.getItem('kdh_deleted_drawings') || '[]');
-                deletedSlots.push(id.toString());
-                localStorage.setItem('kdh_deleted_drawings', JSON.stringify(deletedSlots));
-                location.reload();
-            }
-        }
+        function filterDrawings(ageGroup) {
+            const grid = document.getElementById('drawingGrid');
+            grid.innerHTML = '';
 
-        function updateStats() {
-            const filledCount = document.querySelectorAll('.slot.filled').length;
-            localStorage.setItem('kdh_cnt_drawings', filledCount);
-        }
-    </script>
+            const isAdmin = localStorage.getItem('kdh_admin_mode') === 'true';
 
-    <!-- PAINT APP OVERLAY (WINDOWS PAINT STYLE) - Z-INDEX 99999 -->
-    <div id="paintOverlay"
-        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#202020; z-index:99999; flex-direction:column; font-family: 'Segoe UI', sans-serif;">
-
-        <!-- HEADER / RIBBON -->
-        <div
-            style="background:#2b2b2b; padding:10px 20px; display:flex; align-items:center; gap:20px; border-bottom:1px solid #444; height:60px;">
-            <div id="paintTitle" style="color:white; font-size:14px; font-weight:bold; margin-right:20px;">🎨 Paint Pro
-            </div>
-
-            <!-- Tools Group -->
-            <div class="toolbar-group">
-                <div class="tool-icon active" onclick="useTool('brush')" title="Brush">🖌️</div>
-                <div class="tool-icon" onclick="useTool('marker')" title="Marker">🖍️</div>
-                <div class="tool-icon" onclick="useTool('pencil')" title="Pencil">✏️</div>
-                <div class="tool-icon" onclick="useTool('eraser')" title="Eraser">🧽</div>
-                <div class="tool-icon" onclick="clearCanvas()" title="Clear All (Trash)">🗑️</div>
-                <div class="tool-icon" onclick="undoLast()" title="Undo">↩️</div>
-            </div>
-
-            <!-- Separator -->
-            <div style="width:1px; height:30px; background:#555;"></div>
-
-            <!-- Colors Group -->
-            <div class="toolbar-group">
-                <input type="color" id="mainColor" value="#ff0000" onchange="setColor(this.value)" title="Choose Color">
-                <div class="quick-color" style="background:red;" onclick="setQuickColor('red')"></div>
-                <div class="quick-color" style="background:blue;" onclick="setQuickColor('blue')"></div>
-                <div class="quick-color" style="background:green;" onclick="setQuickColor('green')"></div>
-                <div class="quick-color" style="background:yellow;" onclick="setQuickColor('yellow')"></div>
-                <div class="quick-color" style="background:black;" onclick="setQuickColor('black')"></div>
-                <div class="quick-color" style="background:white;" onclick="setQuickColor('white')"></div>
-            </div>
-
-            <div style="flex:1;"></div>
-
-            <!-- Window Controls -->
-            <div class="toolbar-group">
-                <button class="win-btn print" onclick="printDrawing()">🖨️ Print</button>
-                <button class="win-btn close" onclick="closePainter()">❌ Exit</button>
-            </div>
-        </div>
-
-        <!-- MAIN WORKSPACE -->
-        <div style="flex:1; display:flex; position:relative; overflow:hidden;">
-
-            <!-- LEFT PANEL (SLIDERS) -->
-            <div
-                style="width:80px; background:#333; display:flex; flex-direction:column; align-items:center; padding-top:20px; border-right:1px solid #444;">
-                <!-- Size Slider -->
-                <div class="slider-container">
-                    <label>Size</label>
-                    <input type="range" orient="vertical" id="brushSize" min="1" max="50" value="5"
-                        oninput="setSize(this.value)">
-                    <span id="sizeVal">5px</span>
-                </div>
-
-                <div style="height:20px;"></div>
-
-                <!-- Opacity Slider -->
-                <div class="slider-container">
-                    <label>Opacity</label>
-                    <input type="range" orient="vertical" id="brushOpacity" min="1" max="100" value="100"
-                        oninput="setOpacity(this.value)">
-                    <span id="opacityVal">100%</span>
-                </div>
-            </div>
-
-            <!-- CANVAS AREA -->
-            <div
-                style="flex:1; background:#1e1e1e; display:flex; align-items:center; justify-content:center; overflow:auto; padding:20px;">
-                <div id="printableArea"
-                    style="position:relative; width:500px; height:500px; background:white; box-shadow:0 0 30px rgba(0,0,0,0.5);">
-                    <img id="paintBg" src=""
-                        style="position:absolute; width:100%; height:100%; object-fit:contain; pointer-events:none; opacity:0.3;">
-                    <canvas id="paintCanvas" width="500" height="500"
-                        style="position:absolute; top:0; left:0; cursor:crosshair;"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <style>
-            .toolbar-group {
-                display: flex;
-                gap: 10px;
-                align-items: center;
-            }
-
-            .tool-icon {
-                width: 36px;
-                height: 36px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 18px;
-                background: #3a3a3a;
-                color: white;
-                transition: background 0.2s;
-            }
-
-            .tool-icon:hover {
-                background: #505050;
-            }
-
-            .tool-icon.active {
-                background: #4C8BF5;
-            }
-
-            .quick-color {
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                cursor: pointer;
-                border: 2px solid #555;
-            }
-
-            .quick-color:hover {
-                transform: scale(1.2);
-                border-color: white;
-            }
-
-            #mainColor {
-                width: 30px;
-                height: 30px;
-                border: none;
-                background: none;
-                cursor: pointer;
-                padding: 0;
-            }
-
-            .win-btn {
-                border: none;
-                color: white;
-                padding: 8px 16px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-weight: bold;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-            }
-
-            .win-btn.print {
-                background: #2196F3;
-            }
-
-            .win-btn.close {
-                background: #d32f2f;
-            }
-
-            .win-btn:hover {
-                opacity: 0.9;
-            }
-
-            .slider-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 5px;
-                color: #ccc;
-                font-size: 12px;
-            }
-
-            /* Vertical Range Input Styling */
-            input[type=range][orient=vertical] {
-                writing-mode: bt-lr;
-                /* IE */
-                -webkit-appearance: slider-vertical;
-                /* WebKit */
-                appearance: slider-vertical;
-                /* Standard */
-                width: 8px;
-                height: 120px;
-                padding: 0 5px;
-            }
-
-            @media print {
-                body * {
-                    visibility: hidden;
+            // Filter logic
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.includes(ageGroup) || (ageGroup === 'all' && btn.innerText.includes('All'))) {
+                    btn.classList.add('active');
                 }
+            });
 
-                #printableArea,
-                #printableArea * {
-                    visibility: visible;
-                }
+            // Count only valid drawings for this filter
+            let filteredDrawings = drawingsConfig.filter(d => {
+                if (d.premium && !isAdmin) return false;
+                if (ageGroup === 'all') return true;
+                return d.age === ageGroup;
+            });
 
-                #printableArea {
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    width: 100%;
-                    height: 100%;
-                    border: none;
-                    box-shadow: none;
-                }
+            // We still want to show 10 slots visually? 
+            // Or just the filtered items? Usually gallery implies slots for *saving*, but here we are *viewing* templates.
+            // Let's list the filtered templates.
 
-                #paintOverlay {
-                    background: white !important;
-                    display: block !important;
-                }
-            }
-        </style>
-    </div>
+            filteredDrawings.forEach((drawing, index) => {
+                const card = document.createElement('div');
+                card.className = drawing.premium ? 'art-card premium' : 'art-card';
+                card.innerHTML = `
+                    <span class="slot-number">${index + 1}</span>
+                    ${drawing.premium ? '<span class="premium-lock">👑 Premium</span>' : ''}
+                    <img src="${drawing.img}" class="art-thumb" alt="Drawing">
+                    <button class="admin-delete-btn" onclick="deleteDrawing('${drawing.id}')">🗑️ Delete</button>
+                `;
 
-    <!-- PAINTER SCRIPT (WINDOWS PAINT STYLE) -->
-    <script>
-        const canvas = document.getElementById('paintCanvas');
-        const ctx = canvas.getContext('2d');
-        let painting = false;
+                // Clicking opens drawing tool (Placeholder)
+                card.onclick = (e) => {
+                    if (e.target.tagName !== 'BUTTON') {
+                        // In a real app, this would open the painting canvas with this image
+                        alert("Starting Coloring Session: " + drawing.id);
+                    }
+                };
 
-        // State
-        let currentTool = 'brush'; // brush, marker, pencil, eraser
-        let currentColor = '#ff0000';
-        let currentSize = 5;
-        let currentOpacity = 1.0;
-
-        let history = [];
-        let step = -1;
-
-        function openPainter(imgSrc, drawingName) {
-            document.getElementById('paintOverlay').style.display = 'flex';
-            document.getElementById('paintBg').src = imgSrc;
-            document.getElementById('paintTitle').textContent = '🎨 Paint Pro - ' + (drawingName || 'Drawing');
-
-            // Init Canvas
-            canvas.width = 500;
-            canvas.height = 500;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Reset History
-            history = [];
-            step = -1;
-            saveHistory();
-
-            // Default Settings
-            useTool('brush');
-            setQuickColor('red');
-            setSize(5);
-            setOpacity(100);
-
-            // Update UI inputs
-            const sizeInput = document.getElementById('brushSize');
-            const opacityInput = document.getElementById('brushOpacity');
-            if (sizeInput) sizeInput.value = 5;
-            if (opacityInput) opacityInput.value = 100;
+                grid.appendChild(card);
+            });
         }
 
-        function closePainter() {
-            document.getElementById('paintOverlay').style.display = 'none';
-        }
-
-        function clearCanvas() {
-            if (confirm("Are you sure you want to clear the canvas? This cannot be undone.")) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                saveHistory();
+        // Mock Delete for Admin
+        window.deleteDrawing = function (id) {
+            if (confirm("Admin: Are you sure you want to remove this item?")) {
+                alert("Item " + id + " removed (Database update simulated).");
+                // In real app, call API to remove from config
             }
         }
-
-        // --- TOOLS & SETTINGS ---
-        function useTool(tool) {
-            currentTool = tool;
-            // Update UI Active State
-            const icons = document.querySelectorAll('.tool-icon');
-            icons.forEach(el => el.classList.remove('active'));
-
-            let selector = '';
-            if (tool === 'brush') selector = 'Brush';
-            if (tool === 'marker') selector = 'Marker';
-            if (tool === 'pencil') selector = 'Pencil';
-            if (tool === 'eraser') selector = 'Eraser';
-
-            const btn = document.querySelector(`.tool-icon[title="${selector}"]`);
-            if (btn) btn.classList.add('active');
-
-            updateContext();
-        }
-
-        function setQuickColor(colorName) {
-            const map = {
-                'red': '#ff0000', 'blue': '#0000ff', 'green': '#008000',
-                'yellow': '#ffff00', 'black': '#000000', 'white': '#ffffff'
-            };
-            const hex = map[colorName] || colorName;
-            const picker = document.getElementById('mainColor');
-            if (picker) picker.value = hex;
-            setColor(hex);
-        }
-
-        function setColor(hex) {
-            currentColor = hex;
-            if (currentTool === 'eraser') useTool('brush'); // Switch back to brush if coloring
-            updateContext();
-        }
-
-        function setSize(val) {
-            currentSize = val;
-            document.getElementById('sizeVal').textContent = val + 'px';
-            updateContext();
-        }
-
-        function setOpacity(val) {
-            currentOpacity = val / 100;
-            document.getElementById('opacityVal').textContent = val + '%';
-            updateContext();
-        }
-
-        function updateContext() {
-            // Logic for different tools
-            if (currentTool === 'pencil') {
-                ctx.lineWidth = 1; // Always thin
-            } else {
-                ctx.lineWidth = currentSize;
-            }
-
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-
-            if (currentTool === 'eraser') {
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.globalAlpha = 1.0;
-            } else {
-                ctx.globalCompositeOperation = 'source-over';
-                ctx.strokeStyle = currentColor;
-
-                // Marker effect (translucent)
-                if (currentTool === 'marker') {
-                    ctx.globalAlpha = currentOpacity * 0.5; // Markers are naturally see-through
-                    ctx.lineWidth = currentSize + 5; // Markers are fatter
-                } else {
-                    ctx.globalAlpha = currentOpacity;
-                    ctx.lineWidth = currentTool === 'pencil' ? 1 : currentSize;
-                }
-            }
-        }
-
-        // --- HISTORY (UNDO) ---
-        function saveHistory() {
-            step++;
-            if (step < history.length) { history.length = step; }
-            history.push(canvas.toDataURL());
-        }
-
-        function undoLast() {
-            if (step > 0) {
-                step--;
-                let canvasPic = new Image();
-                canvasPic.src = history[step];
-                canvasPic.onload = function () {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    const prevComp = ctx.globalCompositeOperation;
-                    const prevAlpha = ctx.globalAlpha;
-
-                    ctx.globalCompositeOperation = 'source-over';
-                    ctx.globalAlpha = 1.0;
-                    ctx.drawImage(canvasPic, 0, 0);
-
-                    ctx.globalCompositeOperation = prevComp;
-                    ctx.globalAlpha = prevAlpha;
-
-                    setTimeout(updateContext, 10);
-                }
-            }
-        }
-
-        function printDrawing() {
-            window.print();
-        }
-
-        // --- DRAWING LOGIC ---
-        function startPosition(e) {
-            painting = true;
-            draw(e);
-        }
-
-        function endPosition() {
-            if (painting) {
-                painting = false;
-                ctx.beginPath();
-                saveHistory();
-            }
-        }
-
-        function draw(e) {
-            if (!painting) return;
-
-            const rect = canvas.getBoundingClientRect();
-            let clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-            let clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-
-            let x = clientX - rect.left;
-            let y = clientY - rect.top;
-
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-
-            x *= scaleX;
-            y *= scaleY;
-
-            ctx.lineTo(x, y);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-        }
-
-        // Event Listeners
-        canvas.addEventListener('mousedown', startPosition);
-        canvas.addEventListener('mouseup', endPosition);
-        canvas.addEventListener('mousemove', draw);
-
-        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPosition(e); }, { passive: false });
-        canvas.addEventListener('touchend', (e) => { e.preventDefault(); endPosition(); });
-        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, { passive: false });
-
     </script>
 </body>
 

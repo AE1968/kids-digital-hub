@@ -1,20 +1,7 @@
 [build]
   publish = "."
 
-# Fix /www path (redirect to root but keep domain as-is)
-[[redirects]]
-  from = "/www"
-  to = "/"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/www/*"
-  to = "/:splat"
-  status = 301
-  force = true
-
-# SPA fallback (serves index.html without changing URL)
+# Standard SPA redirect
 [[redirects]]
   from = "/*"
   to = "/index.html"
