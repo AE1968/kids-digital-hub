@@ -254,17 +254,17 @@
     <header class="stories-header">
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:2rem;">📚</span>
-            <h2 style="margin:0;">Story Library</h2>
+            <h2 style="margin:0;" data-i18n="nav_stories">Story Library</h2>
         </div>
         <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
 
     <!-- AGE FILTERS -->
     <div class="age-filters">
-        <button class="filter-btn active" onclick="filterStories('all')">All Ages</button>
-        <button class="filter-btn" onclick="filterStories('3-5')">3-5 Years (Tiny)</button>
-        <button class="filter-btn" onclick="filterStories('6-9')">6-9 Years (Kids)</button>
-        <button class="filter-btn" onclick="filterStories('10+')">10+ Years (Big)</button>
+        <button class="filter-btn active" onclick="filterStories('all')" data-i18n="filter_all">All Ages</button>
+        <button class="filter-btn" onclick="filterStories('3-5')" data-i18n="filter_3_5">3-5 Years</button>
+        <button class="filter-btn" onclick="filterStories('6-9')" data-i18n="filter_6_9">6-9 Years</button>
+        <button class="filter-btn" onclick="filterStories('10+')" data-i18n="filter_10_plus">10+ Years</button>
     </div>
 
     <main>
@@ -370,8 +370,7 @@
                 document.querySelector('.stories-header').style.marginTop = '60px'; // Push down header
             }
 
-            const lang = localStorage.getItem('kdh_lang') || 'en';
-            changeLanguage(lang);
+            // Language handled by translations.js DOMContentLoaded
             auth.applyProtection();
 
             filterStories('all');

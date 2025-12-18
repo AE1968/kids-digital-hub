@@ -175,17 +175,17 @@
     <header class="games-header">
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:2rem;">🎮</span>
-            <h2 style="margin:0;">Game Zone</h2>
+            <h2 style="margin:0;" data-i18n="nav_games">Game Zone</h2>
         </div>
         <a href="index.html" class="btn-back-dash" data-i18n="btn_back">⬅️ Back</a>
     </header>
 
     <!-- AGE FILTERS -->
     <div class="age-filters">
-        <button class="filter-btn active" onclick="filterGames('all')">All Ages</button>
-        <button class="filter-btn" onclick="filterGames('3-5')">3-5 Years</button>
-        <button class="filter-btn" onclick="filterGames('6-9')">6-9 Years</button>
-        <button class="filter-btn" onclick="filterGames('10+')">10+ Years</button>
+        <button class="filter-btn active" onclick="filterGames('all')" data-i18n="filter_all">All Ages</button>
+        <button class="filter-btn" onclick="filterGames('3-5')" data-i18n="filter_3_5">3-5 Years</button>
+        <button class="filter-btn" onclick="filterGames('6-9')" data-i18n="filter_6_9">6-9 Years</button>
+        <button class="filter-btn" onclick="filterGames('10+')" data-i18n="filter_10_plus">10+ Years</button>
     </div>
 
     <main>
@@ -226,10 +226,7 @@
             // Initialize TimeManager (will redirect if outside active hours)
             if (window.TimeManager) TimeManager.init();
 
-            const lang = localStorage.getItem('kdh_lang') || 'en';
-            if (typeof changeLanguage === 'function') {
-                changeLanguage(lang);
-            }
+            // Language handled by translations.js DOMContentLoaded
 
             // Check auth
             auth.applyProtection();

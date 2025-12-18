@@ -4,6 +4,8 @@ const translations = {
         "nav_games": "Games",
         "nav_stories": "Stories",
         "nav_myhub": "My Hub",
+        "nav_promo": "Promo Video",
+        "btn_download_video": "⬇️ DOWNLOAD VIDEO",
         "btn_back": "Back",
         "btn_play": "Play",
         "btn_read": "Read",
@@ -23,13 +25,89 @@ const translations = {
         "btn_login": "Login",
         "storage_alloc": "Storage Allocation:",
         "sub_monthly": "Monthly Subscription",
-        "guest_msg": "Please login to access Premium features."
+        "guest_msg": "Please login to access Premium features.",
+        "partners_title": "🏆 Official Partners",
+        "bonus_policy_title": "🎁 Official Bonus Policy",
+        "bonus_readers_title": "📖 Readers",
+        "bonus_readers_desc": "Earn <strong>5 Coins</strong> for every story you finish reading!",
+        "bonus_gamers_title": "🎮 Gamers",
+        "bonus_gamers_desc": "Earn <strong>10 Coins</strong> for winning a multiplayer match!",
+        "bonus_artists_title": "🎨 Artists",
+        "bonus_artists_desc": "Earn <strong>20 Coins</strong> for creating a Gallery Masterpiece!",
+        "bonus_footer": "* Use code <strong>WELCOME</strong> in your dashboard for a starter bonus!",
+        "btn_contact": "Contact",
+        "filter_all": "All Ages",
+        "filter_3_5": "3-5 Years",
+        "filter_6_9": "6-9 Years",
+        "filter_10_plus": "10+ Years",
+        "suggestions_title": "💡 Your Ideas Matter!",
+        "suggestions_desc": "Tell us what you'd love to see on Kids Digital Hub",
+        "label_name": "Your Name (or Nickname) 👤",
+        "placeholder_name": "e.g., SuperKid123",
+        "label_category": "What type of content? 🎨",
+        "opt_choose_cat": "-- Choose a category --",
+        "cat_coloring": "🖍️ Coloring Pages",
+        "cat_games": "🧩 Games & Puzzles",
+        "cat_stories": "📚 Stories & Tales",
+        "cat_activities": "✂️ Activities & Crafts",
+        "cat_videos": "🎥 Videos & Animations",
+        "cat_other": "✨ Other Ideas",
+        "label_suggestion": "Your Suggestion 💭",
+        "placeholder_suggestion": "Tell us your idea! What would you like to see? Be creative! 🌟",
+        "btn_submit_idea": "🚀 Submit My Idea!",
+        "list_title": "✨ Recent Suggestions",
+        "btn_back_home": "🏠 Back to Home",
+        "contact_title": "📧 Contact Us",
+        "contact_desc": "We're here to help! Send us a message.",
+        "info_comm_title": "📝 Professional Communication",
+        "info_comm_desc": "This form is for formal inquiries, partnerships, support requests, and general questions. We respond within 24-48 hours.",
+        "label_email": "Email Address 📧",
+        "placeholder_email": "your.email@example.com",
+        "label_subject": "Subject 📌",
+        "opt_choose_subject": "-- Select a subject --",
+        "sub_inquiry": "General Inquiry",
+        "sub_support": "Technical Support",
+        "sub_partnership": "Partnership Opportunity",
+        "sub_feedback": "Feedback",
+        "sub_billing": "Billing & Payments",
+        "sub_other": "Other",
+        "label_message": "Your Message 💬",
+        "placeholder_message": "Please describe your inquiry in detail...",
+        "btn_send": "📨 Send Message",
+        "btn_sending": "⏳ Sending...",
+        "msg_success": "✅ Thank you for your message! We will respond within 24-48 hours.",
+        "msg_error": "❌ Error sending message. Please try again or email us directly at contact@kidsdigitalhub.com",
+        "dash_welcome": "Welcome",
+        "dash_storage": "Storage Allocation",
+        "dash_coins": "Coins",
+        "dash_bonus_code": "Bonus Code",
+        "dash_enter_code": "Enter Code...",
+        "dash_redeem": "Redeem",
+        "dash_friends_title": "Connect with Friends!",
+        "dash_friends_desc": "Visit the new Safe Messenger to play & chat.",
+        "dash_messenger_btn": "Open Messenger",
+        "dash_premium_title": "Unlock Unlimited Fun!",
+        "dash_premium_desc": "Get full access to all stories, games, and premium drawings.",
+        "dash_premium_btn": "Get Premium Membership 👑",
+        "admin_zone_title": "🛡️ Parent & Admin Zone",
+        "admin_active_hours": "⏰ Active Hours",
+        "admin_active_desc": "Define when the child can engage in active play. Outside these hours, only Stories are available (Sleep Mode).",
+        "admin_start": "Start",
+        "admin_end": "End",
+        "admin_save_interval": "Save Interval",
+        "admin_economy_title": "💰 Economy Manager",
+        "admin_economy_desc": "Admin has unlimited resources. Manage bonus policies here.",
+        "admin_add_bonus": "Add Bonus 100",
+        "admin_edit_policy": "Edit Policy",
+        "admin_policy_note": "* Bonus Policy will appear in the specific ad region when enabled."
     },
     "ro": {
         "nav_coloring": "Colorat",
         "nav_games": "Jocuri",
         "nav_stories": "Povești",
         "nav_myhub": "Contul Meu",
+        "nav_promo": "Video Promo",
+        "btn_download_video": "⬇️ DESCARCĂ VIDEO",
         "btn_back": "Înapoi",
         "btn_play": "Joacă",
         "btn_read": "Citește",
@@ -49,7 +127,81 @@ const translations = {
         "btn_login": "Intră în Cont",
         "storage_alloc": "Spațiu Alocat:",
         "sub_monthly": "Abonament Lunar",
-        "guest_msg": "Te rugăm să te autentifici pentru acces Premium."
+        "guest_msg": "Te rugăm să te autentifici pentru acces Premium.",
+        "partners_title": "🏆 Parteneri Oficiali",
+        "bonus_policy_title": "🎁 Politica Oficială de Bonusuri",
+        "bonus_readers_title": "📖 Cititori",
+        "bonus_readers_desc": "Câștigă <strong>5 Monede</strong> pentru fiecare poveste citită!",
+        "bonus_gamers_title": "🎮 Jucători",
+        "bonus_gamers_desc": "Câștigă <strong>10 Monede</strong> pentru câștigarea unui meci multiplayer!",
+        "bonus_artists_title": "🎨 Artiști",
+        "bonus_artists_desc": "Câștigă <strong>20 Monede</strong> pentru crearea unei Capodopere în Galerie!",
+        "bonus_footer": "* Folosește codul <strong>WELCOME</strong> în dashboard pentru un bonus de început!",
+        "btn_contact": "Contact",
+        "filter_all": "Toate Vârstele",
+        "filter_3_5": "3-5 Ani",
+        "filter_6_9": "6-9 Ani",
+        "filter_10_plus": "10+ Ani",
+        "suggestions_title": "💡 Ideile Tale Contează!",
+        "suggestions_desc": "Spune-ne ce ți-ai dori să vezi pe Kids Digital Hub",
+        "label_name": "Numele Tău (sau Nickname) 👤",
+        "placeholder_name": "ex. SuperCopil123",
+        "label_category": "Ce tip de conținut? 🎨",
+        "opt_choose_cat": "-- Alege o categorie --",
+        "cat_coloring": "🖍️ Planșe de Colorat",
+        "cat_games": "🧩 Jocuri și Puzzle-uri",
+        "cat_stories": "📚 Povești și Basme",
+        "cat_activities": "✂️ Activități și Artizanat",
+        "cat_videos": "🎥 Videoclipuri și Animații",
+        "cat_other": "✨ Alte Idei",
+        "label_suggestion": "Sugestia Ta 💭",
+        "placeholder_suggestion": "Spune-ne ideea ta! Ce ți-ai dori să vezi? Fii creativ! 🌟",
+        "btn_submit_idea": "🚀 Trimite Ideea Mea!",
+        "list_title": "✨ Sugestii Recente",
+        "btn_back_home": "🏠 Înapoi la Acasă",
+        "contact_title": "📧 Contactează-ne",
+        "contact_desc": "Suntem aici să te ajutăm! Trimite-ne un mesaj.",
+        "info_comm_title": "📝 Comunicare Profesională",
+        "info_comm_desc": "Acest formular este pentru solicitări formale, parteneriate, suport tehnic și întrebări generale. Răspundem în 24-48 de ore.",
+        "label_email": "Adresa de Email 📧",
+        "placeholder_email": "emailul.tau@exemplu.com",
+        "label_subject": "Subiect 📌",
+        "opt_choose_subject": "-- Selectează un subiect --",
+        "sub_inquiry": "Întrebare Generală",
+        "sub_support": "Suport Tehnic",
+        "sub_partnership": "Oportunitate Parteneriat",
+        "sub_feedback": "Feedback",
+        "sub_billing": "Facturare și Plăți",
+        "sub_other": "Altele",
+        "label_message": "Mesajul Tău 💬",
+        "placeholder_message": "Te rugăm să descrii solicitarea ta în detaliu...",
+        "btn_send": "📨 Trimite Mesajul",
+        "btn_sending": "⏳ Se trimite...",
+        "msg_success": "✅ Îți mulțumim pentru mesaj! Vom răspunde în 24-48 de ore.",
+        "msg_error": "❌ Eroare la trimiterea mesajului. Te rugăm să încerci din nou sau să ne scrii direct la contact@kidsdigitalhub.com",
+        "dash_welcome": "Bine ai venit",
+        "dash_storage": "Spațiu Alocat",
+        "dash_coins": "Monede",
+        "dash_bonus_code": "Cod Bonus",
+        "dash_enter_code": "Introdu Codul...",
+        "dash_redeem": "Revendică",
+        "dash_friends_title": "Conectează-te cu Prietenii!",
+        "dash_friends_desc": "Vizitează noul Safe Messenger pentru a te juca și a discuta.",
+        "dash_messenger_btn": "Deschide Messenger",
+        "dash_premium_title": "Deblochează Distracția Nelimitată!",
+        "dash_premium_desc": "Obține acces complet la toate poveștile, jocurile și desenele premium.",
+        "dash_premium_btn": "Obține Abonament Premium 👑",
+        "admin_zone_title": "🛡️ Zona Părinților & Admin",
+        "admin_active_hours": "⏰ Ore Active",
+        "admin_active_desc": "Definește când copilul se poate juca activ. În afara acestor ore, doar Poveștile sunt disponibile (Mod Somn).",
+        "admin_start": "Start",
+        "admin_end": "Sfârșit",
+        "admin_save_interval": "Salvează Intervalul",
+        "admin_economy_title": "💰 Manager Economie",
+        "admin_economy_desc": "Administratorul are resurse nelimitate. Gestionează politicile de bonus aici.",
+        "admin_add_bonus": "Adaugă Bonus 100",
+        "admin_edit_policy": "Editează Politica",
+        "admin_policy_note": "* Politica de bonus va apărea în regiunea de publicitate specifică atunci când este activată."
     },
     "fr": {
         "nav_coloring": "Coloriage",
@@ -62,20 +214,7 @@ const translations = {
         "nav_contact": "Contact",
         "nav_suggestions": "Suggestions",
         "hero_title": "Bienvenue dans l'Univers Créatif! ✨",
-        "choice_title": "Choisissez la Version:",
-        "btn_choice_free": "Version Gratuite",
-        "btn_choice_paid": "Version Premium",
-        "creator_title": "Rencontrez le Co-Créateur Numérique 🤖",
-        "creator_desc": "Encourager la créativité avec une touche de magie numérique.",
-        "footer_rights": "© 2025 Kids Digital Hub • Fait avec ❤️ pour les Enfants",
-        "ai_bubble_text": "Salut! Un projet né de l'Imagination Humana et du Professionnalisme de l'IA! Si tu veux aussi, tu peux avec notre aide! Clique sur les boutons pour voir! 🤝✨",
-        "login_title": "Connexion Kids Hub",
-        "login_user": "Utilisateur",
-        "login_pass": "Mot de passe",
-        "btn_login": "Se connecter",
-        "storage_alloc": "Espace Alloué:",
-        "sub_monthly": "Abonnement Mensuel",
-        "guest_msg": "Veuillez vous connecter pour accéder au Premium."
+        "footer_rights": "© 2025 Kids Digital Hub • Fait avec ❤️ pour les Enfants"
     },
     "de": {
         "nav_coloring": "Malen",
@@ -88,20 +227,7 @@ const translations = {
         "nav_contact": "Kontakt",
         "nav_suggestions": "Vorschläge",
         "hero_title": "Willkommen im Kreativen Universum! ✨",
-        "choice_title": "Version Wählen:",
-        "btn_choice_free": "Kostenlose Version",
-        "btn_choice_paid": "Premium Version",
-        "creator_title": "Triff den Digitalen Co-Creator 🤖",
-        "creator_desc": "Kreativität fördern mit einem Hauch digitaler Magie.",
-        "footer_rights": "© 2025 Kids Digital Hub • Mit ❤️ für Kinder gemacht",
-        "ai_bubble_text": "Hallo! Ein Projekt geboren aus menschlicher Fantasie und KI-Professionalität! Wenn du auch willst, kannst du es mit unserer Hilfe! Klicke auf die Buttons um zu sehen! 🤝✨",
-        "login_title": "Anmeldung Kids Hub",
-        "login_user": "Benutzer",
-        "login_pass": "Passwort",
-        "btn_login": "Anmelden",
-        "storage_alloc": "Speicherplatz:",
-        "sub_monthly": "Monatliches Abo",
-        "guest_msg": "Bitte anmelden für Premium-Zugang."
+        "footer_rights": "© 2025 Kids Digital Hub • Mit ❤️ für Kinder gemacht"
     },
     "es": {
         "nav_coloring": "Colorear",
@@ -114,20 +240,7 @@ const translations = {
         "nav_contact": "Contacto",
         "nav_suggestions": "Sugerencias",
         "hero_title": "¡Bienvenido al Universo Creativo! ✨",
-        "choice_title": "Elige Versión:",
-        "btn_choice_free": "Versión Gratuita",
-        "btn_choice_paid": "Versión Premium",
-        "creator_title": "Conoce al Co-Creador Digital 🤖",
-        "creator_desc": "Potenciando la creatividad con un toque de magia digital.",
-        "footer_rights": "© 2025 Kids Digital Hub • Hecho con ❤️ para Niños",
-        "ai_bubble_text": "¡Hola! ¡Un proyecto nacido de la Imaginación Humana y el Profesionalism de la IA! ¡Si tú también quieres, puedes con nuestra ayuda! ¡Haz clic en los botones para ver! 🤝✨",
-        "login_title": "Iniciar Sesión",
-        "login_user": "Usuario",
-        "login_pass": "Contraseña",
-        "btn_login": "Entrar",
-        "storage_alloc": "Almacenamiento:",
-        "sub_monthly": "Suscripción Mensual",
-        "guest_msg": "Inicia sesión para acceso Premium."
+        "footer_rights": "© 2025 Kids Digital Hub • Hecho con ❤️ para Niños"
     },
     "zh": {
         "nav_coloring": "涂色",
@@ -140,20 +253,7 @@ const translations = {
         "nav_contact": "联系我们",
         "nav_suggestions": "建议",
         "hero_title": "欢迎来到创意宇宙！✨",
-        "choice_title": "选择版本：",
-        "btn_choice_free": "免费版",
-        "btn_choice_paid": "高级版",
-        "creator_title": "认识数字联合创作人 🤖",
-        "creator_desc": "用通过一点数字魔法激发创造力。",
-        "footer_rights": "© 2025 Kids Digital Hub • 用 ❤️ 为孩子们制作",
-        "ai_bubble_text": "你好！一个诞生于人类想象力和AI专业精神的项目！如果你也想，我们可以帮你！点击按钮查看！ 🤝✨",
-        "login_title": "登录",
-        "login_user": "用户名",
-        "login_pass": "密码",
-        "btn_login": "登录",
-        "storage_alloc": "存储分配：",
-        "sub_monthly": "月度订阅",
-        "guest_msg": "请登录以访问高级功能。"
+        "footer_rights": "© 2025 Kids Digital Hub • 用 ❤️ 为孩子们制作"
     },
     "ja": {
         "nav_coloring": "塗り絵",
@@ -166,20 +266,7 @@ const translations = {
         "nav_contact": "連絡先",
         "nav_suggestions": "提案",
         "hero_title": "クリエイティブ・ユニバースへようこそ！✨",
-        "choice_title": "バージョンを選択:",
-        "btn_choice_free": "無料版",
-        "btn_choice_paid": "プレミアム版",
-        "creator_title": "デジタル共同制作者に会う 🤖",
-        "creator_desc": "デジタル魔法のタッチで創造性を高めます。",
-        "footer_rights": "© 2025 Kids Digital Hub •子供たちのために❤️で作られました",
-        "ai_bubble_text": "こんにちは！人間の想像力とAIのプロフェッショナリズムから生まれたプロジェクトです！あなたも望むなら、私たちの助けで可能です！ボタンをクリックして見てください！ 🤝✨",
-        "login_title": "ログイン",
-        "login_user": "ユーザー名",
-        "login_pass": "パスワード",
-        "btn_login": "ログイン",
-        "storage_alloc": "ストレージ:",
-        "sub_monthly": "月額サブスクリプション",
-        "guest_msg": "プレミアム機能にはログインしてください。"
+        "footer_rights": "© 2025 Kids Digital Hub •子供たちのために❤️で作られました"
     },
     "ko": {
         "nav_coloring": "색칠하기",
@@ -192,20 +279,7 @@ const translations = {
         "nav_contact": "연락처",
         "nav_suggestions": "제안",
         "hero_title": "창의적인 우주에 오신 것을 환영합니다! ✨",
-        "choice_title": "버전 선택:",
-        "btn_choice_free": "무료 버전",
-        "btn_choice_paid": "프리미엄 버전",
-        "creator_title": "디지털 공동 제작자 만나기 🤖",
-        "creator_desc": "디지털 마법의 터치로 창의력을 발휘하세요.",
-        "footer_rights": "© 2025 Kids Digital Hub • 어린이를 위해 ❤️로 제작",
-        "ai_bubble_text": "안녕하세요! 인간의 상상력과 AI의 전문성으로 탄생한 프로젝트입니다! 원하신다면 저희의 도움으로 가능합니다! 버튼을 클릭하여 확인해보세요! 🤝✨",
-        "login_title": "로그인",
-        "login_user": "사용자 이름",
-        "login_pass": "비밀번호",
-        "btn_login": "로그인",
-        "storage_alloc": "저장 공간:",
-        "sub_monthly": "월간 구독",
-        "guest_msg": "프리미엄 기능을 이용하려면 로그인하세요."
+        "footer_rights": "© 2025 Kids Digital Hub • 어린이를 위해 ❤️로 제작"
     }
 };
 
@@ -217,11 +291,20 @@ function changeLanguage(lang) {
     elements.forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (selectedLang[key]) {
-            el.innerHTML = selectedLang[key]; // Changed to innerHTML to allow icons if needed
+            el.innerHTML = selectedLang[key];
         }
     });
 
-    // Save selected language to 'kdh_lang' to match index.html
+    // Update placeholders
+    const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
+    placeholders.forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (selectedLang[key]) {
+            el.placeholder = selectedLang[key];
+        }
+    });
+
+    // Save selected language
     localStorage.setItem('kdh_lang', lang);
     document.cookie = `nf_lang=${lang}; Path=/; SameSite=Lax`;
 
@@ -231,17 +314,25 @@ function changeLanguage(lang) {
         select.value = lang;
     }
 
-    // Dispatch event for seasonal background update
+    // Dispatch event for other components
     window.dispatchEvent(new Event('languageChanged'));
+
+    // Support for seasonal.js update function if it exists
+    if (typeof updateSeasonalBackground === 'function') {
+        updateSeasonalBackground();
+    }
 
     console.log(`Language changed to: ${lang}`);
 }
 
 // AUTO-INITIALIZE LANGUAGE ON LOAD
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Get saved language (or default en)
-    const savedLang = localStorage.getItem('kdh_lang') || 'en';
+    // Priority: Saved > Browser > Default
+    const savedLang = localStorage.getItem('kdh_lang');
+    const browserLang = navigator.language.split('-')[0];
+    const defaultLang = translations[browserLang] ? browserLang : 'en';
 
-    // 2. Apply immediately
-    changeLanguage(savedLang);
+    const lang = savedLang || defaultLang;
+
+    changeLanguage(lang);
 });

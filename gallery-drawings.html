@@ -163,10 +163,10 @@
 
     <!-- AGE FILTERS -->
     <div class="age-filters">
-        <button class="filter-btn active" onclick="filterDrawings('all')">All Ages</button>
-        <button class="filter-btn" onclick="filterDrawings('3-5')">3-5 Years</button>
-        <button class="filter-btn" onclick="filterDrawings('6-9')">6-9 Years</button>
-        <button class="filter-btn" onclick="filterDrawings('10+')">10+ Years</button>
+        <button class="filter-btn active" onclick="filterDrawings('all')" data-i18n="filter_all">All Ages</button>
+        <button class="filter-btn" onclick="filterDrawings('3-5')" data-i18n="filter_3_5">3-5 Years</button>
+        <button class="filter-btn" onclick="filterDrawings('6-9')" data-i18n="filter_6_9">6-9 Years</button>
+        <button class="filter-btn" onclick="filterDrawings('10+')" data-i18n="filter_10_plus">10+ Years</button>
     </div>
 
     <main>
@@ -187,8 +187,7 @@
             // Initialize TimeManager (will redirect if outside active hours)
             if (window.TimeManager) TimeManager.init();
 
-            const lang = localStorage.getItem('kdh_lang') || 'en';
-            changeLanguage(lang);
+            // Language is handled officially by translations.js DOMContentLoaded
             auth.applyProtection();
 
             // Admin check for CSS
