@@ -9,10 +9,9 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- PayPal SDK -->
-    <!-- Note: Added components=buttons to handle both subscription and one-time payment logic if needed -->
+    <!-- PayPal SDK - 'intent=subscription' removed to allow One-Time Payments for Season Pass -->
     <script
-        src="https://www.paypal.com/sdk/js?client-id=BAAj-KSC-Y905P1Rzgzc07Tb3Lw_aQPq70H69wTNlTdJWcZWZ-U0e0U9tbbbPsS6EClBsYwfbmWuH8Apd0&vault=true&intent=subscription&currency=GBP"></script>
+        src="https://www.paypal.com/sdk/js?client-id=BAAj-KSC-Y905P1Rzgzc07Tb3Lw_aQPq70H69wTNlTdJWcZWZ-U0e0U9tbbbPsS6EClBsYwfbmWuH8Apd0&vault=true&currency=GBP"></script>
 
     <style>
         body {
@@ -195,6 +194,7 @@
         }
 
         // --- BUTTON 1: MONTHLY SUBSCRIPTION ---
+        // Requires a real Plan ID from PayPal Dashboard
         paypal.Buttons({
             style: {
                 shape: 'pill',
@@ -203,42 +203,48 @@
                 label: 'subscribe'
             },
             createSubscription: function (data, actions) {
+                // FALLBACK CHECK: If no valid Plan ID is present, alert the user (Admin)
+                const planId = 'P-SAMPLE_MONTHLY_PLAN_ID';
+                if (planId.includes('SAMPLE')) {
+                    alert("Configuration Needed: Please add your PayPal Plan ID in payment.html for Monthly Subscriptions.");
+                    return;
+                }
                 return actions.subscription.create({
-                    /* Creates the subscription */
-                    plan_id: 'P-SAMPLE_MONTHLY_PLAN_ID' // REPLACE WITH REAL LIVE ID
+                    plan_id: planId
                 });
             },
             onApprove: function (data, actions) {
-                alert('Subscription Successful! Welcome to the Club! SubscriptionID: ' + data.subscriptionID);
-                // Unlock Premium Logic Here
+                alert('Subscription Successful! Welcome to the Club!');
                 unlockPremium();
             }
         }).render('#paypal-monthly-container');
 
 
-        // --- BUTTON 2: PREPAY (Standard Payment masquerading as Pass) ---
-        // Note: For 'intent=subscription' SDK load, simple payments might need config adjustment 
-        // or a separate page load. However, we can use a "Fixed Term" subscription plan for the Pass 
-        // OR try to render a standard buy button if the SDK allows mixed modes (it's tricky with intent=subscription).
-
-        // WORKAROUND FOR DEMO: We will use a "Subscription" plan that just charges once (Non-renewing) or 6-month cycle.
-        // Assuming 'P-SAMPLE_SEASON_PASS_ID' is a plan configured as "1 cycle of 6 months".
-
+        // --- BUTTON 2: SEASON PASS (Now LIVE as One-Time Payment) ---
+        // This DOES NOT require a Plan ID, just the Client ID you provided.
         paypal.Buttons({
             style: {
                 shape: 'pill',
                 color: 'gold',
                 layout: 'vertical',
-                label: 'checkout'
+                label: 'pay'
             },
-            createSubscription: function (data, actions) {
-                return actions.subscription.create({
-                    plan_id: 'P-SAMPLE_SEASON_PASS_ID' // REPLACE WITH REAL LIVE ID (Non-renewing profile)
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        description: "Kids Hub Season Pass (6 Months)",
+                        amount: {
+                            value: '12.99',
+                            currency_code: 'GBP'
+                        }
+                    }]
                 });
             },
             onApprove: function (data, actions) {
-                alert('Season Pass Activated! Enjoy 6 Months of Fun!');
-                unlockPremium();
+                return actions.order.capture().then(function (details) {
+                    alert('Payment Successful! Welcome ' + details.payer.name.given_name + '!');
+                    unlockPremium();
+                });
             }
         }).render('#paypal-prepay-container');
 
