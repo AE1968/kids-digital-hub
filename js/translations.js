@@ -4,8 +4,10 @@ const translations = {
         "nav_games": "Games",
         "nav_stories": "Stories",
         "nav_myhub": "My Hub",
-        "nav_promo": "Promo Video",
-        "btn_download_video": "⬇️ DOWNLOAD VIDEO",
+        "nav_promo": "Promo",
+        "btn_download_image": "⬇️ DOWNLOAD PROMO",
+        "promo_coming_soon": "🚀 Coming Soon with More Offers!",
+        "promo_share_msg": "Share the magic with your friends!",
         "btn_back": "Back",
         "btn_play": "Play",
         "btn_read": "Read",
@@ -99,15 +101,20 @@ const translations = {
         "admin_economy_desc": "Admin has unlimited resources. Manage bonus policies here.",
         "admin_add_bonus": "Add Bonus 100",
         "admin_edit_policy": "Edit Policy",
-        "admin_policy_note": "* Bonus Policy will appear in the specific ad region when enabled."
+        "admin_policy_note": "* Bonus Policy will appear in the specific ad region when enabled.",
+        "countdown_target": "TARGET ACQUIRED",
+        "countdown_xmas": "CHRISTMAS",
+        "countdown_ny_seq": "INIT_SEQ: NY26"
     },
     "ro": {
         "nav_coloring": "Colorat",
         "nav_games": "Jocuri",
         "nav_stories": "Povești",
         "nav_myhub": "Contul Meu",
-        "nav_promo": "Video Promo",
-        "btn_download_video": "⬇️ DESCARCĂ VIDEO",
+        "nav_promo": "Promo",
+        "btn_download_image": "⬇️ DESCARCĂ PROMO",
+        "promo_coming_soon": "🚀 În curând cu și mai multe oferte!",
+        "promo_share_msg": "Trimite magia și prietenilor tăi!",
         "btn_back": "Înapoi",
         "btn_play": "Joacă",
         "btn_read": "Citește",
@@ -201,7 +208,10 @@ const translations = {
         "admin_economy_desc": "Administratorul are resurse nelimitate. Gestionează politicile de bonus aici.",
         "admin_add_bonus": "Adaugă Bonus 100",
         "admin_edit_policy": "Editează Politica",
-        "admin_policy_note": "* Politica de bonus va apărea în regiunea de publicitate specifică atunci când este activată."
+        "admin_policy_note": "* Politica de bonus va apărea în regiunea de publicitate specifică atunci când este activată.",
+        "countdown_target": "ȚINTĂ ATINSĂ",
+        "countdown_xmas": "CRĂCIUN",
+        "countdown_ny_seq": "SECV_INIT: AN26"
     },
     "fr": {
         "nav_coloring": "Coloriage",

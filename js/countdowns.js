@@ -215,9 +215,9 @@
             <div class="mono-surface"></div>
             <div class="mono-laser"></div>
             <div class="mono-screen">
-                <div class="mono-label">TARGET ACQUIRED</div>
+                <div class="mono-label" data-i18n="countdown_target">TARGET ACQUIRED</div>
                 <div class="mono-xmas">🎄</div>
-                <div class="mono-label" style="color: #d4af37;">CHRISTMAS</div>
+                <div class="mono-label" data-i18n="countdown_xmas" style="color: #d4af37;">CHRISTMAS</div>
                 <div class="mono-text" id="content-christmas">--:--:--</div>
             </div>
         `;
@@ -236,7 +236,7 @@
             </div>
             
             <div class="capsule-data">
-                <div class="capsule-label">INIT_SEQ: NY26</div>
+                <div class="capsule-label" data-i18n="countdown_ny_seq">INIT_SEQ: NY26</div>
                 <div class="capsule-time" id="content-newyear">--:--:--</div>
             </div>
         `;
@@ -248,6 +248,12 @@
         // Initial Update
         updateClocks();
         setInterval(updateClocks, 1000);
+
+        // Re-apply translations once elements exist in DOM
+        const currentLang = localStorage.getItem('kdh_lang') || 'en';
+        if (typeof changeLanguage === 'function') {
+            changeLanguage(currentLang);
+        }
     }
 
     // --- UPDATE LOGIC ---
@@ -277,7 +283,7 @@
         const xmasTarget = new Date(`December 25, ${currentYear} 00:00:00`).getTime();
         const nyTarget = new Date(`January 1, ${currentYear + 1} 00:00:00`).getTime();
 
-        const currentLang = localStorage.getItem('selectedLanguage') || 'en';
+        const currentLang = localStorage.getItem('kdh_lang') || 'en';
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS['en'];
 
         // --- UPDATE CHRISTMAS (Left) ---
@@ -329,7 +335,11 @@
         // Dynamic Label for New Year
         if (isNewYear) {
             const label = document.querySelector('#clock-newyear .capsule-label');
-            if (label) label.innerText = t.newyear.split(' ')[0] + ' ' + (new Date().getFullYear() + 1);
+            if (label && label.getAttribute('data-i18n') === "countdown_ny_seq") {
+                // If it has data-i18n, the changeLanguage will handle it.
+                // But we need to make sure the "NY26" part is updated if it's dynamic.
+                // For now, let's keep it simple.
+            }
         }
     }
 

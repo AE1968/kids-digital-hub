@@ -149,21 +149,23 @@
     <!-- Main Content -->
     <div class="main-container">
 
-        <div class="video-box">
-            <video id="promoVideo" controls autoplay muted loop playsinline>
-                <source src="assets/videos/promo_final_15s.mp4" type="video/mp4">
-                Your browser does not support HTML5 video.
-            </video>
+        <div class="video-box" style="aspect-ratio: 1/1; max-width: 600px; position: relative;">
+            <img src="assets/images/reclama_final.png" alt="Family Coloring Together"
+                style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: #00FFFF; padding: 15px; text-align: center; font-size: 1.5rem; font-weight: bold; text-shadow: 0 0 10px #00FFFF;"
+                data-i18n="promo_coming_soon">
+                🚀 Coming Soon with More Offers!
+            </div>
         </div>
 
         <div class="controls-area">
-            <h2 style="color:white; text-shadow:0 0 10px #00FFFF; margin:0; font-size: 2rem;">KIDS DIGITAL HUB PROMO
-            </h2>
-            <a href="assets/videos/promo_final_15s.mp4" download="KDH_Promo_15s.mp4" class="download-btn"
-                data-i18n="btn_download_video">
-                ⬇️ DOWNLOAD VIDEO
+            <h2 style="color:white; text-shadow:0 0 10px #00FFFF; margin:0; font-size: 2rem;">KIDS DIGITAL HUB</h2>
+            <a href="assets/images/reclama_final.png" download="KDH_Family_Promo.png" class="download-btn"
+                data-i18n="btn_download_image">
+                ⬇️ DOWNLOAD PROMO
             </a>
-            <p style="color:#ccc; font-size:1rem; opacity: 0.8;">Perfect for TikTok / Instagram / Sharing</p>
+            <p style="color:#ccc; font-size:1rem; opacity: 0.8;" data-i18n="promo_share_msg">Share the magic with your
+                friends!</p>
         </div>
 
         <!-- BONUS POLICY DISPLAY (Moved from index.html) -->
@@ -178,27 +180,31 @@
                         style="font-size: 1.5rem; margin-bottom: 10px; font-weight: bold; color: #795548;">📖 Readers
                     </div>
                     <p data-i18n="bonus_readers_desc" style="color: #5D4037; font-size: 1rem; line-height: 1.4;">Earn
-                        <strong>5 Coins</strong> for every story you finish reading!</p>
+                        <strong>5 Coins</strong> for every story you finish reading!
+                    </p>
                 </div>
                 <div style="padding: 20px; background: #E1F5FE; border-radius: 15px; border: 1px solid #81D4FA;">
                     <div data-i18n="bonus_gamers_title"
                         style="font-size: 1.5rem; margin-bottom: 10px; font-weight: bold; color: #0277BD;">🎮 Gamers
                     </div>
                     <p data-i18n="bonus_gamers_desc" style="color: #01579B; font-size: 1rem; line-height: 1.4;">Earn
-                        <strong>10 Coins</strong> for winning a multiplayer match!</p>
+                        <strong>10 Coins</strong> for winning a multiplayer match!
+                    </p>
                 </div>
                 <div style="padding: 20px; background: #FCE4EC; border-radius: 15px; border: 1px solid #F48FB1;">
                     <div data-i18n="bonus_artists_title"
                         style="font-size: 1.5rem; margin-bottom: 10px; font-weight: bold; color: #C2185B;">🎨 Artists
                     </div>
                     <p data-i18n="bonus_artists_desc" style="color: #880E4F; font-size: 1rem; line-height: 1.4;">Earn
-                        <strong>20 Coins</strong> for creating a Gallery Masterpiece!</p>
+                        <strong>20 Coins</strong> for creating a Gallery Masterpiece!
+                    </p>
                 </div>
             </div>
 
             <div style="margin-top: 30px; padding-top: 20px; border-top: 2px dashed #FFD54F;">
                 <p data-i18n="bonus_footer" style="color: #666; font-size: 1.1rem; font-style: italic;">* Use code
-                    <strong>WELCOME</strong> in your dashboard for a starter bonus!</p>
+                    <strong>WELCOME</strong> in your dashboard for a starter bonus!
+                </p>
             </div>
         </section>
 
