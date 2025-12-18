@@ -1,16 +1,18 @@
 [PROJECT STATUS: LIVE & STABLE]
-Last Updated: 2025-12-18 10:05
+Last Updated: 2025-12-18 10:30
 Status: PRODUCTION (LIVE)
 
 [ACHIEVEMENTS TODAY - 18 Dec 2025]
-1.  **Deployment & Infrastructure:**
-    *   Fixed `payment_webhook.js` Netlify function error (removed unused schedule module).
-    *   Resolved Git push issues by removing large ZIP backups.
-    *   Successfully updated live site at kidsdigitalhub.com.
+1.  **I18n & Translation System:**
+    *   Centralized all translations in `js/translations.js`.
+    *   Fixed translation bugs on all sub-pages (Coloring, Games, Stories).
+    *   Added support for Romanian and updated all UI keys for consistency.
 2.  **UI/UX Enhancements:**
-    *   Secret Admin Button (🎨) fully functional and deployed.
-    *   Added official "Partners" and "Bonus Policy" sections to home page.
-    *   Integrated static promo video for instant downloads.
+    *   Secret Admin Button (🎨) fully functional.
+    *   Moved "Bonus Policy" to the Promo page as requested.
+    *   Replaced Promo video with "Family Coloring" image (`reclama_final.png`) for instant access.
+3.  **Deployment:**
+    *   Successfully deployed the fully translated version to kidsdigitalhub.com.
 
 [NEXT STEPS]
 *   Finalize PayPal subscription flow (£2.49 holiday offer).
@@ -19,8 +21,4 @@ Status: PRODUCTION (LIVE)
 
 [DEPLOYMENT]
 Live URL: https://www.kidsdigitalhub.com
-
-[LATEST UPDATE]
-*   **Secret Admin Button:** ✅ COMPLETED.
-*   **Partners & Rewards:** ✅ ADDED.
-*   **Status:** LIVE.
+Status: LIVE & TRANSLATED (EN/RO)

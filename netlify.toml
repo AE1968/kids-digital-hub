@@ -1,6 +1,19 @@
 [build]
   publish = "."
 
+# Redirect WWW to Apex (kidsdigitalhub.com)
+[[redirects]]
+  from = "https://www.kidsdigitalhub.com/*"
+  to = "https://kidsdigitalhub.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.kidsdigitalhub.com/*"
+  to = "https://kidsdigitalhub.com/:splat"
+  status = 301
+  force = true
+
 # Standard SPA redirect
 [[redirects]]
   from = "/*"
