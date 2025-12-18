@@ -1,12 +1,9 @@
 [build]
+  command = "echo 'Forcing Nexus Rebuild'"
   publish = "."
   functions = "netlify/functions"
 
-# Regula principala: Orice accesare pe root duce la index.html
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-# Eliminam redirectul fortat catre www momentan pentru a debloca accesul
-# Vom reactiva www strict din setarile DNS Netlify, nu din cod, pentru a evita erorile.
