@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>The Friendly Dragon - Interactive Story</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Crimson+Text:ital@0;1&display=swap"
+        rel="stylesheet">
+    <script data-goatcounter="https://adrian.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background: linear-gradient(180deg, #2d5016 0%, #1a3009 50%, #0f1f05 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .forest-bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            pointer-events: none;
+            opacity: 0.2;
+            background: repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 50px,
+                    #0a1505 50px,
+                    #0a1505 51px);
+        }
+
+        .story-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .story-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .story-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 100, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B00, #FFD700);
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+
+        .page-card {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .illustration {
+            font-size: 8rem;
+            text-align: center;
+            margin-bottom: 30px;
+            animation: breathe 3s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .story-text {
+            font-size: 1.4rem;
+            line-height: 2;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .choice-btn {
+            padding: 20px 30px;
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.3), rgba(255, 215, 0, 0.3));
+            border: 2px solid #FF6B00;
+            border-radius: 20px;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .choice-btn:hover {
+            background: linear-gradient(135deg, #FF6B00, #FFD700);
+            transform: scale(1.02);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-family: 'Fredoka', sans-serif;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+        }
+
+        .the-end {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .the-end h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        .fire-emoji {
+            animation: flicker 0.5s infinite;
+        }
+
+        @keyframes flicker {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="forest-bg"></div>
+    <a href="gallery-stories.html" class="back-link">← Back to Stories</a>
+
+    <div class="story-container">
+        <div class="story-header">
+            <h1 class="story-title">🐉 The Friendly Dragon</h1>
+            <p>An Interactive Adventure</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="page-card" id="storyPage"></div>
+    </div>
+
+    <script>
+        const story = {
+            pages: [
+                {
+                    illustration: '🐉',
+                    text: 'Deep in the Emerald Forest, there lived a dragon named Ember. Unlike other dragons, Ember didn\'t breathe fire to scare people. She breathed fire to... bake cookies! 🍪',
+                    choices: null
+                },
+                {
+                    illustration: '🏠',
+                    text: 'One day, a lost little girl named Maya wandered into the forest. She was cold and hungry. She saw smoke rising from a cave.',
+                    choices: [
+                        { text: 'Maya bravely enters the cave 🚶‍♀️', next: 2 },
+                        { text: 'Maya calls out "Hello?" 📢', next: 3 }
+                    ]
+                },
+                {
+                    illustration: '😮',
+                    text: 'Maya walked into the warm cave and saw Ember taking cookies out of a stone oven! The dragon turned around, surprised to see a visitor.',
+                    choices: null,
+                    nextPage: 4
+                },
+                {
+                    illustration: '🐉',
+                    text: '"Hello there, little one!" a friendly voice echoed from the cave. Ember poked her gentle head out. "Are you lost? Come in, I just made cookies!"',
+                    choices: null,
+                    nextPage: 4
+                },
+                {
+                    illustration: '🍪',
+                    text: '"Don\'t be scared," Ember said kindly. "I\'m not like those scary dragons in stories. Would you like a chocolate chip cookie?"',
+                    choices: [
+                        { text: '"Yes please! I\'m so hungry!" 😊', next: 5 },
+                        { text: '"Why do you bake cookies?" 🤔', next: 6 }
+                    ]
+                },
+                {
+                    illustration: '😋',
+                    text: 'Maya bit into the cookie. It was the most delicious thing she had ever tasted! "This is amazing!" she exclaimed. Ember smiled proudly.',
+                    choices: null,
+                    nextPage: 7
+                },
+                {
+                    illustration: '💭',
+                    text: 'Ember sat down softly. "Well, I discovered that my fire is perfect for baking. It makes everyone happy! Isn\'t that better than scaring people?"',
+                    choices: null,
+                    nextPage: 7
+                },
+                {
+                    illustration: '🌧️',
+                    text: 'As they chatted, rain began to pour outside. "Oh no," Maya said, "my village! They must be worried about me!"',
+                    choices: [
+                        { text: '"Can you help me get home?" 🏡', next: 8 },
+                        { text: '"Maybe I can stay until the rain stops?" ☔', next: 9 }
+                    ]
+                },
+                {
+                    illustration: '🐉✨',
+                    text: '"Of course! Climb on my back," Ember said. "I\'ll fly you home safely. And I\'ll bring cookies for your family!"',
+                    choices: null,
+                    nextPage: 10
+                },
+                {
+                    illustration: '📚',
+                    text: '"Let me tell you stories while we wait," Ember said. She told tales of faraway lands and magical creatures. Maya was enchanted!',
+                    choices: null,
+                    nextPage: 10
+                },
+                {
+                    illustration: '🌈',
+                    text: 'When Ember flew Maya home with a basket of cookies, the whole village came out to see. At first they were scared, but then they smelled the cookies...',
+                    choices: null
+                },
+                {
+                    illustration: '🎉',
+                    text: '"She\'s a friendly dragon!" Maya announced. "She saved me and she\'s the best baker in the world!" The villagers cheered!',
+                    choices: null
+                },
+                {
+                    illustration: '🐉❤️🏘️',
+                    text: 'From that day on, Ember visited the village every week to deliver fresh cookies. She became everyone\'s favorite friend, proving that kindness is the greatest magic of all.',
+                    choices: null,
+                    isEnd: true
+                }
+            ],
+            currentPage: 0
+        };
+
+        function renderPage() {
+            const page = story.pages[story.currentPage];
+            const container = document.getElementById('storyPage');
+            const totalPages = story.pages.length;
+            const progress = ((story.currentPage + 1) / totalPages) * 100;
+
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            if (page.isEnd) {
+                container.innerHTML = `
+                    <div class="the-end">
+                        <div class="illustration">${page.illustration}</div>
+                        <div class="story-text">${page.text}</div>
+                        <h2>The End</h2>
+                        <div style="font-size: 3rem; margin-bottom: 20px;">⭐⭐⭐</div>
+                        <p style="opacity: 0.8; margin-bottom: 30px;">You completed the story!</p>
+                        <button class="choice-btn" onclick="restartStory()">🔄 Read Again</button>
+                        <br><br>
+                        <a href="gallery-stories.html" class="choice-btn" style="display: inline-block; text-decoration: none;">📚 More Stories</a>
+                    </div>
+                `;
+                if (window.KDH_Achievements) {
+                    KDH_Achievements.addProgress('stories');
+                }
+                return;
+            }
+
+            let choicesHTML = '';
+            if (page.choices) {
+                choicesHTML = `
+                    <div class="choices">
+                        ${page.choices.map(c => `
+                            <button class="choice-btn" onclick="goToPage(${c.next})">${c.text}</button>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                choicesHTML = `
+                    <div class="nav-buttons">
+                        <button class="nav-btn" onclick="prevPage()" ${story.currentPage === 0 ? 'disabled' : ''}>← Back</button>
+                        <button class="nav-btn" onclick="nextPage()">Continue →</button>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div class="illustration">${page.illustration}</div>
+                <div class="story-text">${page.text}</div>
+                ${choicesHTML}
+            `;
+        }
+
+        function goToPage(pageNum) {
+            story.currentPage = pageNum;
+            renderPage();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextPage() {
+            const page = story.pages[story.currentPage];
+            if (page.nextPage !== undefined) {
+                story.currentPage = page.nextPage;
+            } else {
+                story.currentPage = Math.min(story.currentPage + 1, story.pages.length - 1);
+            }
+            renderPage();
+        }
+
+        function prevPage() {
+            story.currentPage = Math.max(0, story.currentPage - 1);
+            renderPage();
+        }
+
+        function restartStory() {
+            story.currentPage = 0;
+            renderPage();
+        }
+
+        renderPage();
+    </script>
+</body>
+
+</html>

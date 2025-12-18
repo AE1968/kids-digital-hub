@@ -50,5 +50,15 @@ const gamesConfig = [
         "url": "games/math.html",
         "age": "6-9",
         "description": "Practice math in a fun way! (Premium)"
+    },
+    {
+        "id": 6,
+        "title": "Picture Puzzle",
+        "img": "assets/images/coloring_cute_cat.png",
+        "type": "Puzzle",
+        "premium": false,
+        "url": "games/puzzle.html",
+        "age": "4-8",
+        "description": "Slide the pieces to complete the picture!"
     }
 ];
