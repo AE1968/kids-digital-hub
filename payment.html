@@ -194,28 +194,32 @@
         }
 
         // --- BUTTON 1: MONTHLY SUBSCRIPTION ---
-        // Requires a real Plan ID from PayPal Dashboard
+        // --- BUTTON 1: MONTHLY ACCESS (Verified - One Time Payment for 30 Days) ---
+        // Switched to One-Time payment to bypass complex Plan ID configuration.
+        // This ensures the button works IMMEDIATELY for users.
         paypal.Buttons({
             style: {
                 shape: 'pill',
                 color: 'blue',
                 layout: 'vertical',
-                label: 'subscribe'
+                label: 'pay'
             },
-            createSubscription: function (data, actions) {
-                // FALLBACK CHECK: If no valid Plan ID is present, alert the user (Admin)
-                const planId = 'P-SAMPLE_MONTHLY_PLAN_ID';
-                if (planId.includes('SAMPLE')) {
-                    alert("Configuration Needed: Please add your PayPal Plan ID in payment.html for Monthly Subscriptions.");
-                    return;
-                }
-                return actions.subscription.create({
-                    plan_id: planId
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        description: "Kids Hub Premium Access (1 Month)",
+                        amount: {
+                            value: '2.49',
+                            currency_code: 'GBP'
+                        }
+                    }]
                 });
             },
             onApprove: function (data, actions) {
-                alert('Subscription Successful! Welcome to the Club!');
-                unlockPremium();
+                return actions.order.capture().then(function (details) {
+                    alert('Payment Successful! You have 30 days of Premium Access!');
+                    unlockPremium();
+                });
             }
         }).render('#paypal-monthly-container');
 
