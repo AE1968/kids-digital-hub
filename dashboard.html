@@ -246,9 +246,16 @@
                         onclick="saveParentSettings()">Save Settings</button>
                 </div>
                 <div style="background:white; padding:15px; border-radius:15px; flex:1; min-width:200px;">
-                    <h4 style="margin:0 0 10px 0;">Admin Tools</h4>
-                    <button class="btn-action" style="background:#2196F3; color:white;" onclick="addAdminCoins()">+100
-                        Coins</button>
+                    <h4 style="margin:0 0 10px 0;">Admin & Business Tools</h4>
+                    <div style="display: grid; gap: 10px;">
+                        <button class="btn-action" style="background:#2196F3; color:white;"
+                            onclick="window.open('https://web-production-b215.up.railway.app/admin', '_blank')">📦 Order
+                            & AI Dashboard</button>
+                        <button class="btn-action" style="background:#66BB6A; color:white;"
+                            onclick="location.href='admin_messages.html'">📬 Message & Traffic Center</button>
+                        <button class="btn-action" style="background:#FF9800; color:white;"
+                            onclick="addAdminCoins()">+100 Parent Coins</button>
+                    </div>
                 </div>
             </div>
         </div>
