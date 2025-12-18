@@ -256,7 +256,7 @@
         setInterval(updateClocks, 1000);
 
         // Re-apply translations once elements exist in DOM
-        const currentLang = localStorage.getItem('kdh_lang') || 'en';
+        const currentLang = 'en';
         if (typeof changeLanguage === 'function') {
             changeLanguage(currentLang);
         }
@@ -292,7 +292,7 @@
         const xmasTarget = new Date(`December 25, ${currentYear} 00:00:00`).getTime();
         const nyTarget = new Date(`January 1, ${currentYear + 1} 00:00:00`).getTime();
 
-        const currentLang = localStorage.getItem('kdh_lang') || 'en';
+        const currentLang = 'en';
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS['en'];
 
         // --- UPDATE CHRISTMAS (Left) ---

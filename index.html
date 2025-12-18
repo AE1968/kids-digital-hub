@@ -171,6 +171,9 @@
 
   <!-- Scriptul cu datele reale (Generat de Python) -->
   <script>
+    // 🧹 CLEAR OLD LANGUAGE SETTINGS (Site is now English-only)
+    localStorage.removeItem('kdh_lang');
+
     // 📊 GLOBAL TRAFFIC TRACKER
     // Hits the public counter API to increment visits
     fetch('https://api.counterapi.dev/v1/kidsdigitalhub/view/up')

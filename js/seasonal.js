@@ -54,9 +54,7 @@ function updateMonthDisplay() {
     if (monthDisplay) {
         const currentDate = new Date();
         const currentMonth = currentDate.getMonth() + 1;
-        const currentLang = localStorage.getItem('kdh_lang') || 'en';
-        const monthName = seasonalBackgrounds.monthNames[currentLang]?.[currentMonth - 1] ||
-            seasonalBackgrounds.monthNames['en'][currentMonth - 1];
+        const monthName = seasonalBackgrounds.monthNames['en'][currentMonth - 1];
         monthDisplay.textContent = `📅 ${monthName}`;
     }
 }
