@@ -131,9 +131,41 @@ async function loadData() {
         ]);
 
         const data = await productsResponse.json();
-        productsData = data.products;
-        ageGroupsData = data.ageGroups;
-        categoriesData = data.categories;
+        productsData = data.products || [];
+        ageGroupsData = data.ageGroups || [];
+        categoriesData = data.categories || [];
+
+        // ---------------------------------------------------------
+        // NEXUS INTEGRATION: Fetch AI Generated Products from Railway
+        // ---------------------------------------------------------
+        try {
+            console.log('🤖 Connecting to Nexus AI Factory...');
+            const aiResponse = await fetch('https://web-production-b215.up.railway.app/api/products');
+            if (aiResponse.ok) {
+                const aiProducts = await aiResponse.json();
+                if (Array.isArray(aiProducts) && aiProducts.length > 0) {
+                    console.log(`✅ Nexus: Loaded ${aiProducts.length} AI Products.`);
+
+                    // Normalize AI products to match frontend structure
+                    const formattedAiProducts = aiProducts.map(p => ({
+                        id: p.id,
+                        nameKey: p.name, // Use raw name as key (fallback)
+                        descriptionKey: p.theme ? `Experience the magic of ${p.theme}` : "AI Generated Content",
+                        price: p.price,
+                        image: p.image, // URL is already full path from backend
+                        category: p.category.toLowerCase(),
+                        ageGroup: 'elementary', // Default for AI
+                        ageRange: '5-8',
+                        featured: true // Feature new AI products!
+                    }));
+
+                    // Merge: Add AI products to the TOP of the list
+                    productsData = [...formattedAiProducts, ...productsData];
+                }
+            }
+        } catch (nexusError) {
+            console.warn('⚠️ Nexus AI Offline (using local cache only):', nexusError);
+        }
 
     } catch (error) {
         console.error('Error loading data:', error);
