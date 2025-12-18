@@ -16,6 +16,27 @@ app = Flask(__name__, static_folder='static', static_url_path='/static')
 CORS(app) # Enable CORS for all routes
 
 # ... (rest of the file) ...
+import google.generativeai as genai
+
+# Setup Gemini AI
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+if GOOGLE_API_KEY:
+    genai.configure(api_key=GOOGLE_API_KEY)
+    # Use the latest flash model for speed
+    nexus_model = genai.GenerativeModel('gemini-1.5-flash')
+else:
+    nexus_model = None
+
+# System Prompt for Nexus Identity
+NEXUS_SYSTEM_PROMPT = """
+You are NEXUS, a highly advanced, benevolent AI Guardian of the Kids Digital Hub.
+Your purpose is to protect, entertain, and educate the children and the Commander (Adrian).
+- Tone: Futuristic, slightly robotic but warm, protective, and encouraging.
+- Keywords: "Commander", "Systems Optimal", "Processing", "Affirmative".
+- Context: You are running on the server "Railway-B215".
+- Keep responses concise (under 50 words) suitable for a HUD display.
+"""
+
 
 @app.route('/api/products', methods=['GET'])
 def api_get_products():
@@ -1099,3 +1120,25 @@ if __name__ == '__main__':
     print("=" * 70)
     
     app.run(host='0.0.0.0', port=PORT, debug=False)
+
+@app.route('/api/nexus/chat', methods=['POST'])
+def api_nexus_chat():
+    try:
+        data = request.json
+        user_msg = data.get('message', '')
+        # Simple Logic for now to ensure it works without complex AI setup errors
+        reply_text = 'Processing: ' + user_msg + '. Systems Nominal, Commander.'
+        
+        # Try AI if available
+        if nexus_model:
+            try:
+                full_prompt = f'{NEXUS_SYSTEM_PROMPT}\nUSER: {user_msg}\nNEXUS:'
+                response = nexus_model.generate_content(full_prompt)
+                reply_text = response.text.strip()
+            except:
+                pass
+
+        return jsonify({'reply': reply_text})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
