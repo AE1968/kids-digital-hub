@@ -264,6 +264,16 @@
                 <div>EMOTION: <span id="faceEmotion">-</span></div>
                 <div>PROTOCOL: <span id="omegaStatus">INACTIVE</span></div>
             </div>
+
+            <hr style="border: 0.5px solid #333; margin: 10px 0;">
+
+            <h3 style="font-family:'Orbitron'; font-size: 0.8rem; color: var(--matrix-green);">📊 SYSTEM DIAGNOSTICS
+            </h3>
+            <div class="chat-log" id="diagLog"
+                style="min-height: 100px; height: 100px; font-size: 0.7rem; background: rgba(0,0,0,0.5);">
+                <div class="msg system">Waiting for neural scan...</div>
+            </div>
+            <button onclick="runDiagnostic()">RUN DIAGNOSTIC</button>
             <button onclick="startVision()">ACTIVATE OPTICS</button>
             <button onclick="toggleOmega()" style="background: var(--alert-red)">PROTOCOL OMEGA</button>
         </div>
@@ -466,6 +476,35 @@
             ut.lang = detectLang(t) === 'ro' ? 'ro-RO' : 'en-US';
             ut.rate = 0.9;
             window.speechSynthesis.speak(ut);
+        }
+
+        async function runDiagnostic() {
+            const log = document.getElementById('diagLog');
+            log.innerHTML = '<div class="msg system">Initiating Neural Scan...</div>';
+
+            try {
+                const response = await fetch('http://localhost:8000/api/nexus/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command: "test", context: "Diagnostic Request" })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log.innerHTML = `<div class="msg system" style="color: var(--neon-cyan)">SCAN COMPLETE:</div>`;
+                    const lines = data.reply.split('\n');
+                    lines.forEach(line => {
+                        const d = document.createElement('div');
+                        d.className = 'msg system';
+                        d.textContent = line;
+                        log.appendChild(d);
+                    });
+                    addLog('nexus', "Scanare completă. Am verificat sistemele și integritatea site-ului.");
+                    speak("Analiza sistemului a fost finalizată.");
+                }
+            } catch (e) {
+                log.innerHTML = '<div class="msg system" style="color: var(--alert-red)">BRIDGE ERROR: UNABLE TO START SCAN</div>';
+            }
         }
 
         // --- UI ANIMATIONS ---

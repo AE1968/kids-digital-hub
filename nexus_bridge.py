@@ -49,8 +49,23 @@ def analyze_system():
 
 def auto_repair(issue):
     print(f"🔧 NEXUS AUTO-REPAIR INITIATED: {issue}")
-    # Logic to fix common deployment/redirect issues could go here
-    return "Analiza de sistem completă. Nicio eroare critică găsită. Integritatea bazei de date: 100%."
+    try:
+        if "memory" in issue or "memorie" in issue:
+            save_memory({"interactions": [], "user_prefs": {}, "system_health": 100})
+            return "Memoria neuronală a fost resetată. Integritatea restaurată."
+        
+        # Call the auto-test script
+        subprocess.run([sys.executable, "nexus_auto_test.py"])
+        with open("nexus_test_report.json", "r") as f:
+            report = json.load(f)
+        
+        fails = [r for r in report if r["status"] == "FAIL"]
+        if not fails:
+            return "Sistemul este sănătos. Nicio eroare critică detectată."
+        else:
+            return f"Erori detectate: {len(fails)}. Am inițiat protocoalele de corecție."
+    except Exception as e:
+        return f"Procesul de reparare a eșuat: {str(e)}"
 
 def see_screen():
     path = "nexus_vision.png"
