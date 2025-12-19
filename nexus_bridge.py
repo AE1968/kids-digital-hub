@@ -359,6 +359,32 @@ async def nexus_chat(task: NexusTask):
             reply = f"Dispozitivul {device_email} a fost legat cu succes la Ecosistemul Nexus."
         action = "device_link"
 
+    # 🗺️ UNIVERSAL NAVIGATION COMMANDS 🗺️
+    elif any(x in cmd for x in ["colorat", "desenat", "coloring", "draw"]):
+        reply = "Inițiez modulul de creație vizuală. Pregătește culorile!"
+        action = "navigate"
+        details = {"url": "gallery-drawings.html"}
+    
+    elif any(x in cmd for x in ["joc", "games", "mă joc"]):
+        reply = "Sincronizez motorul de jocuri. Aventura începe acum."
+        action = "navigate"
+        details = {"url": "gallery-games.html"}
+    
+    elif any(x in cmd for x in ["bibliotecă", "library", "povești", "stories"]):
+        reply = "Deschid arhivele de povești Nexus. Alege un capitol."
+        action = "navigate"
+        details = {"url": "gallery-stories.html"}
+
+    elif any(x in cmd for x in ["shop", "magazin", "cumpăr"]):
+        reply = "Te redirecționez către magazinul oficial Kids Digital Hub."
+        action = "navigate"
+        details = {"url": "shop.html"}
+    
+    elif any(x in cmd for x in ["abonament", "premium", "preț", "pricing"]):
+        reply = "Deschid panoul de configurare a planurilor Premium."
+        action = "navigate"
+        details = {"url": "payment.html"}
+
     # ⚡ GOD MODE COMMANDS ⚡
     elif "deployment" in cmd or "deploy" in cmd or "publică" in cmd:
         reply = "Inițiez secvența de publicare automată pe Netlify..."

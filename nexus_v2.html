@@ -530,6 +530,12 @@
                         logEntry.className = 'msg nexus';
                         logEntry.innerHTML = `<span style="color: var(--neon-cyan)">[SYSTEM OUTPUT]</span><pre style="background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 0.6rem; color: #fff;">${data.reply}</pre>`;
                         document.getElementById('chatLog').appendChild(logEntry);
+                    } else if (data.action === 'navigate') {
+                        addLog('nexus', data.reply);
+                        speak(data.reply);
+                        setTimeout(() => {
+                            window.location.href = data.details.url;
+                        }, 2000);
                     } else {
                         addLog('nexus', data.reply);
                     }

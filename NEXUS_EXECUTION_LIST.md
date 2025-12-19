@@ -3,8 +3,8 @@
 Aceasta este lista de implementare tehnică pentru transformarea Nexus în platformă comercială:
 
 ### ✅ 1. ERGONOMIZARE & UNIFICARE UI
-- [ ] Aplicarea temei "Nexus Supreme" (Dark Mode Premium, Neon, Animations) pe `index.html`.
-- [ ] Unificarea navigării între module (Coloring, Games, Stories) sub controlul vocal Nexus.
+- [x] Aplicarea temei "Nexus Supreme" (Dark Mode Premium, Neon, Animations) pe `index.html`.
+- [x] Unificarea navigării între module (Coloring, Games, Stories) sub controlul vocal Nexus.
 
 ### ✅ 2. MODUL SUBSCRIPTION (UI & LOGIC)
 - [ ] Crearea panoului de Pricing în interfața Nexus.
