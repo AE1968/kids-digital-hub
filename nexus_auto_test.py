@@ -29,7 +29,7 @@ class NexusAutoTest:
 
     def check_bridge(self):
         try:
-            r = requests.get("http://localhost:8000/api/nexus/status", timeout=2)
+            r = requests.get("https://web-production-b215.up.railway.app/api/nexus/status", timeout=2)
             if r.status_code == 200:
                 self.log("Bridge Connection", "PASS", "Nexus Bridge is active and responding")
             else:
