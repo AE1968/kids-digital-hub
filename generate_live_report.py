@@ -1,10 +1,14 @@
 import requests
 import datetime
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def check_url(url, name):
     try:
         start = datetime.datetime.now()
-        response = requests.get(url, timeout=10)
+        # verify=False helps if local CA certs are missing
+        response = requests.get(url, timeout=10, verify=False)
         end = datetime.datetime.now()
         duration = (end - start).total_seconds()
         return {
@@ -32,20 +36,22 @@ def generate_report():
     services = [
         ("Frontend (WWW)", "https://www.kidsdigitalhub.com"),
         ("Frontend (Root)", "https://kidsdigitalhub.com"),
-        ("Backend Admin", "https://web-production-b215.up.railway.app/admin"),
-        ("Nexus Brain API", "https://web-production-b215.up.railway.app/webhook/order") # Checking webhook endpoint
+        ("Backend Core", "https://web-production-b215.up.railway.app/"),
+        ("Nexus Brain API", "https://web-production-b215.up.railway.app/webhook/order") 
     ]
     
     all_systems_go = True
     
     for name, url in services:
         result = check_url(url, name)
-        status_icon = "✅" if result["alive"] or result["status"] == 405 else "❌" # 405 is fine for POST-only webhook
+        status_icon = "✅" if result["alive"] or result["status"] == 405 else "❌"
         if result["status"] == 405: status_icon = "✅ (Method Not Allowed - Good)"
         
         print(f"{status_icon} {result['name']}")
         print(f"   URL: {result['url']}")
         print(f"   Status: {result['status']}")
+        if result.get('error'):
+            print(f"   ⚠️ Error Details: {result['error']}")
         print(f"   Latency: {result['latency']}")
         print("-" * 50)
         
