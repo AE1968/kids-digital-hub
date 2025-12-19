@@ -2,19 +2,49 @@
 class AuthManager {
     constructor() {
         this.currentUser = JSON.parse(localStorage.getItem('kdh_user')) || null;
+
+        // Base users
         this.users = {
-            'admin': { pass: 'admin123', role: 'admin', storage: 'Unlimited' },
+            'admin': { pass: 'Andrada_1968!', role: 'admin', storage: 'Unlimited' },
             'Adrian': { pass: 'Andrada_1968!', role: 'admin', storage: 'Unlimited', plan: 'subscription' },
-            'PrepayKid': { pass: '1234', role: 'user', storage: '1GB', plan: 'prepay', parentEmail: 'parent@test.com' }, // Demo Prepay
-            'SubKid': { pass: '1234', role: 'user', storage: 'Unl.', plan: 'subscription', parentEmail: 'parent@test.com' }, // Demo Sub
-            'user1': { pass: 'pass1', role: 'premium_low', storage: '500GB' },
+            'PrepayKid': { pass: '1234', role: 'user', storage: '1GB', plan: 'prepay', parentEmail: 'parent@test.com' },
+            'SubKid': { pass: '1234', role: 'user', storage: 'Unl.', plan: 'subscription', parentEmail: 'parent@test.com' },
             'demo': { pass: 'demo', role: 'free', storage: '100MB' }
         };
+
+        // Load custom registered users
+        const customUsers = JSON.parse(localStorage.getItem('kdh_registered_users') || '{}');
+        this.users = { ...this.users, ...customUsers };
+    }
+
+    register(username, password, plan, parentEmail) {
+        if (this.users[username]) {
+            return { success: false, message: 'Nume utilizator existent!' };
+        }
+
+        const newUser = {
+            pass: password,
+            role: 'user',
+            storage: plan === 'free' ? '100MB' : 'Unlimited',
+            plan: plan, // 'free', 'monthly', 'yearly'
+            parentEmail: parentEmail || '',
+            joined: new Date().toISOString()
+        };
+
+        // Save to memory
+        this.users[username] = newUser;
+
+        // Persist
+        const customUsers = JSON.parse(localStorage.getItem('kdh_registered_users') || '{}');
+        customUsers[username] = newUser;
+        localStorage.setItem('kdh_registered_users', JSON.stringify(customUsers));
+
+        return { success: true, message: 'Cont creat cu succes!' };
     }
 
     login(username, password) {
         // Direct override for testing easy access during dev
-        if (username === 'Adrian' && password === '1234') {
+        if (username === 'Adrian' && password === 'Andrada_1968!') {
             return this.performLogin({
                 username: 'Adrian',
                 role: 'admin',

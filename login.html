@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
-    <title>My Hub Login - Kids Digital Hub</title>
+    <title>Acces Cont - Kids Digital Hub</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -16,6 +16,7 @@
             background: var(--color-bg);
             background-image: radial-gradient(#B2EBF2 15%, transparent 16%), radial-gradient(#B2EBF2 15%, transparent 16%);
             background-size: 60px 60px;
+            font-family: 'Fredoka', sans-serif;
         }
 
         .login-container {
@@ -33,19 +34,33 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             border: 5px solid #FFD54F;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
             position: relative;
+            animation: popIn 0.5s ease-out;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .login-logo {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 20px;
             display: inline-block;
             background: #E1F5FE;
-            padding: 20px;
+            padding: 25px;
             border-radius: 50%;
             border: 3px solid #4FC3F7;
+            box-shadow: 0 5px 15px rgba(79, 195, 247, 0.3);
         }
 
         .input-group {
@@ -59,6 +74,7 @@
             font-weight: bold;
             color: #546E7A;
             margin-left: 10px;
+            font-size: 1.1rem;
         }
 
         .input-field {
@@ -68,43 +84,149 @@
             border-radius: 15px;
             font-size: 1.1rem;
             font-family: 'Fredoka', sans-serif;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
             outline: none;
+            background: #FAFAFA;
         }
 
         .input-field:focus {
             border-color: #4DB6AC;
+            background: white;
+            box-shadow: 0 0 10px rgba(77, 182, 172, 0.2);
         }
 
+        /* Butonul de logare pus in relief */
         .btn-login {
             width: 100%;
-            padding: 15px;
-            background: #4DB6AC;
+            padding: 18px;
+            background: linear-gradient(135deg, #4DB6AC 0%, #00897B 100%);
             color: white;
             border: none;
             border-radius: 15px;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: bold;
             cursor: pointer;
-            border-bottom: 5px solid #00897B;
-            transition: transform 0.1s;
+            box-shadow: 0 6px 0 #00695C, 0 15px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.1s;
             font-family: 'Fredoka', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .btn-login::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) rotate(45deg);
+            }
         }
 
         .btn-login:active {
             transform: translateY(4px);
-            border-bottom-width: 0;
+            box-shadow: 0 2px 0 #00695C;
         }
 
         .btn-back {
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 25px;
             color: #78909C;
             text-decoration: none;
             font-weight: bold;
             background: #ECEFF1;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            background: #CFD8DC;
+        }
+
+        .register-link {
+            margin-top: 20px;
+            display: block;
+            color: #4DB6AC;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            animation: slideUp 0.3s;
+            border: 4px solid #FFA726;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .plan-select {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .plan-option {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .plan-option.selected {
+            border-color: #FFA726;
+            background: #FFF3E0;
+            color: #E65100;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -113,45 +235,137 @@
 
     <div class="login-container">
         <div class="login-card">
-            <div class="login-logo">👤</div>
-            <h2 style="color: #455A64; margin-bottom: 30px;">My Secret Base</h2>
+            <div class="login-logo">🔐</div>
+            <h2 style="color: #455A64; margin-bottom: 30px; line-height: 1.2;">Portal Acces<br><span
+                    style="font-size: 0.9em; opacity: 0.7;">Kids Hub & Admin</span></h2>
 
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="input-group">
-                    <label>Super Name (User)</label>
-                    <input type="text" class="input-field" placeholder="guest" required value="guest">
+                    <label>Nume Utilizator</label>
+                    <input type="text" id="username" class="input-field" placeholder="Ex: Adrian" required>
                 </div>
 
                 <div class="input-group">
-                    <label>Secret Code (Pass)</label>
-                    <input type="password" class="input-field" placeholder="1234" required value="1234">
+                    <label>Parolă</label>
+                    <input type="password" id="password" class="input-field" placeholder="••••" required>
                 </div>
 
-                <button type="submit" class="btn-login">Open My Hub! 🚀</button>
+                <button type="submit" class="btn-login">INTRARE ÎN CONT 🚀</button>
             </form>
 
-            <a href="index.html" class="btn-back">⬅️ Back to Home</a>
+            <div class="register-link" onclick="openRegister()">
+                Client nou? Înregistrează-te aici
+            </div>
+
+            <a href="index.html" class="btn-back">⬅️ Înapoi Acasă</a>
         </div>
     </div>
 
+    <!-- REGISTER MODAL -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal-content">
+            <h2 style="color: #E65100; margin-bottom: 20px;">Client Nou</h2>
+            <form onsubmit="handleRegister(event)">
+                <div class="input-group">
+                    <label>Alege Nume Utilizator</label>
+                    <input type="text" id="reg-user" class="input-field" required>
+                </div>
+                <div class="input-group">
+                    <label>Alege Parolă</label>
+                    <input type="password" id="reg-pass" class="input-field" required>
+                </div>
+
+                <label style="display:block; margin-bottom:10px; font-weight:bold; color:#546E7A; text-align:left;">Tip
+                    Abonament:</label>
+                <div class="plan-select">
+                    <div class="plan-option selected" onclick="selectPlan('free')" id="plan-free">
+                        Free<br><small>0 Lei</small>
+                    </div>
+                    <div class="plan-option" onclick="selectPlan('monthly')" id="plan-monthly">
+                        Lunar<br><small>25 Lei</small>
+                    </div>
+                    <div class="plan-option" onclick="selectPlan('yearly')" id="plan-yearly">
+                        Anual<br><small>200 Lei</small>
+                    </div>
+                </div>
+                <input type="hidden" id="selected-plan" value="free">
+
+                <button type="submit" class="btn-login"
+                    style="background: linear-gradient(135deg, #FFA726, #F57C00); box-shadow: 0 6px 0 #E65100;">CREEAZĂ
+                    CONT</button>
+                <div style="margin-top: 15px; cursor: pointer; color: #888; text-decoration: underline;"
+                    onclick="closeRegister()">Anulează</div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
     <script>
+        // Check if already logged in
+        if (auth.isLoggedIn()) {
+            window.location.href = 'dashboard.html';
+        }
+
         function handleLogin(e) {
             e.preventDefault();
-            // Simple mockup login
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+
             const btn = document.querySelector('.btn-login');
-            btn.innerHTML = "Opening... 🔓";
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "Verificare... ⏳";
 
             setTimeout(() => {
-                // Check for redirect param
-                const urlParams = new URLSearchParams(window.location.search);
-                const redirect = urlParams.get('redirect');
-
-                if (redirect === 'premium') {
-                    window.location.href = "payment.html";
+                const success = auth.login(u, p);
+                if (success) {
+                    btn.innerHTML = "ACCES PERMIS ✅";
+                    btn.style.background = "#4CAF50";
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 800);
                 } else {
-                    window.location.href = "dashboard.html";
+                    btn.innerHTML = "EROARE ❌";
+                    btn.style.background = "#F44336";
+                    alert('Date incorecte! Pentru Admin folosiți: admin / Andrada_1968!');
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.style.background = "linear-gradient(135deg, #4DB6AC 0%, #00897B 100%)";
+                    }, 2000);
                 }
-            }, 1000);
+            }, 800);
+        }
+
+        // Registration Logic
+        function openRegister() {
+            document.getElementById('registerModal').style.display = 'flex';
+        }
+
+        function closeRegister() {
+            document.getElementById('registerModal').style.display = 'none';
+        }
+
+        function selectPlan(plan) {
+            document.querySelectorAll('.plan-option').forEach(el => el.classList.remove('selected'));
+            document.getElementById('plan-' + plan).classList.add('selected');
+            document.getElementById('selected-plan').value = plan;
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const u = document.getElementById('reg-user').value;
+            const p = document.getElementById('reg-pass').value;
+            const plan = document.getElementById('selected-plan').value;
+
+            const result = auth.register(u, p, plan);
+
+            if (result.success) {
+                alert('Cont creat cu succes! Te rugăm să te loghezi.');
+                closeRegister();
+                document.getElementById('username').value = u;
+                document.getElementById('password').value = ""; // Force them to type pass
+            } else {
+                alert('Eroare: ' + result.message);
+            }
         }
     </script>
 </body>
