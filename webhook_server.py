@@ -49,6 +49,60 @@ try:
 except ImportError:
     NEXUS_SYSTEM_PROMPT = "You are Nexus. Helpful AI."
 
+# --- AUTOMATIC LANGUAGE DETECTION ---
+def detect_language(text):
+    """Detect the language of the input text"""
+    text_lower = text.lower()
+    
+    # Romanian indicators
+    romanian_words = ['ce', 'cum', 'sunt', 'este', 'pentru', 'cu', 'la', 'de', 'și', 'în', 'să', 'ai', 'vreme', 'bună', 'salut', 'mulțumesc', 'te', 'îmi', 'doriți']
+    romanian_count = sum(1 for word in romanian_words if word in text_lower)
+    
+    # English indicators
+    english_words = ['the', 'is', 'are', 'what', 'how', 'can', 'you', 'please', 'thank', 'hello', 'with', 'for', 'and', 'have', 'this']
+    english_count = sum(1 for word in english_words if word in text_lower)
+    
+    # Spanish indicators
+    spanish_words = ['el', 'la', 'es', 'qué', 'cómo', 'por', 'con', 'para', 'gracias', 'hola', 'está']
+    spanish_count = sum(1 for word in spanish_words if word in text_lower)
+    
+    # French indicators
+    french_words = ['le', 'la', 'est', 'que', 'comment', 'pour', 'avec', 'merci', 'bonjour', 'vous']
+    french_count = sum(1 for word in french_words if word in text_lower)
+    
+    # German indicators
+    german_words = ['der', 'die', 'das', 'ist', 'wie', 'was', 'für', 'mit', 'danke', 'hallo']
+    german_count = sum(1 for word in german_words if word in text_lower)
+    
+    # Determine language based on highest count
+    counts = {
+        'ro': romanian_count,
+        'en': english_count,
+        'es': spanish_count,
+        'fr': french_count,
+        'de': german_count
+    }
+    
+    detected = max(counts, key=counts.get)
+    
+    # Default to English if no clear match
+    if counts[detected] == 0:
+        return 'en'
+    
+    return detected
+
+def get_language_instruction(lang_code):
+    """Get the instruction for Gemini to respond in the detected language"""
+    instructions = {
+        'ro': "IMPORTANT: The user is speaking ROMANIAN. You MUST respond ONLY in ROMANIAN language. Use Romanian grammar, vocabulary, and expressions naturally.",
+        'en': "IMPORTANT: The user is speaking ENGLISH. You MUST respond ONLY in ENGLISH language.",
+        'es': "IMPORTANT: The user is speaking SPANISH. You MUST respond ONLY in SPANISH language. Use Spanish grammar and vocabulary naturally.",
+        'fr': "IMPORTANT: The user is speaking FRENCH. You MUST respond ONLY in FRENCH language. Use French grammar and vocabulary naturally.",
+        'de': "IMPORTANT: The user is speaking GERMAN. You MUST respond ONLY in GERMAN language. Use German grammar and vocabulary naturally."
+    }
+    
+    return instructions.get(lang_code, instructions['en'])
+
 # --- API ROUTES ---
 
 @app.route('/api/products', methods=['GET'])
@@ -73,6 +127,10 @@ def api_nexus_chat():
         if not user_msg:
             return jsonify({'error': 'No message provided'}), 400
 
+        # AUTOMATIC LANGUAGE DETECTION
+        detected_language = detect_language(user_msg)
+        language_instruction = get_language_instruction(detected_language)
+        
         # AUTO-ACTIVATE MEMORY: Get conversation history
         conversation_context = get_context_for_prompt(user_id)
         
@@ -80,9 +138,11 @@ def api_nexus_chat():
         update_user_profile(user_id, name=user_name)
         user_profile = get_user_profile(user_id)
         
-        # Construct Prompt with memory context
+        # Construct Prompt with memory context and language instruction
         timestamp = datetime.now().strftime("%H:%M")
         full_prompt = f"""{NEXUS_SYSTEM_PROMPT}
+
+{language_instruction}
 
 [TIME: {timestamp}]
 [USER PROFILE: {user_profile.get('name', 'Unknown')}]
