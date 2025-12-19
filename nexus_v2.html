@@ -119,6 +119,54 @@
             filter: drop-shadow(0 0 10px var(--neon-cyan));
         }
 
+        /* Pricing Cards */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .price-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .price-card:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        .price-card.featured {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+
+        .login-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            font-family: 'Orbitron';
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        .login-btn:hover {
+            background: var(--neon-cyan);
+            color: #000;
+        }
+
         @keyframes pulse-float {
 
             0%,
@@ -255,7 +303,11 @@
 </head>
 
 <body>
-    <canvas id="neuralNet"></canvas>
+    <button class="login-btn" onclick="openLogin()">🔐 MEMBER LOGIN</button>
+
+    <div class="overlay" id="neuralBg">
+        <canvas id="neuralNet"></canvas>
+    </div>
 
     <div class="main-hub">
         <!-- Vision -->
@@ -318,6 +370,26 @@
                     <div>HUMOR: <span id="pHumor">50%</span></div>
                 </div>
             </div>
+
+            <!-- PRICING TABLE -->
+            <div class="pricing-grid">
+                <div class="price-card" onclick="selectPlan('monthly')">
+                    <div style="font-size: 0.6rem; color: var(--neon-cyan);">MONTHLY</div>
+                    <div style="font-size: 1.2rem; margin: 5px 0;">5 £</div>
+                    <div style="font-size: 0.5rem; opacity: 0.7;">Auto-renewal</div>
+                </div>
+                <div class="price-card featured" onclick="selectPlan('six_months')">
+                    <div style="font-size: 0.6rem; color: var(--neon-purple);">6 MONTHS</div>
+                    <div style="font-size: 1.2rem; margin: 5px 0;">15 £</div>
+                    <div style="font-size: 0.5rem; opacity: 0.7;">Best Value</div>
+                </div>
+                <div class="price-card" onclick="selectPlan('yearly')">
+                    <div style="font-size: 0.6rem; color: var(--neon-cyan);">YEARLY</div>
+                    <div style="font-size: 1.2rem; margin: 5px 0;">7.7 £</div>
+                    <div style="font-size: 0.5rem; opacity: 0.7;">Promo Price</div>
+                </div>
+            </div>
+            <p style="font-size: 0.5rem; margin-top: 10px; opacity: 0.5;">+1 £ / extra device per month</p>
         </div>
 
         <!-- Intelligence -->
@@ -553,6 +625,28 @@
             // Neural web animation logic...
         }
         window.addEventListener('load', initNeuralBg);
+
+        // --- BUSINESS & AUTH CORE ---
+        function selectPlan(plan) {
+            const prices = {
+                'monthly': '5 lire pe lună',
+                'six_months': '15 lire pentru 6 luni',
+                'yearly': '7.7 lire pentru un an ant întreg'
+            };
+            addLog('nexus', `Ai selectat planul: ${plan.toUpperCase()}. Această opțiune costă ${prices[plan]}. Te rog să te loghezi pentru a finaliza activarea.`);
+            speak(`Excelentă alegere. Planul ${plan} este optim pentru contul tău.`);
+        }
+
+        function openLogin() {
+            const email = prompt("Introdu adresa de email pentru activare Dispozitiv:");
+            if (email) {
+                addLog('system', `Analizez accesul pentru ${email}...`);
+                setTimeout(() => {
+                    addLog('nexus', `Dispozitivul a fost legat securizat la familia ta. Bun venit, ${email.split('@')[0]}!`);
+                    speak(`Sincronizare completă. Dispozitivul tău este acum parte din ecosistemul suprem.`);
+                }, 1500);
+            }
+        }
 
         // --- UI REFRESH & MONITOR ---
         async function updateNeuralMonitor() {
