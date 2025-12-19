@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Rajdhani:wght@500;700&display=swap');
 
 :root {
+    /* NEXUS THEME (Dark) */
     --nexus-dark: #050a14;
     --nexus-blue: #00f3ff;
     --nexus-purple: #bc13fe;
@@ -13,6 +14,12 @@
     --neon-glow: 0 0 15px rgba(0, 243, 255, 0.5);
     --danger: #ff2a6d;
     --success: #05ffa1;
+
+    /* KIDS THEME (Light) - Essential for Login/Dashboard */
+    --color-bg: #E1F5FE;
+    --color-text: #37474F;
+    --color-primary: #0288D1;
+    --color-secondary: #FFC107;
 }
 
 * {
