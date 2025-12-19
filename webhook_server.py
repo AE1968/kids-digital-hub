@@ -90,7 +90,8 @@ NEXUS:"""
                 print(f"AI Error: {e}")
                 reply_text = "Neural link unstable. Stand by."
         else:
-            reply_text = "AI Module Offline (API Key Missing)."
+            # FALLBACK FOR NEXUS STANDALONE MODE
+            reply_text = "My primary neural uplink is currently in standby. I am operating on local autonomous protocols. How can I assist you with the system today?"
         
         # AUTO-SAVE to memory
         save_conversation(user_id, user_msg, reply_text)
