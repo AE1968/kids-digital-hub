@@ -27,7 +27,7 @@
 
     orb.onmouseover = () => orb.style.transform = 'scale(1.2) rotate(10deg)';
     orb.onmouseout = () => orb.style.transform = 'scale(1)';
-    orb.onclick = () => window.location.href = 'nexus_v2.html';
+    orb.onclick = () => window.location.href = 'nexus_core.html';
 
     // Add tooltip
     const tooltip = document.createElement('div');
