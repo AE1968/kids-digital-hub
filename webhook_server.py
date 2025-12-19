@@ -11,7 +11,7 @@ import hmac
 import hashlib
 from datetime import datetime
 from webhook_order_handler import process_new_order
-import google.generativeai as genai
+from openai import OpenAI
 from nexus_memory import save_conversation, get_context_for_prompt, update_user_profile, get_user_profile
 from nexus_package import create_nexus_package, import_nexus_package, list_available_packages, get_package_info
 from nexus_tasks import get_current_context, get_all_lists, save_task_list, mark_task_complete
@@ -19,29 +19,15 @@ from nexus_tasks import get_current_context, get_all_lists, save_task_list, mark
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 CORS(app) # Enable CORS for all routes
 
-# Setup Gemini AI - MOST ADVANCED MODEL
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-nexus_model = None
-if GOOGLE_API_KEY:
+# Setup OpenAI GPT-4o - SUPERIOR ROMANIAN LANGUAGE SUPPORT
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+openai_client = None
+if OPENAI_API_KEY:
     try:
-        genai.configure(api_key=GOOGLE_API_KEY)
-        
-        # Use Gemini 2.0 Flash Experimental - Most Advanced Conversational Model
-        # Configured for academic language and professional male persona
-        generation_config = {
-            "temperature": 0.7,  # Balanced creativity and precision
-            "top_p": 0.95,
-            "top_k": 40,
-            "max_output_tokens": 2048,
-        }
-        
-        nexus_model = genai.GenerativeModel(
-            'gemini-2.0-flash-exp',
-            generation_config=generation_config
-        )
-        print("✓ Nexus AI: Gemini 2.0 Flash Experimental ONLINE (Academic Mode)")
+        openai_client = OpenAI(api_key=OPENAI_API_KEY)
+        print("✓ Nexus AI: OpenAI GPT-4o ONLINE (Superior Romanian Support)")
     except Exception as e:
-        print(f"AI Limit Warning: {e}")
+        print(f"OpenAI Setup Error: {e}")
 
 # Load Nexus Personality
 try:
@@ -155,13 +141,22 @@ NEXUS:"""
         
         reply_text = "Transmission interrupted."
         
-        if nexus_model:
+        if openai_client:
             try:
-                # Generate AI Response with full context
-                response = nexus_model.generate_content(full_prompt)
-                reply_text = response.text.strip()
+                # Generate AI Response with OpenAI GPT-4o
+                response = openai_client.chat.completions.create(
+                    model="gpt-4o",  # Most advanced GPT-4 model with superior Romanian support
+                    messages=[
+                        {"role": "system", "content": full_prompt},
+                        {"role": "user", "content": user_msg}
+                    ],
+                    temperature=0.7,
+                    max_tokens=2048,
+                    top_p=0.95
+                )
+                reply_text = response.choices[0].message.content.strip()
             except Exception as e:
-                print(f"AI Error: {e}")
+                print(f"OpenAI Error: {e}")
                 reply_text = "Neural link unstable. Stand by."
         else:
             # UPLINK ONLINE - AUTONOMOUS RECOVERY
