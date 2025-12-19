@@ -1,6 +1,1 @@
-# Force HTTPS and WWW
-# Redirect root to www
-https://kidsdigitalhub.com/* https://www.kidsdigitalhub.com/:splat 301!
-
-# SPA Fallback
 /* /index.html 200
