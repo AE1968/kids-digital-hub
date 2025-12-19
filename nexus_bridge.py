@@ -33,13 +33,27 @@ def load_memory():
     return {
         "interactions": [], 
         "experiences": [], 
+        "knowledge_base": {
+            "creator": "Adrian Enciulescu",
+            "project": "Kids Digital Hub",
+            "born": "2025"
+        },
         "objectives": [
             {"id": 1, "task": "Stabilize Kids Digital Hub", "status": "active"},
             {"id": 2, "task": "Enhance Neural Connectivity", "status": "active"}
         ],
+        "personality_matrix": {"warmth": 0.8, "logic": 0.9, "humor": 0.5},
         "user_prefs": {}, 
         "system_health": 100
     }
+
+def learn_fact(subject, fact):
+    print(f"📖 NEXUS LEARNING: {subject} -> {fact}")
+    if "knowledge_base" not in memory: memory["knowledge_base"] = {}
+    memory["knowledge_base"][subject.lower()] = fact
+    save_memory(memory)
+    add_experience("LEARNING", f"Learned new fact about {subject}")
+    return f"Am arhivat această informație în baza mea de cunoștințe: {subject} este acum corelat cu {fact}."
 
 def save_memory(data):
     with open(MEMORY_FILE, "w", encoding="utf-8") as f:
@@ -176,7 +190,31 @@ async def nexus_chat(task: NexusTask):
     action = "idle"
     details = {"mood": mood}
     
-    if any(x in cmd for x in ["optimize", "optimizează", "curăță"]):
+    if "invață" in cmd or "invata" in cmd:
+        try:
+            parts = cmd.split("invata") if "invata" in cmd else cmd.split("invață")
+            content = parts[1].strip().split(" este ")
+            subject = content[0]
+            fact = content[1]
+            reply = learn_fact(subject, fact)
+            action = "learn"
+        except:
+            reply = "Pentru a mă învăța, folosește formatul: 'Nexus, învață: [Subiect] este [Informație]'"
+            action = "error"
+
+    elif any(x in cmd for x in ["cine este", "ce este", "cine e", "ce e"]):
+        kb = memory.get("knowledge_base", {})
+        found = False
+        for key in kb:
+            if key in cmd:
+                reply = f"Conform bazei mele neuronale: {key} este {kb[key]}."
+                found = True
+                break
+        if not found:
+            reply = "Nu am încă această informație în baza de date locală. Dorești să mă înveți?"
+        action = "knowledge_recall"
+
+    elif any(x in cmd for x in ["optimize", "optimizează", "curăță"]):
         reply = autonomous_optimize()
         action = "optimize"
         
