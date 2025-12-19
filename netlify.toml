@@ -3,12 +3,6 @@
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "https://www.kidsdigitalhub.com/*"
-  to = "https://kidsdigitalhub.com/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
