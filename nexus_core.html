@@ -898,6 +898,27 @@
                     };
 
                     // Check for pattern matches
+                    // Check for pattern matches
+                    // Special Developer Response with AE Button
+                    if (lower.includes('developer') || lower.includes('creator') || lower.includes('dezvoltator') || lower.includes('who made you') || lower.includes('cine te-a facut')) {
+                        const aeButtonHTML = `
+                            My creator is Adrian Enciulescu (AE). Here is his contact card:<br><br>
+                            <div style="display: flex; justify-content: center; width: 100%;">
+                                <a href="mailto:contact@kidsdigitalhub.com" class="ae-hero-btn" title="Contact Developer" style="transform: scale(0.8);">
+                                    <div class="ae-pulse"></div>
+                                    <img src="assets/images/logo_ae.png" alt="AE" style="width: 40px; height: 40px; object-fit: contain;">
+                                    <div style="margin-top: 10px; color: var(--neon-cyan); font-family: 'Orbitron'; font-size: 0.6rem; letter-spacing: 2px;">
+                                        CONTACT AE
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                        setTimeout(() => {
+                            addLog(aeButtonHTML, 'nexus');
+                        }, 800);
+                        return;
+                    }
+
                     for (const [category, data] of Object.entries(patterns)) {
                         if (data.triggers.some(trigger => lower.includes(trigger))) {
                             const response = data.responses[Math.floor(Math.random() * data.responses.length)];
