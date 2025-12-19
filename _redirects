@@ -1,0 +1,5 @@
+# Redirect default domain to www
+https://kidsdigitalhub.com/* https://www.kidsdigitalhub.com/:splat 301!
+
+# SPA Fallback for generic paths (if using client-side routing, though this is mostly multi-page)
+# /* /index.html 200
