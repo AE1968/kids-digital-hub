@@ -2,22 +2,21 @@
   publish = "."
   functions = "netlify/functions"
 
-# Regula 1: Orice accesare pe radacina duce la Nexus
+# Redirect root to index
 [[redirects]]
   from = "/"
-  to = "/nexus.html"
+  to = "/index.html"
   status = 200
 
-# Regula 2: Fallback pentru SPA (Single Page App)
-# Orice pagina care nu exista fizic (gen /www.) va fi trimisa la Nexus
-[[redirects]]
-  from = "/*"
-  to = "/nexus.html"
-  status = 200
-
-# Regula 3: Fortam HTTPS
+# Force HTTPS and www
 [[redirects]]
   from = "http://kidsdigitalhub.com/*"
+  to = "https://www.kidsdigitalhub.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://kidsdigitalhub.com/*"
   to = "https://www.kidsdigitalhub.com/:splat"
   status = 301
   force = true
