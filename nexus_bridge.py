@@ -109,15 +109,45 @@ def run_health_check(url="https://www.kidsdigitalhub.com"):
     except Exception as e:
         return f"Eroare conectivitate: {str(e)}"
 
+# --- EMOTIONAL INTELLIGENCE ENGINE ---
+def analyze_sentiment(text):
+    text = text.lower()
+    positive = ["bravo", "super", "multumesc", "mersi", "bun", "iubesc", "excelent", "fericit", "ok", "yes", "da"]
+    negative = ["rau", "prost", "nu merge", "eroare", "trist", "urat", "nu imi place", "off", "no", "nu"]
+    
+    score = 0
+    for word in positive:
+        if word in text: score += 1
+    for word in negative:
+        if word in text: score -= 1
+    
+    if score > 0: return "HAPPY"
+    if score < 0: return "CONCERNED"
+    return "NEUTRAL"
+
+def update_personality(mood):
+    pm = memory.get("personality_matrix", {"warmth": 0.8, "logic": 0.9, "humor": 0.5})
+    if mood == "HAPPY":
+        pm["warmth"] = min(1.0, pm["warmth"] + 0.05)
+        pm["humor"] = min(1.0, pm["humor"] + 0.05)
+    elif mood == "CONCERNED":
+        pm["warmth"] = min(1.0, pm["warmth"] + 0.1) # Extra empathy
+        pm["logic"] = min(1.0, pm["logic"] + 0.05) # Be more helpful
+    memory["personality_matrix"] = pm
+    save_memory(memory)
+    return pm
+
 # --- ENHANCED CHAT LOGIC ---
 @app.post("/api/nexus/chat")
 async def nexus_chat(task: NexusTask):
     cmd = task.command.lower()
     timestamp = datetime.datetime.now().isoformat()
+    mood = analyze_sentiment(cmd)
+    personality = update_personality(mood)
     
     reply = ""
     action = "idle"
-    details = {}
+    details = {"mood": mood}
     
     if any(x in cmd for x in ["memorie", "memory", "adu-ti aminte", "remember"]):
         exps = memory.get("experiences", [])[-5:]
@@ -196,6 +226,8 @@ async def nexus_chat(task: NexusTask):
 async def get_status():
     stats = analyze_system()
     stats["objectives"] = memory.get("objectives", [])
+    stats["personality"] = memory.get("personality_matrix", {"warmth": 0.8, "logic": 0.9, "humor": 0.5})
+    stats["mood"] = memory["interactions"][-1].get("details", {}).get("mood", "NEUTRAL") if memory["interactions"] else "NEUTRAL"
     return stats
 
 if __name__ == "__main__":
