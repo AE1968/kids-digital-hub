@@ -137,6 +137,33 @@ def update_personality(mood):
     save_memory(memory)
     return pm
 
+# --- NEURAL CREATIVITY & AUTONOMOUS EXECUTION ---
+def autonomous_optimize(target_file="index.html"):
+    print(f"🧠 NEXUS AUTONOMOUS OPTIMIZATION: {target_file}")
+    path = Path(target_file)
+    if not path.exists():
+        return f"Eroare: Fișierul {target_file} nu a fost găsit."
+    
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read()
+        
+        # Simulated Neural Analysis
+        optimization_made = False
+        if "description" not in content.lower():
+            # Add SEO Metadata autonomously
+            content = content.replace("<head>", "<head>\n    <meta name='description' content='Kids Digital Hub - World of Digital Adventures and Creativity'>")
+            optimization_made = True
+            add_experience("SEO_OPTIMIZATION", f"Added meta description to {target_file}")
+            
+        if optimization_made:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(content)
+            return f"Optimizare autonomă finalizată pentru {target_file}. S-au adăugat metadate SEO."
+        return f"Analiza completă pentru {target_file}. Codul este deja optimizat conform standardelor mele."
+    except Exception as e:
+        return f"Eroare în timpul optimizării: {str(e)}"
+
 # --- ENHANCED CHAT LOGIC ---
 @app.post("/api/nexus/chat")
 async def nexus_chat(task: NexusTask):
@@ -149,7 +176,16 @@ async def nexus_chat(task: NexusTask):
     action = "idle"
     details = {"mood": mood}
     
-    if any(x in cmd for x in ["memorie", "memory", "adu-ti aminte", "remember"]):
+    if any(x in cmd for x in ["optimize", "optimizează", "curăță"]):
+        reply = autonomous_optimize()
+        action = "optimize"
+        
+    elif any(x in cmd for x in ["creează", "create", "scrie fișier"]):
+        # Logic to create new files autonomously
+        reply = "Inițiez procesul de creație neuronală. Ce tip de modul dorești să generez?"
+        action = "create_file"
+
+    elif any(x in cmd for x in ["memorie", "memory", "adu-ti aminte", "remember"]):
         exps = memory.get("experiences", [])[-5:]
         if not exps:
             reply = "Memoria mea episodică este momentan goală. Începem să construim experiențe noi acum."
@@ -182,7 +218,7 @@ async def nexus_chat(task: NexusTask):
     
     elif any(x in cmd for x in ["repara", "repair", "fix"]):
         reply = "Execut protocoalele de auto-reparare..."
-        reply += "\n1. Resetare headere Netlify... OK\n2. Verificare reguli Cloudflare... DISPONIBIL"
+        reply += "\n" + auto_repair(cmd)
         add_experience("SYSTEM_REPAIR", "Auto-repair protocols executed")
         action = "repair"
         
@@ -209,7 +245,8 @@ async def nexus_chat(task: NexusTask):
         "time": timestamp, 
         "user": task.command, 
         "nexus": reply,
-        "action": action
+        "action": action,
+        "details": details
     })
     save_memory(memory)
     
@@ -220,6 +257,7 @@ async def nexus_chat(task: NexusTask):
         "stats": analyze_system(),
         "objectives": memory.get("objectives", [])
     }
+
 
 
 @app.get("/api/nexus/status")
