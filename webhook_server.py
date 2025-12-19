@@ -19,13 +19,27 @@ from nexus_tasks import get_current_context, get_all_lists, save_task_list, mark
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 CORS(app) # Enable CORS for all routes
 
-# Setup Gemini AI
+# Setup Gemini AI - MOST ADVANCED MODEL
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 nexus_model = None
 if GOOGLE_API_KEY:
     try:
         genai.configure(api_key=GOOGLE_API_KEY)
-        nexus_model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        # Use Gemini 2.0 Flash Experimental - Most Advanced Conversational Model
+        # Configured for academic language and professional male persona
+        generation_config = {
+            "temperature": 0.7,  # Balanced creativity and precision
+            "top_p": 0.95,
+            "top_k": 40,
+            "max_output_tokens": 2048,
+        }
+        
+        nexus_model = genai.GenerativeModel(
+            'gemini-2.0-flash-exp',
+            generation_config=generation_config
+        )
+        print("✓ Nexus AI: Gemini 2.0 Flash Experimental ONLINE (Academic Mode)")
     except Exception as e:
         print(f"AI Limit Warning: {e}")
 
