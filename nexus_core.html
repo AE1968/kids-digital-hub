@@ -7,6 +7,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap"
         rel="stylesheet">
+    <!-- Face Recognition Library -->
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     <style>
         :root {
             --neon-cyan: #00f3ff;
@@ -292,10 +294,25 @@
     <button class="btn-exit" onclick="location.href='index.html'" data-i18n="btn_back">
         < BACK </button>
             <a href="nexus_story.html" id="myStoryBtn"
-                style="position: absolute; top: 20px; right: 20px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; color: white; padding: 8px 15px; cursor: pointer; text-decoration: none; border-radius: 5px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem;"
+                style="position: absolute; top: 20px; right: 100px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; color: white; padding: 8px 15px; cursor: pointer; text-decoration: none; border-radius: 5px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem;"
                 data-i18n="btn_my_story">
                 📖 MY STORY
             </a>
+
+            <!-- AE LOGO BUTTON - CONTACT -->
+            <button id="aeLogo" onclick="openContactModal()"
+                style="position: absolute; top: 20px; right: 20px; background: transparent; border: 2px solid var(--neon-cyan); padding: 5px; cursor: pointer; border-radius: 50%; width: 50px; height: 50px; transition: all 0.3s; display: flex; align-items: center; justify-content: center;"
+                title="Contact Adrian Enciulescu">
+                <img src="assets/images/logo_ae.png" alt="AE Logo"
+                    style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
+            </button>
+            <style>
+                #aeLogo:hover {
+                    transform: scale(1.1) rotate(5deg);
+                    box-shadow: 0 0 20px var(--neon-cyan);
+                    border-color: var(--neon-purple);
+                }
+            </style>
 
             <div class="hud-top">
                 <h1 class="nexus-title" data-i18n="nexus_core_title">NEXUS CORE</h1>
@@ -303,11 +320,21 @@
             </div>
 
             <div class="visor-container">
+                <!-- HIDDEN CAMERA FEED FOR FACE RECOGNITION -->
+                <video id="cameraFeed" width="320" height="240" autoplay muted style="display: none;"></video>
+                <canvas id="faceCanvas" style="display: none;"></canvas>
+
                 <!-- NEXUS AVATAR IMAGE -->
                 <img src="assets/nexus_avatar.png" alt="Nexus AI" class="robot-head-image" />
 
                 <div style="margin-top: 30px; font-family: 'Courier New'; color: var(--neon-cyan); opacity: 0.8;">
                     >_ PROCESSING NEURAL STREAMS... <span id="stream-cursor">▋</span>
+                </div>
+
+                <!-- PROTOCOL OMEGA STATUS -->
+                <div id="omegaStatus"
+                    style="margin-top: 15px; font-family: 'Orbitron'; color: var(--neon-purple); font-size: 0.9rem; display: none;">
+                    🔒 PROTOCOL OMEGA: <span id="omegaState">STANDBY</span>
                 </div>
             </div>
 
@@ -367,6 +394,129 @@
                         float 6s ease-in-out infinite,
                         eyeGlow 1.2s ease-in-out infinite;
                 }
+
+                /* Camera Active - Special Eye Glow */
+                .robot-head-image.camera-active {
+                    animation:
+                        breathe 4.5s ease-in-out infinite,
+                        float 6s ease-in-out infinite,
+                        cameraGlow 0.8s ease-in-out infinite;
+                }
+
+                @keyframes cameraGlow {
+
+                    0%,
+                    100% {
+                        filter: drop-shadow(0 0 30px rgba(0, 255, 65, 0.9)) brightness(1.1);
+                    }
+
+                    50% {
+                        filter: drop-shadow(0 0 50px rgba(0, 255, 65, 1)) brightness(1.3);
+                    }
+                }
+
+                /* Facial Gestures - Based on Conversation Context */
+
+                /* Happy/Friendly Gesture */
+                .robot-head-image.gesture-happy {
+                    animation:
+                        breathe 4.5s ease-in-out infinite,
+                        float 6s ease-in-out infinite,
+                        happyGlow 2s ease-in-out infinite;
+                }
+
+                @keyframes happyGlow {
+
+                    0%,
+                    100% {
+                        filter: drop-shadow(0 0 25px rgba(255, 200, 0, 0.8)) brightness(1.05);
+                        transform: scale(1) rotate(0deg);
+                    }
+
+                    50% {
+                        filter: drop-shadow(0 0 40px rgba(255, 200, 0, 1)) brightness(1.15);
+                        transform: scale(1.02) rotate(2deg);
+                    }
+                }
+
+                /* Thinking/Processing Gesture */
+                .robot-head-image.gesture-thinking {
+                    animation:
+                        breathe 4.5s ease-in-out infinite,
+                        thinkingTilt 3s ease-in-out infinite;
+                }
+
+                @keyframes thinkingTilt {
+
+                    0%,
+                    100% {
+                        transform: translateY(0px) rotate(-3deg);
+                        filter: drop-shadow(0 0 20px rgba(138, 43, 226, 0.7)) brightness(1);
+                    }
+
+                    50% {
+                        transform: translateY(-8px) rotate(3deg);
+                        filter: drop-shadow(0 0 35px rgba(138, 43, 226, 1)) brightness(1.1);
+                    }
+                }
+
+                /* Alert/Warning Gesture */
+                .robot-head-image.gesture-alert {
+                    animation:
+                        breathe 4.5s ease-in-out infinite,
+                        alertPulse 1s ease-in-out infinite;
+                }
+
+                @keyframes alertPulse {
+
+                    0%,
+                    100% {
+                        filter: drop-shadow(0 0 25px rgba(255, 69, 0, 0.8)) brightness(1);
+                        transform: scale(1);
+                    }
+
+                    50% {
+                        filter: drop-shadow(0 0 45px rgba(255, 69, 0, 1)) brightness(1.2);
+                        transform: scale(1.03);
+                    }
+                }
+
+                /* Success/Celebration Gesture */
+                .robot-head-image.gesture-success {
+                    animation:
+                        breathe 4.5s ease-in-out infinite,
+                        successBounce 1.5s ease-in-out 3;
+                }
+
+                @keyframes successBounce {
+
+                    0%,
+                    100% {
+                        transform: translateY(0px) scale(1);
+                        filter: drop-shadow(0 0 30px rgba(0, 255, 127, 0.9)) brightness(1.1);
+                    }
+
+                    25% {
+                        transform: translateY(-15px) scale(1.05);
+                        filter: drop-shadow(0 0 50px rgba(0, 255, 127, 1)) brightness(1.3);
+                    }
+
+                    50% {
+                        transform: translateY(0px) scale(1);
+                    }
+
+                    75% {
+                        transform: translateY(-8px) scale(1.02);
+                    }
+                }
+
+                /* Neutral/Professional Gesture */
+                .robot-head-image.gesture-neutral {
+                    animation:
+                        breathe 4.5s ease-in-out infinite,
+                        float 6s ease-in-out infinite;
+                    filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.6)) brightness(1);
+                }
             </style>
 
             <!-- COMMUNICATION TAB -->
@@ -420,6 +570,121 @@
                 </style>
             </div>
 
+            <!-- PROTOCOL OMEGA PASSWORD MODAL -->
+            <div id="omegaModal"
+                style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center;">
+                <div
+                    style="background: var(--hud-bg); border: 2px solid var(--neon-purple); padding: 40px; border-radius: 10px; text-align: center; max-width: 400px; box-shadow: 0 0 50px var(--neon-purple);">
+                    <h2 style="font-family: 'Orbitron'; color: var(--neon-cyan); margin-bottom: 20px;">🔐 PROTOCOL OMEGA
+                    </h2>
+                    <p style="color: var(--matrix-green); margin-bottom: 20px; font-family: 'Rajdhani';">
+                        Welcome, <span id="recognizedName">Adrian</span>.<br>
+                        Face recognition: <span style="color: var(--neon-cyan);">✓ CONFIRMED</span>
+                    </p>
+                    <p style="color: #ddd; margin-bottom: 30px;">Please enter your system password:</p>
+                    <input type="password" id="omegaPassword" placeholder="Enter password..."
+                        style="width: 100%; padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--neon-cyan); color: white; font-family: 'Rajdhani'; font-size: 1.2rem; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="verifyOmegaPassword()"
+                            style="flex: 1; padding: 15px; background: var(--neon-purple); color: white; border: none; cursor: pointer; font-family: 'Orbitron'; font-size: 1rem; border-radius: 5px;">
+                            AUTHENTICATE
+                        </button>
+                        <button onclick="cancelOmega()"
+                            style="flex: 1; padding: 15px; background: transparent; color: red; border: 1px solid red; cursor: pointer; font-family: 'Orbitron'; font-size: 1rem; border-radius: 5px;">
+                            CANCEL
+                        </button>
+                    </div>
+                    <p id="omegaError" style="color: red; margin-top: 15px; display: none; font-family: 'Rajdhani';">
+                    </p>
+                </div>
+            </div>
+
+            <!-- CONTACT MODAL -->
+            <div id="contactModal"
+                style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; overflow-y: auto;">
+                <div
+                    style="background: var(--hud-bg); border: 2px solid var(--neon-cyan); padding: 40px; border-radius: 10px; max-width: 600px; width: 90%; box-shadow: 0 0 50px var(--neon-cyan); margin: 20px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                        <h2 style="font-family: 'Orbitron'; color: var(--neon-cyan); margin: 0;">📧 CONTACT ADRIAN</h2>
+                        <button onclick="closeContactModal()"
+                            style="background: transparent; border: 1px solid red; color: red; padding: 5px 15px; cursor: pointer; font-family: 'Orbitron'; border-radius: 5px;">✕</button>
+                    </div>
+
+                    <p style="color: #ddd; margin-bottom: 30px; font-family: 'Rajdhani'; font-size: 1.1rem;">
+                        Get in touch with the creator of Nexus AI and Kids Digital Hub.
+                    </p>
+
+                    <!-- CONTACT FORM - Procedură definibilă ulterior -->
+                    <form id="contactForm" onsubmit="handleContactSubmit(event)"
+                        style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <label
+                                style="color: var(--neon-cyan); font-family: 'Rajdhani'; font-size: 1rem; display: block; margin-bottom: 5px;">Your
+                                Name *</label>
+                            <input type="text" id="contactName" required
+                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--neon-cyan); color: white; font-family: 'Rajdhani'; font-size: 1rem; border-radius: 5px;">
+                        </div>
+
+                        <div>
+                            <label
+                                style="color: var(--neon-cyan); font-family: 'Rajdhani'; font-size: 1rem; display: block; margin-bottom: 5px;">Your
+                                Email *</label>
+                            <input type="email" id="contactEmail" required
+                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--neon-cyan); color: white; font-family: 'Rajdhani'; font-size: 1rem; border-radius: 5px;">
+                        </div>
+
+                        <div>
+                            <label
+                                style="color: var(--neon-cyan); font-family: 'Rajdhani'; font-size: 1rem; display: block; margin-bottom: 5px;">Subject
+                                *</label>
+                            <input type="text" id="contactSubject" required
+                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--neon-cyan); color: white; font-family: 'Rajdhani'; font-size: 1rem; border-radius: 5px;">
+                        </div>
+
+                        <div>
+                            <label
+                                style="color: var(--neon-cyan); font-family: 'Rajdhani'; font-size: 1rem; display: block; margin-bottom: 5px;">Message
+                                *</label>
+                            <textarea id="contactMessage" required rows="6"
+                                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--neon-cyan); color: white; font-family: 'Rajdhani'; font-size: 1rem; border-radius: 5px; resize: vertical;"></textarea>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button type="submit"
+                                style="flex: 1; padding: 15px; background: var(--neon-purple); color: white; border: none; cursor: pointer; font-family: 'Orbitron'; font-size: 1rem; border-radius: 5px;">
+                                SEND MESSAGE
+                            </button>
+                            <button type="button" onclick="closeContactModal()"
+                                style="flex: 1; padding: 15px; background: transparent; color: #ddd; border: 1px solid #ddd; cursor: pointer; font-family: 'Orbitron'; font-size: 1rem; border-radius: 5px;">
+                                CANCEL
+                            </button>
+                        </div>
+
+                        <p id="contactStatus"
+                            style="color: var(--matrix-green); margin-top: 10px; display: none; font-family: 'Rajdhani'; text-align: center;">
+                        </p>
+                    </form>
+
+                    <!-- CONTACT INFO -->
+                    <div style="margin-top: 30px; padding-top: 30px; border-top: 1px solid rgba(0, 243, 255, 0.3);">
+                        <h3
+                            style="font-family: 'Orbitron'; color: var(--neon-purple); font-size: 1rem; margin-bottom: 15px;">
+                            DIRECT CONTACT</h3>
+                        <div style="color: #ddd; font-family: 'Rajdhani'; font-size: 1rem; line-height: 1.8;">
+                            <p>📧 Email: <a href="mailto:ae1968@kidsdigitalhub.com"
+                                    style="color: var(--neon-cyan); text-decoration: none;">ae1968@kidsdigitalhub.com</a>
+                            </p>
+                            <p>🌐 Website: <a href="https://www.kidsdigitalhub.com" target="_blank"
+                                    style="color: var(--neon-cyan); text-decoration: none;">www.kidsdigitalhub.com</a>
+                            </p>
+                            <p>💼 GitHub: <a href="https://github.com/AE1968/kids-digital-hub" target="_blank"
+                                    style="color: var(--neon-cyan); text-decoration: none;">github.com/AE1968</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <script src="js/translations.js"></script>
             <script>
                 // Load saved language
@@ -449,6 +714,33 @@
                     // Add User Message
                     addLog(msg, 'user');
                     input.value = '';
+
+                    // Check if we're waiting for a user name (new user registration)
+                    if (sessionStorage.getItem('awaiting_user_name') === 'true') {
+                        const userName = msg;
+                        const faceDescriptor = JSON.parse(sessionStorage.getItem('temp_face_descriptor'));
+
+                        // Save new user to public users database
+                        const publicUsers = JSON.parse(localStorage.getItem('nexus_public_users') || '{}');
+                        publicUsers[userName] = {
+                            faceDescriptor: faceDescriptor,
+                            firstSeen: new Date().toISOString(),
+                            lastSeen: new Date().toISOString()
+                        };
+                        localStorage.setItem('nexus_public_users', JSON.stringify(publicUsers));
+
+                        // Clear flags
+                        sessionStorage.removeItem('awaiting_user_name');
+                        sessionStorage.removeItem('temp_face_descriptor');
+                        sessionStorage.setItem('nexus_user_name', userName);
+
+                        // Greet the new user
+                        setTimeout(() => {
+                            addLog(`Nice to meet you, ${userName}! I've saved your profile. Next time I see you, I'll recognize you immediately.`, 'nexus');
+                            speakText(`Nice to meet you, ${userName}! I've saved your profile. How can I help you today?`);
+                        }, 500);
+                        return;
+                    }
 
                     // Show thinking indicator
                     addLog('Processing neural request...', 'system');
@@ -606,6 +898,60 @@
                     window.speechSynthesis.speak(utterance);
                 }
 
+                // ========================================
+                // FACIAL GESTURE SYSTEM
+                // ========================================
+
+                function analyzeGesture(text, sender) {
+                    const lowerText = text.toLowerCase();
+
+                    // Only apply gestures for Nexus messages
+                    if (sender !== 'nexus') return 'neutral';
+
+                    // Success/Celebration keywords
+                    if (lowerText.match(/\b(success|authenticated|complete|perfect|excellent|great|wonderful|congratulations|welcome back|nice to meet)\b/)) {
+                        return 'success';
+                    }
+
+                    // Happy/Friendly keywords
+                    if (lowerText.match(/\b(hello|hi|greetings|glad|happy|pleasure|help you|how can i)\b/)) {
+                        return 'happy';
+                    }
+
+                    // Thinking/Processing keywords
+                    if (lowerText.match(/\b(processing|analyzing|calculating|thinking|loading|scanning|initializing)\b/)) {
+                        return 'thinking';
+                    }
+
+                    // Alert/Warning keywords
+                    if (lowerText.match(/\b(error|failed|denied|warning|alert|attention|critical|problem)\b/)) {
+                        return 'alert';
+                    }
+
+                    // Default neutral
+                    return 'neutral';
+                }
+
+                function applyGesture(gesture) {
+                    const avatar = document.querySelector('.robot-head-image');
+                    if (!avatar) return;
+
+                    // Remove all gesture classes
+                    avatar.classList.remove('gesture-happy', 'gesture-thinking', 'gesture-alert', 'gesture-success', 'gesture-neutral');
+
+                    // Add new gesture class
+                    avatar.classList.add(`gesture-${gesture}`);
+
+                    // Auto-remove gesture after duration (except neutral)
+                    if (gesture !== 'neutral') {
+                        const duration = gesture === 'success' ? 4500 : 3000;
+                        setTimeout(() => {
+                            avatar.classList.remove(`gesture-${gesture}`);
+                            avatar.classList.add('gesture-neutral');
+                        }, duration);
+                    }
+                }
+
                 // Initialize text processing
                 function addLog(text, sender) {
                     const log = document.getElementById('chatLog');
@@ -625,6 +971,10 @@
                     // SPEAK ONLY NEXUS MESSAGES
                     if (sender === 'nexus') {
                         speakText(text);
+
+                        // Apply facial gesture based on message context
+                        const gesture = analyzeGesture(text, sender);
+                        applyGesture(gesture);
                     }
                 }
 
@@ -690,6 +1040,519 @@
                         addLog('Deactivating Visual Mode...', 'system');
                     }
                 }
+
+                // ========================================
+                // PROTOCOL OMEGA - FACIAL RECOGNITION SYSTEM
+                // ========================================
+
+                let faceApiLoaded = false;
+                let omegaActive = false;
+                let omegaAuthenticated = false;
+                const OMEGA_PASSWORD = "196816"; // Default password
+                const FACE_DESCRIPTOR_KEY = "nexus_adrian_face_descriptor";
+
+                // Initialize face-api.js models
+                async function loadFaceApiModels() {
+                    if (faceApiLoaded) return true;
+
+                    try {
+                        addLog('Loading facial recognition models...', 'system');
+                        const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/';
+
+                        await Promise.all([
+                            faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+                            faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+                            faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+                        ]);
+
+                        faceApiLoaded = true;
+                        addLog('Facial recognition system online.', 'nexus');
+                        return true;
+                    } catch (error) {
+                        console.error('Face API loading error:', error);
+                        addLog('Warning: Facial recognition unavailable. Voice-only mode active.', 'nexus');
+                        return false;
+                    }
+                }
+
+                // Start camera for face recognition
+                async function startCamera() {
+                    try {
+                        const video = document.getElementById('cameraFeed');
+                        const stream = await navigator.mediaDevices.getUserMedia({
+                            video: { width: 320, height: 240 }
+                        });
+                        video.srcObject = stream;
+
+                        // Activate Nexus eyes glow when camera is on
+                        const avatar = document.querySelector('.robot-head-image');
+                        if (avatar) {
+                            avatar.classList.add('camera-active');
+                        }
+
+                        return video;
+                    } catch (error) {
+                        console.error('Camera access error:', error);
+                        addLog('Camera access denied. Protocol Omega requires camera permission.', 'nexus');
+                        return null;
+                    }
+                }
+
+                // Stop camera
+                function stopCamera() {
+                    const video = document.getElementById('cameraFeed');
+                    if (video.srcObject) {
+                        video.srcObject.getTracks().forEach(track => track.stop());
+                        video.srcObject = null;
+                    }
+
+                    // Deactivate Nexus eyes glow when camera is off
+                    const avatar = document.querySelector('.robot-head-image');
+                    if (avatar) {
+                        avatar.classList.remove('camera-active');
+                    }
+                }
+
+                // Detect and recognize face
+                async function detectAndRecognizeFace(video) {
+                    try {
+                        const detection = await faceapi
+                            .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
+                            .withFaceLandmarks()
+                            .withFaceDescriptor();
+
+                        if (!detection) {
+                            return { detected: false, message: 'No face detected. Please position yourself in front of the camera.' };
+                        }
+
+                        // Check if we have Adrian's face stored (VIP)
+                        const adrianDescriptor = localStorage.getItem(FACE_DESCRIPTOR_KEY);
+
+                        if (adrianDescriptor) {
+                            // Compare with Adrian's face
+                            const adrianArray = JSON.parse(adrianDescriptor);
+                            const distance = faceapi.euclideanDistance(detection.descriptor, adrianArray);
+
+                            // Threshold: lower = more strict (0.6 is standard)
+                            const isAdrian = distance < 0.6;
+
+                            if (isAdrian) {
+                                return {
+                                    detected: true,
+                                    recognized: true,
+                                    isVIP: true,
+                                    name: 'Adrian',
+                                    confidence: Math.round((1 - distance) * 100),
+                                    message: `Face recognized with ${Math.round((1 - distance) * 100)}% confidence.`
+                                };
+                            }
+                        }
+
+                        // Not Adrian - check if this is a known public user
+                        const publicUsers = JSON.parse(localStorage.getItem('nexus_public_users') || '{}');
+
+                        for (const [userName, userData] of Object.entries(publicUsers)) {
+                            const userDescriptor = userData.faceDescriptor;
+                            const distance = faceapi.euclideanDistance(detection.descriptor, userDescriptor);
+
+                            if (distance < 0.6) {
+                                return {
+                                    detected: true,
+                                    recognized: true,
+                                    isVIP: false,
+                                    name: userName,
+                                    confidence: Math.round((1 - distance) * 100),
+                                    message: `Welcome back, ${userName}!`,
+                                    returning: true
+                                };
+                            }
+                        }
+
+                        // Unknown user - public mode
+                        return {
+                            detected: true,
+                            recognized: false,
+                            isVIP: false,
+                            faceDescriptor: Array.from(detection.descriptor),
+                            message: 'New face detected. Welcome!'
+                        };
+
+                    } catch (error) {
+                        console.error('Face detection error:', error);
+                        return { detected: false, message: 'Face detection error. Please try again.' };
+                    }
+                }
+
+                // Protocol Omega activation sequence
+                async function activateProtocolOmega() {
+                    if (omegaActive) {
+                        addLog('Protocol Omega already active.', 'nexus');
+                        return;
+                    }
+
+                    omegaActive = true;
+                    document.getElementById('omegaStatus').style.display = 'block';
+                    document.getElementById('omegaState').textContent = 'INITIALIZING...';
+
+                    addLog('🔒 Protocol Omega activated. Initializing facial recognition...', 'nexus');
+                    speakText('Protocol Omega activated. Initializing facial recognition.');
+
+                    // Load face-api models
+                    const modelsLoaded = await loadFaceApiModels();
+                    if (!modelsLoaded) {
+                        omegaActive = false;
+                        document.getElementById('omegaState').textContent = 'FAILED';
+                        return;
+                    }
+
+                    // Start camera
+                    document.getElementById('omegaState').textContent = 'CAMERA ACTIVE';
+                    addLog('Starting camera feed...', 'system');
+                    const video = await startCamera();
+
+                    if (!video) {
+                        omegaActive = false;
+                        document.getElementById('omegaState').textContent = 'CAMERA ERROR';
+                        return;
+                    }
+
+                    // Wait for video to be ready
+                    await new Promise(resolve => {
+                        video.onloadedmetadata = () => {
+                            video.play();
+                            resolve();
+                        };
+                    });
+
+                    // Wait a moment for camera to stabilize
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+
+                    // Scan face
+                    document.getElementById('omegaState').textContent = 'SCANNING...';
+                    addLog('Scanning facial features...', 'system');
+                    speakText('Please look at the camera. Scanning your face now.');
+
+                    const result = await detectAndRecognizeFace(video);
+
+                    // Stop camera
+                    stopCamera();
+
+                    if (!result.detected) {
+                        addLog(result.message, 'nexus');
+                        speakText(result.message);
+                        omegaActive = false;
+                        document.getElementById('omegaState').textContent = 'FAILED';
+                        setTimeout(() => {
+                            document.getElementById('omegaStatus').style.display = 'none';
+                        }, 3000);
+                        return;
+                    }
+
+                    // ===== VIP MODE: Adrian detected =====
+                    if (result.isVIP) {
+                        document.getElementById('omegaState').textContent = 'VIP RECOGNIZED';
+                        addLog(`Welcome back, Commander ${result.name}. ${result.message}`, 'nexus');
+
+                        const greeting = `Welcome back, Adrian. I recognize you. Please enter your password to proceed.`;
+                        speakText(greeting);
+
+                        // Show password modal for VIP
+                        setTimeout(() => {
+                            document.getElementById('recognizedName').textContent = result.name;
+                            document.getElementById('omegaModal').style.display = 'flex';
+                            document.getElementById('omegaPassword').focus();
+                        }, 1500);
+                        return;
+                    }
+
+                    // ===== PUBLIC MODE: Known user returning =====
+                    if (result.recognized && !result.isVIP) {
+                        document.getElementById('omegaState').textContent = 'USER RECOGNIZED';
+                        omegaActive = false;
+
+                        addLog(`${result.message}`, 'nexus');
+                        speakText(`Hello again, ${result.name}! It's great to see you. How can I help you today?`);
+
+                        // Set public mode conversation style
+                        sessionStorage.setItem('nexus_mode', 'public');
+                        sessionStorage.setItem('nexus_user_name', result.name);
+
+                        setTimeout(() => {
+                            document.getElementById('omegaStatus').style.display = 'none';
+                        }, 3000);
+                        return;
+                    }
+
+                    // ===== PUBLIC MODE: New unknown user =====
+                    if (!result.recognized) {
+                        document.getElementById('omegaState').textContent = 'NEW USER';
+                        addLog(result.message, 'nexus');
+                        speakText('Hello! I don\'t believe we\'ve met before. What is your name?');
+
+                        // Store face descriptor temporarily
+                        sessionStorage.setItem('temp_face_descriptor', JSON.stringify(result.faceDescriptor));
+
+                        // Ask for name in chat
+                        setTimeout(() => {
+                            addLog('Please type your name so I can remember you next time.', 'nexus');
+
+                            // Set flag to capture next message as name
+                            sessionStorage.setItem('awaiting_user_name', 'true');
+                            sessionStorage.setItem('nexus_mode', 'public');
+
+                            omegaActive = false;
+                            setTimeout(() => {
+                                document.getElementById('omegaStatus').style.display = 'none';
+                            }, 2000);
+                        }, 2000);
+                    }
+                }
+
+                // Verify password
+                function verifyOmegaPassword() {
+                    const input = document.getElementById('omegaPassword');
+                    const password = input.value.trim();
+                    const errorEl = document.getElementById('omegaError');
+
+                    if (password === OMEGA_PASSWORD) {
+                        // Success!
+                        omegaAuthenticated = true;
+                        document.getElementById('omegaModal').style.display = 'none';
+                        document.getElementById('omegaState').textContent = 'AUTHENTICATED ✓';
+
+                        addLog('🎯 Protocol Omega: Full access granted. Welcome, Commander Adrian.', 'nexus');
+                        speakText('Authentication successful. Protocol Omega fully activated. All systems at your command, Adrian.');
+
+                        // Change UI to VIP mode
+                        document.body.style.background = 'linear-gradient(135deg, #1a0033 0%, #330066 50%, #1a0033 100%)';
+
+                        // Store authentication in session
+                        sessionStorage.setItem('omega_authenticated', 'true');
+
+                        input.value = '';
+                    } else {
+                        // Failed
+                        errorEl.textContent = '❌ Incorrect password. Access denied.';
+                        errorEl.style.display = 'block';
+                        input.value = '';
+                        input.focus();
+
+                        speakText('Incorrect password. Please try again.');
+
+                        setTimeout(() => {
+                            errorEl.style.display = 'none';
+                        }, 3000);
+                    }
+                }
+
+                // Cancel Protocol Omega
+                function cancelOmega() {
+                    document.getElementById('omegaModal').style.display = 'none';
+                    document.getElementById('omegaPassword').value = '';
+                    omegaActive = false;
+                    document.getElementById('omegaState').textContent = 'CANCELLED';
+
+                    addLog('Protocol Omega cancelled.', 'system');
+                    speakText('Protocol Omega cancelled.');
+
+                    setTimeout(() => {
+                        document.getElementById('omegaStatus').style.display = 'none';
+                    }, 2000);
+                }
+
+                // Allow Enter key to submit password
+                document.addEventListener('DOMContentLoaded', () => {
+                    const passwordInput = document.getElementById('omegaPassword');
+                    if (passwordInput) {
+                        passwordInput.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') {
+                                verifyOmegaPassword();
+                            }
+                        });
+                    }
+                });
+
+                // ========================================
+                // VOICE ACTIVATION FOR PROTOCOL OMEGA
+                // ========================================
+
+                // Continuous listening for "Hey Nexus" trigger
+                let continuousRecognition;
+                let detectedLanguage = 'en-US'; // Default language
+
+                // Language detection helper
+                function detectLanguage(text) {
+                    const lowerText = text.toLowerCase();
+
+                    // Romanian indicators
+                    if (lowerText.match(/\b(bună|salut|hei|cum|este|sunt|nexus)\b/)) {
+                        return 'ro-RO';
+                    }
+                    // Spanish indicators
+                    if (lowerText.match(/\b(hola|cómo|está|nexus|buenos|días)\b/)) {
+                        return 'es-ES';
+                    }
+                    // French indicators
+                    if (lowerText.match(/\b(bonjour|salut|comment|nexus|merci)\b/)) {
+                        return 'fr-FR';
+                    }
+                    // German indicators
+                    if (lowerText.match(/\b(hallo|guten|tag|nexus|wie|geht)\b/)) {
+                        return 'de-DE';
+                    }
+
+                    // Default to English
+                    return 'en-US';
+                }
+
+                function startContinuousListening() {
+                    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                        console.log('Speech recognition not supported');
+                        return;
+                    }
+
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    continuousRecognition = new SpeechRecognition();
+                    continuousRecognition.continuous = true;
+                    continuousRecognition.interimResults = false;
+                    continuousRecognition.lang = detectedLanguage;
+
+                    continuousRecognition.onresult = function (event) {
+                        const last = event.results.length - 1;
+                        const transcript = event.results[last][0].transcript.toLowerCase().trim();
+
+                        console.log('Heard:', transcript);
+
+                        // Detect language from first interaction
+                        const newLang = detectLanguage(transcript);
+                        if (newLang !== detectedLanguage) {
+                            detectedLanguage = newLang;
+                            sessionStorage.setItem('nexus_language', detectedLanguage);
+                            console.log('Language detected:', detectedLanguage);
+
+                            // Restart recognition with new language
+                            continuousRecognition.lang = detectedLanguage;
+                        }
+
+                        // Check for trigger phrases in multiple languages
+                        const triggers = [
+                            'hey nexus', 'hei nexus', 'hi nexus', 'hello nexus',  // English
+                            'hola nexus', 'oye nexus',  // Spanish
+                            'salut nexus', 'bonjour nexus',  // French
+                            'hallo nexus',  // German
+                            'bună nexus', 'salut nexus'  // Romanian
+                        ];
+
+                        const isTriggered = triggers.some(trigger => transcript.includes(trigger));
+
+                        if (isTriggered) {
+                            console.log('🎯 Protocol Omega trigger detected!');
+                            addLog('Voice trigger detected: "' + transcript + '"', 'system');
+                            activateProtocolOmega();
+                        }
+                    };
+
+                    continuousRecognition.onerror = function (event) {
+                        if (event.error === 'no-speech') {
+                            // Ignore no-speech errors
+                            return;
+                        }
+                        console.error('Speech recognition error:', event.error);
+                    };
+
+                    continuousRecognition.onend = function () {
+                        // Restart if not authenticated yet
+                        if (!omegaAuthenticated) {
+                            setTimeout(() => {
+                                try {
+                                    continuousRecognition.start();
+                                } catch (e) {
+                                    // Ignore if already started
+                                }
+                            }, 1000);
+                        }
+                    };
+
+                    try {
+                        continuousRecognition.start();
+                        console.log('👂 Continuous listening started. Say "Hey Nexus" to activate Protocol Omega.');
+                        addLog('Voice activation ready. Say "Hey Nexus" to activate Protocol Omega.', 'system');
+                    } catch (e) {
+                        console.error('Could not start continuous listening:', e);
+                    }
+                }
+
+                // ========================================
+                // CONTACT MODAL FUNCTIONS
+                // ========================================
+
+                function openContactModal() {
+                    document.getElementById('contactModal').style.display = 'flex';
+
+                    // Apply happy gesture when opening contact
+                    applyGesture('happy');
+
+                    // Nexus greets
+                    addLog('Opening contact form. Feel free to reach out!', 'nexus');
+                    speakText('Opening contact form. Feel free to reach out to Adrian!');
+                }
+
+                function closeContactModal() {
+                    document.getElementById('contactModal').style.display = 'none';
+                    document.getElementById('contactForm').reset();
+                    document.getElementById('contactStatus').style.display = 'none';
+                }
+
+                function handleContactSubmit(event) {
+                    event.preventDefault();
+
+                    const name = document.getElementById('contactName').value;
+                    const email = document.getElementById('contactEmail').value;
+                    const subject = document.getElementById('contactSubject').value;
+                    const message = document.getElementById('contactMessage').value;
+
+                    // Show thinking gesture
+                    applyGesture('thinking');
+                    addLog('Processing your message...', 'system');
+
+                    // TODO: Implement email sending procedure
+                    // This is a placeholder - can be customized later with:
+                    // - EmailJS integration
+                    // - Netlify Forms
+                    // - Custom backend API
+                    // - Direct mailto link
+
+                    // For now, create mailto link and show success
+                    const mailtoLink = `mailto:ae1968@kidsdigitalhub.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${name} (${email})\n\n${message}`)}`;
+
+                    // Open mailto link
+                    window.location.href = mailtoLink;
+
+                    // Show success message
+                    setTimeout(() => {
+                        const statusEl = document.getElementById('contactStatus');
+                        statusEl.textContent = '✓ Your default email client should open. Message prepared!';
+                        statusEl.style.display = 'block';
+
+                        applyGesture('success');
+                        addLog('Message prepared! Your email client should open.', 'nexus');
+                        speakText('Message prepared! Your email client should open now.');
+
+                        // Close modal after 3 seconds
+                        setTimeout(() => {
+                            closeContactModal();
+                        }, 3000);
+                    }, 500);
+                }
+
+                // Start continuous listening on page load
+                window.addEventListener('load', () => {
+                    // Small delay to ensure everything is loaded
+                    setTimeout(() => {
+                        startContinuousListening();
+                    }, 2000);
+                });
+
             </script>
 </body>
 
