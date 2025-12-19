@@ -77,7 +77,7 @@ PROIECT_FINALIZAT.md
 ```
 
 **1.2. Verifică că serverul local funcționează:**
-- Deschide http://localhost:8000
+- Deschide https://web-production-b215.up.railway.app
 - Testează:
   - ✅ Homepage se încarcă
   - ✅ Schimbare limbă funcționează
