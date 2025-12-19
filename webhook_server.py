@@ -145,7 +145,7 @@ NEXUS:"""
             try:
                 # Generate AI Response with OpenAI GPT-4o
                 response = openai_client.chat.completions.create(
-                    model="gpt-4o",  # Most advanced GPT-4 model with superior Romanian support
+                    model="gpt-4o",
                     messages=[
                         {"role": "system", "content": full_prompt},
                         {"role": "user", "content": user_msg}
@@ -159,7 +159,6 @@ NEXUS:"""
                 print(f"OpenAI Error: {e}")
                 reply_text = "Neural link unstable. Stand by."
         else:
-            # UPLINK ONLINE - AUTONOMOUS RECOVERY
             reply_text = "Primary Neural Uplink established. Neural bridge active. Secure connection confirmed. What is our next objective?"
         
         # AUTO-SAVE to memory
