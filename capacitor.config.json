@@ -1,0 +1,6 @@
+{
+    "appId": "com.kidsdigitalhub.nexus",
+    "appName": "Nexus Supreme",
+    "webDir": ".",
+    "bundledWebRuntime": false
+}

@@ -1,0 +1,14 @@
+{
+    "name": "nexus-supreme-desktop",
+    "version": "1.0.0",
+    "description": "NEXUS SUPREME - Desktop Executable",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "electron-builder"
+    },
+    "devDependencies": {
+        "electron": "^28.0.0",
+        "electron-builder": "^24.9.1"
+    }
+}

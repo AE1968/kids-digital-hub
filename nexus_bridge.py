@@ -219,8 +219,28 @@ async def nexus_chat(task: NexusTask):
     action = "idle"
     details = {"mood": mood}
     
+    # 💳 SUBSCRIPTION & AUTH COMMANDS 💳
+    if "select_plan" in cmd:
+        plan = cmd.split(":")[-1].strip()
+        memory["active_subscription"] = plan
+        save_memory(memory)
+        reply = f"Am salvat preferința ta pentru abonamentul {plan.upper()}. Urmează procesarea plății."
+        action = "sub_update"
+
+    elif "link_device" in cmd:
+        device_email = cmd.split(":")[-1].strip()
+        linked = memory.get("linked_devices", [])
+        if len(linked) >= 5: # Default family limit
+            reply = "Limita de dispozitive a fost atinsă. Taxă suplimentară de 1 £ necesară pentru dispozitiv nou."
+        else:
+            linked.append({"email": device_email, "date": timestamp})
+            memory["linked_devices"] = linked
+            save_memory(memory)
+            reply = f"Dispozitivul {device_email} a fost legat cu succes la Ecosistemul Nexus."
+        action = "device_link"
+
     # ⚡ GOD MODE COMMANDS ⚡
-    if "deployment" in cmd or "deploy" in cmd or "publică" in cmd:
+    elif "deployment" in cmd or "deploy" in cmd or "publică" in cmd:
         reply = "Inițiez secvența de publicare automată pe Netlify..."
         deploy_res = deploy_site()
         reply += f"\nREZULTAT DEPLOYMENT: {deploy_res}"
