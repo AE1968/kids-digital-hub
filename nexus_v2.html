@@ -270,10 +270,18 @@
             <h3 style="font-family:'Orbitron'; font-size: 0.8rem; color: var(--matrix-green);">📊 SYSTEM DIAGNOSTICS
             </h3>
             <div class="chat-log" id="diagLog"
-                style="min-height: 100px; height: 100px; font-size: 0.7rem; background: rgba(0,0,0,0.5);">
+                style="min-height: 80px; height: 80px; font-size: 0.7rem; background: rgba(0,0,0,0.5);">
                 <div class="msg system">Waiting for neural scan...</div>
             </div>
-            <button onclick="runDiagnostic()">RUN DIAGNOSTIC</button>
+
+            <h3 style="font-family:'Orbitron'; font-size: 0.8rem; color: var(--neon-purple); margin-top: 10px;">🎯
+                NEURAL OBJECTIVES</h3>
+            <div class="chat-log" id="objLog"
+                style="min-height: 80px; height: 80px; font-size: 0.7rem; background: rgba(0,0,0,0.5);">
+                <div class="msg nexus">Loading goals...</div>
+            </div>
+
+            <button onclick="runDiagnostic()" style="margin-top: 10px;">RUN DIAGNOSTIC</button>
             <button onclick="startVision()">ACTIVATE OPTICS</button>
             <button onclick="toggleOmega()" style="background: var(--alert-red)">PROTOCOL OMEGA</button>
         </div>
@@ -527,6 +535,19 @@
                     document.getElementById('load').textContent = "STABLE";
                     document.getElementById('brainState').textContent = "NEURAL LINK: OPTIMAL";
                     document.getElementById('brainState').style.color = "var(--matrix-green)";
+
+                    // Update Objectives
+                    if (stats.objectives) {
+                        const objLog = document.getElementById('objLog');
+                        objLog.innerHTML = '';
+                        stats.objectives.forEach(obj => {
+                            const d = document.createElement('div');
+                            d.className = 'msg nexus';
+                            d.style.fontSize = '0.65rem';
+                            d.textContent = `[${obj.status.toUpperCase()}] ${obj.task}`;
+                            objLog.appendChild(d);
+                        });
+                    }
                 }
             } catch (e) {
                 document.getElementById('brainState').textContent = "BRIDGE: OFFLINE";

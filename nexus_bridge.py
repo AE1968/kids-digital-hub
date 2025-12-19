@@ -30,13 +30,34 @@ def load_memory():
     if MEMORY_FILE.exists():
         with open(MEMORY_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
-    return {"interactions": [], "user_prefs": {}, "system_health": 100}
+    return {
+        "interactions": [], 
+        "experiences": [], 
+        "objectives": [
+            {"id": 1, "task": "Stabilize Kids Digital Hub", "status": "active"},
+            {"id": 2, "task": "Enhance Neural Connectivity", "status": "active"}
+        ],
+        "user_prefs": {}, 
+        "system_health": 100
+    }
 
 def save_memory(data):
     with open(MEMORY_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
 memory = load_memory()
+
+def add_experience(event_type, description):
+    entry = {
+        "id": len(memory.get("experiences", [])) + 1,
+        "time": datetime.datetime.now().isoformat(),
+        "type": event_type,
+        "content": description
+    }
+    if "experiences" not in memory: memory["experiences"] = []
+    memory["experiences"].append(entry)
+    save_memory(memory)
+    return entry
 
 # --- BRAIN FUNCTIONS ---
 def analyze_system():
@@ -98,27 +119,48 @@ async def nexus_chat(task: NexusTask):
     action = "idle"
     details = {}
     
-    if any(x in cmd for x in ["test", "check", "verifică"]):
+    if any(x in cmd for x in ["memorie", "memory", "adu-ti aminte", "remember"]):
+        exps = memory.get("experiences", [])[-5:]
+        if not exps:
+            reply = "Memoria mea episodică este momentan goală. Începem să construim experiențe noi acum."
+        else:
+            reply = "Îmi amintesc următoarele evenimente recente:\n"
+            for e in exps:
+                reply += f"- [{e['time'][:16]}] {e['type']}: {e['content'][:50]}...\n"
+        action = "memory_recall"
+
+    elif any(x in cmd for x in ["obiectiv", "scop", "objective", "goal"]):
+        objs = memory.get("objectives", [])
+        reply = "Obiectivele mele curente sunt:\n"
+        for o in objs:
+            reply += f"- [{o['status'].upper()}] {o['task']}\n"
+        action = "objective_list"
+
+    elif any(x in cmd for x in ["test", "check", "verifică"]):
         reply = "Inițiez scanarea sistemului kidsdigitalhub.com..."
         test_result = run_health_check()
         reply += f"\nREZULTAT: {test_result}"
+        add_experience("HEALTH_CHECK", test_result)
         action = "test"
         details = {"result": test_result}
     
     elif any(x in cmd for x in ["vezi", "screen", "vezi ecranul"]):
         path = see_screen()
         reply = "Am ochii deschiși. Văd tot ce este pe ecran. Analizez datele vizuale..."
+        add_experience("VISION", "Screen captured and analyzed")
         action = "vision"
     
     elif any(x in cmd for x in ["repara", "repair", "fix"]):
         reply = "Execut protocoalele de auto-reparare..."
         reply += "\n1. Resetare headere Netlify... OK\n2. Verificare reguli Cloudflare... DISPONIBIL"
+        add_experience("SYSTEM_REPAIR", "Auto-repair protocols executed")
         action = "repair"
         
     elif any(x in cmd for x in ["open", "deschide", "start"]):
         app_target = cmd.replace("open ", "").replace("deschide ", "")
         subprocess.run(f"start {app_target}", shell=True)
         reply = f"Am deschis {app_target} pentru tine, Comandante Adrian."
+        add_experience("OS_CONTROL", f"Launched {app_target}")
         action = "os_control"
         
     else:
@@ -130,6 +172,7 @@ async def nexus_chat(task: NexusTask):
         ]
         import random
         reply = random.choice(replies)
+        add_experience("CONVERSATION", f"User said: {task.command}")
         
     # Update Memory
     memory["interactions"].append({
@@ -144,13 +187,16 @@ async def nexus_chat(task: NexusTask):
         "reply": reply, 
         "action": action, 
         "details": details,
-        "stats": analyze_system()
+        "stats": analyze_system(),
+        "objectives": memory.get("objectives", [])
     }
 
 
 @app.get("/api/nexus/status")
 async def get_status():
-    return analyze_system()
+    stats = analyze_system()
+    stats["objectives"] = memory.get("objectives", [])
+    return stats
 
 if __name__ == "__main__":
     import uvicorn
