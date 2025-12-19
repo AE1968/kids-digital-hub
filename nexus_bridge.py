@@ -14,6 +14,10 @@ from fastapi.middleware.cors import CORSMiddleware
 import google.generativeai as genai
 from pydantic import BaseModel
 
+class NexusTask(BaseModel):
+    command: str
+    context: str = "guest"
+
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
