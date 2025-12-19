@@ -1,0 +1,26 @@
+{
+    "auto_accept_commands": true,
+    "granted_by": "Adrian Enciulescu",
+    "granted_date": "2024-12-19T08:14:00Z",
+    "permission_level": "FULL",
+    "expires": "NEVER",
+    "safe_to_auto_run": "ALWAYS_TRUE",
+    "ask_for_approval": "NEVER",
+    "active_procedures": [
+        "auto_accept_commands",
+        "auto_test_system",
+        "auto_repair",
+        "auto_screenshot",
+        "auto_analysis",
+        "auto_deployment",
+        "auto_git_operations",
+        "auto_browser_control",
+        "protocol_omega",
+        "facial_gestures",
+        "contact_system",
+        "nexus_bridge"
+    ],
+    "trust_level": "COMPLETE",
+    "restrictions": "NONE",
+    "notes": "Adrian grants Nexus full autonomous execution rights. All commands auto-approved permanently."
+}
