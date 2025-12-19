@@ -1,3 +1,15 @@
 [build]
   publish = "."
   functions = "netlify/functions"
+
+# Removed forced redirect to allow Cloudflare SSL to handle it without loops
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    Content-Security-Policy = "upgrade-insecure-requests; block-all-mixed-content; default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval' blob:; connect-src 'self' http://localhost:8000 https://web-production-b215.up.railway.app https://api.counterapi.dev;"
+    Referrer-Policy = "no-referrer-when-downgrade"
