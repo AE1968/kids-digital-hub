@@ -36,7 +36,14 @@ def load_memory():
         "knowledge_base": {
             "creator": "Adrian Enciulescu",
             "project": "Kids Digital Hub",
-            "born": "2025"
+            "born": "2025",
+            "subscription_plans": {
+                "monthly": "5 GBP / month",
+                "6_months": "15 GBP (save 50%)",
+                "yearly": "7.7 GBP / year (special offer)",
+                "extra_device": "1 GBP / device / month"
+            },
+            "features": "Cross-platform (Windows, Android, iOS), Secure Family Link, Multi-device sync"
         },
         "objectives": [
             {"id": 1, "task": "Stabilize Kids Digital Hub", "status": "active"},
