@@ -2,7 +2,11 @@
   publish = "."
   functions = "netlify/functions"
 
+# THE "DOOMSDAY" REDIRECT
+# Force EVERYTHING to www.kidsdigitalhub.com/index.html
+# Code 200 means "Rewrite", not Redirect. We trick the browser.
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = true
