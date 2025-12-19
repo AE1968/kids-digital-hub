@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS V2 | Advanced AI Brain</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --matrix-green: #00ff41;
+            --deep-black: #050505;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            padding: 20px;
+        }
+
+        /* Avatar Section */
+        .avatar-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .avatar {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--neon-purple), transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+            box-shadow: 0 0 50px var(--neon-cyan);
+        }
+
+        .avatar img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 20px var(--neon-cyan));
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .status {
+            text-align: center;
+        }
+
+        .status h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 20px var(--neon-cyan);
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--neon-cyan);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        /* Chat Section */
+        .chat-section {
+            background: rgba(10, 20, 30, 0.8);
+            border: 1px solid var(--neon-purple);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.3);
+        }
+
+        .chat-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--neon-purple);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .chat-log {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            min-height: 400px;
+            max-height: 400px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.nexus {
+            background: rgba(0, 243, 255, 0.1);
+            border-left: 3px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        .message.user {
+            background: rgba(188, 19, 254, 0.1);
+            border-left: 3px solid var(--neon-purple);
+            color: var(--neon-purple);
+            text-align: right;
+        }
+
+        .message.system {
+            background: rgba(0, 255, 65, 0.1);
+            border-left: 3px solid var(--matrix-green);
+            color: var(--matrix-green);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        #messageInput {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon-cyan);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        #messageInput:focus {
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--neon-purple);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .avatar {
+                width: 200px;
+                height: 200px;
+            }
+
+            .status h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="back-btn" onclick="location.href='index.html'">← BACK</button>
+
+    <div class="container">
+        <!-- Avatar Section -->
+        <div class="avatar-section">
+            <div class="avatar">
+                <img src="assets/images/nexus_avatar.png" alt="Nexus Avatar"
+                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Ccircle cx=%22100%22 cy=%22100%22 r=%2280%22 fill=%22%2300f3ff%22/%3E%3Ccircle cx=%2280%22 cy=%2280%22 r=%2210%22 fill=%22%23000%22/%3E%3Ccircle cx=%22120%22 cy=%2280%22 r=%2210%22 fill=%22%23000%22/%3E%3Cpath d=%22M70 120 Q100 140 130 120%22 stroke=%22%23000%22 fill=%22none%22 stroke-width=%223%22/%3E%3C/svg%3E'">
+            </div>
+
+            <div class="status">
+                <h1>NEXUS V2</h1>
+                <span class="status-badge">🟢 ONLINE • READY</span>
+            </div>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat-section">
+            <div class="chat-header">
+                💬 NEURAL LINK ACTIVE
+            </div>
+
+            <div class="chat-log" id="chatLog"></div>
+
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Type your message... (RO/EN supported)"
+                    onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()">SEND</button>
+            </div>
+
+            <div class="controls">
+                <button onclick="activateVoice()">🎤 VOICE</button>
+                <button onclick="clearChat()">🗑️ CLEAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize
+        let conversationHistory = [];
+
+        // Add welcome message
+        window.addEventListener('load', () => {
+            addMessage('system', '⚡ Nexus V2 initialized successfully');
+            addMessage('nexus', 'Bună, Adrian! Sunt Nexus V2. Vorbește cu mine în română sau engleză! 🤖');
+        });
+
+        // Detect language
+        function detectLanguage(text) {
+            const roWords = /\b(buna|salut|ce|mai|faci|cum|esti|multumesc|te|rog|da|nu|cine|unde|cand|de|ce|pentru|ca|si|sau|dar|daca|este|sunt|ai|am|vrei|pot|poti|cum|este|sunt)\b/i;
+            return roWords.test(text) ? 'ro' : 'en';
+        }
+
+        // Multi-language responses
+        const responses = {
+            greeting: {
+                en: [
+                    "Hello! I'm Nexus V2. How can I help you today?",
+                    "Hi there! All systems are online and ready to assist you.",
+                    "Greetings! I'm here to help with anything you need."
+                ],
+                ro: [
+                    "Bună! Sunt Nexus V2. Cu ce te pot ajuta astăzi?",
+                    "Salut! Toate sistemele sunt online și gata să te ajut.",
+                    "Salutări! Sunt aici să te ajut cu orice ai nevoie."
+                ]
+            },
+            identity: {
+                en: [
+                    "I am Nexus V2, an advanced AI assistant created by Adrian Enciulescu. I'm here to help you with the Kids Digital Hub and much more!",
+                    "My name is Nexus V2. I'm your personal AI companion, designed to assist and learn from you."
+                ],
+                ro: [
+                    "Sunt Nexus V2, un asistent AI avansat creat de Adrian Enciulescu. Sunt aici să te ajut cu Kids Digital Hub și multe altele!",
+                    "Numele meu este Nexus V2. Sunt companionul tău AI personal, conceput să te asist și să învăț de la tine."
+                ]
+            },
+            status: {
+                en: [
+                    "All systems operational! 🟢 Nexus V2 is running perfectly.",
+                    "Status: OPTIMAL. All modules online and ready!"
+                ],
+                ro: [
+                    "Toate sistemele sunt operaționale! 🟢 Nexus V2 funcționează perfect.",
+                    "Status: OPTIMAL. Toate modulele sunt online și gata!"
+                ]
+            },
+            help: {
+                en: [
+                    "I can help you with: conversations, answering questions, providing information, and assisting with the Kids Digital Hub. Just ask me anything!",
+                    "My capabilities: intelligent conversation, multi-language support (RO/EN), voice interaction, and much more. What would you like to know?"
+                ],
+                ro: [
+                    "Te pot ajuta cu: conversații, răspunsuri la întrebări, furnizare informații și asistență pentru Kids Digital Hub. Întreabă-mă orice!",
+                    "Capabilitățile mele: conversații inteligente, suport multi-limbă (RO/EN), interacțiune vocală și multe altele. Ce ai vrea să știi?"
+                ]
+            },
+            thanks: {
+                en: ["You're welcome!", "My pleasure!", "Happy to help!"],
+                ro: ["Cu plăcere!", "Plăcerea mea!", "Bucuros să ajut!"]
+            }
+        };
+
+        // Pattern matching
+        function getResponse(message, lang) {
+            const lower = message.toLowerCase();
+
+            // Greetings
+            if (lower.match(/\b(hello|hi|hey|buna|salut|hola)\b/)) {
+                return responses.greeting[lang][Math.floor(Math.random() * responses.greeting[lang].length)];
+            }
+
+            // Identity
+            if (lower.match(/\b(who are you|what are you|cine esti|ce esti)\b/)) {
+                return responses.identity[lang][Math.floor(Math.random() * responses.identity[lang].length)];
+            }
+
+            // Status
+            if (lower.match(/\b(status|health|how are you|ce mai faci|cum esti)\b/)) {
+                return responses.status[lang][Math.floor(Math.random() * responses.status[lang].length)];
+            }
+
+            // Help
+            if (lower.match(/\b(help|ajutor|ce poti|what can you)\b/)) {
+                return responses.help[lang][Math.floor(Math.random() * responses.help[lang].length)];
+            }
+
+            // Thanks
+            if (lower.match(/\b(thank|thanks|multumesc|mersi)\b/)) {
+                return responses.thanks[lang][Math.floor(Math.random() * responses.thanks[lang].length)];
+            }
+
+            // Default intelligent response
+            if (lang === 'ro') {
+                return "Înțeleg. Procesez informația ta. Poți să-mi dai mai multe detalii? 🤔";
+            } else {
+                return "I understand. I'm processing your input. Could you provide more details? 🤔";
+            }
+        }
+
+        // Add message to chat
+        function addMessage(type, text) {
+            const chatLog = document.getElementById('chatLog');
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+
+            const prefix = type === 'nexus' ? '[NEXUS]:' : type === 'user' ? '[YOU]:' : '[SYSTEM]:';
+            message.textContent = `${prefix} ${text}`;
+
+            chatLog.appendChild(message);
+            chatLog.scrollTop = chatLog.scrollHeight;
+
+            // Speak if Nexus message
+            if (type === 'nexus' && 'speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Send message
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // Add user message
+            addMessage('user', message);
+            input.value = '';
+
+            // Detect language
+            const lang = detectLanguage(message);
+
+            // Add thinking indicator
+            addMessage('system', lang === 'ro' ? 'Procesez...' : 'Processing...');
+
+            // Get response
+            setTimeout(() => {
+                // Remove thinking indicator
+                const chatLog = document.getElementById('chatLog');
+                const lastSystem = chatLog.querySelector('.message.system:last-child');
+                if (lastSystem) lastSystem.remove();
+
+                // Add Nexus response
+                const response = getResponse(message, lang);
+                addMessage('nexus', response);
+
+                // Save to history
+                conversationHistory.push({ user: message, nexus: response, lang: lang });
+            }, 800);
+        }
+
+        // Voice activation
+        function activateVoice() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                addMessage('system', 'Voice recognition not supported in this browser. Try Chrome/Edge.');
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'ro-RO'; // Default Romanian
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                addMessage('system', '🎤 Listening... Speak now!');
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('messageInput').value = transcript;
+                sendMessage();
+            };
+
+            recognition.onerror = (event) => {
+                addMessage('system', `Voice error: ${event.error}`);
+            };
+
+            recognition.start();
+        }
+
+        // Clear chat
+        function clearChat() {
+            const chatLog = document.getElementById('chatLog');
+            chatLog.innerHTML = '';
+            conversationHistory = [];
+            addMessage('system', 'Chat cleared');
+            addMessage('nexus', 'Ready for a fresh start! 🚀');
+        }
+    </script>
+</body>
+
+</html>
