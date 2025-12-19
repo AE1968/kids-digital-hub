@@ -780,38 +780,29 @@
                         return;
                     }
 
-                    // NEXUS LIVE AI BRAIN - GOOGLE GEMINI INTEGRATION
+                    // NEXUS LIVE AI BRAIN - SECURE BACKEND INTEGRATION
                     try {
                         addLog('Translating neural impulse...', 'system');
 
-                        // Google Gemini API - Free tier available
-                        const GEMINI_API_KEY = 'AIzaSyBJmxLKZHvPxGqN8vY3kR7sT9wU2eV4fX6'; // Replace with your actual API key
-                        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+                        // Use verified Railway Backend URL
+                        const BACKEND_URL = 'https://web-production-b215.up.railway.app/api/nexus/chat';
 
-                        const response = await fetch(GEMINI_API_URL, {
+                        const response = await fetch(BACKEND_URL, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({
-                                contents: [{
-                                    parts: [{
-                                        text: `You are NEXUS, an advanced AI assistant created by Adrian Enciulescu for the Kids Digital Hub. You are intelligent, helpful, and friendly. You speak in a professional but warm tone. Respond to this message from Adrian: "${userMessage}"`
-                                    }]
-                                }],
-                                generationConfig: {
-                                    temperature: 0.9,
-                                    topK: 1,
-                                    topP: 1,
-                                    maxOutputTokens: 2048,
-                                }
+                                message: userMessage,
+                                user: sessionStorage.getItem('nexus_user_name') || 'Commander',
+                                user_id: localStorage.getItem('nexus_user_id') || 'web_user_' + Date.now()
                             })
                         });
 
                         if (response.ok) {
                             const data = await response.json();
-                            const aiReply = data.candidates[0].content.parts[0].text;
-                            addLog(aiReply, 'nexus');
+                            // Backend returns { reply: "..." }
+                            addLog(data.reply, 'nexus');
                         } else {
                             // Fallback to intelligent local responses
                             throw new Error('AI Module Offline');
@@ -819,7 +810,7 @@
                     } catch (error) {
                         // INTELLIGENT FALLBACK PROTOCOL
                         console.error('Nexus AI Module:', error);
-                        addLog('[NEXUS]: AI Module Offline. Using local intelligence...', 'system');
+                        addLog('[NEXUS]: Neural Link Unstable. Switching to Local Intelligence...', 'system');
 
                         // Use local intelligent responses
                         generateLocalResponse(userMessage);
