@@ -1,1 +1,1 @@
-web: gunicorn -b :$PORT webhook_server:app
+web: python webhook_server.py
