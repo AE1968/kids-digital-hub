@@ -317,13 +317,32 @@
 
             setBrainState('THINKING...');
 
-            // External AI or Advanced Local Simulation
-            setTimeout(() => {
-                const response = getNexusResponse(text);
-                addLog('nexus', response);
-                speak(response);
-                setBrainState('IDLE');
-            }, 800);
+            // CONNECT TO SUPREME BRIDGE (Python Backend)
+            try {
+                const response = await fetch('http://localhost:8000/api/nexus/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command: text, context: "Commander Adrian Link" })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    addLog('nexus', data.reply);
+                    speak(data.reply);
+                } else {
+                    throw new Error('Bridge Offline');
+                }
+            } catch (e) {
+                // FALLBACK TO LOCAL INTELLIGENCE
+                console.warn("Nexus Bridge Offline - Using Local Core");
+                setTimeout(() => {
+                    const response = getNexusResponse(text);
+                    addLog('nexus', response + " (Local Fallback)");
+                    speak(response);
+                }, 500);
+            }
+
+            setBrainState('IDLE');
         }
 
         function getNexusResponse(msg) {
