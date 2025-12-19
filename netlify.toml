@@ -1,22 +1,3 @@
 [build]
   publish = "."
   functions = "netlify/functions"
-
-# Redirect root to index
-[[redirects]]
-  from = "/"
-  to = "/index.html"
-  status = 200
-
-# Force HTTPS and www
-[[redirects]]
-  from = "http://kidsdigitalhub.com/*"
-  to = "https://www.kidsdigitalhub.com/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://kidsdigitalhub.com/*"
-  to = "https://www.kidsdigitalhub.com/:splat"
-  status = 301
-  force = true
