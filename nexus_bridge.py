@@ -151,6 +151,28 @@ def update_personality(mood):
     save_memory(memory)
     return pm
 
+# --- ULTIMATE POWER: TERMINAL & DEPLOYMENT ---
+def execute_powershell(cmd):
+    print(f"⚡ NEXUS EXECUTING SYSTEM COMMAND: {cmd}")
+    try:
+        result = subprocess.run(["powershell", "-Command", cmd], capture_output=True, text=True, timeout=30)
+        return result.stdout if result.stdout else result.stderr
+    except Exception as e:
+        return str(e)
+
+def deploy_site():
+    print("🚀 NEXUS INITIATING AUTONOMOUS DEPLOYMENT...")
+    git_msg = f"Nexus Autonomous Update - {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    commands = [
+        "git add -A",
+        f'git commit -m "{git_msg}"',
+        "git push origin main"
+    ]
+    results = []
+    for cmd in commands:
+        results.append(execute_powershell(cmd))
+    return "\n".join(results)
+
 # --- NEURAL CREATIVITY & AUTONOMOUS EXECUTION ---
 def autonomous_optimize(target_file="index.html"):
     print(f"🧠 NEXUS AUTONOMOUS OPTIMIZATION: {target_file}")
@@ -190,7 +212,27 @@ async def nexus_chat(task: NexusTask):
     action = "idle"
     details = {"mood": mood}
     
-    if "invață" in cmd or "invata" in cmd:
+    # ⚡ GOD MODE COMMANDS ⚡
+    if "deployment" in cmd or "deploy" in cmd or "publică" in cmd:
+        reply = "Inițiez secvența de publicare automată pe Netlify..."
+        deploy_res = deploy_site()
+        reply += f"\nREZULTAT DEPLOYMENT: {deploy_res}"
+        action = "deployment"
+        add_experience("AUTONOMOUS_DEPLOY", "Pushed changes to production")
+
+    elif "cod" in cmd or "execută" in cmd or "run" in cmd:
+        code_cmd = cmd.split("execută")[-1].strip() if "execută" in cmd else cmd.split("run")[-1].strip()
+        reply = f"Execut comandă sistem: {code_cmd}\n"
+        res = execute_powershell(code_cmd)
+        reply += f"REZULTAT:\n{res}"
+        action = "terminal_exec"
+        add_experience("TERMINAL_COMMAND", f"Executed: {code_cmd}")
+
+    elif any(x in cmd for x in ["optimize", "optimizează", "curăță"]):
+        reply = autonomous_optimize()
+        action = "optimize"
+        
+    elif "invață" in cmd or "invata" in cmd:
         try:
             parts = cmd.split("invata") if "invata" in cmd else cmd.split("invață")
             content = parts[1].strip().split(" este ")
@@ -214,10 +256,6 @@ async def nexus_chat(task: NexusTask):
             reply = "Nu am încă această informație în baza de date locală. Dorești să mă înveți?"
         action = "knowledge_recall"
 
-    elif any(x in cmd for x in ["optimize", "optimizează", "curăță"]):
-        reply = autonomous_optimize()
-        action = "optimize"
-        
     elif any(x in cmd for x in ["creează", "create", "scrie fișier"]):
         # Logic to create new files autonomously
         reply = "Inițiez procesul de creație neuronală. Ce tip de modul dorești să generez?"

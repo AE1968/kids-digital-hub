@@ -364,8 +364,16 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    addLog('nexus', data.reply);
-                    speak(data.reply);
+                    if (data.action === 'terminal_exec' || data.action === 'deployment') {
+                        // Display multi-line output in a special box
+                        const logEntry = document.createElement('div');
+                        logEntry.className = 'msg nexus';
+                        logEntry.innerHTML = `<span style="color: var(--neon-cyan)">[SYSTEM OUTPUT]</span><pre style="background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 0.6rem; color: #fff;">${data.reply}</pre>`;
+                        document.getElementById('chatLog').appendChild(logEntry);
+                    } else {
+                        addLog('nexus', data.reply);
+                    }
+                    speak(data.reply.split('\n')[0]); // Speak only first line
                 } else {
                     throw new Error('Bridge Offline');
                 }
