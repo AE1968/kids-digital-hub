@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Nexus Supreme | Kids Digital Hub</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --dark-bg: #0a0a12;
+            --matrix-green: #00ff41;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 90%;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 20px var(--neon-cyan);
+            font-size: 3rem;
+            margin-bottom: 50px;
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .download-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+        }
+
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .platform {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--neon-cyan);
+            margin-bottom: 15px;
+        }
+
+        .desc {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .btn-download {
+            display: inline-block;
+            background: var(--neon-cyan);
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            transition: 0.3s;
+        }
+
+        .btn-download:hover {
+            background: #fff;
+            box-shadow: 0 0 15px #fff;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--matrix-green);
+            color: #000;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 0.7rem;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .back-link {
+            margin-top: 50px;
+            color: #888;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .back-link:hover {
+            color: var(--neon-cyan);
+            border-color: var(--neon-cyan);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>DOWNLOAD CENTER</h1>
+        <p style="color: #666; margin-bottom: 50px; letter-spacing: 2px;">NEURAL INTERFACE • NATIVE APPLICATIONS</p>
+
+        <div class="download-grid">
+            <!-- Windows Desktop -->
+            <div class="download-card">
+                <div class="status-badge">STABLE</div>
+                <span class="icon">💻</span>
+                <div class="platform">WINDOWS DESKTOP</div>
+                <p class="desc">Experience Nexus Supreme with full system integration, higher performance, and native
+                    notifications.</p>
+                <a href="#" class="btn-download">DOWNLOAD .EXE</a>
+            </div>
+
+            <!-- Android Mobile -->
+            <div class="download-card">
+                <div class="status-badge">STABLE</div>
+                <span class="icon">📱</span>
+                <div class="platform">ANDROID MOBILE</div>
+                <p class="desc">Take the Hub anywhere. Optimized for tablets and phones with full offline support.</p>
+                <a href="#" class="btn-download">DOWNLOAD .APK</a>
+            </div>
+
+            <!-- iOS / Mac -->
+            <div class="download-card">
+                <div class="status-badge" style="background: var(--neon-purple); color: #fff;">COMING SOON</div>
+                <span class="icon">🍎</span>
+                <div class="platform">iOS / macOS</div>
+                <p class="desc">The Apple ecosystem version is currently undergoing neural synchronization. Stay tuned.
+                </p>
+                <a href="#" class="btn-download" style="opacity: 0.5; cursor: not-allowed;">LOCKED</a>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-link">← RETURN TO CORE HUB</a>
+    </div>
+
+    <script src="js/nexus_widget.js"></script>
+</body>
+
+</html>

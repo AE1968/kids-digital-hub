@@ -389,6 +389,11 @@ async def nexus_chat(task: NexusTask):
         action = "navigate"
         details = {"url": "payment.html"}
 
+    elif any(x in cmd for x in ["download", "descarcă", "aplicație", "app"]):
+        reply = "Inițiez accesul la Centrul de Descărcare Nexus Supreme."
+        action = "navigate"
+        details = {"url": "download.html"}
+
     # ⚡ GOD MODE COMMANDS ⚡
     elif "deployment" in cmd or "deploy" in cmd or "publică" in cmd:
         reply = "Inițiez secvența de publicare automată pe Netlify..."
