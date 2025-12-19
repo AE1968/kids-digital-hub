@@ -3,11 +3,12 @@
 Această structură definește ce primesc clienții Kids Digital Hub în funcție de investiția lor.
 
 ## 🟢 1. NIVEL: FREE (GUEST)
-*Acces limitat pentru testarea magiei.*
-- **Nexus Interaction**: Maxim 5 mesaje pe zi.
-- **Content**: 1 Pagina de colorat / 1 Joc / 1 Poveste (Mostre).
-- **Vision**: Dezactivat.
-- **Sync**: Fără salvare în cloud.
+*Acces demonstrativ pentru puterea Nexus.*
+- **Nexus Interaction**: Mesaje zilnice limitate, dar acces la **Toate funcțiile Audio/Video** (Vision, Voice).
+- **Content**: Acces la mostre de conținut.
+- **Vision & Audio**: ACCESS COMPLET (pentru a vedea puterea sistemului).
+- **Restriction**: **NU POATE SALVA NIMIC** (Experiențe, Învățare, Preferințe). Orice date se pierd la închiderea sesiunii.
+- **Plata**: Upgrade-ul se face prin secțiunea PayPal integrată.
 
 ## 🔵 2. NIVEL: PREMIUM (LUNAR / 6 LUNI / ANUAL)
 *Experiența completă, fără limite.*

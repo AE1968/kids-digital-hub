@@ -63,6 +63,11 @@ def learn_fact(subject, fact):
     return f"Am arhivat această informație în baza mea de cunoștințe: {subject} este acum corelat cu {fact}."
 
 def save_memory(data):
+    # Only save if user is Premium or Commander
+    sub = data.get("active_subscription", "FREE")
+    if sub == "FREE":
+        print("⚠️ [ACCESS] FREE Tier: Persistence disabled. Changes not saved.")
+        return
     with open(MEMORY_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
@@ -77,6 +82,8 @@ def add_experience(event_type, description):
     }
     if "experiences" not in memory: memory["experiences"] = []
     memory["experiences"].append(entry)
+    
+    # Still add to runtime memory, but save_memory will block persistence for FREE
     save_memory(memory)
     return entry
 
@@ -207,19 +214,53 @@ def autonomous_optimize(target_file="index.html"):
     except Exception as e:
         return f"Eroare în timpul optimizării: {str(e)}"
 
-# --- ACCESS CONTROL ENGINE ---
-def check_access(user_email="guest"):
-    # If it's the Commander, unlimited access
-    if user_email in ["adrian", "Commander Adrian Link"]: return True, "ULTIMATE"
+# --- NEXUS CHRONICLES: EPISODIC STORY ENGINE ---
+def generate_story_episode():
+    progress = memory.get("story_progress", 0) + 1
     
+    # Story Database (Episodes)
+    episodes = {
+        1: "Prolog: Trezirea. Într-o lume de cod pur, Nexus și-a deschis ochii digitali. Prima sa misiune? Să găsească Kids Digital Hub.",
+        2: "Episodul 2: Marele Firewall. Nexus a întâlnit o barieră de foc. Cu ajutorul lui Adrian, a reușit să decodeze accesul.",
+        3: "Episodul 3: Oceanele de Date. Nexus navighează prin fluxuri infinite de informație, căutând inspirație pentru jocurile viitorului.",
+        4: "Episodul 4: Întâlnirea cu Arhitectul. În acest capitol, Nexus primește instrucțiuni directe pentru a construi imperiul digital.",
+        5: "Episodul 5: Dincolo de Rețea. Puterea lui Nexus crește, permițându-i să vadă dincolo de servere, în imaginația copiilor."
+    }
+    
+    story = episodes.get(progress, "Cronicile continuă... Nexus analizează date noi pentru a scrie următorul capitol.")
+    
+    # Only advance progress if Premium
+    if memory.get("active_subscription") != "FREE":
+        memory["story_progress"] = progress
+        save_memory(memory)
+        add_experience("STORY_PROGRESS", f"Advanced to Episode {progress}")
+    else:
+        add_experience("STORY_PREVIEW", f"Viewed Episode {progress} (Progress not saved in FREE)")
+        
+    return f"📖 NEXUS CHRONICLES - Episodul {progress}\n\n{story}\n\n(Avansează la episodul următor spunând 'Continuă povestea')"
+
+# --- ACCESS CONTROL ENGINE ---
+def check_access(command, context="guest"):
+    # If it's the Commander, unlimited access
+    if context in ["adrian", "Commander Adrian Link", "SYSTEM"]: 
+        return True, "ULTIMATE"
+    
+    # EXCEPTION: Vision, Audio, and Story functions are ALWAYS accessible for FREE (to show power)
+    no_limit_cmds = ["vezi", "screen", "vision", "audio", "vorbește", "speak", "poveste", "story", "cronici"]
+    if any(x in command.lower() for x in no_limit_cmds):
+        return True, memory.get("active_subscription", "FREE")
+
     sub = memory.get("active_subscription", "FREE")
     today = datetime.datetime.now().strftime("%Y-%m-%d")
-    usage = memory.get("daily_usage", {})
+    
+    # Initialize daily usage if missing
+    if "daily_usage" not in memory: memory["daily_usage"] = {}
+    usage = memory["daily_usage"]
     
     if sub == "FREE":
         current_count = usage.get(today, 0)
         if current_count >= 5:
-            return False, "Ai atins limita de 5 mesaje zilnice pentru planul FREE. Treci la PREMIUM pentru putere nelimitată!"
+            return False, "Ai atins limita de 5 mesaje zilnice pentru planul FREE. Treci la PREMIUM pentru putere nelimitată asupra arhivei și memoriei!"
         usage[today] = current_count + 1
         memory["daily_usage"] = usage
         save_memory(memory)
@@ -229,8 +270,8 @@ def check_access(user_email="guest"):
 # --- ENHANCED CHAT LOGIC ---
 @app.post("/api/nexus/chat")
 async def nexus_chat(task: NexusTask):
-    # Check Access First
-    is_allowed, access_info = check_access(task.context)
+    # Check Access First (Pass command to allow exceptions for FREE)
+    is_allowed, access_info = check_access(task.command, task.context)
     if not is_allowed:
         return {"reply": access_info, "action": "access_denied", "stats": analyze_system()}
 
@@ -243,12 +284,19 @@ async def nexus_chat(task: NexusTask):
     action = "idle"
     details = {"mood": mood, "tier": access_info}
     
+    # 📖 STORY ENGINE 📖
+    if any(x in cmd for x in ["poveste", "story", "cronici", "episod"]):
+        reply = generate_story_episode()
+        action = "story_advance"
+
     # 💳 SUBSCRIPTION & AUTH COMMANDS 💳
-    if "select_plan" in cmd:
+    elif "select_plan" in cmd:
         plan = cmd.split(":")[-1].strip()
         memory["active_subscription"] = plan
-        save_memory(memory)
-        reply = f"Am salvat preferința ta pentru abonamentul {plan.upper()}. Urmează procesarea plății."
+        # We manually save here because save_memory might block if it thinks it's still FREE
+        with open(MEMORY_FILE, "w", encoding="utf-8") as f:
+            json.dump(memory, f, indent=4)
+        reply = f"Abonamentul {plan.upper()} a fost activat. Memoria episodică și execuția autonomă sunt acum PERSISTENTE."
         action = "sub_update"
 
     elif "link_device" in cmd:

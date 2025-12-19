@@ -147,151 +147,135 @@
 
     <div class="plans-container">
 
-        <!-- CARD 1: SUBSCRIPTION (MONTHLY) -->
+        <!-- CARD 1: MONTHLY -->
         <div class="plan-card">
             <div class="plan-icon">📅</div>
             <div class="plan-title">Monthly Hero</div>
-            <div class="plan-price">£2.49</div>
+            <div class="plan-price">£5</div>
             <div class="plan-period">per month</div>
 
             <ul class="features-list">
-                <li>✅ Unlimited Access</li>
-                <li>✅ All Premium Drawings</li>
-                <li>✅ All Magic Stories</li>
+                <li>✅ Unlimited Nexus Access</li>
+                <li>✅ Full Audio/Video Vision</li>
+                <li>✅ Save Your Experiences</li>
                 <li>✅ Cancel Anytime</li>
             </ul>
 
             <div id="paypal-monthly-container" class="paypal-container"></div>
         </div>
 
-        <!-- CARD 2: PREPAY (SEASON PASS) -->
+        <!-- CARD 2: 6 MONTHS -->
         <div class="plan-card best-value">
             <div class="best-badge">BEST VALUE</div>
             <div class="plan-icon">🚀</div>
-            <div class="plan-title">Season Pass</div>
-            <div class="plan-price">£12.99</div>
-            <div class="plan-period">for 6 months (Prepay)</div>
+            <div class="plan-title">Semi-Annual</div>
+            <div class="plan-price">£15</div>
+            <div class="plan-period">for 6 months</div>
 
             <ul class="features-list">
-                <li>✅ <b>Save 15%</b> vs Monthly</li>
+                <li>✅ Save 50% vs Monthly</li>
                 <li>✅ No Monthly Billing</li>
-                <li>✅ One-time Payment</li>
-                <li>✅ Full Premium Access</li>
+                <li>✅ All Premium Features</li>
+                <li>✅ Priority Support</li>
             </ul>
 
-            <div id="paypal-prepay-container" class="paypal-container"></div>
+            <div id="paypal-sixmonths-container" class="paypal-container"></div>
+        </div>
+
+        <!-- CARD 3: YEARLY PROMO -->
+        <div class="plan-card">
+            <div class="plan-icon">🏆</div>
+            <div class="plan-title">Yearly Legend</div>
+            <div class="plan-price">£7.7</div>
+            <div class="plan-period">special promo price</div>
+
+            <ul class="features-list">
+                <li>✅ Best Promo Price</li>
+                <li>✅ 1 Full Year Access</li>
+                <li>✅ Family Link Included</li>
+                <li>✅ Nexus Early Access</li>
+            </ul>
+
+            <div id="paypal-yearly-container" class="paypal-container"></div>
         </div>
 
     </div>
 
     <script src="js/auth.js"></script>
     <script>
-        // Check Login
-        // auth.js should ideally handle redirection if not logged in, but we'll add a check here.
-        if (!localStorage.getItem('kdh_user')) {
-            // Optional: redirect to login or show notice
-            // window.location.href = 'login.html';
-        }
-
-        // --- BUTTON 1: MONTHLY SUBSCRIPTION ---
-        // --- BUTTON 1: MONTHLY ACCESS (Verified - One Time Payment for 30 Days) ---
-        // Switched to One-Time payment to bypass complex Plan ID configuration.
-        // This ensures the button works IMMEDIATELY for users.
+        // --- BUTTON 1: MONTHLY (£5) ---
         paypal.Buttons({
-            style: {
-                shape: 'pill',
-                color: 'blue',
-                layout: 'vertical',
-                label: 'pay'
-            },
+            style: { shape: 'pill', color: 'blue', layout: 'vertical', label: 'pay' },
             createOrder: function (data, actions) {
                 return actions.order.create({
                     purchase_units: [{
-                        description: "Kids Hub Premium Access (1 Month)",
-                        amount: {
-                            value: '2.49',
-                            currency_code: 'GBP'
-                        }
+                        description: "Monthly Premium Access",
+                        amount: { value: '5.00', currency_code: 'GBP' }
                     }]
                 });
             },
             onApprove: function (data, actions) {
                 return actions.order.capture().then(function (details) {
-                    alert('Payment Successful! You have 30 days of Premium Access!');
-                    unlockPremium();
+                    alert('Payment Successful! Monthly access granted.');
+                    unlockPremium('MONTHLY', '5.00');
                 });
             }
         }).render('#paypal-monthly-container');
 
-
-        // --- BUTTON 2: SEASON PASS (Now LIVE as One-Time Payment) ---
-        // This DOES NOT require a Plan ID, just the Client ID you provided.
+        // --- BUTTON 2: 6 MONTHS (£15) ---
         paypal.Buttons({
-            style: {
-                shape: 'pill',
-                color: 'gold',
-                layout: 'vertical',
-                label: 'pay'
-            },
+            style: { shape: 'pill', color: 'gold', layout: 'vertical', label: 'pay' },
             createOrder: function (data, actions) {
                 return actions.order.create({
                     purchase_units: [{
-                        description: "Kids Hub Season Pass (6 Months)",
-                        amount: {
-                            value: '12.99',
-                            currency_code: 'GBP'
-                        }
+                        description: "Semi-Annual Premium Access",
+                        amount: { value: '15.00', currency_code: 'GBP' }
                     }]
                 });
             },
             onApprove: function (data, actions) {
                 return actions.order.capture().then(function (details) {
-                    alert('Payment Successful! Welcome ' + details.payer.name.given_name + '!');
-                    unlockPremium();
+                    alert('Payment Successful! 6 Months access granted.');
+                    unlockPremium('6_MONTHS', '15.00');
                 });
             }
-        }).render('#paypal-prepay-container');
+        }).render('#paypal-sixmonths-container');
 
-        async function unlockPremium(paymentDetails = {}) {
-            // 1. Notify server about payment (secure validation)
+        // --- BUTTON 3: YEARLY (£7.7) ---
+        paypal.Buttons({
+            style: { shape: 'pill', color: 'black', layout: 'vertical', label: 'pay' },
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        description: "Yearly Premium Promo",
+                        amount: { value: '7.70', currency_code: 'GBP' }
+                    }]
+                });
+            },
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (details) {
+                    alert('Payment Successful! Yearly access granted.');
+                    unlockPremium('YEARLY', '7.70');
+                });
+            }
+        }).render('#paypal-yearly-container');
+
+        async function unlockPremium(plan, amount) {
             try {
-                await fetch('/.netlify/functions/paypal-webhook', {
+                // Notify Bridge
+                await fetch('http://localhost:8000/api/nexus/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        event_type: 'PAYMENT.CAPTURE.COMPLETED',
-                        resource: {
-                            id: paymentDetails.id || 'direct-payment',
-                            status: 'COMPLETED',
-                            payer: {
-                                email_address: paymentDetails.email || 'user@example.com',
-                                name: { given_name: paymentDetails.name || 'Customer' }
-                            },
-                            amount: { value: paymentDetails.amount || '2.49', currency_code: 'GBP' }
-                        }
-                    })
+                    body: JSON.stringify({ command: `select_plan: ${plan}`, context: "SYSTEM" })
                 });
-                console.log('Server notified of payment');
+
+                // Clear local guest usage
+                localStorage.setItem('nexus_premium', 'true');
+                alert("Nexus Supreme a fost activat! Te redirecționez spre centrul de comandă.");
+                window.location.href = 'nexus_v2.html';
             } catch (e) {
-                console.log('Server notification failed, continuing...', e);
-            }
-
-            // 2. Update local user (client-side for immediate access)
-            const userJson = localStorage.getItem('kdh_user');
-            if (userJson) {
-                const user = JSON.parse(userJson);
-                user.role = 'premium';
-                user.premiumSince = new Date().toISOString();
-                user.premiumUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
-                localStorage.setItem('kdh_user', JSON.stringify(user));
-                localStorage.setItem('kdh_premium_active', 'true');
-
-                setTimeout(() => {
-                    window.location.href = 'success.html';
-                }, 1500);
-            } else {
-                alert("Please log in to activate your premium account.");
-                window.location.href = 'login.html';
+                console.error("Failed to notify bridge:", e);
+                window.location.href = 'nexus_v2.html';
             }
         }
     </script>
