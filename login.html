@@ -95,7 +95,6 @@
             box-shadow: 0 0 10px rgba(77, 182, 172, 0.2);
         }
 
-        /* Butonul de logare pus in relief */
         .btn-login {
             width: 100%;
             padding: 18px;
@@ -114,28 +113,6 @@
             position: relative;
             overflow: hidden;
             margin-top: 10px;
-        }
-
-        .btn-login::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% {
-                transform: translateX(-100%) rotate(45deg);
-            }
-
-            100% {
-                transform: translateX(100%) rotate(45deg);
-            }
         }
 
         .btn-login:active {
@@ -181,6 +158,7 @@
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(5px);
+            overflow-y: auto;
         }
 
         .modal-content {
@@ -188,10 +166,12 @@
             padding: 30px;
             border-radius: 25px;
             width: 90%;
-            max-width: 400px;
+            max-width: 450px;
             position: relative;
             animation: slideUp 0.3s;
             border: 4px solid #FFA726;
+            margin-top: 50px;
+            margin-bottom: 50px;
         }
 
         @keyframes slideUp {
@@ -220,6 +200,7 @@
             cursor: pointer;
             font-size: 0.9rem;
             transition: 0.2s;
+            text-align: center;
         }
 
         .plan-option.selected {
@@ -227,6 +208,22 @@
             background: #FFF3E0;
             color: #E65100;
             font-weight: bold;
+        }
+
+        #billing-section {
+            display: none;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px dashed #ccc;
+        }
+
+        .small-helper {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: -5px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -267,6 +264,10 @@
             <h2 style="color: #E65100; margin-bottom: 20px;">Client Nou</h2>
             <form onsubmit="handleRegister(event)">
                 <div class="input-group">
+                    <label>Email (pentru recuperare)</label>
+                    <input type="email" id="reg-email" class="input-field" placeholder="parent@example.com" required>
+                </div>
+                <div class="input-group">
                     <label>Alege Nume Utilizator</label>
                     <input type="text" id="reg-user" class="input-field" required>
                 </div>
@@ -289,6 +290,20 @@
                     </div>
                 </div>
                 <input type="hidden" id="selected-plan" value="free">
+
+                <!-- Conditional Billing Details -->
+                <div id="billing-section">
+                    <h4 style="margin: 0 0 15px 0; color: #E65100;">Identificare & Plată (PayPal)</h4>
+                    <div class="input-group">
+                        <label>Nume Complet (Legal)</label>
+                        <input type="text" id="bill-name" class="input-field">
+                    </div>
+                    <div class="input-group">
+                        <label>Adresa Facturare</label>
+                        <input type="text" id="bill-address" class="input-field">
+                    </div>
+                    <p class="small-helper">Vei fi redirecționat către PayPal pentru activare.</p>
+                </div>
 
                 <button type="submit" class="btn-login"
                     style="background: linear-gradient(135deg, #FFA726, #F57C00); box-shadow: 0 6px 0 #E65100;">CREEAZĂ
@@ -348,21 +363,53 @@
             document.querySelectorAll('.plan-option').forEach(el => el.classList.remove('selected'));
             document.getElementById('plan-' + plan).classList.add('selected');
             document.getElementById('selected-plan').value = plan;
+
+            // Show/Hide Billing for Paid Plans
+            const billing = document.getElementById('billing-section');
+            const billName = document.getElementById('bill-name');
+            const billAddr = document.getElementById('bill-address');
+
+            if (plan === 'free') {
+                billing.style.display = 'none';
+                billName.required = false;
+                billAddr.required = false;
+            } else {
+                billing.style.display = 'block';
+                billName.required = true;
+                billAddr.required = true;
+                // Scroll to bottom of modal
+                document.querySelector('.modal-content').scrollTop = document.querySelector('.modal-content').scrollHeight;
+            }
         }
 
         function handleRegister(e) {
             e.preventDefault();
+            const email = document.getElementById('reg-email').value;
             const u = document.getElementById('reg-user').value;
             const p = document.getElementById('reg-pass').value;
             const plan = document.getElementById('selected-plan').value;
 
-            const result = auth.register(u, p, plan);
+            let billing = {};
+            if (plan !== 'free') {
+                billing = {
+                    fullName: document.getElementById('bill-name').value,
+                    address: document.getElementById('bill-address').value
+                };
+            }
+
+            const result = auth.register(u, p, email, plan, billing);
 
             if (result.success) {
-                alert('Cont creat cu succes! Te rugăm să te loghezi.');
-                closeRegister();
-                document.getElementById('username').value = u;
-                document.getElementById('password').value = ""; // Force them to type pass
+                if (plan !== 'free') {
+                    alert('Cont creat! Redirectare către PayPal pentru activare...');
+                    // Redirect to payment page logic (simulated by existing page)
+                    window.location.href = 'payment.html';
+                } else {
+                    alert('Cont creat cu succes! Te rugăm să te loghezi.');
+                    closeRegister();
+                    document.getElementById('username').value = u;
+                    document.getElementById('password').value = ""; // Force them to type pass
+                }
             } else {
                 alert('Eroare: ' + result.message);
             }

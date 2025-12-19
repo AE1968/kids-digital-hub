@@ -17,17 +17,18 @@ class AuthManager {
         this.users = { ...this.users, ...customUsers };
     }
 
-    register(username, password, plan, parentEmail) {
+    register(username, password, email, plan, billingDetails) {
         if (this.users[username]) {
             return { success: false, message: 'Nume utilizator existent!' };
         }
 
         const newUser = {
             pass: password,
+            email: email || '',
             role: 'user',
             storage: plan === 'free' ? '100MB' : 'Unlimited',
             plan: plan, // 'free', 'monthly', 'yearly'
-            parentEmail: parentEmail || '',
+            billing: billingDetails || {}, // Legal details for subscriptions
             joined: new Date().toISOString()
         };
 
@@ -218,10 +219,6 @@ class SessionManager {
 
         // Simulating Backend Email Trigger (To be replaced with real API call)
         console.log(`[Report] Sending to ${this.user.parentEmail}... Time: ${mins}m`);
-
-        // Use a less intrusive notification for the production feel, or keep alert for demo
-        // For now, we log to console to not block the user flow on every logout if not desired
-        // alert(`📧 PARENT REPORT SENT!\nTo: ${this.user.parentEmail}\nTime Online: ${mins} minutes`);
     }
 
     lockSession() {
