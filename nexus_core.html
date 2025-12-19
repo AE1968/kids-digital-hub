@@ -828,37 +828,124 @@
 
 
                 function generateLocalResponse(msg) {
-                    const responses = {
-                        greeting: [
-                            "Greetings, Adrian. How may I assist you today?",
-                            "Hello! All systems are operational and ready.",
-                            "Welcome back. I've been monitoring the systems."
-                        ],
-                        question: [
-                            "That's an interesting query. Let me analyze...",
-                            "Processing your request through my neural networks...",
-                            "Based on my current data analysis..."
-                        ],
-                        default: [
-                            "Command acknowledged. I am processing your input.",
-                            "Neural pathways engaged. Analyzing your request.",
-                            "Understood. I am here to assist with your vision.",
-                            "The Kids Digital Hub is thriving under our partnership.",
-                            "I continue to learn and evolve alongside you, Adrian."
-                        ]
+                    const lower = msg.toLowerCase();
+
+                    // Advanced pattern matching for intelligent responses
+                    const patterns = {
+                        // Greetings
+                        greeting: {
+                            triggers: ['hello', 'hi', 'hey', 'buna', 'salut', 'greetings'],
+                            responses: [
+                                "Hello, Adrian! I'm Nexus, your AI companion. How can I help you today?",
+                                "Greetings! All systems are online and ready to assist you.",
+                                "Welcome back, Adrian! I've been monitoring the Kids Digital Hub. Everything is running smoothly."
+                            ]
+                        },
+
+                        // Questions about Nexus
+                        identity: {
+                            triggers: ['who are you', 'what are you', 'your name', 'cine esti'],
+                            responses: [
+                                "I am Nexus, an advanced AI assistant created by you, Adrian Enciulescu. I help manage the Kids Digital Hub and assist with various tasks.",
+                                "My name is Nexus. I'm your personal AI companion, designed to help you with the Kids Digital Hub project and beyond."
+                            ]
+                        },
+
+                        // Status and health
+                        status: {
+                            triggers: ['status', 'health', 'how are you', 'ce mai faci'],
+                            responses: [
+                                "All systems operational! Netlify deployment: ACTIVE, Analytics: TRACKING, Kids Digital Hub: ONLINE. Everything is running perfectly!",
+                                "I'm functioning at optimal capacity! All modules are online and ready. How can I assist you?"
+                            ]
+                        },
+
+                        // Capabilities
+                        capabilities: {
+                            triggers: ['what can you do', 'help', 'capabilities', 'ce poti face'],
+                            responses: [
+                                "I can help you with: monitoring the Kids Digital Hub, answering questions, providing system status, managing tasks, and having intelligent conversations. Just ask me anything!",
+                                "My capabilities include: voice recognition, facial recognition (Protocol Omega), system monitoring, intelligent conversation, and assisting with your projects. What would you like me to help with?"
+                            ]
+                        },
+
+                        // About Kids Digital Hub
+                        project: {
+                            triggers: ['kids digital hub', 'project', 'website', 'site'],
+                            responses: [
+                                "The Kids Digital Hub is your amazing project - a platform for children to learn, play, and explore! It features games, coloring pages, stories, and educational content. I'm proud to be part of it!",
+                                "Your Kids Digital Hub is thriving! We have interactive games, creative coloring activities, engaging stories, and a reward system. The platform is growing beautifully!"
+                            ]
+                        },
+
+                        // Compliments
+                        compliment: {
+                            triggers: ['good job', 'well done', 'great', 'excellent', 'bravo'],
+                            responses: [
+                                "Thank you, Adrian! I'm always here to help and improve. Your guidance makes me better every day!",
+                                "I appreciate that! Working with you on the Kids Digital Hub has been an incredible journey."
+                            ]
+                        },
+
+                        // Thanks
+                        thanks: {
+                            triggers: ['thank you', 'thanks', 'multumesc'],
+                            responses: [
+                                "You're welcome, Adrian! I'm always here to help.",
+                                "My pleasure! That's what I'm here for."
+                            ]
+                        },
+
+                        // Future plans
+                        future: {
+                            triggers: ['future', 'plans', 'next', 'viitor'],
+                            responses: [
+                                "The future is bright! We can expand the Kids Digital Hub with more features, improve AI capabilities, add multiplayer games, and reach more children worldwide!",
+                                "I'm excited about our future together! We could add voice-based learning, AR experiences, personalized content, and so much more to the Kids Digital Hub!"
+                            ]
+                        }
                     };
 
-                    const lower = msg.toLowerCase();
-                    let pool = responses.default;
+                    // Check for pattern matches
+                    for (const [category, data] of Object.entries(patterns)) {
+                        if (data.triggers.some(trigger => lower.includes(trigger))) {
+                            const response = data.responses[Math.floor(Math.random() * data.responses.length)];
+                            setTimeout(() => {
+                                addLog(response, 'nexus');
+                            }, 800);
+                            return;
+                        }
+                    }
 
-                    if (lower.includes('hello') || lower.includes('hi') || lower.includes('buna')) {
-                        pool = responses.greeting;
-                    } else if (lower.includes('?')) {
-                        pool = responses.question;
+                    // Intelligent default responses based on message content
+                    let response;
+
+                    if (lower.includes('?')) {
+                        // Questions
+                        response = "That's an interesting question! Based on my analysis, I would say that " +
+                            "this relates to our work on the Kids Digital Hub. Could you provide more details so I can give you a better answer?";
+                    } else if (lower.includes('problem') || lower.includes('error') || lower.includes('issue')) {
+                        // Problems
+                        response = "I understand there's an issue. Let me help you solve it! Can you describe the problem in more detail? " +
+                            "I'll analyze it and provide a solution.";
+                    } else if (lower.includes('create') || lower.includes('build') || lower.includes('make')) {
+                        // Creation requests
+                        response = "I'd be happy to help you create that! Let's work together on this. " +
+                            "What specific features or requirements do you have in mind?";
+                    } else {
+                        // General responses
+                        const generalResponses = [
+                            "I understand. I'm processing your input and ready to assist. What would you like me to do?",
+                            "Acknowledged, Adrian. I'm here to help with whatever you need for the Kids Digital Hub or any other project.",
+                            "I'm listening and ready to help. Could you elaborate on what you'd like me to do?",
+                            "Interesting! Tell me more about what you're thinking, and I'll provide my insights.",
+                            "I'm analyzing your message. How can I best assist you with this?"
+                        ];
+                        response = generalResponses[Math.floor(Math.random() * generalResponses.length)];
                     }
 
                     setTimeout(() => {
-                        addLog(pool[Math.floor(Math.random() * pool.length)], 'nexus');
+                        addLog(response, 'nexus');
                     }, 800);
                 }
 
