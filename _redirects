@@ -1,5 +1,6 @@
-# Redirect default domain to www - DISABLED DUE TO CLOUDFLARE PAGE RULE
-# https://kidsdigitalhub.com/* https://www.kidsdigitalhub.com/:splat 301!
+# Force HTTPS and WWW
+# Redirect root to www
+https://kidsdigitalhub.com/* https://www.kidsdigitalhub.com/:splat 301!
 
 # SPA Fallback
 /* /index.html 200
