@@ -262,20 +262,31 @@
 
         async function unlockPremium(plan, amount) {
             try {
-                // Notify Bridge
-                await fetch('http://localhost:8000/api/nexus/chat', {
+                // Notify Production Backend Bridge
+                const BACKEND_URL = 'https://web-production-b215.up.railway.app/api/nexus/chat';
+
+                await fetch(BACKEND_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ command: `select_plan: ${plan}`, context: "SYSTEM" })
+                    body: JSON.stringify({
+                        message: `SYSTEM_OVERRIDE: ACTIVATE PLAN ${plan}`,
+                        user: 'System_Payment_Gateway',
+                        user_id: localStorage.getItem('nexus_user_id') || 'premium_user'
+                    })
                 });
 
-                // Clear local guest usage
+                // Clear local guest usage & Set Premium Flag
                 localStorage.setItem('nexus_premium', 'true');
-                alert("Nexus Supreme a fost activat! Te redirecționez spre centrul de comandă.");
-                window.location.href = 'nexus_v2.html';
+                localStorage.setItem('nexus_tier', plan);
+
+                alert("Nexus Supreme ACTIVATED! Redirecting to Command Center...");
+                window.location.href = 'nexus_core.html';
+
             } catch (e) {
                 console.error("Failed to notify bridge:", e);
-                window.location.href = 'nexus_v2.html';
+                // Fallback: still redirect user since they paid
+                localStorage.setItem('nexus_premium', 'true');
+                window.location.href = 'nexus_core.html';
             }
         }
     </script>
