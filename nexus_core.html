@@ -1546,11 +1546,21 @@
                 }
 
                 // Start continuous listening on page load
+                // DISABLED: Auto-start removed to prevent microphone permission popup
+                // User will click "Activate Voice" button instead
+                /*
                 window.addEventListener('load', () => {
                     // Small delay to ensure everything is loaded
                     setTimeout(() => {
                         startContinuousListening();
                     }, 2000);
+                });
+                */
+
+                // Add activation button click handler
+                window.addEventListener('load', () => {
+                    addLog('👋 Welcome! Click the microphone button or say "Hey Nexus" to activate voice control.', 'nexus');
+                    speakText('Welcome, Adrian! I am Nexus. Click the microphone button to activate voice control.');
                 });
 
             </script>
