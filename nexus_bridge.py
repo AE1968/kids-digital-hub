@@ -207,9 +207,33 @@ def autonomous_optimize(target_file="index.html"):
     except Exception as e:
         return f"Eroare în timpul optimizării: {str(e)}"
 
+# --- ACCESS CONTROL ENGINE ---
+def check_access(user_email="guest"):
+    # If it's the Commander, unlimited access
+    if user_email in ["adrian", "Commander Adrian Link"]: return True, "ULTIMATE"
+    
+    sub = memory.get("active_subscription", "FREE")
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    usage = memory.get("daily_usage", {})
+    
+    if sub == "FREE":
+        current_count = usage.get(today, 0)
+        if current_count >= 5:
+            return False, "Ai atins limita de 5 mesaje zilnice pentru planul FREE. Treci la PREMIUM pentru putere nelimitată!"
+        usage[today] = current_count + 1
+        memory["daily_usage"] = usage
+        save_memory(memory)
+        
+    return True, sub
+
 # --- ENHANCED CHAT LOGIC ---
 @app.post("/api/nexus/chat")
 async def nexus_chat(task: NexusTask):
+    # Check Access First
+    is_allowed, access_info = check_access(task.context)
+    if not is_allowed:
+        return {"reply": access_info, "action": "access_denied", "stats": analyze_system()}
+
     cmd = task.command.lower()
     timestamp = datetime.datetime.now().isoformat()
     mood = analyze_sentiment(cmd)
@@ -217,7 +241,7 @@ async def nexus_chat(task: NexusTask):
     
     reply = ""
     action = "idle"
-    details = {"mood": mood}
+    details = {"mood": mood, "tier": access_info}
     
     # 💳 SUBSCRIPTION & AUTH COMMANDS 💳
     if "select_plan" in cmd:

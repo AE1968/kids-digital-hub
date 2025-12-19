@@ -353,9 +353,15 @@
 
             <div class="status">
                 <h1 id="nexusTitle">NEXUS SUPREME</h1>
-                <div id="moodBadge" class="status-badge"
-                    style="background: rgba(0, 255, 65, 0.1); border: 1px solid var(--matrix-green); color: var(--matrix-green);">
-                    🟢 NEURAL STABLE • CALM
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <div id="moodBadge" class="status-badge"
+                        style="background: rgba(0, 255, 65, 0.1); border: 1px solid var(--matrix-green); color: var(--matrix-green);">
+                        🟢 NEURAL STABLE
+                    </div>
+                    <div id="tierBadge" class="status-badge"
+                        style="background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-cyan); color: var(--neon-cyan);">
+                        TIER: FREE
+                    </div>
                 </div>
                 <p id="brainState"
                     style="margin-top:10px; color: var(--matrix-green); font-family:'Courier New'; font-size: 0.7rem;">
@@ -438,7 +444,10 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    if (data.action === 'terminal_exec' || data.action === 'deployment') {
+                    if (data.action === 'access_denied') {
+                        addLog('system', data.reply);
+                        speak("Limită atinsă. Te rog să treci la planul Premium pentru acces nelimitat.");
+                    } else if (data.action === 'terminal_exec' || data.action === 'deployment') {
                         // Display multi-line output in a special box
                         const logEntry = document.createElement('div');
                         logEntry.className = 'msg nexus';
@@ -447,7 +456,7 @@
                     } else {
                         addLog('nexus', data.reply);
                     }
-                    speak(data.reply.split('\n')[0]); // Speak only first line
+                    if (data.action !== 'access_denied') speak(data.reply.split('\n')[0]); // Speak only first line
                 } else {
                     throw new Error('Bridge Offline');
                 }
@@ -666,9 +675,16 @@
                     // Update Mood
                     const moodBadge = document.getElementById('moodBadge');
                     if (moodBadge && stats.mood) {
-                        moodBadge.textContent = `🟢 NEURAL STABLE • ${stats.mood}`;
-                        if (stats.mood === 'HAPPY') moodBadge.style.color = 'var(--matrix-green)';
-                        if (stats.mood === 'CONCERNED') moodBadge.style.color = 'var(--alert-red)';
+                        moodBadge.textContent = `🟢 NEURAL: ${stats.mood}`;
+                    }
+
+                    // Update Tier
+                    const tierBadge = document.getElementById('tierBadge');
+                    if (tierBadge && stats.tier) {
+                        tierBadge.textContent = `TIER: ${stats.tier}`;
+                        if (stats.tier === 'ULTIMATE') tierBadge.style.color = 'var(--neon-purple)';
+                        else if (stats.tier === 'PREMIUM') tierBadge.style.color = 'var(--matrix-green)';
+                        else tierBadge.style.color = 'var(--neon-cyan)';
                     }
 
                     // Update Personality
