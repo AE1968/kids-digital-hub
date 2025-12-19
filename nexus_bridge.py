@@ -198,21 +198,42 @@ def autonomous_optimize(target_file="index.html"):
         with open(path, "r", encoding="utf-8") as f:
             content = f.read()
         
-        # Simulated Neural Analysis
         optimization_made = False
+        
+        # 1. Add Meta Description
         if "description" not in content.lower():
-            # Add SEO Metadata autonomously
-            content = content.replace("<head>", "<head>\n    <meta name='description' content='Kids Digital Hub - World of Digital Adventures and Creativity'>")
+            desc = "Kids Digital Hub - The Supreme AI Platform for Kids, Students, and Teachers. Autonomous learning and storytelling with Nexus Supreme."
+            content = content.replace("<head>", f"<head>\n    <meta name='description' content='{desc}'>")
             optimization_made = True
-            add_experience("SEO_OPTIMIZATION", f"Added meta description to {target_file}")
+
+        # 2. Add JSON-LD Schema (Structured Data)
+        if "ld+json" not in content.lower():
+            schema = """
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Nexus Supreme - Kids Digital Hub",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web, Windows, Android, iOS",
+      "offers": {
+        "@type": "Offer",
+        "price": "5.00",
+        "priceCurrency": "GBP"
+      }
+    }
+    </script>"""
+            content = content.replace("</head>", f"{schema}\n</head>")
+            optimization_made = True
             
         if optimization_made:
             with open(path, "w", encoding="utf-8") as f:
                 f.write(content)
-            return f"Optimizare autonomă finalizată pentru {target_file}. S-au adăugat metadate SEO."
-        return f"Analiza completă pentru {target_file}. Codul este deja optimizat conform standardelor mele."
+            add_experience("SEO_OPTIMIZATION", f"Injected JSON-LD & Meta to {target_file}")
+            return f"Optimizare SEO Progresivă finalizată pentru {target_file}. Am injectat Schema.org (JSON-LD) și metadate pentru vizibilitate globală."
+        return f"Analiza SEO finalizată pentru {target_file}. Pagina respectă standardele actuale Kids Digital Hub."
     except Exception as e:
-        return f"Eroare în timpul optimizării: {str(e)}"
+        return f"Eroare SEO: {str(e)}"
 
 # --- NEXUS CHRONICLES: EPISODIC STORY ENGINE ---
 def generate_story_episode():
@@ -290,6 +311,33 @@ async def nexus_chat(task: NexusTask):
         action = "story_advance"
 
     # 💳 SUBSCRIPTION & AUTH COMMANDS 💳
+    elif "update_profile" in cmd:
+        try:
+            config_str = cmd.split("update_profile:")[-1].strip()
+            config = json.loads(config_str)
+            memory["user_profile"] = config
+            
+            # Neural adaptation based on role
+            role = config.get("role")
+            if role == "PROFESSOR":
+                memory["personality_matrix"] = {"warmth": 0.7, "logic": 1.0, "humor": 0.3}
+                reply = f"Profil de Profesor activat. Sunt gata pentru cursuri în limba {config.get('language')} despre {config.get('subject')}."
+            elif role == "CHILD":
+                memory["personality_matrix"] = {"warmth": 1.0, "logic": 0.5, "humor": 0.9}
+                if config.get("child_type") == "PRE":
+                    reply = "Profil Copil (Pre-școlar) activat. Mă voi concentra pe desene și povești audio magice!"
+                else:
+                    reply = "Profil Școlar activat. Pregătit pentru aventuri de învățare personalizate!"
+            elif role == "ADULT":
+                memory["personality_matrix"] = {"warmth": 0.6, "logic": 0.9, "humor": 0.5}
+                reply = "Profil Adult stabilit. Interfață simplificată și comunicare directă activată."
+            
+            save_memory(memory)
+            action = "profile_sync"
+        except:
+            reply = "Eroare la sincronizarea neurală a profilului. Formatează corect datele."
+            action = "error"
+
     elif "select_plan" in cmd:
         plan = cmd.split(":")[-1].strip()
         memory["active_subscription"] = plan

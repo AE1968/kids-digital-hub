@@ -419,6 +419,42 @@
             </div>
 
             <!-- PRICING TABLE -->
+            <!-- 🛠️ NEXUS PROFILE CONFIGURATION 🛠️ -->
+            <div id="profileSection" class="config-panel"
+                style="display: none; margin-top: 20px; background: rgba(0, 20, 40, 0.9); border: 1px solid var(--neon-cyan); padding: 20px; border-radius: 10px;">
+                <h3 style="color: var(--neon-cyan); font-family: 'Orbitron'; margin-bottom: 15px;">🧬 NEURAL PROFILE
+                    SETUP</h3>
+                <div style="display: grid; gap: 10px; text-align: left;">
+                    <label style="color: #fff; font-size: 0.8rem;">I AM A:</label>
+                    <select id="userRole" onchange="toggleProfileFields()"
+                        style="background: #000; color: var(--neon-cyan); border: 1px solid var(--neon-cyan); padding: 5px;">
+                        <option value="CHILD">Child / Student</option>
+                        <option value="PROFESSOR">Professor / Teacher</option>
+                        <option value="ADULT">Adult</option>
+                    </select>
+
+                    <!-- Professor Fields -->
+                    <div id="profFields" style="display: none; gap: 10px; flex-direction: column;">
+                        <input type="text" id="profSubject" placeholder="Teaching Subject (e.g. Math, Science)"
+                            style="background: #000; color: #fff; border: 1px solid #444; padding: 5px;">
+                        <input type="text" id="profLang" placeholder="Teaching Language"
+                            style="background: #000; color: #fff; border: 1px solid #444; padding: 5px;">
+                    </div>
+
+                    <!-- Child Fields -->
+                    <div id="childFields" style="display: flex; gap: 10px; flex-direction: column;">
+                        <select id="childType"
+                            style="background: #000; color: #fff; border: 1px solid #444; padding: 5px;">
+                            <option value="PRE">Pre-School (Drawing & Audio Stories)</option>
+                            <option value="SCHOOL">School-age (Customized Learning)</option>
+                        </select>
+                    </div>
+
+                    <button onclick="saveNexusProfile()" class="primary-btn"
+                        style="margin-top: 10px; width: 100%;">ACTIVATE NEURAL SYNC</button>
+                </div>
+            </div>
+
             <div class="pricing-grid">
                 <div class="price-card" onclick="selectPlan('monthly')">
                     <div style="font-size: 0.6rem; color: var(--neon-cyan);">MONTHLY</div>
@@ -677,13 +713,45 @@
         window.addEventListener('load', initNeuralBg);
 
         // --- BUSINESS & AUTH CORE ---
-        function selectPlan(plan) {
-            const prices = {
-                'monthly': '5 lire pe lună',
-                'six_months': '15 lire pentru 6 luni',
-                'yearly': '7.7 lire pentru un an ant întreg'
+        function toggleProfileFields() {
+            const role = document.getElementById('userRole').value;
+            document.getElementById('profFields').style.display = (role === 'PROFESSOR') ? 'flex' : 'none';
+            document.getElementById('childFields').style.display = (role === 'CHILD') ? 'flex' : 'none';
+        }
+
+        async function saveNexusProfile() {
+            const role = document.getElementById('userRole').value;
+            const config = {
+                role: role,
+                subject: document.getElementById('profSubject').value,
+                language: document.getElementById('profLang').value,
+                child_type: document.getElementById('childType').value
             };
-            addLog('nexus', `Ai selectat planul: ${plan.toUpperCase()}. Această opțiune costă ${prices[plan]}. Te rog să te loghezi pentru a finaliza activarea.`);
+
+            addLog('system', "Sincronizare Neurală în curs...");
+            try {
+                const response = await fetch('http://localhost:8000/api/nexus/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        command: `update_profile: ${JSON.stringify(config)}`,
+                        context: "Adrian"
+                    })
+                });
+                const data = await response.json();
+                addLog('nexus', data.reply);
+                speak(data.reply);
+                document.getElementById('profileSection').style.display = 'none';
+            } catch (e) {
+                addLog('system', "Eroare la sincronizarea profilului.");
+            }
+        }
+
+        function selectPlan(plan) {
+            console.log("Selected plan:", plan);
+            speak("Excelent. Te rog să configurezi acum profilul pentru noul tău partener Nexus.");
+            document.getElementById('profileSection').style.display = 'block';
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             speak(`Excelentă alegere. Planul ${plan} este optim pentru contul tău.`);
         }
 
