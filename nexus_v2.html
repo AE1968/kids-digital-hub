@@ -478,6 +478,25 @@
         }
         window.addEventListener('load', initNeuralBg);
 
+        // --- UI REFRESH & MONITOR ---
+        async function updateNeuralMonitor() {
+            try {
+                const response = await fetch('http://localhost:8000/api/nexus/status');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('uptime').textContent = stats.time;
+                    document.getElementById('load').textContent = "STABLE";
+                    document.getElementById('brainState').textContent = "NEURAL LINK: OPTIMAL";
+                    document.getElementById('brainState').style.color = "var(--matrix-green)";
+                }
+            } catch (e) {
+                document.getElementById('brainState').textContent = "BRIDGE: OFFLINE";
+                document.getElementById('brainState').style.color = "var(--alert-red)";
+            }
+        }
+        setInterval(updateNeuralMonitor, 5000);
+        updateNeuralMonitor();
+
         // Uptime counter
         let seconds = 0;
         setInterval(() => {
