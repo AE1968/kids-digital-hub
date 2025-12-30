@@ -1,5 +1,12 @@
 [
   {
+    "timestamp": "2025-12-30 23:33:03",
+    "incident": "Infrastructure Pulse",
+    "healing_action": "Nexus server (Railway) reported sub-optimal status. Queued for AI analysis.",
+    "status": "WARNING",
+    "agent": "Nexus Robot Doctor v2.1"
+  },
+  {
     "timestamp": "2025-12-30 22:40:03",
     "incident": "Infrastructure Pulse",
     "healing_action": "Nexus server (Railway) reported sub-optimal status. Queued for AI analysis.",
@@ -340,13 +347,6 @@
     "incident": "Infrastructure Pulse",
     "healing_action": "Nexus server (Railway) reported sub-optimal status. Queued for AI analysis.",
     "status": "WARNING",
-    "agent": "Nexus Robot Doctor v2.1"
-  },
-  {
-    "timestamp": "2025-12-19 17:33:24",
-    "incident": "Infrastructure Alert",
-    "healing_action": "Nexus server (Railway) is currently unreachable. Dashboard fallback active.",
-    "status": "CRITICAL",
     "agent": "Nexus Robot Doctor v2.1"
   }
 ]
