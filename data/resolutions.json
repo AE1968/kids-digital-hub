@@ -1,5 +1,12 @@
 [
   {
+    "timestamp": "2025-12-30 15:41:50",
+    "incident": "Infrastructure Pulse",
+    "healing_action": "Nexus server (Railway) reported sub-optimal status. Queued for AI analysis.",
+    "status": "WARNING",
+    "agent": "Nexus Robot Doctor v2.1"
+  },
+  {
     "timestamp": "2025-12-30 14:45:51",
     "incident": "Infrastructure Pulse",
     "healing_action": "Nexus server (Railway) reported sub-optimal status. Queued for AI analysis.",
@@ -339,13 +346,6 @@
     "timestamp": "2025-12-18 20:11:07",
     "incident": "File Clutter",
     "healing_action": "Deleted backup file gallery-stories.html.bak to optimize system speed.",
-    "status": "HEALED",
-    "agent": "Nexus Robot Doctor v2.1"
-  },
-  {
-    "timestamp": "2025-12-18 20:11:07",
-    "incident": "File Clutter",
-    "healing_action": "Deleted backup file gallery-games.html.bak to optimize system speed.",
     "status": "HEALED",
     "agent": "Nexus Robot Doctor v2.1"
   }
